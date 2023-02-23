@@ -31,15 +31,7 @@ use App\Http\Controllers\editorLotController;
 use App\Http\Controllers\EditorsCommercialController;
 use App\Http\Controllers\NewCommercial;
 use App\Http\Controllers\WrcInvoiceNumber;
-
-
-
-
-
-
-
-
-
+use Illuminate\Support\Facades\Auth;
 
 /*
   |--------------------------------------------------------------------------
@@ -510,4 +502,6 @@ Route::get('Editing-submission-done', [EditingSubmissionController::class, 'Edit
 Route::get('Editing-Wrc-client-ar', [EditingClientARController::class, 'index'])->name('EditingClientARList'); // Editing Wrc List for client Approval & Rejection
 Route::post('Editing-client-wrc-AR', [EditingClientARController::class, 'Editing_reject_approve_wrc'])->name('Editing_reject_approve_wrc'); // Editing Wrc client Approval or Rejection
 
+// *** New routes  *** //
+Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
 
