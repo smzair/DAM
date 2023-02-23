@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" viewBox="0 0 100 100">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_2" data-name="Rectangle 2" width="100" height="100" transform="translate(-0.322 -0.322)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="ODN_Logo" data-name="ODN Logo" transform="translate(0.322 0.111)">
+    <rect id="Rectangle_1" data-name="Rectangle 1" width="100" height="100" transform="translate(-0.322 -0.111)" fill="#fbfc00"/>
+    <g id="Group_2" data-name="Group 2" transform="translate(0 0.211)">
+      <g id="Group_1" data-name="Group 1" clip-path="url(#clip-path)">
+        <path id="Path_1" data-name="Path 1" d="M75.27,297.419c0-7.562,5.828-13.206,13.759-13.206,7.857,0,13.686,5.607,13.686,13.206s-5.828,13.206-13.686,13.206c-7.931,0-13.759-5.644-13.759-13.206m23.756,0a10.034,10.034,0,1,0-10,9.923,9.695,9.695,0,0,0,10-9.923" transform="translate(-65.642 -248.031)" fill="#231f20"/>
+        <path id="Path_2" data-name="Path 2" d="M310.89,286.52h10.882c8.3,0,13.944,5.238,13.944,12.911s-5.644,12.911-13.944,12.911H310.89Zm10.661,22.613c6.382,0,10.476-3.91,10.476-9.7s-4.095-9.7-10.476-9.7h-6.972v19.4Z" transform="translate(-271.124 -250.043)" fill="#231f20"/>
+        <path id="Path_3" data-name="Path 3" d="M548.239,286.52v25.822h-3.025l-15.493-19.256v19.256h-3.689V286.52h3.025l15.493,19.256V286.52Z" transform="translate(-458.747 -250.043)" fill="#231f20"/>
+      </g>
+    </g>
+  </g>
+</svg>

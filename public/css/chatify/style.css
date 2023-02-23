@@ -1,0 +1,1630 @@
+body{
+    margin: 0;
+    background: #fff;
+}
+/*internet connection*/
+.internet-connection{
+    display: none;
+    background: rgba(0, 0, 0, 0.76);
+    position: absolute;
+    top: 69px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 4px;
+    color: #fff;
+}
+.internet-connection span{
+    display: none;
+}
+
+/*green background RGBA*/
+.successBG-rgba{background: rgba(54, 180, 36, 0.76) !important;}
+
+/* app scroll*/
+.app-scroll::-webkit-scrollbar{
+    width:5px;
+    height:5px;
+    border-radius: 4px;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+.app-scroll-thin::-webkit-scrollbar{
+    width:1px;
+    height:1px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.app-scroll::-webkit-scrollbar-thumb,
+.app-scroll-thin::-webkit-scrollbar-thumb{
+    border-radius: 4px;
+}
+.messenger{
+    max-width: 1200px;
+    margin: 60px auto;
+    display: flex;
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+    /* background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5); */
+    border-radius: 12px;
+    /* display: inline-flex; */
+    width: 100%;
+    height: 100%;
+    /* font-family: sans-serif; */
+    background-color: #fff;
+    font-family: "nunito";
+}
+
+.messenger-listView{
+  position: relative;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+    z-index: 1;
+    background: transparent;
+  width: 45%;
+  min-width: 200px;
+  overflow: auto;
+}
+
+.messenger-listView {
+    width: 33.333333%;
+    border: 0;
+    background: #F5F6F1;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.messenger-listView .m-header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10px !important;
+    background: #FFFF00;
+}
+.messenger-listView .m-header>nav{
+    margin: 20px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.messenger-listView .m-header a {
+    color: rgba(0,0,0,0.8);
+}
+
+.messenger-listView .m-header a:hover,
+.messenger-listView .m-header a:focus {
+    color: rgba(0,0,0,0.8);
+}
+
+.messenger-listView .m-header svg {
+    color: rgba(0,0,0,0.8);
+}
+
+.fav-card {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 20px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 0 1px rgb(0 0 0 / 13%), 0 1px 3px rgb(0 0 0 / 20%);
+    position: relative;
+}
+
+.messenger-listView .m-body{
+    margin-top: 178px;
+}
+.messenger-messagingView{
+    position: relative;
+    overflow: hidden;
+    width: 66.666667%;
+    border: 0;
+    /* background: transparent; */
+    background: #DED6CE;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+.messenger-messagingView .m-body{
+    padding-top: 15px;
+    height: calc(100% - 160px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: transparent;
+}
+
+/* .messenger-messagingView .m-body {
+    background-image: url('vendor/munafio/chatify/assets/imgs/chatify_bg.png');
+} */
+
+.m-header{
+    padding: 10px 15px;
+    font-weight: 600;
+    background: transparent;
+}
+.m-header-right {
+  display: inline-flex;
+  float: right;
+}
+.m-header-messaging{
+    background: rgba(237,237,237,0.9);
+    padding: 25px 10px;
+    box-shadow: 0 0.1rem 1rem hsl(0deg 0% 0% / 40%);
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.m-header-messaging {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.m-header-messaging .m-header-right a > svg {
+    font-size: 20px;
+}
+
+.m-header svg{
+    margin: 0px 8px;
+  font-size: 16px;
+  transition: transform .12s;
+}
+.m-header svg:active{
+    transform: scale(.9);
+}
+
+.messenger-search-input-grp {
+    position: relative;
+}
+
+.messenger-search {
+    font-size: 1rem;
+    line-height: 1.5;
+    height: calc(2.25rem + 2px);
+    padding: .375rem .75rem;
+    border-radius: 15px !important;
+    background: rgba(0,0,0,0.3);
+    border: 0 !important;
+    color: rgba(0,0,0,0.8) !important;
+    width: 100%;
+    margin: 0;
+    margin-top: 10px;
+    outline: 0;
+}
+
+.messege_search_btn {
+    position: absolute;
+    right: 3px;
+    top: 0;
+    height: 28px;
+    padding-top: 20px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.messenger-search::placeholder {
+    color: rgba(0,0,0,0.8);
+}
+
+.messenger-listView-tabs{
+    display: inline-flex;
+    background-color: #fff;
+    box-shadow: none;
+    margin-top: 15px;
+    width: 100%;
+    border: 0px !important;
+    box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;
+    border-radius: 20px;
+}
+
+.messenger-listView .m-header .messenger-listView-tabs a {
+    color: rgba(0,0,0,0.8);
+    font-size: 13px;
+    transition: all 0.2s ease-in-out;
+}
+
+
+.messenger-listView .m-header .messenger-listView-tabs a:first-child {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.messenger-listView .m-header .messenger-listView-tabs a:last-child {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.messenger-listView .m-header .messenger-listView-tabs svg {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.messenger-listView .m-header .messenger-listView-tabs a.active-tab {
+    border: 0 !important;
+    background: rgba(0,0,0,0.8);
+    color: #FFFF00;
+}
+
+.messenger-listView .m-header .messenger-listView-tabs a.active-tab > svg {
+    color: #FFFF00;
+}
+
+.messenger-listView-tabs a:hover, .messenger-listView-tabs a:focus {
+    border: 0 !important;
+    /* color: #151826; */
+}
+
+/* .messenger-listView .m-header .messenger-listView-tabs a:hover, 
+.messenger-listView .m-header .messenger-listView-tabs a:focus {
+    color: #151826;
+}
+
+.messenger-listView .m-header .messenger-listView-tabs a:hover svg, 
+.messenger-listView .m-header .messenger-listView-tabs a:focus svg {
+    color: #151826;
+} */
+
+.messenger-listView-tabs a {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    background-color: transparent;
+    /* transition: background .3s; */
+}
+.messenger-listView-tabs a:hover,
+.messenger-listView-tabs a:focus{
+    text-decoration: none;
+}
+.messenger-tab{
+    overflow: auto;
+    height: calc(100% - 178px);
+    display: none;
+}
+.add-to-favorite{
+    display: none;
+}
+.add-to-favorite svg{
+    color: rgba(180, 180, 180, 0.52) !important;
+}
+.favorite-added svg{
+    color: #FFC107 !important;
+}
+.favorite svg{
+    color: #FFC107 !important;
+}
+.show{
+    display: block;
+}
+.hide{
+    display: none;
+}
+.messenger-list-item{
+    margin: 0;
+    width: 100%;
+  cursor: pointer;
+  transition: background .10s;
+}
+.m-list-active span,
+.m-list-active  p{
+    color: #fff !important;
+}
+
+.messenger-list-item td{
+    padding: 10px;
+}
+.messenger-list-item tr>td:first-child{
+    padding-right: 0;
+    width: 55px;
+}
+.messenger-list-item td p{
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+.messenger-list-item td p span{
+    float: right;
+}
+.messenger-list-item td span{
+    color: rgba(0,0,0,0.8);
+    font-weight: 400;
+    font-size: 13px;
+}
+.messenger-list-item td b{
+    float: right;
+    color: #fff;
+    padding: 0px 4px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+.avatar{
+    text-align: center;
+    border-radius: 100%;
+    overflow: hidden;
+    background-color: #eee;
+    background-image: url('');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+.av-l{
+    width: 100px;
+    height: 100px;
+}
+.av-m{
+    width: 50px;
+    height: 50px;
+    border: 1px solid #301442;
+}
+.av-s{
+    width: 45px;
+    height: 45px;
+    border: 2px solid #EB2562;
+}
+.m-header-messaging a.user-name {
+    color: #fff !important;
+}
+
+/* .m-header-messaging a.user-name .activenStatus {
+    width: 10px;
+    height: 10px;
+    background: #4CAF50;
+    border-radius: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    border: 0;
+} */
+
+.m-header-messaging .m-header-right {
+    margin-top: 8px;
+}
+.m-header-messaging .m-header-right a > svg {
+    /* color: rgba(0,0,0,0.7); */
+    color: #fff;
+}
+.favorite svg {
+    color: #fff !important;
+}
+.messenger-favorites{
+    padding: 10px;
+    overflow: auto;
+    white-space: nowrap;
+}
+.messenger-favorites>div{
+    display: inline-block;
+    text-align: center;
+    transition: transform .3s;
+    cursor: pointer;
+}
+.messenger-favorites>div p{
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin: 12px 0px;
+    margin-bottom: 0px;
+}
+.messenger-favorites div.avatar{
+  border: 2px solid #fff;
+  margin: 0px 12px;
+  box-shadow: 0px 0px 0px 2px #301442 !important;
+}
+.messenger-favorites>div:active{
+    transform: scale(.9);
+}
+.messenger-title{
+    margin: 0;
+    padding: 10px;
+    padding-bottom: 0px;
+    text-transform: capitalize;
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+}
+.messenger-infoView{
+    display: none;
+    padding-top: 7px;
+    overflow: auto;
+    width: 40%;
+    min-width: 200px;
+}
+.messenger-infoView nav a{
+    text-decoration: none;
+    padding: 5px 8px;
+    font-size: 18px;
+    color: #fff !important;
+}
+.messenger-infoView>div{
+    margin: auto;
+    margin-top: 8%;
+    text-align: center;
+}
+.messenger-infoView>p{
+    text-align: center;
+    margin: auto;
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+.messenger-infoView-btns a{
+    display: block;
+    text-decoration: none !important;
+    padding: 5px 10px;
+    margin: 0% 10%;
+    border-radius: 3px;
+    font-size: 14px;
+    /* transition: background .3s; */
+}
+/* .messenger-infoView-btns a.default:hover,{
+    background: #f0f6ff;
+} */
+.messenger-infoView-btns a.danger{
+    color: #ff5555;
+}
+.messenger-infoView-btns a.danger:hover{
+    background: rgba(255, 85, 85, 0.11);
+}
+.shared-photo {
+    border-radius: 12px;
+    width: 20%;
+    height: 80px;
+    margin: 0 5px;
+    background: #f7f7f7;
+    overflow: hidden;
+    display: inline-block;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.shared-photo img{
+    width: auto;
+    height: 100%
+}
+.messenger-infoView-shared{
+    display: none;
+}
+.messenger-infoView-shared .messenger-title{
+    padding-bottom: 10px;
+    color: #fff;
+}
+
+.messenger-infoView .message-hint span {
+    color: #fff;
+}
+
+.messenger-infoView-btns .delete-conversation{
+    display: none;
+}
+
+.file-info-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+    text-align: left;
+}
+
+.file-info-list li {
+    display: block;
+    position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.file-info-list li:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+.file-info-list li:before, .file-info-list li:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.file-img {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    border: 1px solid rgba(204, 204, 204, 0.8);
+    border-radius: 12px;
+    font-size: 40px;
+    line-height: 1;
+    align-items: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    margin-right: 10px;
+    float: left;
+}
+
+.file-dt {
+    color: rgb(221, 221, 221);
+    font-size: 13px;
+    display: block;
+    padding-top: 10px;
+}
+
+.file-dt b {
+    display: block;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.file-dt > a {
+    float: right;
+    font-size: 20px;
+    color: #fff;
+    margin-top: -15px;
+}
+
+.close-side-chat {
+    text-align: right;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 8px;
+}
+
+.side-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    width: 100%;
+}
+
+.side-list li.side-list-item {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    text-align: center;
+    border-right: 1px solid #ccc;
+    background-color: rgba(18, 16, 26, 0.35);
+    transition: all 0.3s ease-in-out;
+}
+
+.side-list li.side-list-item:last-child {
+    border: 0;
+}
+
+.side-list li.side-list-item a {
+    font-size: 20px;
+    display: block;
+    padding: 10px;
+    color: #fff;
+}
+
+.side-list li.side-list-item:hover, .side-list li.side-list-item:focus {
+    background-color: rgb(255, 255, 0);
+}
+
+.side-list li.side-list-item:hover a, .side-list li.side-list-item:focus a {
+    color: rgb(21, 24, 38);
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 20px;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.call-info a {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(18, 16, 26, 0.35);
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    color: #fff;
+}
+
+.contact-info:before, .contact-info:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.call-info a:hover {
+    background-color: #FFFF00;
+}
+
+.call-info a:hover {
+    color: #2C1C1F;
+}
+
+.call-info {
+    position: static;
+    display: inline-block;
+}
+
+.ad-call.call-info:after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 1px;
+    height: 100%;
+    background-color: #ccc;
+    content: "";
+    top: 0;
+}
+
+.activeinfoStatus {
+    width: 12px;
+    height: 12px;
+    background: rgb(76, 175, 80);
+    border-radius: 20px;
+    position: absolute;
+    bottom: 12%;
+    right: 6%;
+    transition: border 0.1s ease 0s;
+}
+
+.app-scroll .avatar.av-l {
+    position: relative;
+    overflow: initial;
+}
+
+.message-card{
+    display: inline-flex;
+    margin: 2px 15px;
+    width: calc(100% - 30px);
+}
+
+.message-card.mc-sender {
+    margin: 8px 15px;
+}
+
+.message-card div{
+    margin-top: 0px;
+}
+
+.message-card.mc-sender p {
+    background: #42a5f5;
+    color: #fff !important;
+    border-radius: 20px 20px 3px 20px;
+    display: block;
+    max-width: 75%;
+    padding: 7px 13px 7px 13px;
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+    backdrop-filter: blur( 1.5px );
+}
+
+.message-card p{
+    margin: 0;
+    padding: 6px 15px;
+    padding-bottom: 5px;
+    max-width: 80%;
+    border-radius: 20px;
+    word-break: break-word;
+}
+
+.message-card.mc-receiver {
+    margin: 8px 30px;
+}
+
+.message-card.mc-receiver p {
+    padding: 10px 14px;
+    background: #eee;
+    border-radius: 9px;
+    position: relative;
+    color: #000 !important;
+    display: block;
+    max-width: 75%;
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+}
+
+.message-card p:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-bottom: 0;
+    margin-top: -10px;
+}
+
+.message-card.mc-receiver p:after {
+    left: 0;
+    border-right-color: #eee;
+    border-left: 0;
+    margin-left: -20px;
+}
+
+.message-card.mc-sender {
+    margin: 8px 30px;
+    width: calc(100% - 60px);
+}
+
+.message-card.mc-sender p {
+    padding: 10px 14px;
+    border-radius: 9px;
+    position: relative;
+    animation: fadeIn 1s ease-in;
+    background: #FFFF00;
+    color: #000 !important;
+    display: block;
+    max-width: 75%;
+    box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+    backdrop-filter: blur( 1.5px );
+}
+
+.message-card.mc-sender p:after {
+    right: 0;
+    border-left-color: #FFFF00;
+    border-right: 0;
+    margin-right: -20px;
+}
+
+.message-card.mc-sender p svg.fa-check-double.seen {
+    color: green;
+}
+
+.message-card.mc-sender p svg.fa-check.fa-w-16.seen {
+    color: #000;
+}
+
+.mc-sender p sub {
+    color: #000;
+}
+
+.message-card p sub{
+    display: inline-block;
+    font-size: 12px;
+}
+.message-card p sub:before {
+    content: '';
+    background: transparent;
+    width: 10px;
+    height: 20px;
+    display: inline-block;
+}
+.mc-sender{
+    direction: rtl;
+}
+.mc-sender p{
+    direction: ltr;
+}
+
+
+.mc-error p{
+    background: rgba(255, 0, 0, 0.27) !important;
+    color: #ff0000 !important;
+}
+.mc-error p sub{
+    color: #ff0000 !important;
+}
+.listView-x,
+.show-listView{
+    display: none;
+}
+.messenger-sendCard{
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+.messenger-sendCard form{
+    width: 100%;
+    display: inline-flex;
+    margin: 0;
+}
+.messenger-sendCard input[type=file]{
+    display: none;
+}
+.messenger-sendCard button,
+.messenger-sendCard button:active,
+.messenger-sendCard button:focus{
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+.messenger-sendCard label{
+    margin: 0;
+}
+.messenger-sendCard svg{
+    margin: 9px 10px;
+    color: #bdcbd6;
+    cursor: pointer;
+    font-size: 21px;
+    transition: transform .15s;
+}
+
+.messenger-sendCard svg {
+    margin: 5px;
+    color: #fff;
+    font-size: 24px;
+    width: 20px !important;
+    margin-top: 12px;
+}
+
+.messenger-sendCard button svg {
+    color: #000 !important;
+    margin-top: 5px;
+    font-size: 20px;
+    width: 20px !important;
+}
+
+.messenger-list-item .lastMessageIndicator {
+    color: #000 !important;
+}
+
+.messenger-list-item.m-list-active .lastMessageIndicator {
+    color: #2C1C1F !important;
+}
+
+.messenger-list-item.m-list-active .activeStatus {
+    border-color: #ccc !important;
+}
+
+.messenger-sendCard svg:active{
+    transform: scale(.9);
+}
+/* .m-send{
+    font-size: 14px;
+    width: 100%;
+    border: none;
+    padding: 10px 0px;
+    outline: none;
+    resize: none;
+    background: transparent;
+    font-family: sans-serif;
+    height: 36px;
+    max-height: 200px;
+} */
+
+.messenger-sendCard {
+    background: #eee;
+    padding: 14px 15px;
+    right: 0;
+    border: 0;
+    width: calc(100% - 30px);
+    padding-bottom: 12px;
+    /* background-color: #7f5a83;
+    background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%); */
+    background: rgba(0,0,0,0.8);
+}
+
+.messenger-sendCard .m-send {
+    border: none;
+    border-radius: 30px;
+    margin: 0 10px;
+    padding: 6px 12px;
+    padding-top: 10px;
+    background: #fff;
+    height: 36px;
+    font-size: 15px;
+    line-height: 1;
+    max-height: 200px;
+    font-family: sans-serif;
+    outline: none;
+    resize: none;
+    width: 100%;
+    color: #333;
+    margin-top: 4px;
+}
+
+.messenger-sendCard .m-send::placeholder {
+    padding: 0;
+}
+
+.attachment-preview{
+    position: relative;
+    padding: 10px;
+}
+.attachment-preview>p{
+    margin: 0;
+    font-weight: 600;
+    padding: 0px;
+    padding-top: 10px;
+}
+.attachment-preview>p>svg{
+    font-size: 16px;
+    margin: 0;
+    margin-bottom: -1px;
+    color: #737373;
+}
+.attachment-preview svg:active{
+    transform: none;
+}
+.image-file{
+    cursor: pointer;
+    width: 140px;
+    height: 70px;
+    border-radius: 4px;
+    background-color: #f7f7f7;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+.attachment-preview>svg:first-child{
+    position: absolute;
+    background: rgba(0, 0, 0, 0.33);
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    border-radius: 100%;
+    font-size: 16px;
+    margin: 0;
+    top: 10px;
+    color: #fff;
+}
+#message-form>button{
+    height: 50px;
+    background: #FFFF00;
+    border: 0;
+    border-radius: 50%;
+    width: 50px;
+    margin-left: 3px;
+    padding: 1px 6px;
+}
+.file-download{
+    font-size: 12px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.03);
+    padding: 2px 8px;
+    margin-top: 10px;
+    border-radius: 20px;
+    transition: transform .3s, background .3s;
+}
+.file-download:hover,
+.file-download:focus{
+    color: #fff;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.08);
+}
+.file-download:active{
+    transform: scale(.95);
+}
+.typing-indicator{
+    display: none;
+}
+.messages{
+    padding: 5px 0px;
+}
+.message-hint{
+    margin: 0;
+    text-align: center;
+}
+.message-hint span{
+    /* background: rgba(154, 161, 170, 0.13); */
+    padding: 3px 10px;
+    border-radius: 20px;
+    color: #000;
+}
+.upload-avatar-details{
+    font-size: 14px;
+    color: #949ba5;
+    display: none;
+}
+.upload-avatar-preview{
+    position: relative;
+    border: 1px solid #e0e0e0;
+    margin: 20px auto;
+}
+.upload-avatar-loading{
+    position: absolute;
+    top: calc(50% - 21px);
+    margin: 0;
+    left: calc(50% - 20px);
+}
+.divider{
+    margin: 15px;
+}
+.update-messengerColor{
+
+}
+.update-messengerColor a{
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+.m-color-active{
+  border: 3px solid rgba(255, 255, 255, 0.5);
+}
+.update-messengerColor a{
+  transition: transform .15s, border .15s;
+}
+.update-messengerColor a:active{
+  transform: scale(.9);
+}
+
+/* .messengerColor-1{
+  background-color: #2196F3;
+}
+.messengerColor-2{
+ background-color: #2180f3;
+}
+.messengerColor-3{
+  background-color: #00BCD4;
+}
+.messengerColor-4{
+  background-color: #3F51B5;
+}
+.messengerColor-5{
+  background-color: #673AB7;
+}
+.messengerColor-6{
+  background-color: #4CAF50;
+}
+.messengerColor-7{
+  background-color: #FFC107;
+}*/
+.messengerColor-8{
+  background-color: #FFFF00;
+} 
+.dark-mode-switch{
+  margin: 0px 5px;
+  cursor: pointer;
+}
+.activeStatus{
+  width: 12px;
+  height: 12px;
+  background: #4CAF50;
+  border-radius: 20px;
+  position: absolute;
+  bottom: 12%;
+  right: 6%;
+  transition: border .10s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+***********************************************
+* App Buttons
+***********************************************
+*/
+.app-btn{
+    cursor: pointer;
+    border: none;
+    padding: 3px 15px;
+    border-radius: 20px;
+    margin: 1px;
+    font-size: 14px;
+    display: inline-block;
+    outline: none;
+    text-decoration: none;
+    transition: all .3s;
+    color: rgb(33, 128, 243);
+}
+.app-btn:hover,
+.app-btn:focus{
+    color: rgb(33, 128, 243);
+    outline: none;
+    text-decoration: none;
+}
+.app-btn:active{
+    transform: scale(.9);
+}
+.a-btn-light{
+    background: #f1f1f1;
+    color: #333;
+}
+.a-btn-light:hover,
+.a-btn-light:focus{
+    color: #333;
+    background: #e4e4e4;
+}
+.a-btn-primary{
+    background: #0976d6;
+    color: #fff;
+}
+.a-btn-primary:hover,
+.a-btn-primary:focus{
+    background: #0085ef;
+    color: #fff;
+}
+.a-btn-warning{
+    background: #FFC107;
+    color: #fff;
+}
+.a-btn-warning:hover,
+.a-btn-warning:focus{
+    background: #ffa726;
+    color: #fff;
+}
+.a-btn-success{
+    background: #3fc380;
+    color: #fff;
+}
+.a-btn-success:hover,
+.a-btn-success:focus{
+    background: #2ecc71;
+    color: #fff;
+}
+.a-btn-danger{
+    background: #ea1909;
+    color: #fff;
+}
+.a-btn-danger:hover,
+.a-btn-danger:focus{
+    color: #fff;
+    background: #b70d00;
+}
+.btn-disabled{
+    opacity: .5;
+}
+/*
+***********************************************
+* App Modal
+***********************************************
+*/
+.app-modal{
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.53);
+    z-index: 2;
+}
+.app-modal-container{
+    position: absolute;
+    top: 20%;
+    width: 100%;
+    padding: 10px;
+}
+.app-modal-card{
+    width: auto;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px 15px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.27);
+    transform: scale(0);
+}
+.app-modal-header{
+    font-weight: 500;
+    font-family: Arial;
+    padding: 10px 0;
+}
+.app-modal-footer{
+    margin-top: 10px;
+}
+.app-show-modal{
+    transform: scale(1);
+    animation: show_modal .15s;
+}
+
+.mode-popup .a-btn-success {
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 0;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    border-radius: 10px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: inline-block;
+    color: #fff;
+    background: #00a651;
+    border-color: #008d45;
+    font-family: Arial;
+}
+
+.mode-popup .app-btn.cancel {
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    border-radius: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: inline-block;
+    color: #303641;
+    background-color: #f0f0f1;
+    border-color: #f0f0f1;
+    margin-right: 10px;
+    font-family: Arial;
+}
+
+.mode-popup .app-btn.cancel:hover, 
+.mode-popup .app-btn.cancel:focus {
+    background-color: #d6d6d8;
+    border-color: #d0d0d3;
+}
+
+/* modal animation */
+@keyframes show_modal{
+    from{
+        transform: scale(0);
+    }to{
+        transform: scale(1);
+    }
+}
+
+
+
+/*
+***********************************************
+* Placeholder loading
+***********************************************
+*/
+.loadingPlaceholder-wrapper {
+  position: relative;
+}
+
+.loadingPlaceholder-body div,
+.loadingPlaceholder-header tr td div {
+  background-repeat: no-repeat;
+  background-size: 800px 104px;
+  height: 104px;
+  position: relative;
+}
+
+.loadingPlaceholder-body div {
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+}
+
+div.loadingPlaceholder-avatar {
+  height: 45px !important;
+  width: 45px;
+  margin: 10px;
+  border-radius: 60px;
+}
+div.loadingPlaceholder-name {
+  height: 15px !important;
+  margin-bottom: 10px;
+  width: 150px;
+  border-radius: 2px;
+}
+
+div.loadingPlaceholder-date {
+  height: 10px !important;
+  width: 106px;
+  border-radius: 2px;
+}
+/*
+***********************************************
+* Image modal box
+***********************************************
+*/
+.imageModal {
+  display: none; 
+  position: fixed; 
+  z-index: 1; 
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.9); 
+}
+.imageModal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+.imageModal-content {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+.imageModal-close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.imageModal-close:hover,
+.imageModal-close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/*
+***********************************************
+* Typing (jumping) dots animation and style
+***********************************************
+*/
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #bcc1c6;
+  display: inline-block;
+  border-radius: 50%;
+  right: 0px;
+  bottom: 0px;
+  position: relative;
+  animation: jump 1s infinite;
+}
+
+.typing-dots .dot-1 {
+  -webkit-animation-delay: 100ms;
+  animation-delay: 100ms;
+}
+
+.typing-dots .dot-2 {
+  -webkit-animation-delay: 200ms;
+  animation-delay: 200ms;
+}
+
+.typing-dots .dot-3 {
+  -webkit-animation-delay: 300ms;
+  animation-delay: 300ms;
+}
+
+@keyframes jump {
+   0%   {bottom: 0px;}
+   20%  {bottom: 5px;}
+   40%  {bottom: 0px;}
+}
+/*
+*****************************************
+* Responsive Design
+*****************************************
+*/
+
+@media (max-width: 1240px) and (min-width: 981px){
+    .messenger {
+        max-width: 95%;
+    }
+
+    .messenger-listView {
+        width: 40%;
+    }
+    
+    .messenger-messagingView {
+        width: 60%;
+    }
+}
+
+@media (max-width: 1060px){
+    .messenger-infoView {
+        position: fixed;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        max-width: 334px;
+        /* background-color: #0cbaba !important;
+        background-image: linear-gradient(315deg, #0cbaba 0%, #380036 74%) !important; */
+    }
+}
+
+@media (max-width: 980px) and (min-width: 681px) {
+    .messenger-listView {
+        display: block !important;
+    }
+
+    .listView-x{
+        display: none;
+    }
+
+    .show-listView{
+        display: none;
+    }
+}
+
+@media (max-width: 980px){
+    .messenger-listView{
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        max-width: 334px;
+    }
+
+    .messenger {
+        display: block;
+        border-radius: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        max-width: 100%;
+    }
+
+    .messenger-listView {
+        width: 100%;
+        border-radius: 0;
+        box-shadow: rgb(0 0 0 / 25%) 0px 54px 55px, rgb(0 0 0 / 12%) 0px -12px 30px, rgb(0 0 0 / 12%) 0px 4px 6px, rgb(0 0 0 / 17%) 0px 12px 13px, rgb(0 0 0 / 9%) 0px -3px 5px;
+    }
+
+    .messenger-messagingView {
+        border-radius: 0;
+        width: calc(100% - 334px);
+        height: 100%;
+        margin-left: 334px;
+    }
+
+    .messenger-sendCard {
+        left: auto;
+        right: 0;
+    }
+
+    .m-header-messaging a.user-name {
+        font-size: 16px;
+    } 
+
+    .messenger-messagingView .m-body {
+        width: 100%;
+    }
+
+    .messages .message-hint {
+        margin-top: 104px !important;
+    }
+
+}
+@media (max-width: 680px){
+    .messenger-messagingView{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+    }
+    .messenger-listView,
+    .messenger-infoView{
+        /* display: none; */
+        width:100%;
+        max-width: unset;
+    }
+    .listView-x{
+        display: none;
+    }
+    .show-listView{
+        display: block;
+    }
+
+    .messenger-messagingView {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .messenger-listView .m-body {
+        margin-top: 184px;
+    }
+
+    .messenger-tab {
+        height: calc(100% - 184px);
+    }
+
+    /* .messenger-listView {
+        background-color: rgb(12, 186, 186);
+        background-image: linear-gradient(315deg, rgb(12, 186, 186) 0%, rgb(56, 0, 54) 74%);
+    } */
+
+    .m-header .show-listView > svg {
+        color: #fff;
+    }
+
+    .ad-call.call-info::after {
+        right: 0;
+        left: 0;
+        top: -6px;
+    }
+
+    .call-info {
+        position: static;
+    }
+
+    .contact-info {
+        position: relative;
+    }
+}
+@media (min-width: 680px){
+    .messenger-listView{
+        display: unset;
+    }
+}
+
+@media (max-width: 479px) {
+    .m-header-messaging {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .m-header-messaging .m-header-right a > svg {
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    .av-s {
+        width: 40px;
+        height: 40px;
+    }
+
+    .m-header .show-listView > svg {
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    .m-header-messaging .m-header-right a > svg {
+        font-size: 16px;
+    }
+
+    .m-header-messaging .m-header-right {
+        margin-top: 8px;
+    }
+
+    .messenger-messagingView .m-body {
+        height: calc(100% - 155px);
+    }
+}
+
+@media (max-width: 350px) {
+    .av-m {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media only screen and (max-width: 700px){
+  .imageModal-content {
+    width: 100%;
+  }
+}
