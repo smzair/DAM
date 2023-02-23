@@ -3,8 +3,9 @@
 Manage Clients
 @endsection
 @section('content')
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 
-<title>Manage Clients</title>
 <style type="text/css">
   .del-data-pop {
         color : #fff;
@@ -27,6 +28,9 @@ Manage Clients
         border-color: #FBF702;
         color: #FBF702;
     }
+    .dropdown-toggle.open-sk:after {
+    transform: rotate(-180deg);
+  }
 </style>
 
 <div class="container-fluid mt-5">
@@ -76,6 +80,11 @@ Manage Clients
             </thead>
             <tbody>
              @foreach($users as $index => $user)
+              @php
+              if($index == 1){
+                // pre($user); dam_enable id
+              }
+              @endphp
              <tr>
               <td width="5%" class="pl-3">{{$index}}</td>
               <td>{{$user->name}}</td>
@@ -92,7 +101,11 @@ Manage Clients
               <td>{{$user->phone}}</td>
               <td>{{$user->Gst_number}}</td>
               <td>
-                <a class="btn btn-warning px-1 py-1 btn-xs mt-1" href="javascript:void(0)" onclick="EditUsers(this)" data-id="{{$user->id}}">Edit</a>
+                <div class="d-inline-block">
+                  <a class="btn btn-warning px-1 py-1 btn-xs mt-1" href="javascript:void(0)" onclick="EditUsers(this)" data-id="{{$user->id}}">Edit</a> &nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <input data-id="{{$user->id}}" type="checkbox"  data-toggle="toggle" data-on="Dam Enable" data-off="Dam Disable" data-onstyle="success" data-offstyle="warning" data-size="sm" data-width="100" class="toggle-class-dam"  {{ $user->dam_enable == 1 ? 'checked' : '' }}>
+                  </div>
               </td>
               <td>{{$user->created_at}} </td>
             </tr>
@@ -305,6 +318,43 @@ Manage Clients
 <script type="application/javascript" src="plugins/sweetalert2/sweetalert2.all.min.js">
 </script>
 
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+<script>
+  $('.sku-box > .sku-count').click(function(){
+    $(this).next('ol').fadeToggle(0);
+    $(this).toggleClass('open-sk');
+  });
+
+
+
+  $('.toggle-class-dam').change(async function() {
+      let dam_enable = $(this).prop('checked') == true ? 1 : 0; 
+      let id = $(this).data('id'); 
+      console.log({dam_enable , id})
+      await $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "{{ url('manage-client-dam')}}",
+        data: {
+          'dam_enable': dam_enable,
+          'id': id,
+          _token: '{{ csrf_token() }}'
+
+        },
+        success: function(data){
+          if(!data){
+            if (dam_enable) {
+              $(this).prop('checked', false);
+            } else {
+              $(this).prop('checked', true);
+            }
+          }
+        }
+    });
+  });
+
+</script>
 
 <script type="text/javascript">
 

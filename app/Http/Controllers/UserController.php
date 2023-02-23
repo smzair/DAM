@@ -491,5 +491,20 @@ public function profileimage(Request $request){
      return view ('profile.index',compact('lastActivity'));
 
 }
+public function manage_client_dam(Request $request){
+    $dam_enable = $request->dam_enable;
+    $id = $request->id;
+    $data = User::where('id',$id)->first();
+    $status = 0;
+    if($data != null){
+        $status = User::where('id', $id)->update(['dam_enable' => $dam_enable]);
+    }
+    echo $status;
+        // DB::table('users')
+        // ->where('id', 1)
+        // ->update(['name' => 'John Doe', 'email' => 'johndoe@example.com']);
+
+}
+
 
 }
