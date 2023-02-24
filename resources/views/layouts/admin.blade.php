@@ -191,6 +191,23 @@
             $dam_enable = $parent_client_data != null ? $parent_client_data['dam_enable']  : 0;
           @endphp
             @if ($dam_enable == 1)
+          <li class="nav-item">
+            <a  class="nav-link" style="cursor:pointer;">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Client User Management
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a href="{{route('clientuser.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client Side Add & Edit Employees </p>
+                </a>
+              </li>
+
               <li class="nav-item">
                 <a  class="nav-link" style="cursor:pointer;">
                   <i class="nav-icon fas fa-users"></i>
@@ -223,6 +240,48 @@
                 </ul>
               </li>
             @endif
+          @endhasanyrole
+
+          @hasanyrole('Client|Sub Client')
+          <li class="nav-header">Sub Client</li>
+          <li class="nav-item">
+            <a  class="nav-link" style="cursor:pointer;">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Your Assets
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a href="{{route('clientUserShootLots')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Shoot Lots </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Creative Lots</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Catalogue Lots</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Editing Lots</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          {{-- @endrole --}}
           @endhasanyrole
 
           @hasanyrole('Commercials|Super Admin')
@@ -1243,15 +1302,12 @@
       <p>Change Password</p>
     </a>
   </li>
+  @endhasanyrole
 
-
-
+  @hasanyrole('Account Management|Editors|Editor TL|Qc|Studio|Admin|Commercials|Inwarding|Super Admin|CW|GD|Cataloguer|Client|Sub Client')
   <li class="nav-item">
-    <a class="nav-link" href="{{ route('logout') }}"
-    onclick="event.preventDefault();
-    document.getElementById('logout-form').submit();">
-    <i class="nav-icon fas fa-sign-out-alt text-danger"></i>
-
+    <a class="nav-link" href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+      <i class="nav-icon fas fa-sign-out-alt text-danger"></i>
     <p>   {{ __('Logout') }} </p>
   </a>
 
@@ -1259,6 +1315,7 @@
     @csrf
   </form>
 </li>
+@endhasanyrole
 </ul>
 </nav>  <!-- /.sidebar-menu -->
 </div>
@@ -1266,7 +1323,6 @@
 </div>
 </div>
 
-@endhasanyrole
 
 
 <div class="os-scrollbar os-scrollbar-horizontal os-scrollbar-unusable os-scrollbar-auto-hidden">
