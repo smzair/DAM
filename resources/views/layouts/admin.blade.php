@@ -185,39 +185,44 @@
           @endrole
 
           @hasanyrole('Client')
-            
-          <li class="nav-item">
-            <a  class="nav-link" style="cursor:pointer;">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Client User Management
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-
+          @php
+            $parent_client_id = Auth::id();//logged in user id 113
+            $parent_client_data  = App\Models\User::where('id',$parent_client_id)->first(['dam_enable']);
+            $dam_enable = $parent_client_data != null ? $parent_client_data['dam_enable']  : 0;
+          @endphp
+            @if ($dam_enable == 1)
               <li class="nav-item">
-                <a href="{{route('clientuser.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Client Side Add & Edit Employees </p>
+                <a  class="nav-link" style="cursor:pointer;">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                    Client User Management
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
                 </a>
+                <ul class="nav nav-treeview">
+    
+                  <li class="nav-item">
+                    <a href="{{route('clientuser.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Client Side Add & Edit Employees </p>
+                    </a>
+                  </li>
+    
+                  <li class="nav-item">
+                    <a href="{{route('permission.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Client Permissions</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{route('role.index')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Client Roles</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-
-              <li class="nav-item">
-                <a href="{{route('permission.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Client Permissions</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('role.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Client Roles</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          {{-- @endrole --}}
+            @endif
           @endhasanyrole
 
           @hasanyrole('Commercials|Super Admin')
