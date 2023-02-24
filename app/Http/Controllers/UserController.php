@@ -11,6 +11,7 @@ use Image;
 use Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\verifyEmail;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -145,6 +146,7 @@ class UserController extends Controller
     public function saveUser(Request $request)
 
     {
+        // dd($request->all());
        $password = ('Odn@2021');
        $user = new User();
 
@@ -169,32 +171,101 @@ class UserController extends Controller
 
    }
 
+    /***parent_client(parent client) will create sub_client( sub client) ***/
    public function saveUserClient(Request $request)
-
     {
-        dd($request->all());
+        $parent_client_id = Auth::id();//logged in user id 113
+        $parent_client_data  = User::where('id',$parent_client_id)->first();
 
-        $client_id = Auth::id();//logged in user id 113
-        $dam_data  = User::where('id',$client_id)->first(['dam_enable']);
-       $password = ('Odn@2021');
-       $user = new User();
+        $role = $request->role;
+        $role_data = DB::table('roles')->where('name',$role)->first(['id']);
+        $role_id = $role_data != null ? $role_data->id : 0; // sub client role id
 
-       $user->name = $request->name;
-       $user->email = $request->email;
-       $user->phone = $request->phone;
-       $user->client_id =$request->client_id;
-       $user->c_short=$request->c_short;
-       $user->Company = $request->company;
-       $user->Address = $request->address;
-       $user->payment_term = $request->payment_term;
-       $user->Gst_number= $request->gst_number;
-       $user->am_email= $request->am_email;
-       $user->password = bcrypt($password);
-       $user->verifyToken= Str::random(40) ;
-       $user->assignRole($request->role);
+        // dd($request->user_module);
 
-       $user->save();
+        $dam_user_module = '';
+        $oms_user_module = '';
 
+        $module_arry = $request->user_module;
+
+        if (in_array("DAM", $module_arry)) {
+            $dam_user_module = "DAM";
+        }
+
+        if (in_array("OMS", $module_arry)) {
+            $oms_user_module = "OMS";
+        }
+
+        $brand_id_array     = $request->brand;
+        $sub_client_name    = $request->name;
+        $sub_client_email   = $request->email;
+        $sub_client_address = $request->address;
+        $sub_client_phone   = $request->phone;
+
+        $check = $parent_client_data  != null;
+
+        $parent_client_dam_enable =     $check ? $parent_client_data['dam_enable'] : 0;
+        $parent_client_am_email   =     $check ? $parent_client_data['am_email'] : 0;
+        $parent_active_status     =     $check ? $parent_client_data['active_status'] : 0;
+        $parent_dark_mode         =     $check ? $parent_client_data['dark_mode'] : 0;
+        $parent_messenger_color   =     $check ? $parent_client_data['messenger_color'] : 0;
+        $parent_avatar            =     $check ? $parent_client_data['avatar'] : 0;
+        $parent_payment_term      =     $check ? $parent_client_data['payment_term'] : 0;
+        $parent_phone_verified    =     $check ? $parent_client_data['phone_verified'] : 0;
+        $parent_Company           =     $check ? $parent_client_data['Company'] : 0;
+        $parent_c_short           =     $check ? $parent_client_data['c_short'] : 0;
+        $parent_location          =     $check ? $parent_client_data['location'] : 0;
+        $parent_Gst_number        =     $check ? $parent_client_data['Gst_number'] : 0;
+        $parent_status            =     $check ? $parent_client_data['status'] : 0;
+        $parent_photo             =     $check ? $parent_client_data['photo'] : 0;
+        $client_id         =     $check ? $parent_client_data['client_id'] : 0;
+
+        // dd(['dam_user_module'=> $dam_user_module, 'oms_user_module'=>$oms_user_module]);
+
+        DB::beginTransaction();
+        try {   
+            // create sub client 
+            $password = 'Odn@2023';
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->Address = $request->address;
+            $user->client_id = $client_id;
+            $user->c_short = $parent_c_short;
+            $user->Company = $parent_Company;
+            $user->payment_term = $parent_payment_term;
+            $user->Gst_number = $parent_Gst_number;
+            $user->am_email = $parent_client_am_email;
+            $user->parent_client_id = $parent_client_id;
+            $user->dam_enable = $dam_user_module != '' ? 1 : 0;
+            $user->oms_enable = $oms_user_module != '' ? 1 : 0;
+            $user->dam_module_name = $dam_user_module != '' ? 'DAM' : '';
+            $user->oms_module_name = $oms_user_module != '' ? 'OMS' : '';
+            $user->password = bcrypt($password);
+            $user->verifyToken = Str::random(40);
+            /** create model has role data **/
+            $user->assignRole($request->role);
+            $user->save();
+
+            foreach($brand_id_array as $key=>$brand){
+                $createBrandUser = new Brands_user();
+                $createBrandUser->user_id = $user->id;
+                $createBrandUser->brand_id = $brand;
+                $createBrandUser->save();
+            }
+
+            $update_user = User::find($user->id);
+            $update_user->oms_enable = $oms_user_module != '' ? '1' : '0';
+            $update_user->dam_enable = $dam_user_module != '' ? '1' : '0';
+            $update_user->update();
+
+            DB::commit();
+            // all good
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+        }
 
        return response()->json('ok',200);
 

@@ -97,7 +97,7 @@ Add & Edit Users
                     <select class="custom-select" name="role" id="role-selc">
                       {{-- @foreach($roles as $role) --}}
                       {{-- <option>{{$role->name}}</option> --}}
-                      <option>Client</option>
+                      <option>Sub Client</option>
                       {{-- @endforeach --}}
                     </select>
                       <p class="error"></p>
@@ -105,7 +105,7 @@ Add & Edit Users
                   {{-- Module Selection --}}
                   <div class="form-group">
                     <label class="control-label required" >Select Module</label>
-                    <select class="custom-select" name="user_module" id="user_module">
+                    <select multiple class="custom-select" name="user_module[]" id="user_module">
                       <option value="DAM">DAM</option>
                       <option value="OMS">OMS</option>
                     </select>
