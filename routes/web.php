@@ -502,13 +502,10 @@ Route::get('Editing-submission-done', [EditingSubmissionController::class, 'Edit
 Route::get('Editing-Wrc-client-ar', [EditingClientARController::class, 'index'])->name('EditingClientARList'); // Editing Wrc List for client Approval & Rejection
 Route::post('Editing-client-wrc-AR', [EditingClientARController::class, 'Editing_reject_approve_wrc'])->name('Editing_reject_approve_wrc'); // Editing Wrc client Approval or Rejection
 
-<<<<<<< Updated upstream
 // *** New routes  *** //
 Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
 
-=======
 // dam (Digital Asset Management) Routing
 Route::get('/client-user', [UserController::class, 'clientIndex'])->name('clientuser.index');
 Route::post('/save-client-users', [UserController::class, 'saveUserClient']);
 Route::get('/client-user-validation', [UserController::class, 'clientUserValid']);
->>>>>>> Stashed changes
