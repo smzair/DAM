@@ -29,4 +29,8 @@ class Brands_user extends Model
         return  $result->get(); 
 
     }
+
+    public function getBrandName(){
+		return $this->hasOne('App\Models\Brands','id','brand_id');
+	}
 }

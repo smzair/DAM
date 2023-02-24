@@ -505,3 +505,7 @@ Route::post('Editing-client-wrc-AR', [EditingClientARController::class, 'Editing
 // *** New routes  *** //
 Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
 
+// dam (Digital Asset Management) Routing
+Route::get('/client-user', [UserController::class, 'clientIndex'])->name('clientuser.index');
+Route::post('/save-client-users', [UserController::class, 'saveUserClient']);
+Route::get('/client-user-validation', [UserController::class, 'clientUserValid']);
