@@ -151,7 +151,6 @@
             </li>
       
           @role('Super Admin')
-            
           <li class="nav-item">
             <a  class="nav-link" style="cursor:pointer;">
               <i class="nav-icon fas fa-users"></i>
@@ -184,6 +183,43 @@
             </ul>
           </li>
           @endrole
+
+          @hasanyrole('Client')
+            
+          <li class="nav-item">
+            <a  class="nav-link" style="cursor:pointer;">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Client User Management
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a href="{{route('clientuser.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client Side Add & Edit Employees </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('permission.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client Permissions</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('role.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client Roles</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          {{-- @endrole --}}
+          @endhasanyrole
+
           @hasanyrole('Commercials|Super Admin')
 
           <li class="nav-header"><b>Commercials Panel</b></li>

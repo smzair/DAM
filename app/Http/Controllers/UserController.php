@@ -35,6 +35,28 @@ class UserController extends Controller
         return view('user.index',compact('users','roles'));
 
     }
+
+    //Get all chilled clients based on the logged in client ID 
+    public function clientIndex(Request $request)
+    {
+        $client_id = Auth::id();//logged in user id 113
+        $dam_data  = User::where('id',$client_id)->first(['dam_enable']);
+        $dam_enable = $dam_data != null ? $dam_data['dam_enable'] : 0;// if 1 then add user and if 0 then add user button will disable
+
+        // dd($dam_enable);
+
+        $brands = brands_user::where('user_id',$client_id)->with('getBrandName:id,name')->get();
+        $users= User::
+        // whereHas('roles', function ($query) {
+        //     return $query->where('name','!=', 'Client');
+        // })->
+        where('parent_client_id',$client_id)
+        ->latest()->paginate(10);
+
+        $roles= Role::latest()->get();
+        return view('user.indexforclient',compact('users','roles','brands','dam_enable'));
+
+    }
     
     public function editC(Request $request)
     {
@@ -73,6 +95,20 @@ class UserController extends Controller
         if(!empty($client_idData)){
             $responseData['client_id'] = true;
         }
+        $emailData = User::where(['email' => $email])->first();
+        if(!empty($emailData)){
+            $responseData['email'] = true;
+        }
+        return response() ->json($responseData , 200);
+    }
+
+    public function clientUserValid(Request $request)
+    {
+        $responseData = array('email' => false,);
+        
+        $email=$request->email;
+
+        
         $emailData = User::where(['email' => $email])->first();
         if(!empty($emailData)){
             $responseData['email'] = true;
@@ -132,6 +168,37 @@ class UserController extends Controller
        return response()->json('ok',200);
 
    }
+
+   public function saveUserClient(Request $request)
+
+    {
+        dd($request->all());
+
+        $client_id = Auth::id();//logged in user id 113
+        $dam_data  = User::where('id',$client_id)->first(['dam_enable']);
+       $password = ('Odn@2021');
+       $user = new User();
+
+       $user->name = $request->name;
+       $user->email = $request->email;
+       $user->phone = $request->phone;
+       $user->client_id =$request->client_id;
+       $user->c_short=$request->c_short;
+       $user->Company = $request->company;
+       $user->Address = $request->address;
+       $user->payment_term = $request->payment_term;
+       $user->Gst_number= $request->gst_number;
+       $user->am_email= $request->am_email;
+       $user->password = bcrypt($password);
+       $user->verifyToken= Str::random(40) ;
+       $user->assignRole($request->role);
+
+       $user->save();
+
+
+       return response()->json('ok',200);
+
+    }
 
    public function manage(Request $request){
 
