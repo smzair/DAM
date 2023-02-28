@@ -29,21 +29,21 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $users = User::get()->count();
+        $lots = Lots::get()->count();
+        $raw = uploadraw::get()->count();
+        $skus = Skus::get()->count();
 
-   
-$users = User::get()->count();
-$lots = Lots::get()->count();
-$raw = uploadraw::get()->count();
-$skus = Skus::get()->count();
-
-                $user = Auth::user();
-                
-                if ($user->roles->pluck( 'name' )->contains( 'Flipkart' )) {
-                   return view('clients.home',compact('user'));
-                }
-                
-                       return view('home',compact('users','lots','raw','skus'));
-
+        $user = Auth::user();
+        if ($user->roles->pluck( 'name' )->contains( 'Flipkart' )) {
+            return view('clients.home',compact('user'));
+        }
+        $user_role = $user->roles->pluck('name');
+        if($user->roles->pluck( 'name' )->contains( 'Client' ) || $user->roles->pluck( 'name' )->contains( 'Sub Client' )){
+            return view('clients.ClientDashboard');
+        }
+        
+        return view('home',compact('users','lots','raw','skus'));
         
     }
     public function test1()

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="13" height="13" viewBox="0 0 13 13">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_2645" data-name="Rectangle 2645" width="13" height="13" transform="translate(-0.319 -0.431)" fill="#7f7faa"/>
+    </clipPath>
+  </defs>
+  <g id="verify" transform="translate(0.319 0.431)" clip-path="url(#clip-path)">
+    <g id="Layer_2" data-name="Layer 2" transform="translate(-0.027 -0.027)">
+      <g id="Stickers">
+        <g id="Sticker">
+          <path id="Path_2028" data-name="Path 2028" d="M11.872,6.152a1.793,1.793,0,0,0-.767-2.86A1.793,1.793,0,0,0,9.012,1.2,1.793,1.793,0,0,0,6.152.433a1.793,1.793,0,0,0-2.86.767A1.793,1.793,0,0,0,1.2,3.293a1.793,1.793,0,0,0-.767,2.86A1.793,1.793,0,0,0,1.2,9.012a1.793,1.793,0,0,0,2.094,2.093,1.793,1.793,0,0,0,2.86.766A1.793,1.793,0,0,0,9.012,11.1a1.793,1.793,0,0,0,2.093-2.093,1.793,1.793,0,0,0,.766-2.86Z" transform="translate(-0.001 0)" fill="#2186ea"/>
+          <path id="Path_2029" data-name="Path 2029" d="M7.113,11.114,5.286,9.288a.264.264,0,0,1,0-.373l.324-.324a.264.264,0,0,1,.373,0L7.09,9.7a.264.264,0,0,0,.38-.006l2.8-2.972a.264.264,0,0,1,.373-.011l.333.314a.264.264,0,0,1,.011.373L7.491,11.108a.265.265,0,0,1-.378.006Z" transform="translate(-2.005 -2.554)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

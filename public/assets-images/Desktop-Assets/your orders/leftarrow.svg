@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="72" height="72" viewBox="0 0 72 72">
+  <defs>
+    <clipPath id="clip-path">
+      <circle id="Ellipse_2" data-name="Ellipse 2" cx="24" cy="24" r="24" transform="translate(-0.316 -0.316)" fill="#bdbde0"/>
+    </clipPath>
+  </defs>
+  <g id="left_arrow_-_slider" data-name="left arrow - slider" transform="translate(-183.216 -3206.216)">
+    <g id="Ellipse_1" data-name="Ellipse 1" transform="translate(183.216 3206.216)" fill="none" stroke="#bdbde0" stroke-width="2">
+      <circle cx="36" cy="36" r="36" stroke="none"/>
+      <circle cx="36" cy="36" r="35" fill="none"/>
+    </g>
+    <g id="Mask_Group_1" data-name="Mask Group 1" transform="translate(195.532 3218.533)" clip-path="url(#clip-path)">
+      <g id="navigate_next_black_24dp" transform="translate(0.389 0.388)">
+        <path id="Path_4" data-name="Path 4" d="M46.591,0H0V46.591H46.591Z" fill="none"/>
+        <path id="Path_5" data-name="Path 5" d="M18.105,4.5l2.737,2.737-8.891,8.91,8.891,8.91L18.105,27.8,6.458,16.148Z" transform="translate(9.034 7.148)" fill="#bdbde0"/>
+      </g>
+    </g>
+  </g>
+</svg>

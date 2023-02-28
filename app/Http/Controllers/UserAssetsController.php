@@ -30,7 +30,7 @@ class UserAssetsController extends Controller
         }
         $lots = $lots_query->where('user_id', $parent_client_id);
         $lots = $lots_query->get();
-        return view('ClientAssets.client-user-shoot-lots', compact('lots'));
+        return view('clients.ClientAssets.client-user-shoot-lots', compact('lots'));
     }
 
     // Creative Lots 
@@ -57,7 +57,7 @@ class UserAssetsController extends Controller
         }
         $lots = $lots_query->where('user_id', $parent_client_id);
         $lots = $lots_query->get();
-        return view('ClientAssets.client-user-creative-lots', compact('lots'));
+        return view('clients.ClientAssets.client-user-creative-lots', compact('lots'));
     }
 
     // Cataloging Lots
