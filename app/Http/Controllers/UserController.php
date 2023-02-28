@@ -40,7 +40,7 @@ class UserController extends Controller
     //Get all chilled clients based on the logged in client ID 
     public function clientIndex(Request $request)
     {
-        $client_id = Auth::id();//logged in user id 113
+        $client_id = Auth::id();//logged in user id 103
         $dam_data  = User::where('id',$client_id)->first(['dam_enable']);
         $dam_enable = $dam_data != null ? $dam_data['dam_enable'] : 0;// if 1 then add user and if 0 then add user button will disable
 

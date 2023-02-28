@@ -19,6 +19,8 @@ use App\Http\Controllers\CatalogWrcController;
 use App\Http\Controllers\CatlaogQcController;
 use App\Http\Controllers\CatalogInvoiceController;
 use App\Http\Controllers\CatalogWrcMasterSheetController;
+use App\Http\Controllers\ClientDashboardController;
+use App\Http\Controllers\clientFileManager;
 use App\Http\Controllers\ConsolidatedLotController;
 use App\Http\Controllers\CreativeQcController;
 use App\Http\Controllers\creativeWrc;
@@ -516,4 +518,11 @@ Route::get('/client-user-shoot-lots', [UserAssetsController::class, 'clientUserS
 Route::get('/client-user-Creative-lots', [UserAssetsController::class, 'clientUserCreativeLots'])->name('clientUserCreativeLots');
 Route::get('/client-user-Cataloging-lots', [UserAssetsController::class, 'clientUserCatalogingLots'])->name('clientUserCatalogingLots');
 Route::get('/client-user-Editing-lots', [UserAssetsController::class, 'clientUserEditingLots'])->name('clientUserEditingLots');
+
+/******File Manager routing*******/
+Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImages'])->name('clientRawImagesMgmt');// client raw images mgmt (shoor images)
+Route::get('/client-editor-images-mgmt', [clientFileManager::class, 'clientEditorImages'])->name('clientEditorImagesMgmt');// client editor images mgmt
+
+/**routes for client dashboard view**/
+Route::get('/clients/dashboard', [ClientDashboardController::class, 'index'])->name('clients.dashboard');
 
