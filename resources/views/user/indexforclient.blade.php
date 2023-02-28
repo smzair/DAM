@@ -59,7 +59,7 @@ Add & Edit Users
               <tbody>
               	@foreach($users as $index => $user)
                 <tr>
-                  <td width="5%" class="pl-3">{{$index}} </td>
+                  <td width="5%" class="pl-3">{{$index+1}} </td>
                   <td>{{$user->name}} </td>
                   <td> @foreach ($user->roles as $role) {{ $role->name }} @endforeach</td>
                   
@@ -144,7 +144,7 @@ Add & Edit Users
                     <p class="error"></p> 
                   </div>
                 </form>
-                 <p>Default Password : Odn@2021</p>
+                 <p>Default Password : Odn@2023</p>
               </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close </button>

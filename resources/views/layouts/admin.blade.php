@@ -263,6 +263,33 @@
               </li>
             </ul>
           </li>
+          
+          <li class="nav-item">
+            <a  class="nav-link" style="cursor:pointer;">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                File Manager
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              {{-- shoot images (raw images) mgmt--}}
+              <li class="nav-item">
+                <a href="{{route('clientRawImagesMgmt')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Raw Images</p>
+                </a>
+              </li>
+              {{-- editor images mgmt--}}
+              <li class="nav-item">
+                <a href="{{route('clientEditorImagesMgmt')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Editor Images</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           {{-- @endrole --}}
           @endhasanyrole
 
