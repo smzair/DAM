@@ -30,7 +30,7 @@ use App\Http\Controllers\EditingWrcController;
 use App\Http\Controllers\editorLotController;
 use App\Http\Controllers\EditorsCommercialController;
 use App\Http\Controllers\NewCommercial;
-use App\Http\Controllers\SubUserController;
+use App\Http\Controllers\UserAssetsController;
 use App\Http\Controllers\WrcInvoiceNumber;
 use Illuminate\Support\Facades\Auth;
 
@@ -512,5 +512,8 @@ Route::post('/save-client-users', [UserController::class, 'saveUserClient']);
 Route::get('/client-user-validation', [UserController::class, 'clientUserValid']);
 
 // client User Your assets Routes
-Route::get('/client-user-shoot-lots', [SubUserController::class, 'clientUserShootLots'])->name('clientUserShootLots');
+Route::get('/client-user-shoot-lots', [UserAssetsController::class, 'clientUserShootLots'])->name('clientUserShootLots');
+Route::get('/client-user-Creative-lots', [UserAssetsController::class, 'clientUserCreativeLots'])->name('clientUserCreativeLots');
+Route::get('/client-user-Cataloging-lots', [UserAssetsController::class, 'clientUserCatalogingLots'])->name('clientUserCatalogingLots');
+Route::get('/client-user-Editing-lots', [UserAssetsController::class, 'clientUserEditingLots'])->name('clientUserEditingLots');
 

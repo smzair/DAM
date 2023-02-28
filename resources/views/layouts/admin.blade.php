@@ -244,19 +244,19 @@
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('clientUserCreativeLots')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Creative Lots</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('clientUserCatalogingLots')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Catalogue Lots</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('clientUserEditingLots')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Editing Lots</p>
                 </a>

@@ -837,3 +837,14 @@ if(!function_exists('get_date_time')){
         return $mainDuration =  $hours . 'h ' . $minutes . 'min ' . $second.'sec';
     }
 }
+
+if (!function_exists('getUsersRole')) {
+
+    function getUsersRole($id)
+    {
+        $users = DB::table('model_has_roles')
+        ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
+        ->where([['model_has_roles.model_id', '=', $id]])->get(['roles.name as role_name' , 'model_has_roles.role_id'])->first();
+        return $users;
+    }
+}
