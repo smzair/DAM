@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="78" height="78" viewBox="0 0 78 78">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_2701" data-name="Rectangle 2701" width="78" height="78" transform="translate(786 218)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_86" data-name="Mask Group 86" transform="translate(-786 -218)" clip-path="url(#clip-path)">
+    <g id="__TEMP__SVG__" transform="translate(780.792 212.417)">
+      <g id="Group_5262" data-name="Group 5262">
+        <path id="Path_2092" data-name="Path 2092" d="M72.758,10.012A4.715,4.715,0,1,1,67.848,5.59a4.66,4.66,0,0,1,4.911,4.422Z"/>
+      </g>
+      <g id="Group_5264" data-name="Group 5264">
+        <g id="Group_5263" data-name="Group 5263">
+          <path id="Path_2093" data-name="Path 2093" d="M45.254,64.482c-12.519,0-23.521-4.491-29.213-11.128a31.142,31.142,0,0,0,58.418,0c-5.674,6.634-16.634,11.128-29.21,11.128Z"/>
+        </g>
+      </g>
+      <g id="Group_5266" data-name="Group 5266">
+        <g id="Group_5265" data-name="Group 5265">
+          <path id="Path_2094" data-name="Path 2094" d="M45.254,21.339c12.517,0,23.521,4.491,29.208,11.128a31.142,31.142,0,0,0-58.418,0C21.735,25.82,32.68,21.339,45.257,21.339Z"/>
+        </g>
+      </g>
+      <g id="Group_5268" data-name="Group 5268">
+        <g id="Group_5267" data-name="Group 5267">
+          <path id="Path_2095" data-name="Path 2095" d="M28.02,77.393a5.883,5.883,0,1,1-.565-2.227A5.883,5.883,0,0,1,28.02,77.393Z"/>
+        </g>
+      </g>
+      <g id="Group_5270" data-name="Group 5270">
+        <g id="Group_5269" data-name="Group 5269">
+          <path id="Path_2096" data-name="Path 2096" d="M17.465,19.826a3.42,3.42,0,1,1,3.326-3.559,3.465,3.465,0,0,1-3.326,3.559Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

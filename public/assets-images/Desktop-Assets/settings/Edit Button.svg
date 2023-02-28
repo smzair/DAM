@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <g id="Edit_Button" data-name="Edit Button" transform="translate(0.435 0.528)">
+    <circle id="Ellipse_9" data-name="Ellipse 9" cx="8" cy="8" r="8" transform="translate(-0.435 -0.528)" fill="#ff6961"/>
+    <path id="Icon_awesome-edit" data-name="Icon awesome-edit" d="M7.757,1.053,8.892,2.189a.123.123,0,0,1,0,.174L6.143,5.112l-1.168.13A.245.245,0,0,1,4.7,4.971L4.833,3.8,7.583,1.053A.123.123,0,0,1,7.757,1.053ZM9.8.765,9.182.151a.492.492,0,0,0-.695,0L8.041.6a.123.123,0,0,0,0,.174L9.177,1.905a.123.123,0,0,0,.174,0L9.8,1.46a.492.492,0,0,0,0-.695Z" transform="translate(0.21 4.645)" fill="#fff"/>
+  </g>
+</svg>
