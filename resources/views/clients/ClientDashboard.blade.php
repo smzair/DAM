@@ -19,7 +19,7 @@
 				<img src="{{ asset('assets-images\Mob-Assets\images\line_img.png')}}" alt="Mobile Trigger">
 			</div>
 			<div class="welcome-user-title">
-				<h4>Hello, Kishanramchari shrikant</h4>
+				<h4>Hello, Rajesh</h4>
 			</div>
 		</div>
 	</nav>

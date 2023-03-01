@@ -520,9 +520,20 @@ Route::get('/client-user-Cataloging-lots', [UserAssetsController::class, 'client
 Route::get('/client-user-Editing-lots', [UserAssetsController::class, 'clientUserEditingLots'])->name('clientUserEditingLots');
 
 /******File Manager routing*******/
-Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImages'])->name('clientRawImagesMgmt');// client raw images mgmt (shoor images)
+Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImages'])->name('clientRawImagesMgmt');// client raw images mgmt ( images)
+
+
+// get wrc based on lot
+Route::get('/client-raw-images-mgmt/{id}', [clientFileManager::class, 'getWrcForClientRawImages'])->name('client-raw-images-mgmt');// client raw images mgmt ( images)
+
+// get skus based on wrc id
+Route::get('client-raw-images-mgmt/client-raw-images-skus/{id}', [clientFileManager::class, 'getSkusForClientRawImages'])->name('client-raw-images-skus');// client raw images mgmt ( images)
+
+
+// get all images based on sku id
+Route::get('client-raw-images-mgmt/client-raw-images-skus/client-raw-images-skus/{id}', [clientFileManager::class, 'getClientUploadRawImages'])->name('client-all-images');// client raw images mgmt ( images)
+
+
 Route::get('/client-editor-images-mgmt', [clientFileManager::class, 'clientEditorImages'])->name('clientEditorImagesMgmt');// client editor images mgmt
 
-/**routes for client dashboard view**/
-Route::get('/clients/dashboard', [ClientDashboardController::class, 'index'])->name('clients.dashboard');
 

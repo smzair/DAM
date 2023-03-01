@@ -165,6 +165,48 @@
                                 <span class="menu-text">Editing Lots</span>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a  class="nav-link" style="cursor:pointer;">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    File Manager
+                                  <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-menu-list-item">
+                            <a href="{{route('clientRawImagesMgmt')}}" class="sidebar-menu-list-link">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
+                                        viewBox="0 0 16 20">
+                                        <path id="__TEMP__SVG__"
+                                            d="M5,20H19a1,1,0,0,1,0,2H5a1,1,0,0,1,0-2ZM4,15,14,5l3,3L7,18H4ZM15,4l2-2,3,3L18,7Z"
+                                            transform="translate(-4 -2)" fill="#7f7faa" fill-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <span class="menu-text">
+                                   Raw Images
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-menu-list-item">
+                            <a href="{{route('clientEditorImagesMgmt')}}" class="sidebar-menu-list-link">
+                                <span class="menu-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
+                                        viewBox="0 0 16 20">
+                                        <path id="__TEMP__SVG__"
+                                            d="M5,20H19a1,1,0,0,1,0,2H5a1,1,0,0,1,0-2ZM4,15,14,5l3,3L7,18H4ZM15,4l2-2,3,3L18,7Z"
+                                            transform="translate(-4 -2)" fill="#7f7faa" fill-rule="evenodd" />
+                                    </svg>
+                                </span>
+                                <span class="menu-text">
+                                   Editing Images
+                                </span>
+                            </a>
+                        </li>
                         {{-- <li class="sidebar-menu-list-item">
                             <a href="allorders.html" class="sidebar-menu-list-link">
                                 <span class="menu-icon">
