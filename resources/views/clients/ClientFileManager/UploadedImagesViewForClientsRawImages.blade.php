@@ -80,34 +80,36 @@
                             </div>
                             <div class="row">
                                 @foreach($file_data as $object)
-                                    <div class="col-md-2">
-                                        <div class=" justify-content-between align-content-center">
-                                            <div class="text-center">
-                                                <a ondblclick="navigateToLink('client-all-images/{{$object->id}}')">
-                                                    <img style="cursor: pointer" class=" justify-content-between align-content-center" src="https://img.icons8.com/color/100/000000/document.png" width="100" height="150" />
-
-                                                    @php
-                                                        $img_created_at = $object->created_at;
-                                                        $wrc_created_at  = $object->wrc_created_at;
-                                                        $file_name  = $object->filename;
-                                                        $wrc_no  = $object->wrc_id;
-                                                        $lot_no  = $object->lot_id;
-                                                        $year = date('Y',strtotime($wrc_created_at));
-                                                        $month = date('M',strtotime($wrc_created_at));
-                                                        echo $url_path = "<br>raw_img_directory/$year/$month/";
-                                                    @endphp
-
-                                                    {{-- <img style="cursor: pointer" class=" justify-content-between align-content-center" src="{{asset('raw_img_directory/'.$current_year.'/Feb/ODN10022023-TUTCES3907/TUTCES3907-A/8720107149960/8720107149960_10.jpg')}}" width="100" height="150"/> --}}
-                                                
-                                                </a>
-                                                <div class="about">
-                                                    <span>{{ $object->filename }}</span>
+                                    @php
+                                        $img_created_at = $object->created_at;
+                                        $wrc_created_at  = $object->wrc_created_at;
+                                        $file_name  = $object->filename;
+                                        $wrc_no  = $object->wrc_id;
+                                        $lot_no  = $object->lot_id;
+                                        $year = date('Y',strtotime($wrc_created_at));
+                                        $month = date('M',strtotime($wrc_created_at));
+                                        $sku_code = $object->sku_code;
+                                        $sourcePath =  "raw_img_directory/".  $year . "/" . $month . "/" . $lot_no . "/" . $wrc_no . "/" . $sku_code."/".$file_name;
+                                        // echo $file_name;
+                                        // Check if the file exists
+                                        $file_exists = file_exists(public_path($sourcePath));
+                                    @endphp
+                            
+                                    @if ($file_exists)
+                                        <div class="col-md-2">
+                                            <div class="justify-content-between align-content-center">
+                                                <div class="text-center">
+                                                    <a ondblclick="navigateToLink('client-all-images/{{$object->id}}')">
+                                                        <img style="cursor: pointer" class="justify-content-between align-content-center" src="{{asset($sourcePath)}}" width="100" height="150"/>
+                                                        <span>{{ $object->filename }}</span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 @endforeach
                             </div>
+                            
                         </div>
                     </div>
                 </div>

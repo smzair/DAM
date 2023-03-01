@@ -520,18 +520,22 @@ Route::get('/client-user-Cataloging-lots', [UserAssetsController::class, 'client
 Route::get('/client-user-Editing-lots', [UserAssetsController::class, 'clientUserEditingLots'])->name('clientUserEditingLots');
 
 /******File Manager routing*******/
-Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImages'])->name('clientRawImagesMgmt');// client raw images mgmt ( images)
+Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImagesYear'])->name('clientRawImagesMgmt');// client raw images mgmt ( images)
 
+Route::get('/months/lots/{id}', [clientFileManager::class, 'clientRawImages'])->name('clientRawImages');// client raw images mgmt ( images)
 
 // get wrc based on lot
-Route::get('/client-raw-images-mgmt/{id}', [clientFileManager::class, 'getWrcForClientRawImages'])->name('client-raw-images-mgmt');// client raw images mgmt ( images)
+Route::get('/months/lots/wrc/{id}', [clientFileManager::class, 'getWrcForClientRawImages'])->name('client-raw-images-mgmt');// client raw images mgmt ( images)
 
 // get skus based on wrc id
-Route::get('client-raw-images-mgmt/client-raw-images-skus/{id}', [clientFileManager::class, 'getSkusForClientRawImages'])->name('client-raw-images-skus');// client raw images mgmt ( images)
+Route::get('/months/lots/wrc/skus/{id}', [clientFileManager::class, 'getSkusForClientRawImages'])->name('client-raw-images-skus');// client raw images mgmt ( images)
 
 
 // get all images based on sku id
-Route::get('client-raw-images-mgmt/client-raw-images-skus/client-raw-images-skus/{id}', [clientFileManager::class, 'getClientUploadRawImages'])->name('client-all-images');// client raw images mgmt ( images)
+Route::get('/months/lots/wrc/skus/skusimages/{id}', [clientFileManager::class, 'getClientUploadRawImages'])->name('client-all-images');// client raw images mgmt ( images)
+
+// get client raw images months based on year
+Route::get('/months/{id}', [clientFileManager::class, 'getAllMonthsForClientRawImages'])->name('months');
 
 
 Route::get('/client-editor-images-mgmt', [clientFileManager::class, 'clientEditorImages'])->name('clientEditorImagesMgmt');// client editor images mgmt

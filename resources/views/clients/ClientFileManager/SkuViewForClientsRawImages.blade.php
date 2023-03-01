@@ -75,7 +75,7 @@
                                     <div class="col-md-2">
                                         <div class=" justify-content-between align-content-center">
                                             <div class="text-center">
-                                                <a ondblclick="navigateToLink('client-raw-images-skus/{{$object->id}}')"><img style="cursor: pointer" class=" justify-content-between align-content-center" src="https://img.icons8.com/color/100/000000/folder-invoices.png" width="50" /></a>
+                                                <a ondblclick="navigateToLink('skusimages/{{$object->id}}')"><img style="cursor: pointer" class=" justify-content-between align-content-center" src="https://img.icons8.com/color/100/000000/folder-invoices.png" width="50" /></a>
                                                 <div class="about">
                                                     <span>{{ $object->sku_code }}</span>
                                                 </div>

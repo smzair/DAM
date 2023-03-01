@@ -5,55 +5,59 @@ namespace App\Http\Controllers;
 use App\Models\Skus;
 use App\Models\uploadraw;
 use App\Models\Wrc;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class clientFileManager extends Controller
 {
-    public function clientRawImages(Request $request){
+    public function clientRawImages(Request $request, $id){
+
+        $dateString = $id;// date in format ex:- Oct-2022
+        $date = DateTime::createFromFormat('M-Y', $dateString);
+        $formattedDate = $date->format('m-Y');
+
+        list($month, $year) = explode("-", $formattedDate);// get month and date
+         $month; // Output: Three letters of month
+         $year; // Output: no of year ex:- 2023
 
         $logged_in_user_id = Auth::id();
 
         $lotData = DB::table('users')
-        ->where('users.id', $logged_in_user_id)
-        ->where('users.dam_enable', '1')
-        ->join('brands_user', 'brands_user.user_id', 'users.id')
-        ->join('brands', 'brands.id', 'brands_user.brand_id')
-        ->join('lots', function($join) {
-            $join->on('lots.user_id', '=', 'brands_user.user_id');
-            $join->on('lots.brand_id', '=', 'brands_user.brand_id');
+            ->where('users.id', $logged_in_user_id)
+            ->where('users.dam_enable', '1')
+            ->join('brands_user', 'brands_user.user_id', 'users.id')
+            ->join('brands', 'brands.id', 'brands_user.brand_id')
+            ->join('lots', function($join) use ($month, $year) {
+                $join->on('lots.user_id', '=', 'brands_user.user_id')
+                    ->on('lots.brand_id', '=', 'brands_user.brand_id')
+                    ->whereMonth('lots.created_at', '=', $month)
+                    ->whereYear('lots.created_at', '=', $year);
         })->select('lots.*')->get();
-
-        /*$resData = DB::table('users')
-                ->where('users.id', $logged_in_user_id)
-                ->where('users.dam_enable', '1')
-                ->join('brands_user', 'brands_user.user_id', 'users.id')
-                ->join('brands', 'brands.id', 'brands_user.brand_id')
-                ->join('lots', function($join) {
-                    $join->on('lots.user_id', '=', 'brands_user.user_id');
-                    $join->on('lots.brand_id', '=', 'brands_user.brand_id');
-                })
-                ->join('wrc', function($join) {
-                    $join->on('wrc.lot_id', '=', 'lots.id');
-                    $join->on('wrc.user_id', '=', 'brands_user.user_id');
-                })
-                ->join('sku', function($join) {
-                    $join->on('sku.wrc_id', '=', 'wrc.id');
-                    $join->on('sku.user_id', '=', 'brands_user.user_id');
-                    $join->on('sku.lot_id', '=', 'lots.id');
-                })
-                ->join('uploadraw', 'uploadraw.sku_id', 'sku.id')
-                ->select(
-                    'uploadraw.*',
-                    'lots.lot_id',
-                    'wrc.wrc_id'
-                )
-                ->get();*/
-                           
-        // dd($lotData);
-
         return view('clients.ClientFileManager.clientsRawImages',compact('lotData'));
+    }
+
+    public function clientRawImagesYear(Request $request){
+        $logged_in_user_id = Auth::id();
+        // get all created year of upload raw images
+        $all_years = uploadraw::select(DB::raw('YEAR(created_at) as year'))
+                    ->orderBy('created_at', 'DESC')
+                    ->groupBy('year')
+                    ->get();
+        // dd($all_years);   
+        return view('clients.ClientFileManager.clientsRawImagesYears',compact('all_years'));
+    }
+
+    public function getAllMonthsForClientRawImages(Request $request, $id){
+        $year = $id;
+
+        $monthly_data = uploadraw::select(DB::raw('DATE_FORMAT(created_at, "%b") as month'), DB::raw('COUNT(*) as total'))
+            ->whereYear('created_at', '=', $year)
+            ->groupBy(DB::raw('DATE_FORMAT(created_at, "%b")'))
+            ->orderBy(DB::raw('MONTH(created_at)'), 'ASC')
+            ->get();
+        return view('clients.ClientFileManager.clientsRawImagesMonths',compact('monthly_data','year'));
     }
 
     //get wrc based on lot id
@@ -91,7 +95,8 @@ class clientFileManager extends Controller
             'uploadraw.*',
             'wrc.wrc_id',
             'wrc.created_at as wrc_created_at',
-            'lots.lot_id'
+            'lots.lot_id',
+            'sku.sku_code'
         )
         ->get();
         // dd($file_data);
