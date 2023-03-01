@@ -62,27 +62,23 @@
 	<!-- /.navbar -->
 	<!-- Main content -->
 
-    
-
-
-
-	<div class="content custom-dashboard-content">
+    <div class="content custom-dashboard-content">
 		<div class="container-fluid">
             <div class="card-body table-responsive p-0"  style="max-height: 700px; height: 100%;">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card card-transparent card-info mt-3">
                             <div class="card-header">
-                                <h6 class="card-title">All Lots</h6>
+                                <h6 class="card-title">All Years</h6>
                             </div>
                             <div class="row">
-                                @foreach($lotData as $object)
+                                @foreach($all_years as $object)
                                     <div class="col-md-2">
                                         <div class=" justify-content-between align-content-center">
                                             <div class="text-center">
-                                                <a ondblclick="navigateToLink('wrc/{{$object->id}}')"><img style="cursor: pointer" class=" justify-content-between align-content-center" src="https://img.icons8.com/color/100/000000/folder-invoices.png" width="50" /></a>
+                                                <a ondblclick="navigateToLink('months/{{$object->year}}')"><img style="cursor: pointer" class=" justify-content-between align-content-center" src="https://img.icons8.com/color/100/000000/folder-invoices.png" width="50" /></a>
                                                 <div class="about">
-                                                    <span>{{ $object->lot_id }}</span>
+                                                    <span>{{ $object->year }}</span>
                                                 </div>
                                             </div>
                                         </div>
