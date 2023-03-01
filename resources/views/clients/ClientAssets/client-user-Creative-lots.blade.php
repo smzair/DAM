@@ -35,17 +35,20 @@
 						<th>Vertical Type</th>
 						<th>Client Bucket</th>
 						<th>LOT Delivery Days</th>
+						<th>Wrc Count</th>
                     </tr>
                     </thead>
                     <tbody>
                         @foreach($lots as $index => $row)
                         <tr>
                             <td width="5%" class="pl-3">{{$index +1 }}</td>
-							<td>{{$row->lot_number}}</td>
-							<td>{{$row->project_name}}</td>
-							<td>{{$row->verticle}}</td>
-							<td>{{$row->client_bucket}}</td>
-							<td>{{$row->lot_delivery_days}}</td>
+							<td>{{$row['lot_number']}}</td>
+							<td>{{$row['project_name']}}</td>
+							<td>{{$row['verticle']}}</td>
+							<td>{{$row['client_bucket']}}</td>
+							<td>{{$row['lot_delivery_days']}}</td>
+                            <td>{{count($row['get_creative_wrc'])}}</td>
+
                         </tr>
                         @endforeach
                     </tbody>

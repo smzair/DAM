@@ -72,4 +72,11 @@ class Lots extends Model {
          return $result->get();
     } 
 
+    // get Shoot Lots Wrcs 
+    public function getShootWrc(){
+		return $this->hasMany('App\Models\Wrc','lot_id','id')->with('getWrcSkus:id,lot_id,wrc_id,sku_code,user_id,brand_id');
+	}
+
+    
+
 }
