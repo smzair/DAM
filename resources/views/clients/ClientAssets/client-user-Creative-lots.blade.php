@@ -48,7 +48,6 @@
 							<td>{{$row['client_bucket']}}</td>
 							<td>{{$row['lot_delivery_days']}}</td>
                             <td>{{count($row['get_creative_wrc'])}}</td>
-
                         </tr>
                         @endforeach
                     </tbody>
