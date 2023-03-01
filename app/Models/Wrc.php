@@ -125,4 +125,9 @@ class Wrc extends Model {
         return $result->get();
     }
 
+    // Get uploded Wrcs skus
+    public function getWrcSkus(){
+		return $this->hasMany('App\Models\Skus','wrc_id','id');
+	}
+
 }
