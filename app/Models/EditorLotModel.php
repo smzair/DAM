@@ -95,4 +95,16 @@ class EditorLotModel extends Model
             return view('EditorLotPanel.Editor-Create-Lot')->with('users_data', $users_data)->with('EditorLots', $EditorLots);
         }
     }
+
+    // get Editing Lots Wrcs 
+    public function getEditingWrc(){
+		return $this->hasMany('App\Models\EditingWrc','lot_id','id');
+	}
+
+    // get Shoot Lots Wrcs 
+    public function getShootWrc(){
+		return $this->hasMany('App\Models\Wrc','lot_id','id')->with('getWrcSkus:id,lot_id,wrc_id,sku_code,user_id,brand_id');
+	}
+
+
 }
