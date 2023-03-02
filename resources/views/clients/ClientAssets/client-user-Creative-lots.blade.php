@@ -10,17 +10,7 @@
 	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper dashboard-content-wrapper">
 	<!-- Navbar -->
-	<nav class="main-header navbar navbar-expand navbar-white navbar-light custom-dashboard-header">
-		<!-- Left navbar links -->
-		<div class="navbar-nav">
-			<div class="dash-mobile-trigger">
-				<img src="{{ asset('assets-images\Mob-Assets\images\line_img.png')}}" alt="Mobile Trigger">
-			</div>
-			<div class="welcome-user-title">
-				<h4>Hello, Kishanramchari shrikant</h4>
-			</div>
-		</div>
-	</nav>
+		@include('clients.top_bar.top-head')
 	<!-- /.navbar -->
 	<!-- Main content -->
 	<div class="content custom-dashboard-content">

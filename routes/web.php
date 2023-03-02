@@ -21,6 +21,7 @@ use App\Http\Controllers\CatalogInvoiceController;
 use App\Http\Controllers\CatalogWrcMasterSheetController;
 use App\Http\Controllers\clientFileManager;
 use App\Http\Controllers\ClientsControllers\ClientDashboardController;
+use App\Http\Controllers\ClientUserManagementController;
 use App\Http\Controllers\ConsolidatedLotController;
 use App\Http\Controllers\CreativeQcController;
 use App\Http\Controllers\creativeWrc;
@@ -505,39 +506,45 @@ Route::get('Editing-submission-done', [EditingSubmissionController::class, 'Edit
 Route::get('Editing-Wrc-client-ar', [EditingClientARController::class, 'index'])->name('EditingClientARList'); // Editing Wrc List for client Approval & Rejection
 Route::post('Editing-client-wrc-AR', [EditingClientARController::class, 'Editing_reject_approve_wrc'])->name('Editing_reject_approve_wrc'); // Editing Wrc client Approval or Rejection
 
-// *** New routes  *** //
-Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
+Route::group(['middleware' => ['auth']], function () {
+    // *** New routes  *** //
+    Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
 
-// dam (Digital Asset Management) Routing
-Route::get('/client-user', [UserController::class, 'clientIndex'])->name('clientuser.index');
-Route::post('/save-client-users', [UserController::class, 'saveUserClient']);
-Route::get('/client-user-validation', [UserController::class, 'clientUserValid']);
+    // dam (Digital Asset Management) Routing
+    Route::get('/client-user', [UserController::class, 'clientIndex'])->name('clientuser.index');
 
-// client User Your assets Routes
-Route::get('/client-user-shoot-lots', [UserAssetsController::class, 'clientUserShootLots'])->name('clientUserShootLots');
-Route::get('/client-user-Creative-lots', [UserAssetsController::class, 'clientUserCreativeLots'])->name('clientUserCreativeLots');
-Route::get('/client-user-Cataloging-lots', [UserAssetsController::class, 'clientUserCatalogingLots'])->name('clientUserCatalogingLots');
-Route::get('/client-user-Editing-lots', [UserAssetsController::class, 'clientUserEditingLots'])->name('clientUserEditingLots');
+    // client User Your assets Routes
+    Route::get('/client-user-shoot-lots', [UserAssetsController::class, 'clientUserShootLots'])->name('clientUserShootLots');
+    Route::get('/client-user-Creative-lots', [UserAssetsController::class, 'clientUserCreativeLots'])->name('clientUserCreativeLots');
+    Route::get('/client-user-Cataloging-lots', [UserAssetsController::class, 'clientUserCatalogingLots'])->name('clientUserCatalogingLots');
+    Route::get('/client-user-Editing-lots', [UserAssetsController::class, 'clientUserEditingLots'])->name('clientUserEditingLots');
 
-/******File Manager routing*******/
-Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImagesYear'])->name('clientRawImagesMgmt');// client raw images mgmt ( images)
+    /******File Manager routing*******/
+    Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImagesYear'])->name('clientRawImagesMgmt');// client raw images mgmt ( images)
 
-Route::get('/months/lots/{id}', [clientFileManager::class, 'clientRawImages'])->name('clientRawImages');// client raw images mgmt ( images)
+    Route::get('/months/lots/{id}', [clientFileManager::class, 'clientRawImages'])->name('clientRawImages');// client raw images mgmt ( images)
 
-// get wrc based on lot
-Route::get('/months/lots/wrc/{id}', [clientFileManager::class, 'getWrcForClientRawImages'])->name('client-raw-images-mgmt');// client raw images mgmt ( images)
+    // get wrc based on lot
+    Route::get('/months/lots/wrc/{id}', [clientFileManager::class, 'getWrcForClientRawImages'])->name('client-raw-images-mgmt');// client raw images mgmt ( images)
 
-// get skus based on wrc id
-Route::get('/months/lots/wrc/skus/{id}', [clientFileManager::class, 'getSkusForClientRawImages'])->name('client-raw-images-skus');// client raw images mgmt ( images)
-
-
-// get all images based on sku id
-Route::get('/months/lots/wrc/skus/skusimages/{id}', [clientFileManager::class, 'getClientUploadRawImages'])->name('client-all-images');// client raw images mgmt ( images)
-
-// get client raw images months based on year
-Route::get('/months/{id}', [clientFileManager::class, 'getAllMonthsForClientRawImages'])->name('months');
+    // get skus based on wrc id
+    Route::get('/months/lots/wrc/skus/{id}', [clientFileManager::class, 'getSkusForClientRawImages'])->name('client-raw-images-skus');// client raw images mgmt ( images)
 
 
-Route::get('/client-editor-images-mgmt', [clientFileManager::class, 'clientEditorImages'])->name('clientEditorImagesMgmt');// client editor images mgmt
+    // get all images based on sku id
+    Route::get('/months/lots/wrc/skus/skusimages/{id}', [clientFileManager::class, 'getClientUploadRawImages'])->name('client-all-images');// client raw images mgmt ( images)
 
+    // get client raw images months based on year
+    Route::get('/months/{id}', [clientFileManager::class, 'getAllMonthsForClientRawImages'])->name('months');
+
+
+    Route::get('/client-editor-images-mgmt', [clientFileManager::class, 'clientEditorImages'])->name('clientEditorImagesMgmt');// client editor images mgmt
+
+    // Client User Management Routing
+    Route::get('/client-user-management', [ClientUserManagementController::class, 'Index'])->name('ClientUserManagement');
+    Route::get('/user-management', [ClientUserManagementController::class, 'create'])->name('addClientUser');
+    Route::get('/client-user-validation', [ClientUserManagementController::class, 'clientUserValid']);
+    Route::post('/save-client-users', [ClientUserManagementController::class, 'saveUserClient']);
+    Route::get('/user-management/{id}', [ClientUserManagementController::class, 'edit'])->name('editClientUser');
+});
 
