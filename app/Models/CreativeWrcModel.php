@@ -229,4 +229,10 @@ class CreativeWrcModel extends Model
 
     }
 
+    // get Creative Wrcs allocation
+    public function wrcAllocations(){
+        return $this->hasMany('App\Models\CreativeAllocation','wrc_id','id');
+    }
+
+
 }

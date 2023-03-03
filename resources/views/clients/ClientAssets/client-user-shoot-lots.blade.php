@@ -43,7 +43,16 @@
                             <td><a href="{{route('client-raw-images-mgmt' , ['id' => $row['id']])}}">{{$row['lot_id']}}</a> </td>
                             <td>{{ date('d-m-Y h:i A' ,strtotime($row['created_at']))}}</td>
                             <td>{{$row['s_type']}}</td>
-                            <td>{{$row['shoot_wrc_count']}}</td>
+                            <td style="position: relative;">
+                                @if ($row['shoot_wrc_count'] > 0)
+                                 <span class="dropdown-toggle d-inline-block ed-wrc-cnt" onclick="showhideli({{ $index }})"  style="cursor: pointer;"> {{$row['shoot_wrc_count']}}</span>
+                                 <div id="wrcInfo{{ $index }}" style="display: none; padding: 5px 20px; border: 2px #cbbebe95 solid; box-shadow: 4px 4px 10px #aaa; position: absolute;border-radius: 8px;background: #f6f3f3;color: #333;z-index:99999">
+                                         @foreach($get_shoot_wrc as $wrc_key => $wrc_number_arr)
+                                             <p class="" style="cursor: pointer;">{{$wrc_number_arr['wrc_id']}}</p>
+                                         @endforeach
+                                 </div>
+                                @endif
+                             </td>
                             <td>{{$row['sku_count']}}</td>
                             <td>{{$shootTotUploadRawImage}}</td>
                             <td>{{$editor_submission_count}}</td>
@@ -73,9 +82,14 @@
 @endsection
 
 @section('js_scripts')
-	<script>
-		function semple(){
-			console.log('first')
-		}
-	</script>
+    <script>
+        function showhideli(val){
+        var x = document.getElementById("wrcInfo"+val);
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+        }
+    </script>
 @endsection

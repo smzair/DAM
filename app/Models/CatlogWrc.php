@@ -128,4 +128,10 @@ class CatlogWrc extends Model
         ->get()->toArray();
         return $CatalogWrcList;
     }
+
+    // get Creative Lots Wrcs with allocation
+    public function WrcAllocationList(){
+        return $this->hasMany('App\Models\CatalogAllocation','wrc_id','id');
+        // ->with('wrcAllocations:id,wrc_id,user_id,allocated_qty,batch_no');
+    }
 }

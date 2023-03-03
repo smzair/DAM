@@ -34,11 +34,13 @@
                     <tbody>
                         @foreach($lots as $index => $row)
                         @php
-                        // dd($lots);
-                            // $get_shoot_wrc = $row['get_shoot_wrc'];
-                            // $shootTotUploadRawImage = $row['shootTotUploadRawImage'];
-                            // $editor_submission_count = $row['editor_submission_count'];
                             $id_is = $row['id'];
+                            $tot_submission_count = $row['tot_submission_count'];
+                            $totUploadRawImage = $row['totUploadRawImage'];
+                            $tot_submission_count = $row['tot_submission_count'];
+                            $editing_wrc_arr = $row['get_editing_wrc'];
+                            // pre($editing_wrc_arr);
+                            // dd($editing_wrc_arr);
                         @endphp
                         <tr>
                             <td width="5%" class="pl-3">{{$index +1 }}</td>
@@ -46,22 +48,26 @@
                             {{-- <td><a href="{{route('client-raw-images-mgmt' , ['id' => $row['id']])}}">{{$row['lot_number']}}</a> </td> --}}
                             <td>{{$row['request_name']}}</td>
                             <td>{{ date('d-m-Y h:i A' ,strtotime($row['created_at']))}}</td>
-                            <td>{{$row['wrc_count']}}</td>
-                            <td>{{$row['totUploadRawImage']}}</td>
-                            <td>{{$row['tot_submission_count']}}</td>
-                            <td></td>
-                            {{-- 
-                            <td>{{$row['sku_count']}}</td>
-                            <td>{{$shootTotUploadRawImage}}</td>
-                            <td>{{$editor_submission_count}}</td>
+                            <td style="position: relative;">
+                               @if ($row['wrc_count'] > 0)
+                                <span class="dropdown-toggle d-inline-block ed-wrc-cnt" onclick="showhideli({{ $index }})"  style="cursor: pointer;"> {{$row['wrc_count']}}</span>
+                                <div id="wrcInfo{{ $index }}" style="display: none; padding: 5px 20px; border: 2px #cbbebe95 solid; box-shadow: 4px 4px 10px #aaa; position: absolute;border-radius: 8px;background: #f6f3f3;color: #333;z-index:99999">
+                                        @foreach($editing_wrc_arr as $wrc_key => $wrc_number_arr)
+                                            <p class="" style="cursor: pointer;">{{$wrc_number_arr['wrc_number']}}</p>
+                                        @endforeach
+                                </div>
+                               @endif
+                            </td>
+                            <td>{{$totUploadRawImage}}</td>
+                            <td>{{$tot_submission_count}}</td>
                             <td>
-                                @if ($shootTotUploadRawImage > 0)
+                                @if ($totUploadRawImage > 0)
                                     <a class="btn btn-primary" href="#">Download Raw Image</a>
                                 @endif
-                                @if ($editor_submission_count > 0)
+                                @if ($tot_submission_count > 0)
                                     <a class="btn btn-warning" href="#">Edited Raw Image</a>
                                 @endif
-                            </td> --}}
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -80,9 +86,14 @@
 @endsection
 
 @section('js_scripts')
-	<script>
-		function semple(){
-			console.log('first')
-		}
-	</script>
+<script>
+    function showhideli(val){
+      var x = document.getElementById("wrcInfo"+val);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+  </script>
 @endsection

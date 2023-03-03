@@ -149,5 +149,10 @@ class EditingWrc extends Model
 
     }
 
+    // Get uploded wrc images
+    public function getEditingEditedImages(){
+		return $this->hasMany('App\Models\EditingUploadedImages','wrc_id','id');
+	}
+
 
 }
