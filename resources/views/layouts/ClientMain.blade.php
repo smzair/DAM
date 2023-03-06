@@ -113,11 +113,9 @@
                         @if (Auth::user()->dam_enable == 1)
                             @hasanyrole('Client')
                                 <li class="nav-item">
-                                    <a  class="nav-link" style="cursor:pointer;">
-                                        <i class="nav-icon fas fa-users"></i>
+                                    <a  class="nav-link" >
                                         <p>
                                             Client User Management
-                                        <i class="fas fa-angle-left right"></i>
                                         </p>
                                     </a>
                                 </li>
@@ -172,11 +170,9 @@
                             @endhasanyrole
 
                             <li class="nav-item">
-                                <a  class="nav-link" style="cursor:pointer;">
-                                    <i class="nav-icon fas fa-users"></i>
+                                <a  class="nav-link" >
                                     <p>
                                         Your Assets
-                                    <i class="fas fa-angle-left right"></i>
                                     </p>
                                 </a>
                             </li>
