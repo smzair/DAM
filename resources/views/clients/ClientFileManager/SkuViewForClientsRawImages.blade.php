@@ -1,67 +1,4 @@
-@extends('layouts.ClientMain')
-@section('title')
-  Client Dashboard
-@endsection
-@section('css_links')
-	<link rel="stylesheet" href="">	
-    <style>
-        .form-group .input_err{
-            margin: 0.1em 0;
-            color: red;
-            background: #999;
-            display: block;
-            padding: 0.3em;
-        }
-    
-        .list-group{
-            width: 400px !important;
-    
-        }
-    
-        .list-group-item{
-            margin-top:10px;
-            margin-bottom:10px;
-            border-radius: none; 
-            background: #20b9932e;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-    
-    
-        .list-group-item:hover{
-            /* transform: scaleX(1.1); */
-        }
-        .list-group-item:hover .check {
-            opacity: 1;
-    
-        }
-        .about span{
-            font-size: 12px;
-            margin-right: 10px;
-    
-        }
-        </style>
-@endsection
-
-@section('main_content')
-
-	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper dashboard-content-wrapper">
-	<!-- Navbar -->
-	<nav class="main-header navbar navbar-expand navbar-white navbar-light custom-dashboard-header">
-		<!-- Left navbar links -->
-		<div class="navbar-nav">
-			<div class="dash-mobile-trigger">
-				<img src="{{ asset('assets-images\Mob-Assets\images\line_img.png')}}" alt="Mobile Trigger">
-			</div>
-			<div class="welcome-user-title">
-				<h4>Hello, Rajesh</h4>
-			</div>
-		</div>
-	</nav>
-	<!-- /.navbar -->
-	<!-- Main content -->
-	<div class="content custom-dashboard-content">
+<div class="content custom-dashboard-content">
 		<div class="container-fluid">
             <div class="card-body table-responsive p-0"  style="max-height: 700px; height: 100%;">
                 <div class="row">
@@ -71,11 +8,19 @@
                                 <h6 class="card-title">All Skus</h6>
                             </div>
                             <div class="row">
-                                @foreach($sku_data as $object)
+                                @foreach($sku_data as $key=>$object)
                                     <div class="col-md-2">
                                         <div class=" justify-content-between align-content-center">
                                             <div class="text-center">
-                                                <a ondblclick="navigateToLink('skusimages/{{$object->id}}')"><img style="cursor: pointer" class=" justify-content-between align-content-center" src="https://img.icons8.com/color/100/000000/folder-invoices.png" width="50" /></a>
+                                                <a id="folder"  ondblclick="navigateToLink('skusimages/{{$object->id}}')">
+                                                    <img id="folder-image-{{$key}}" src="https://img.icons8.com/color/100/000000/folder-invoices.png" width="50" />
+                                                </a>
+                                                 <!-- Popup container -->
+                                                <div id="popup-container-{{ $key }}" class="popup-container">
+                                                    <ul>
+                                                    <li><a href="{{route('downloadDataBasedOnSku', ['id' => $object->id])}}">Download</a></li>
+                                                    </ul>
+                                                </div>
                                                 <div class="about">
                                                     <span>{{ $object->sku_code }}</span>
                                                 </div>
@@ -90,28 +35,36 @@
             </div>
 		</div><!-- /.container-fluid -->
 	</div>
-	<!-- /.content -->
-	</div>
-	<!-- /.content-wrapper -->
-@endsection
-
-{{-- Other Js pluging   --}}
-@section('js_links')
-  <script type="text/javascript" src=""></script>
-@endsection
-
-@section('js_scripts')
-	<script>
-		function semple(){
-			console.log('first')
-		}
-	</script>
-
-    
+    {{--script for open popup for folder--}}
 <script>
-    function navigateToLink(link) {
-        console.log('link', link)
-      window.open(link, '_blank');
-    }
-</script>
-@endsection
+    @foreach($sku_data as $key=>$object)
+      const folderImage{{ $key }} = document.getElementById('folder-image-{{ $key }}');
+      folderImage{{ $key }}.addEventListener('contextmenu', openPopup{{ $key }});
+      
+      function openPopup{{ $key }}(event) {
+        event.preventDefault();
+        const x = event.clientX;
+        const y = event.clientY;
+        const popup = document.getElementById('popup-container-{{ $key }}');
+        popup.style.display = 'block';
+        popup.style.top = `${y}px`;
+        popup.style.left = `${x}px`;
+        
+        // Close popup when clicked outside
+        document.addEventListener('click', closePopupOutside{{ $key }});
+      }
+      
+      function closePopup{{ $key }}() {
+        const popup = document.getElementById('popup-container-{{ $key }}');
+        popup.style.display = 'none';
+      }
+      
+      function closePopupOutside{{ $key }}(event) {
+        const popup = document.getElementById('popup-container-{{ $key }}');
+        if (!popup.contains(event.target)) {
+          popup.style.display = 'none';
+          document.removeEventListener('click', closePopupOutside{{ $key }});
+        }
+      }
+    @endforeach
+  </script>
