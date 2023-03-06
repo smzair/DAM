@@ -9,6 +9,7 @@
 
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('ClientsPlugins/bootstrap-5.1.3-dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     {{-- Other css pluging --}}
     @yield('css_links')
     <!-- Common Style -->

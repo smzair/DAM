@@ -70,7 +70,7 @@ class guest extends Controller
 public function fullAngleDownload(Request  $request, $wrc_id){
     $wrcId=base64_decode($wrc_id);
     $wrcinfo= Wrc::getwrcInfo(['id'=>$wrcId, 'single' => true]);
-$submissions = editorSubmission::SubmissionInfo($filter = ['wrc_id'=>$wrcId,'qc'=> '1','single'=>true]);
+    $submissions = editorSubmission::SubmissionInfo($filter = ['wrc_id'=>$wrcId,'qc'=> '1','single'=>true]);
     $fileName = $wrcinfo->wrc_id . ".zip";
 
     $path=  "edited_img_directory/". date('Y', strtotime($submissions->created_at)) . "/" . date('M', strtotime($submissions->created_at)) . "/" . $submissions->lot_id . "/" . $wrcinfo->wrc_id ;

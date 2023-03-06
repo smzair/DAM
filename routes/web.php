@@ -547,4 +547,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/save-client-users', [ClientUserManagementController::class, 'saveUserClient']);
     Route::get('/user-management/{id}', [ClientUserManagementController::class, 'edit'])->name('editClientUser');
 });
+// route for global search in file manager system
+Route::post('/commonsearch', [clientFileManager::class, 'commonSearch']);
+Route::get('/commonsearch', [clientFileManager::class, 'clientRawImagesYear']);// client raw images mgmt when hit common search
+Route::get('/downloadlot/{id}', [clientFileManager::class, 'downloadLotData'])->name('downloadLotData');//download lot
+Route::get('/downloadyeardata/{id}', [clientFileManager::class, 'downloadYearData'])->name('downloadDataBasedOnYear');//download year data based on year
+Route::get('/downloaddatabasedonmonth/{id}', [clientFileManager::class, 'downloadDataBasedOnMonth'])->name('downloadDataBasedOnMonth');//download year data based on year
+Route::get('/downloaddatabasedonwrc/{id}', [clientFileManager::class, 'downloadDataBasedOnWrc'])->name('downloadDataBasedOnWrc');//download year data based on year
+Route::get('/downloaddatabasedonsku/{id}', [clientFileManager::class, 'downloadDataBasedOnSku'])->name('downloadDataBasedOnSku');//download year data based on year
+
+
 
