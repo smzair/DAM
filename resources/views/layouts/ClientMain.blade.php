@@ -110,6 +110,66 @@
                         @endphp
 
                         @if (Auth::user()->dam_enable == 1)
+                            @hasanyrole('Client')
+                                <li class="nav-item">
+                                    <a  class="nav-link" style="cursor:pointer;">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>
+                                            Client User Management
+                                        <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                </li>
+
+                                <li class="sidebar-menu-list-item">
+                                    <a href="{{route('addClientUser')}}" class="sidebar-menu-list-link">
+                                        <span class="menu-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
+                                                viewBox="0 0 16 20">
+                                                <path id="__TEMP__SVG__"
+                                                    d="M5,20H19a1,1,0,0,1,0,2H5a1,1,0,0,1,0-2ZM4,15,14,5l3,3L7,18H4ZM15,4l2-2,3,3L18,7Z"
+                                                    transform="translate(-4 -2)" fill="#7f7faa" fill-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <span class="menu-text">
+                                            Add User 
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <li class="sidebar-menu-list-item">
+                                    <a href="{{route('ClientUserManagement')}}" class="sidebar-menu-list-link">
+                                        <span class="menu-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18.182" height="20"
+                                                viewBox="0 0 18.182 20">
+                                                <g id="Group_5316" data-name="Group 5316" transform="translate(7674.091 4708)">
+                                                    <path id="Path_2008" data-name="Path 2008"
+                                                        d="M5.455,5.455a.909.909,0,0,1,.909-.909h9.091a.909.909,0,0,1,0,1.818H6.364A.909.909,0,0,1,5.455,5.455Z"
+                                                        transform="translate(-7675.909 -4708.909)" fill="#7f7faa" />
+                                                    <path id="Path_2009" data-name="Path 2009"
+                                                        d="M5.455,9.091a.909.909,0,0,1,.909-.909h9.091a.909.909,0,0,1,0,1.818H6.364A.909.909,0,0,1,5.455,9.091Z"
+                                                        transform="translate(-7675.909 -4708.909)" fill="#7f7faa" />
+                                                    <path id="Path_2010" data-name="Path 2010"
+                                                        d="M6.364,11.818a.909.909,0,0,0,0,1.818h9.091a.909.909,0,0,0,0-1.818Z"
+                                                        transform="translate(-7675.909 -4708.909)" fill="#7f7faa" />
+                                                    <path id="Path_2011" data-name="Path 2011"
+                                                        d="M5.455,16.364a.909.909,0,0,1,.909-.909H10a.909.909,0,1,1,0,1.818H6.364A.909.909,0,0,1,5.455,16.364Z"
+                                                        transform="translate(-7675.909 -4708.909)" fill="#7f7faa" />
+                                                    <path id="Path_2012" data-name="Path 2012"
+                                                        d="M1.818,3.636A2.727,2.727,0,0,1,4.545.909H17.273A2.727,2.727,0,0,1,20,3.636V18.182a2.727,2.727,0,0,1-2.727,2.727H4.545a2.727,2.727,0,0,1-2.727-2.727Zm2.727-.909H17.273a.909.909,0,0,1,.909.909V18.182a.909.909,0,0,1-.909.909H4.545a.909.909,0,0,1-.909-.909V3.636a.909.909,0,0,1,.909-.909Z"
+                                                        transform="translate(-7675.909 -4708.909)" fill="#7f7faa"
+                                                        fill-rule="evenodd" />
+                                                </g>
+                                            </svg>
+                                        </span>
+                                        <span class="menu-text">
+                                            Users List 
+                                        </span>
+                                    </a>
+                                </li>
+                               
+                            @endhasanyrole
+
                             <li class="nav-item">
                                 <a  class="nav-link" style="cursor:pointer;">
                                     <i class="nav-icon fas fa-users"></i>
@@ -324,7 +384,7 @@
                             </a>
                         </li>
                         <li class="sidebar-menu-list-item">
-                            <a href="#" class="sidebar-menu-list-link red-clr">
+                            <a  href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="sidebar-menu-list-link red-clr">
                                 <span class="menu-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18.461" height="20"
                                         viewBox="0 0 18.461 20">
@@ -337,6 +397,9 @@
                                     Sign out
                                 </span>
                             </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                              </form>
                         </li>
                     </ul>
                 </div>
@@ -359,7 +422,7 @@
     {{-- Other Js pluging --}}
     @yield('js_links')
     <!-- Common Js -->
-    <script src="{{ asset('ClientsDist\js\common_js.js') }}"></script>
+    <script src="{{ asset('ClientsDist\js\common_js_new.js') }}"></script>
 
     @yield('js_scripts')
 </body>

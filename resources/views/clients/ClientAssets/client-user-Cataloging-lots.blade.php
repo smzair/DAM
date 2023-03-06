@@ -21,10 +21,8 @@
                     <tr style="font-size: 14px;">
                         <th width="5%" class="pl-3"># </th>
 						<th>Lot Number</th>
-						<th>Project Name</th>
-						<th>Vertical Type</th>
-						<th>Client Bucket</th>
-						<th>LOT Delivery Days</th>
+						<th>Service Type</th>
+						<th>Request Type</th>
 						<th>Wrc Count</th>
 						<th>Order Count</th>
                         <th>Uploaded Link Count</th>
@@ -38,20 +36,18 @@
                             $totWrcOrderQty = $row['totWrcOrderQty'];
                             $wrc_allocations_count = $row['wrc_allocations_count'];
                             $wrcUploadLinks_count = $row['wrcUploadLinks_count'];
-                            $creative_wrcs = $row['get_creative_wrc'];
+                            $wrc_list_with_allocation = $row['wrc_list_with_allocation'];
 						@endphp
                         <tr>
                             <td width="5%" class="pl-3">{{$index +1 }}</td>
 							<td>{{$row['lot_number']}}</td>
-							<td>{{$row['project_name']}}</td>
-							<td>{{$row['verticle']}}</td>
-							<td>{{$row['client_bucket']}}</td>
-							<td>{{$row['lot_delivery_days']}}</td>
+							<td>{{$row['serviceType']}}</td>
+							<td>{{$row['requestType']}}</td>
                             <td style="position: relative;">
 								@if ($row['wrc_count'] > 0)
 								 <span class="dropdown-toggle d-inline-block ed-wrc-cnt" onclick="showhideli({{ $index }})"  style="cursor: pointer;"> {{$row['wrc_count']}}</span>
 								 <div id="wrcInfo{{ $index }}" style="display: none; padding: 5px 20px; border: 2px #cbbebe95 solid; box-shadow: 4px 4px 10px #aaa; position: absolute;border-radius: 8px;background: #f6f3f3;color: #333;z-index:99999">
-										 @foreach($creative_wrcs as $wrc_key => $wrc_number_arr)
+										 @foreach($wrc_list_with_allocation as $wrc_key => $wrc_number_arr)
 											 <p class="" style="cursor: pointer;">{{$wrc_number_arr['wrc_number']}}</p>
 										 @endforeach
 								 </div>

@@ -98,7 +98,7 @@ class EditorLotModel extends Model
 
     // get Editing Lots Wrcs 
     public function getEditingWrc(){
-		return $this->hasMany('App\Models\EditingWrc','lot_id','id');
+		return $this->hasMany('App\Models\EditingWrc','lot_id','id')->with('getEditingEditedImages:id,user_id,allocation_id,wrc_id,file_path,filename');
 	}
 
     // get Shoot Lots Wrcs 
