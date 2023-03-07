@@ -19,10 +19,8 @@ class clientFileManager extends Controller
     {
         // Get the previous URL from the session
         $previousUrl = $request->session()->get('previous_url');
-
         // Store the current URL as the previous URL
         $request->session()->put('previous_url', $request->url());
-
         // Return the view for the current page, passing the previous URL to the view
         return $previousUrl;
     }
@@ -168,39 +166,6 @@ class clientFileManager extends Controller
         // dd($file_data);
         return view('clients.ClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl'));
     }
-
-    
-
-    public function clientEditorImages(Request $request){
-        $logged_in_user_id = Auth::id();
-        $resData = DB::table('users')
-                ->where('users.id', $logged_in_user_id)
-                ->where('users.dam_enable', '1')
-                ->join('brands_user', 'brands_user.user_id', 'users.id')
-                ->join('brands', 'brands.id', 'brands_user.brand_id')
-                ->join('editor_lots', function($join) {
-                    $join->on('editor_lots.user_id', '=', 'brands_user.user_id');
-                    $join->on('editor_lots.brand_id', '=', 'brands_user.brand_id');
-                })
-                ->join('editing_wrcs', function($join) {
-                    $join->on('editing_wrcs.lot_id', '=', 'editor_lots.id');
-                })
-                ->join('sku', function($join) {
-                    $join->on('sku.wrc_id', '=', 'editing_wrcs.id');
-                    $join->on('sku.user_id', '=', 'brands_user.user_id');
-                    $join->on('sku.lot_id', '=', 'editor_lots.id');
-                })
-                ->join('editor_submission', 'editor_submission.sku_id', 'sku.id')
-                ->select(
-                    'editor_submission.*',
-                    'editor_lots.lot_number',
-                    'editing_wrcs.wrc_number'
-                )
-                ->get();
-                           
-        dd($resData);
-    }
-
     // download lot data zip folder
     public function downloadLotData(Request $request, $id){ 
         // dd($id);
