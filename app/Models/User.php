@@ -116,5 +116,9 @@ class User extends Authenticatable
 
       return $result->get();;
     }
+
+    public function ParentUserDetail(){
+    return  $this->hasOne('App\Models\User','parent_client_id','id');
+    }
     
   }
