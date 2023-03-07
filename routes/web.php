@@ -27,11 +27,15 @@ use App\Http\Controllers\CreativeQcController;
 use App\Http\Controllers\creativeWrc;
 use App\Http\Controllers\EditingAllocationController;
 use App\Http\Controllers\EditingClientARController;
+use App\Http\Controllers\EditingInvoiceController;
+use App\Http\Controllers\EditingMasterSheetController;
 use App\Http\Controllers\EditingSubmissionController;
 use App\Http\Controllers\EditingUploadLinkController;
 use App\Http\Controllers\EditingWrcController;
 use App\Http\Controllers\editorLotController;
 use App\Http\Controllers\EditorsCommercialController;
+use App\Http\Controllers\ImageDownloadController;
+use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\NewCommercial;
 use App\Http\Controllers\UserAssetsController;
 use App\Http\Controllers\WrcInvoiceNumber;
@@ -278,6 +282,8 @@ Route::get('/download-plan', function () {
 })->name('downloadfileplan');
 ////////////////////////////////////////////////////////////////////////////////
 
+// Other then Client And Sub Client Accesable route
+Route::middleware(['auth', 'role:Commercials,Account Management,Admin,Editor TL,VQC,Editors,Super Admin,comview,Creative TL,GD,CW,Cataloguer,Catalog TL,Qc'])->group(function () {
 
 Route::get('/Creative-createComs', 'creativeCommercials@index')->name('CREATECOM');
 Route::post('/Creative-createComs', 'creativeCommercials@create')->name('SAVECOMS'); // for save Commercial
@@ -505,8 +511,28 @@ Route::post('Editing-comp-submission', [EditingSubmissionController::class, 'com
 Route::get('Editing-submission-done', [EditingSubmissionController::class, 'Editing_Submission_Done'])->name('Editing_Submission_Done'); //Editing WRC Submmition Done List
 Route::get('Editing-Wrc-client-ar', [EditingClientARController::class, 'index'])->name('EditingClientARList'); // Editing Wrc List for client Approval & Rejection
 Route::post('Editing-client-wrc-AR', [EditingClientARController::class, 'Editing_reject_approve_wrc'])->name('Editing_reject_approve_wrc'); // Editing Wrc client Approval or Rejection
+    
+    // Editing Invoice Route
+    Route::get('/Editing-Invoice', [EditingInvoiceController::class, 'index'])->name('EditingInvoice'); // Listing For NewCommercial
+    Route::POST('/save-Editing-invoice-number', [EditingInvoiceController::class, 'SaveEditingInvoiceNumber'])->name('SaveEditingInvoiceNumber'); // Save SaveEditingingCommercial And genrating data
+    Route::POST('/Editing-Invoice', [EditingInvoiceController::class, 'SaveEditingBulkInvoice'])->name('SaveEditingBulkInvoice'); // Save SaveEditingingCommercial And genrating data
 
-Route::group(['middleware' => ['auth']], function () {
+    // Editing Wrc Master Sheet Route
+    Route::get('/Editing-Master-Sheet', [EditingMasterSheetController::class, 'index'])->name('EditingMasterSheet'); // Listing For NewCommercial
+
+    /* ---------- Editing Wrc Raw image upload -------------*/
+    Route::get('/Editing-Wrc-raw-image-upload', [ImageUploadController::class, 'index'])->name('EditingWrcListForImgUpload');
+    Route::Post('/Editing-Wrc-raw-image-upload1', [ImageUploadController::class, 'EditingRawImageUpload'])->name('EditingWrcRawImgUpload');
+
+    // Download Raw image Route
+    Route::get('/Editing-Raw-image-downlaod/{wrc_id?}', [ImageDownloadController::class, 'Editing_Raw_Image_Download'])->name('Editing_Raw_Image_Download');
+    Route::Post('/Editing-Wrc-Edited-image-upload', [ImageUploadController::class, 'EditingEditedImageUpload'])->name('EditingWrcEditedImgUpload');
+    Route::get('/Editing-User-Edited-image-downlaod/{allocation_id?}', [ImageDownloadController::class, 'Editing_User_Edited_Image_Download'])->name('Editing_User_Edited_Image_Download'); // User Edited Image Download user and wrc wice
+
+});
+
+// Client And Sub Client Accesable route
+Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     // *** New routes  *** //
     Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
 
