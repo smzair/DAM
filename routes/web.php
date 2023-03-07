@@ -521,24 +521,16 @@ Route::group(['middleware' => ['auth']], function () {
 
     /******File Manager routing*******/
     Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImagesYear'])->name('clientRawImagesMgmt');// client raw images mgmt ( images)
-
-    Route::get('/months/lots/{id}', [clientFileManager::class, 'clientRawImages'])->name('clientRawImages');// client raw images mgmt ( images)
-
+    Route::get('/months/lots/{id}', [clientFileManager::class, 'clientRawImages'])->name('clientRawImages');// client raw images lots ( images)
     // get wrc based on lot
-    Route::get('/months/lots/wrc/{id}', [clientFileManager::class, 'getWrcForClientRawImages'])->name('client-raw-images-mgmt');// client raw images mgmt ( images)
-
+    Route::get('/months/lots/wrc/{id}', [clientFileManager::class, 'getWrcForClientRawImages'])->name('client-raw-images-mgmt');
     // get skus based on wrc id
-    Route::get('/months/lots/wrc/skus/{id}', [clientFileManager::class, 'getSkusForClientRawImages'])->name('client-raw-images-skus');// client raw images mgmt ( images)
-
-
+    Route::get('/months/lots/wrc/skus/{id}', [clientFileManager::class, 'getSkusForClientRawImages'])->name('client-raw-images-skus');
     // get all images based on sku id
-    Route::get('/months/lots/wrc/skus/skusimages/{id}', [clientFileManager::class, 'getClientUploadRawImages'])->name('client-all-images');// client raw images mgmt ( images)
-
+    Route::get('/months/lots/wrc/skus/skusimages/{id}', [clientFileManager::class, 'getClientUploadRawImages'])->name('client-all-images');
     // get client raw images months based on year
     Route::get('/months/{id}', [clientFileManager::class, 'getAllMonthsForClientRawImages'])->name('months');
-
-
-    Route::get('/client-editor-images-mgmt', [clientFileManager::class, 'clientEditorImages'])->name('clientEditorImagesMgmt');// client editor images mgmt
+    
 
     // Client User Management Routing
     Route::get('/client-user-management', [ClientUserManagementController::class, 'Index'])->name('ClientUserManagement');
@@ -551,10 +543,33 @@ Route::group(['middleware' => ['auth']], function () {
 Route::post('/commonsearch', [clientFileManager::class, 'commonSearch']);
 Route::get('/commonsearch', [clientFileManager::class, 'clientRawImagesYear']);// client raw images mgmt when hit common search
 Route::get('/downloadlot/{id}', [clientFileManager::class, 'downloadLotData'])->name('downloadLotData');//download lot
-Route::get('/downloadyeardata/{id}', [clientFileManager::class, 'downloadYearData'])->name('downloadDataBasedOnYear');//download year data based on year
-Route::get('/downloaddatabasedonmonth/{id}', [clientFileManager::class, 'downloadDataBasedOnMonth'])->name('downloadDataBasedOnMonth');//download year data based on year
-Route::get('/downloaddatabasedonwrc/{id}', [clientFileManager::class, 'downloadDataBasedOnWrc'])->name('downloadDataBasedOnWrc');//download year data based on year
-Route::get('/downloaddatabasedonsku/{id}', [clientFileManager::class, 'downloadDataBasedOnSku'])->name('downloadDataBasedOnSku');//download year data based on year
+Route::get('/downloadyeardata/{id}', [clientFileManager::class, 'downloadYearData'])->name('downloadDataBasedOnYear');//download year data based 
+Route::get('/downloaddatabasedonmonth/{id}', [clientFileManager::class, 'downloadDataBasedOnMonth'])->name('downloadDataBasedOnMonth');//download month data based 
+Route::get('/downloaddatabasedonwrc/{id}', [clientFileManager::class, 'downloadDataBasedOnWrc'])->name('downloadDataBasedOnWrc');//download wrc data based 
+Route::get('/downloaddatabasedonsku/{id}', [clientFileManager::class, 'downloadDataBasedOnSku'])->name('downloadDataBasedOnSku');//download sku data based 
+
+/******File Manager routing for editing images*******/
+Route::post('/editorcommonsearch', [EditingClientFileManagerController::class, 'editorCommonSearch']);
+Route::get('/editorcommonsearch', [EditingClientFileManagerController::class, 'clientEditorImagesYear']);// client editor images mgmt when hit common search
+Route::get('/client-editor-images-years', [EditingClientFileManagerController::class, 'clientEditorImagesYear'])->name('clientEditorImagesYear'); // get editor images years
+Route::get('/editormonths/{id}', [EditingClientFileManagerController::class, 'getAllMonthsForClientEditorImages'])->name('editormonths');// get client editor images months based on year
+Route::get('/editormonths/lots/{id}', [EditingClientFileManagerController::class, 'clientEditorImagesLots'])->name('clientEditorImagesLots');// client editor images lots 
+Route::get('/editormonths/lots/wrc/{id}', [EditingClientFileManagerController::class, 'getWrcForClientEditorImages'])->name('clientEditorImagesWrcs');// get wrc based on lot
 
 
+// get adaption based on wrc id
+Route::get('/editormonths/lots/wrc/skus/{id}', [EditingClientFileManagerController::class, 'getSkusAdaptionForClientEditorImages'])->name('client-editor-images-skus');
 
+// get skus based on adaption
+Route::get('/editormonths/lots/wrc/skus/adaptation/{id}', [EditingClientFileManagerController::class, 'getSkusForClientEditorImages'])->name('getSkusForClientEditorImages');
+
+// get all images based on sku id
+Route::get('/editormonths/lots/wrc/skus/adaptation/skusimages/{id}', [EditingClientFileManagerController::class, 'getClientUploadEditorImages'])->name('client-all-images');
+
+/******File Manager routing for editing images zip download*******/
+Route::get('/editordownloadyeardata/{id}', [EditingClientFileManagerController::class, 'editorDownloadYearData'])->name('editorDownloadYearData');//download year data based on year
+Route::get('/editordownloaddatabasedonmonth/{id}', [EditingClientFileManagerController::class, 'editorDownloadDataBasedOnMonth'])->name('editorDownloadDataBasedOnMonth');//download year data based on month
+Route::get('/editordownloadlot/{id}', [EditingClientFileManagerController::class, 'editorDownloadLotData'])->name('editorDownloadLotData');//download lot
+Route::get('/editordownloaddatabasedonwrc/{id}', [EditingClientFileManagerController::class, 'editorDownloadDataBasedOnWrc'])->name('editorDownloadDataBasedOnWrc');//download wrc data based on year
+Route::get('/downloadadaptationdata/{id}', [EditingClientFileManagerController::class, 'downloadAdaptationdata'])->name('downloadAdaptationData');//download adaption data based 
+Route::get('/editordownloaddatabasedonsku/{id}', [EditingClientFileManagerController::class, 'editorDownloadDataBasedOnSku'])->name('editorDownloadDataBasedOnSku');//download sku data based 
