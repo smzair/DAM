@@ -283,7 +283,7 @@
               </li>
               {{-- editor images mgmt--}}
               <li class="nav-item">
-                <a href="{{route('clientEditorImagesMgmt')}}" class="nav-link">
+                <a href="{{route('clientEditorImagesYear')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Editor Images</p>
                 </a>

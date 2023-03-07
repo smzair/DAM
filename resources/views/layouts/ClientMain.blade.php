@@ -243,7 +243,7 @@
                         </li>
 
                         <li class="sidebar-menu-list-item">
-                            <a href="{{route('clientRawImagesMgmt')}}" class="sidebar-menu-list-link">
+                            <a href="{{route('clientEditorImagesYear')}}" class="sidebar-menu-list-link">
                                 <span class="menu-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
                                         viewBox="0 0 16 20">
