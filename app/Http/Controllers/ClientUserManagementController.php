@@ -160,7 +160,51 @@ class ClientUserManagementController extends Controller
         $roles= Role::latest()->get();
         $user_data  = User::where('id',$id)->first();
         dd($user_data);
-
+        
         return view('clients.ClientUserManagement.UserManagement',compact('roles','brands'));
     }
+    
+    public function ClientsUserList(){
+        $sub_users_list = User::where('users.parent_client_id', '>' , '0')
+        ->leftJoin('users as parent_user' , 'users.parent_client_id','=','parent_user.id')
+        ->select('users.*','parent_user.name as p_name','parent_user.last_name as p_last_name','parent_user.phone as p_phone')
+        ->get()->toArray();
+        // dd($sub_users_list);
+        return view('admin.Control-panel.clients-user-list',compact('sub_users_list'));
+    }
+
+    public function updateClientsUser(Request $request){
+        
+        $id = $request->id;
+        $phone = $request->phone;
+        $email = $request->email;
+        $update_status = $satus = 0;
+        $massage = "Somthing Went Wrong ";
+        try {
+            $count_user = User::where('users.id', '<>' , $id)->where('email' , '=' , $email)
+            ->count();
+            if($count_user == 0){
+                $update_user = User::find($id);
+                $update_user->phone = $phone;
+                $update_user->email = $email;
+                $update_status = $update_user->update();
+                if($update_status){
+                    $satus = 1;
+                    $massage = "Record updated successfully ";
+                }
+            }else{
+                $massage = "Email aleady taken can not update!!";
+                $satus = 0;
+            }
+            $response = array(
+                'satus' => $satus,
+                'massage' => $massage,
+            );
+            echo json_encode($response);    
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+
+    }
+    
 }
