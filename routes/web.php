@@ -27,6 +27,7 @@ use App\Http\Controllers\CreativeQcController;
 use App\Http\Controllers\creativeWrc;
 use App\Http\Controllers\EditingAllocationController;
 use App\Http\Controllers\EditingClientARController;
+use App\Http\Controllers\EditingClientFileManagerController;
 use App\Http\Controllers\EditingInvoiceController;
 use App\Http\Controllers\EditingMasterSheetController;
 use App\Http\Controllers\EditingSubmissionController;
