@@ -552,6 +552,9 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/client-user-Cataloging-lots', [UserAssetsController::class, 'clientUserCatalogingLots'])->name('clientUserCatalogingLots');
     Route::get('/client-user-Editing-lots', [UserAssetsController::class, 'clientUserEditingLots'])->name('clientUserEditingLots');
 
+    
+});
+
     /******File Manager routing*******/
     Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImagesYear'])->name('clientRawImagesMgmt');// client raw images mgmt ( images)
     Route::get('/months/lots/{id}', [clientFileManager::class, 'clientRawImages'])->name('clientRawImages');// client raw images lots ( images)
@@ -571,13 +574,14 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/client-user-validation', [ClientUserManagementController::class, 'clientUserValid']);
     Route::post('/save-client-users', [ClientUserManagementController::class, 'saveUserClient']);
     Route::get('/user-management/{id}', [ClientUserManagementController::class, 'edit'])->name('editClientUser');
-});
+
 
 
 
 // route for global search in file manager system
 Route::post('/commonsearch', [clientFileManager::class, 'commonSearch']);
 Route::get('/commonsearch', [clientFileManager::class, 'clientRawImagesYear']);// client raw images mgmt when hit common search
+Route::get('/clientRawImagesYear', [clientFileManager::class, 'clientRawImagesYear'])->name('clientRawImagesYear');//
 Route::get('/downloadlot/{id}', [clientFileManager::class, 'downloadLotData'])->name('downloadLotData');//download lot
 Route::get('/downloadyeardata/{id}', [clientFileManager::class, 'downloadYearData'])->name('downloadDataBasedOnYear');//download year data based 
 Route::get('/downloaddatabasedonmonth/{id}', [clientFileManager::class, 'downloadDataBasedOnMonth'])->name('downloadDataBasedOnMonth');//download month data based 
