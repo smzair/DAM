@@ -532,6 +532,12 @@ Route::post('Editing-client-wrc-AR', [EditingClientARController::class, 'Editing
 
 });
 
+Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
+    Route::get('/clients-user-list', [ClientUserManagementController::class, 'ClientsUserList'])->name('ClientsUserList');
+    Route::post('/Update-clients-user', [ClientUserManagementController::class, 'updateClientsUser'])->name('updateClientsUser');
+    
+});
+
 // Client And Sub Client Accesable route
 Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     // *** New routes  *** //
@@ -568,6 +574,9 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/client-user-validation', [ClientUserManagementController::class, 'clientUserValid']);
     Route::post('/save-client-users', [ClientUserManagementController::class, 'saveUserClient']);
     Route::get('/user-management/{id}', [ClientUserManagementController::class, 'edit'])->name('editClientUser');
+
+
+
 
 // route for global search in file manager system
 Route::post('/commonsearch', [clientFileManager::class, 'commonSearch']);

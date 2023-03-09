@@ -184,6 +184,27 @@
           </li>
           @endrole
 
+          @role('Super Admin|Admin')
+          <li class="nav-item">
+            <a  class="nav-link" style="cursor:pointer;">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Control Panel
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a href="{{route('ClientsUserList')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sub Users List </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          @endrole
+
           @hasanyrole('Client')
           @php
             $parent_client_id = Auth::id();//logged in user id 113
