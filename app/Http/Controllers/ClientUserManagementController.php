@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brands_user;
+use App\Models\ClientActivityLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -100,7 +101,6 @@ class ClientUserManagementController extends Controller
         $parent_photo             =     $check ? $parent_client_data['photo'] : 0;
         $client_id         =     $check ? $parent_client_data['client_id'] : 0;
 
-        // dd(['dam_user_module'=> $dam_user_module, 'oms_user_module'=>$oms_user_module]);
 
         DB::beginTransaction();
         try {   
@@ -118,8 +118,8 @@ class ClientUserManagementController extends Controller
             $user->Gst_number = $parent_Gst_number;
             $user->am_email = $parent_client_am_email;
             $user->parent_client_id = $parent_client_id;
-            $user->dam_enable = $dam_user_module != '' ? 1 : 0;
-            $user->oms_enable = $oms_user_module != '' ? 1 : 0;
+            $user->oms_enable = $oms_user_module != '' ? '1' : '0';
+            $user->dam_enable = $dam_user_module != '' ? '1' : '0';
             $user->dam_module_name = $dam_user_module != '' ? 'DAM' : '';
             $user->oms_module_name = $oms_user_module != '' ? 'OMS' : '';
             $user->password = bcrypt($password);
@@ -127,7 +127,7 @@ class ClientUserManagementController extends Controller
             
             /** create model has role data **/
             $user->assignRole($request->role);
-            $user->save();
+            $user_id = $user->save();
 
             foreach($brand_id_array as $key=>$brand){
                 $createBrandUser = new Brands_user();
@@ -136,10 +136,18 @@ class ClientUserManagementController extends Controller
                 $createBrandUser->save();
             }
 
-            $update_user = User::find($user->id);
-            $update_user->oms_enable = $oms_user_module != '' ? '1' : '0';
-            $update_user->dam_enable = $dam_user_module != '' ? '1' : '0';
-            $update_user->update();
+            if($user_id > 0){
+                $ClientActivityLog = new ClientActivityLog();
+                $ClientActivityLog->log_name = 'Sub Client created';
+                $ClientActivityLog->description = 'App\Models\User';
+                $ClientActivityLog->event = 'Sub Client created';
+                $ClientActivityLog->subject_type = 'App\Models\User';
+                $ClientActivityLog->subject_id = $user_id;
+                $ClientActivityLog->causer_type = 'App\Models\User';
+                $ClientActivityLog->causer_id = Auth::id();
+                $ClientActivityLog->properties = json_encode($request->all());
+                $ClientActivityLog->save();
+            }
 
             DB::commit();
             return response()->json('ok',200);
@@ -150,20 +158,6 @@ class ClientUserManagementController extends Controller
        return response()->json('flase',500);
     }
 
-    public function edit($id){
-        $client_id = Auth::id();
-        $brands = Brands_user::leftJoin('brands', 'brands.id', '=', 'brands_user.brand_id')
-        ->select('*')
-        ->where('user_id', '=', 357)
-        ->whereNotNull('brands.name')
-        ->get()->toArray();
-        $roles= Role::latest()->get();
-        $user_data  = User::where('id',$id)->first();
-        dd($user_data);
-        
-        return view('clients.ClientUserManagement.UserManagement',compact('roles','brands'));
-    }
-    
     public function ClientsUserList(){
         $sub_users_list = User::where('users.parent_client_id', '>' , '0')
         ->leftJoin('users as parent_user' , 'users.parent_client_id','=','parent_user.id')
@@ -186,12 +180,33 @@ class ClientUserManagementController extends Controller
             ->count();
             if($count_user == 0){
                 $update_user = User::find($id);
+                $old = $update_user->getAttributes();
+                
                 $update_user->phone = $phone;
                 $update_user->email = $email;
                 $update_user->name = $name;
                 $update_status = $update_user->update();
+                
                 if($update_status){
                     $satus = 1;
+                    
+                    $updated_user = User::find($id);
+                    $attributes = $updated_user->getAttributes();
+                     $properties = array(
+                        'attributes' => $attributes,
+                        'old' => $old
+                    );
+                    $ClientActivityLog = new ClientActivityLog();
+                    $ClientActivityLog->log_name = 'Sub Client Updated';
+                    $ClientActivityLog->description = 'Sub Client Updated By '.Auth::user()->name;
+                    $ClientActivityLog->event = 'Sub Client Updated';
+                    $ClientActivityLog->subject_type = 'App\Models\User';
+                    $ClientActivityLog->subject_id = $id;
+                    $ClientActivityLog->causer_type = 'App\Models\User';
+                    $ClientActivityLog->causer_id = Auth::id();
+                    $ClientActivityLog->properties = json_encode($properties);
+                    $ClientActivityLog->save();
+
                     $massage = "Record updated successfully ";
                 }
             }else{
