@@ -24,6 +24,13 @@
                                             <ul>
                                             <li><a href="{{route('editorDownloadDataBasedOnMonth', ['id' => $object->month.'-'.$year])}}">Download</a></li>
                                             </ul>
+                                            <ul>
+                                                <li>
+                                                    <a href="#" onclick="copyToClipboard('{{route('editorDownloadDataBasedOnMonth', ['id' => $object->month.'-'.$year])}}'); return false;">
+                                                        Copy Link
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div class="about">
                                             <span>{{ $object->month }}</span>

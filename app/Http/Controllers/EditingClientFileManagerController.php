@@ -453,8 +453,10 @@ class EditingClientFileManagerController extends Controller
 
     // download data based on sku
     public function editorDownloadDataBasedOnSku(Request $request, $id){ 
-
+        // dd($id);
         $sku_id = $id;
+        $adaptation_data = editorSubmission::where('sku_id',$sku_id)->first(['adaptation']);
+        $adaptation = $adaptation_data != null ? $adaptation_data['adaptation'] : "-";
         $sku_data = Skus::where('id',$sku_id )->first(['lot_id','wrc_id','sku_code']);
         // dd($sku_id);
         $sku_code = $sku_data != null ? $sku_data['sku_code'] : "-";
@@ -471,8 +473,8 @@ class EditingClientFileManagerController extends Controller
 
         $fileName = $sku_code . ".zip";
 
-        $path=  "edited_img_directory/". date('Y', strtotime($wrc_created_at)) . "/" . date('M', strtotime($wrc_created_at)) . "/" . $lot_no."/". $wrc_no."/". $sku_code ;
-
+        $path=  "edited_img_directory/". date('Y', strtotime($wrc_created_at)) . "/" . date('M', strtotime($wrc_created_at)) . "/" . $lot_no."/". $wrc_no."/". $adaptation."/". $sku_code  ;
+        // dd($path);
 
         $zip = new ZipArchive;
 

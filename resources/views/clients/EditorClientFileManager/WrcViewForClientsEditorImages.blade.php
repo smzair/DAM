@@ -20,6 +20,13 @@
                                                 <ul>
                                                 <li><a href="{{route('editorDownloadDataBasedOnWrc', ['id' => $object->id])}}">Download</a></li>
                                                 </ul>
+                                                <ul>
+                                                    <li>
+                                                        <a href="#" onclick="copyToClipboard('{{route('editorDownloadDataBasedOnWrc', ['id' => $object->id])}}'); return false;">
+                                                            Copy Link
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </div>
                                             <div class="about">
                                                 <span>{{ $object->wrc_id }}</span>

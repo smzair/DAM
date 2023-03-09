@@ -20,6 +20,13 @@
                                                     <ul>
                                                     <li><a href="{{route('downloadAdaptationData', ['id' => $object->adaptation.'-'.$object->sku_id])}}">Download</a></li>
                                                     </ul>
+                                                    <ul>
+                                                        <li>
+                                                            <a href="#" onclick="copyToClipboard('{{route('downloadAdaptationData', ['id' => $object->adaptation.'-'.$object->sku_id])}}'); return false;">
+                                                                Copy Link
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                                 <div class="about">
                                                     <span>{{ $object->adaptation }}</span>

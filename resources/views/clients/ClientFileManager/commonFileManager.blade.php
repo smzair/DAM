@@ -161,5 +161,18 @@
                 window.location.href = link;
             }
         </script>
+          {{-- script for copy url --}}
+        <script>
+            function copyToClipboard(text) {
+                console.log('text', text)
+                var dummy = document.createElement("textarea");
+                document.body.appendChild(dummy);
+                dummy.value = text;
+                dummy.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummy);
+                alert("Download Url copied to clipboard!");
+            }
+            </script>
     @endsection
 @endsection
