@@ -178,6 +178,7 @@ class ClientUserManagementController extends Controller
         $id = $request->id;
         $phone = $request->phone;
         $email = $request->email;
+        $name = $request->name;
         $update_status = $satus = 0;
         $massage = "Somthing Went Wrong ";
         try {
@@ -187,6 +188,7 @@ class ClientUserManagementController extends Controller
                 $update_user = User::find($id);
                 $update_user->phone = $phone;
                 $update_user->email = $email;
+                $update_user->name = $name;
                 $update_status = $update_user->update();
                 if($update_status){
                     $satus = 1;

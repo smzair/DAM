@@ -55,9 +55,9 @@ Sub Clients
                                 </div>
                             </div>
                             <div class="col-lg-5 col-md-6 col-sm-12">
-                                <div class="card-tools float-md-right float-sm-none ml-md-0 mr-0 ml-sm-0 mt-sm-1 float-none ml-xs-0 mt-1">
+                                {{-- <div class="card-tools float-md-right float-sm-none ml-md-0 mr-0 ml-sm-0 mt-sm-1 float-none ml-xs-0 mt-1">
                                     <a class="btn btn-xs float-left align-middle mt-0 mr-2 py-1 px-2 mb-1" href="{{route('CREATECATLOGWRC')}}" style="position: relative; top: 2px;">Add New WRC</a>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -120,12 +120,12 @@ Sub Clients
             <div class="modal-body">
                 <div class="custom-dt-row wrc-details mb-3">
                     <div class="row mb-3">
-                        <div class="col-sm-4 col-6">
+                        {{-- <div class="col-sm-4 col-6">
                             <div class="col-ac-details">
                                 <h6>Name</h6>
                                 <p id="name"></p>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-sm-4 col-6">
                             <div class="col-ac-details">
                                 <h6>Company Name</h6>
@@ -145,6 +145,13 @@ Sub Clients
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
+                               <label class="control-label w-100 required" for="name">name<span style="color: red">*</span></label>
+                               <input class="form-control" type="text" name="name" id="name" onkeypress="return isAlphabet(event)" onkeyup="return isAlphabet(event)">
+                               <p class="error" style="display: none;"  id="name_err"></p>
+                           </div>
+                       </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
                                <label class="control-label w-100 required" for="email">Email<span style="color: red">*</span></label>
                                <input class="form-control" type="text" name="email" id="email">
                                <p class="error" style="display: none;"  id="email_err"></p>
@@ -153,7 +160,7 @@ Sub Clients
                         <div class="col-sm-4">
                             <div class="form-group">
                                <label class="control-label w-100 required" for="phone">Phone<span style="color: red">*</span></label>
-                               <input class="form-control" type="text" name="phone" id="phone">
+                               <input class="form-control" type="text" name="phone" id="phone" onkeypress="return isNumber(event)" onkeypress="return isNumber(event)">
                                <p class="error" style="display: none;"  id="phone_err"></p>
                            </div>
                        </div>
@@ -161,7 +168,7 @@ Sub Clients
                         <div class="col-sm-12 col-12" style="text-align: end">
                             <input id="id" name="id" type="hidden" value="">
                             <input id="key" name="key" type="hidden" value="">
-                            <button class="btn btn-warning" onclick="saveData()" >Update</button>
+                            <button id="btnUpdate" class="btn btn-warning" onclick="saveData()" >Update</button>
                             <span class="msg_box" id="msg_box1" style="color: red; display: none;"></span>
                             <span class="msg_box" id="msg_box2" style="color: red; display: none;"></span>
                         </div>
@@ -201,6 +208,7 @@ Sub Clients
 {{-- setvalue to model --}}
 <script>
     async function setvalue(key){
+        $(".error").css("display", "none");
         const name = document.querySelector("#name"+key).innerHTML
         const p_name = document.querySelector("#p_name"+key).innerHTML
         const Company = document.querySelector("#Company"+key).innerHTML
@@ -209,7 +217,7 @@ Sub Clients
         const phone = document.querySelector("#phone"+key).innerHTML
         const user_id = document.querySelector("#user_id"+key).value
 
-        document.querySelector('#name').innerHTML = name
+        document.querySelector('#name').value = name
         document.querySelector('#Company').innerHTML = Company
         document.querySelector('#client_id').innerHTML = client_id
         document.querySelector('#email').value = email
@@ -223,11 +231,19 @@ Sub Clients
 <script>
     const saveData = async () => {
         $(".error").css("display", "none");
+        document.querySelector("#btnUpdate").innerHTML = "Updating..."
+        
         const id =  document.querySelector("#id").value 
         const key_is =  document.querySelector("#key").value 
         const phone =  document.querySelector("#phone").value 
         const email =  document.querySelector("#email").value 
+        const name =  document.querySelector("#name").value 
         let error = 0;
+        if(name == ''){
+          $('[name="name"]').parents('.form-group').find('.error').text('Name can not be empty!');
+          error = 1
+        } 
+        
         if(phone == ''){
           $('[name="phone"]').parents('.form-group').find('.error').text('Phone Number can not be empty!');
           error = 1
@@ -235,8 +251,9 @@ Sub Clients
           $('[name="phone"]').parents('.form-group').find('.error').text('Please enter valid phone number!');
           error = 1
         }
+
         if(email == ''){
-          $('[name="email"]').parents('.form-group').find('.error').text('Email Id can not be empty!');
+            $('[name="email"]').parents('.form-group').find('.error').text('Email Id can not be empty!');
           error = 1
         }else if(!validateEmail(email)){
           $('[name="email"]').parents('.form-group').find('.error').text('Not a vailid Email');
@@ -244,6 +261,7 @@ Sub Clients
         }
 
         if(error == 1){
+            document.querySelector("#btnUpdate").innerHTML = "Update"
             $(".error").css("display", "block");
             return 
         }
@@ -255,12 +273,16 @@ Sub Clients
                 id,
                 phone,
                 email,
+                name,
                 _token: '{{ csrf_token() }}'
             },
             success: function(res) {
+                document.querySelector("#btnUpdate").innerHTML = "Update"
+
                 if(res.satus == 1){
                     document.querySelector("#phone"+key_is).innerHTML = phone
                     document.querySelector("#email"+key_is).innerHTML = email
+                    document.querySelector("#name"+key_is).innerHTML = name
                     $("#msg_box2").css("color", "green");
                 }else{
                     $("#msg_box2").css("color", "red");
