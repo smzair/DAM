@@ -22,7 +22,16 @@
                                             <!-- Popup container -->
                                             <div id="popup-container-{{ $key }}" class="popup-container">
                                                 <ul>
-                                                <li><a href="{{route('downloadDataBasedOnYear', ['id' => $object->year])}}">Download</a></li>
+                                                    <li>
+                                                        <a href="{{route('downloadDataBasedOnYear', ['id' => $object->year])}}">Download</a>
+                                                    </li>
+                                                </ul>
+                                                <ul>
+                                                    <li>
+                                                        <a href="#" onclick="copyToClipboard('{{ route('downloadDataBasedOnYear', ['id' => $object->year]) }}'); return false;">
+                                                            Copy Link
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                             <div class="about">
@@ -75,3 +84,6 @@
       }
     @endforeach
   </script>
+
+
+ 

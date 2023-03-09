@@ -20,6 +20,13 @@
                                                     <ul>
                                                     <li><a href="{{route('editorDownloadDataBasedOnSku', ['id' => $object->id])}}">Download</a></li>
                                                     </ul>
+                                                    <ul>
+                                                        <li>
+                                                            <a href="#" onclick="copyToClipboard('{{route('editorDownloadDataBasedOnSku', ['id' => $object->id])}}'); return false;">
+                                                                Copy Link
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                                 <div class="about">
                                                     <span>{{ $object->sku_code }}</span>
