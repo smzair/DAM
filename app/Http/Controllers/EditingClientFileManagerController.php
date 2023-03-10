@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClientActivityLog;
 use App\Models\editorSubmission;
 use App\Models\Lots;
 use App\Models\Skus;
@@ -33,7 +34,21 @@ class EditingClientFileManagerController extends Controller
                     ->orderBy('created_at', 'DESC')
                     ->groupBy('year')
                     ->get();
-        // dd($all_years);   
+        // dd($all_years);
+        if($all_years != null){
+            $all_data_in_arr = $all_years->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Editing', 
+            'description' => count($all_data_in_arr).' Years Listed',
+            'event' => 'Shoot Editing Year List', 
+            'subject_type' => 'App\Models\editorSubmission', 
+            'subject_id' => '0', 
+            'properties' => $all_data_in_arr, 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);   
         return view('clients.EditorClientFileManager.commonFileManager',compact('all_years','monthly_data','year','lotData','wrc_data','sku_data','file_data','previousUrl','adaptation_data'));
     }
 
@@ -54,6 +69,21 @@ class EditingClientFileManagerController extends Controller
             ->groupBy(DB::raw('DATE_FORMAT(created_at, "%b")'))
             ->orderBy(DB::raw('MONTH(created_at)'), 'ASC')
             ->get();
+
+        if($monthly_data != null){
+            $all_data_in_arr = $monthly_data->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Editing', 
+            'description' => count($all_data_in_arr).' Months Listed for '.$year,
+            'event' => 'Shoot Editing Month List', 
+            'subject_type' => 'App\Models\editorSubmission', 
+            'subject_id' => '0', 
+            'properties' => $all_data_in_arr, 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);   
         return view('clients.EditorClientFileManager.commonFileManager',compact('monthly_data','year','all_years','lotData','wrc_data','sku_data','file_data','previousUrl','adaptation_data'));
     }
 
@@ -90,6 +120,21 @@ class EditingClientFileManagerController extends Controller
                     ->whereMonth('lots.created_at', '=', $month)
                     ->whereYear('lots.created_at', '=', $year);
         })->select('lots.*')->get();
+
+        if($lotData != null){
+            $all_data_in_arr = $lotData->pluck('lot_id','id')->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Editing', 
+            'description' => count($all_data_in_arr).' Lots Listed in '.$dateString,
+            'event' => 'Shoot Editing Lots List', 
+            'subject_type' => 'App\Models\Lots', 
+            'subject_id' => '0', 
+            'properties' => [$all_data_in_arr], 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
         return view('clients.EditorClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl','adaptation_data'));
     }
 
@@ -108,6 +153,20 @@ class EditingClientFileManagerController extends Controller
 
         $logged_in_user_id = Auth::id();
         $wrc_data = Wrc::where('lot_id',$lot_id)->where('user_id',$logged_in_user_id)->get();
+        if($wrc_data != null){
+            $all_data_in_arr = $wrc_data->pluck('wrc_id','id')->toArray();
+        }else{
+            $all_data_in_arr = '';
+        }
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Editing', 
+            'description' => count($wrc_data).' Wrc Data viewed for lot_id '.$lot_id,
+            'event' => 'Shoot Editing Wrc List', 
+            'subject_type' => 'App\Models\Wrc', 
+            'subject_id' => '0', 
+            'properties' => [$all_data_in_arr], 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
         return view('clients.EditorClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl','adaptation_data'));
     }
 
@@ -134,6 +193,20 @@ class EditingClientFileManagerController extends Controller
                   ->select('editor_submission.*')
                   ->get();
 
+        if($adaptation_data != null){
+            $all_data_in_arr = $adaptation_data->pluck('adaptation','id')->toArray();
+        }else{
+            $all_data_in_arr = '';
+        }   
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Editing', 
+            'description' => count($adaptation_data).' adaptation for wrc_id '.$wrc_id,
+            'event' => 'Shoot Editing adaptation List', 
+            'subject_type' => 'App\Models\Skus', 
+            'subject_id' => '0', 
+            'properties' => [$all_data_in_arr], 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
 
         return view('clients.EditorClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl','adaptation_data'));
 
@@ -252,6 +325,20 @@ class EditingClientFileManagerController extends Controller
 
 
         // dd($sku_data);
+        if($sku_data != null){
+            $all_data_in_arr = $sku_data->pluck('adaptation','id')->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }   
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Editing', 
+            'description' => count($sku_data).' skus viewed for adaptation '.$id,
+            'event' => 'Shoot Editing skus List', 
+            'subject_type' => 'App\Models\editorSubmission', 
+            'subject_id' => '0', 
+            'properties' => [], 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
         // Skus::where('wrc_id',$wrc_id)->where('user_id',$logged_in_user_id)->get();
 
         return view('clients.EditorClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl','adaptation_data'));
@@ -530,3 +617,5 @@ class EditingClientFileManagerController extends Controller
         }
     }
 }
+
+?>
