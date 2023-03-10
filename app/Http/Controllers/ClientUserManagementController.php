@@ -142,7 +142,7 @@ class ClientUserManagementController extends Controller
                 $ClientActivityLog->description = 'App\Models\User';
                 $ClientActivityLog->event = 'Sub Client created';
                 $ClientActivityLog->subject_type = 'App\Models\User';
-                $ClientActivityLog->subject_id = $user_id;
+                $ClientActivityLog->subject_id = $user->id;
                 $ClientActivityLog->causer_type = 'App\Models\User';
                 $ClientActivityLog->causer_id = Auth::id();
                 $ClientActivityLog->properties = json_encode($request->all());

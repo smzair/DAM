@@ -1,6 +1,6 @@
 @extends('layouts.ClientMain')
 @section('title')
-  Client Dashboard
+  Creative Shoot
 @endsection
 @section('css_links')
 	<link rel="stylesheet" href="">	

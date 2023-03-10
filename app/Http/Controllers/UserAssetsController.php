@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CatalogUploadLinks;
+use App\Models\ClientActivityLog;
 use App\Models\CreativeUploadLink;
 use App\Models\CreatLots;
 use App\Models\EditorLotModel;
@@ -70,6 +71,17 @@ class UserAssetsController extends Controller
                 $lots[$key]['editor_submission_count'] = $editor_submission_count;
             }
         // dd($lots);
+        $properties = [];
+        $ClientActivityLog = new ClientActivityLog();
+        $ClientActivityLog->log_name = 'Your Assets - Lot View';
+        $ClientActivityLog->description = count($lots).' Data viewed';
+        $ClientActivityLog->event = 'Shoot lots view';
+        $ClientActivityLog->subject_type = 'App\Models\Lots';
+        // $ClientActivityLog->subject_id = $user->id;
+        $ClientActivityLog->causer_type = 'App\Models\User';
+        $ClientActivityLog->causer_id = Auth::id();
+        $ClientActivityLog->properties = json_encode($properties);
+        $ClientActivityLog->save();
         return view('clients.ClientAssets.client-user-shoot-lots', compact('lots'));
     }
 
@@ -128,6 +140,17 @@ class UserAssetsController extends Controller
             $lots[$key]['wrcUploadLinks_count'] = $wrcUploadLinks_count;
         }
         // dd($lots);
+        $properties = [];
+        $ClientActivityLog = new ClientActivityLog();
+        $ClientActivityLog->log_name = 'Your Assets - Lot View';
+        $ClientActivityLog->description = count($lots).' Data viewed';
+        $ClientActivityLog->event = 'Creative lots view';
+        $ClientActivityLog->subject_type = 'App\Models\CreatLots';
+        // $ClientActivityLog->subject_id = $user->id;
+        $ClientActivityLog->causer_type = 'App\Models\User';
+        $ClientActivityLog->causer_id = Auth::id();
+        $ClientActivityLog->properties = json_encode($properties);
+        $ClientActivityLog->save();
         return view('clients.ClientAssets.client-user-creative-lots', compact('lots'));
     }
 
@@ -185,6 +208,17 @@ class UserAssetsController extends Controller
             $lots[$key]['wrcUploadLinks_count'] = $wrcUploadLinks_count;
         }
         // dd($lots);
+        $properties = [];
+        $ClientActivityLog = new ClientActivityLog();
+        $ClientActivityLog->log_name = 'Your Assets - Lot View';
+        $ClientActivityLog->description = count($lots).' Data viewed';
+        $ClientActivityLog->event = 'Catalog lots view';
+        $ClientActivityLog->subject_type = 'App\Models\LotsCatalog';
+        // $ClientActivityLog->subject_id = $user->id;
+        $ClientActivityLog->causer_type = 'App\Models\User';
+        $ClientActivityLog->causer_id = Auth::id();
+        $ClientActivityLog->properties = json_encode($properties);
+        $ClientActivityLog->save();
         return view('clients.ClientAssets.client-user-Cataloging-lots', compact('lots'));
     }
 
@@ -229,6 +263,19 @@ class UserAssetsController extends Controller
             $lots[$key]['totUploadRawImage'] = $totUploadRawImage;
             $lots[$key]['tot_submission_count'] = $tot_submission_count;
         }
+
+        $properties = [];
+        $ClientActivityLog = new ClientActivityLog();
+        $ClientActivityLog->log_name = 'Your Assets - Lot View';
+        $ClientActivityLog->description = count($lots).' Data viewed';
+        $ClientActivityLog->event = 'Editor lots view';
+        $ClientActivityLog->subject_type = 'App\Models\EditorLotModel';
+        // $ClientActivityLog->subject_id = $user->id;
+        $ClientActivityLog->causer_type = 'App\Models\User';
+        $ClientActivityLog->causer_id = Auth::id();
+        $ClientActivityLog->properties = json_encode($properties);
+        $ClientActivityLog->save();
+
         return view('clients.ClientAssets.client-user-editing-lots', compact('lots'));
     }
 }

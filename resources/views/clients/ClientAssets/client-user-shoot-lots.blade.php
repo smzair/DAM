@@ -1,6 +1,6 @@
 @extends('layouts.ClientMain')
 @section('title')
-  Client Dashboard
+  Shoot Lots
 @endsection
 @section('css_links')
 	<link rel="stylesheet" href="">	
@@ -40,7 +40,7 @@
                         @endphp
                         <tr>
                             <td width="5%" class="pl-3">{{$index +1 }}</td>
-                            <td><a href="{{route('client-raw-images-mgmt' , ['id' => $row['id']])}}">{{$row['lot_id']}}</a> </td>
+                            <td><a href="{{route('clientEditorImagesWrcs' , ['id' => $row['id']])}}">{{$row['lot_id']}}</a> </td>
                             <td>{{ date('d-m-Y h:i A' ,strtotime($row['created_at']))}}</td>
                             <td>{{$row['s_type']}}</td>
                             <td style="position: relative;">
@@ -48,7 +48,9 @@
                                  <span class="dropdown-toggle d-inline-block ed-wrc-cnt" onclick="showhideli({{ $index }})"  style="cursor: pointer;"> {{$row['shoot_wrc_count']}}</span>
                                  <div id="wrcInfo{{ $index }}" style="display: none; padding: 5px 20px; border: 2px #cbbebe95 solid; box-shadow: 4px 4px 10px #aaa; position: absolute;border-radius: 8px;background: #f6f3f3;color: #333;z-index:99999">
                                          @foreach($get_shoot_wrc as $wrc_key => $wrc_number_arr)
-                                             <p class="" style="cursor: pointer;">{{$wrc_number_arr['wrc_id']}}</p>
+                                            <a style="text-decoration: none;color: #333;" href="{{route('client-editor-images-skus' , ['id' => $wrc_number_arr['id']])}}" >
+                                                <p class="" style="cursor: pointer;">{{$wrc_number_arr['wrc_id']}}</p>
+                                            </a>
                                          @endforeach
                                  </div>
                                 @endif
@@ -58,10 +60,10 @@
                             <td>{{$editor_submission_count}}</td>
                             <td>
                                 @if ($shootTotUploadRawImage > 0)
-                                    <a class="btn btn-primary" href="#">Download Raw Image</a>
+                                    <a class="btn btn-primary" href="{{route('client-raw-images-mgmt' , ['id' => $row['id']])}}">Download Raw Image</a>
                                 @endif
                                 @if ($editor_submission_count > 0)
-                                    <a class="btn btn-warning" href="#">Edited Raw Image</a>
+                                    <a class="btn btn-warning" href="{{route('clientEditorImagesWrcs' , ['id' => $row['id']])}}">Edited Raw Image</a>
                                 @endif
                             </td>
                         </tr>
