@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClientActivityLog;
 use App\Models\Lots;
 use App\Models\Skus;
 use App\Models\uploadraw;
@@ -42,7 +43,21 @@ class clientFileManager extends Controller
                     ->orderBy('created_at', 'DESC')
                     ->groupBy('year')
                     ->get();
-        // dd($all_years);   
+        // dd($all_years);
+        if($all_years != null){
+            $all_data_in_arr = $all_years->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Raw', 
+            'description' => count($all_data_in_arr).' Years Listed',
+            'event' => 'Shoot Raw Year List', 
+            'subject_type' => 'App\Models\editorSubmission', 
+            'subject_id' => '0', 
+            'properties' => $all_data_in_arr, 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);     
         return view('clients.ClientFileManager.commonFileManager',compact('all_years','monthly_data','year','lotData','wrc_data','sku_data','file_data','previousUrl'));
     }
 
@@ -61,6 +76,21 @@ class clientFileManager extends Controller
             ->groupBy(DB::raw('DATE_FORMAT(created_at, "%b")'))
             ->orderBy(DB::raw('MONTH(created_at)'), 'ASC')
             ->get();
+        if($monthly_data != null){
+            $all_data_in_arr = $monthly_data->pluck('month')->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Raw image', 
+            'description' => count($all_data_in_arr).' Months Listed for '.$year,
+            'event' => 'Shoot Raw image Month List', 
+            'subject_type' => 'App\Models\editorSubmission', 
+            'subject_id' => '0', 
+            'properties' => $all_data_in_arr, 
+        );
+        // dd($all_data_in_arr , $data_array);
+        ClientActivityLog::saveClient_activity_logs($data_array); 
         return view('clients.ClientFileManager.commonFileManager',compact('monthly_data','year','all_years','lotData','wrc_data','sku_data','file_data','previousUrl'));
     }
 
@@ -95,6 +125,20 @@ class clientFileManager extends Controller
                     ->whereMonth('lots.created_at', '=', $month)
                     ->whereYear('lots.created_at', '=', $year);
         })->select('lots.*')->get();
+        if($lotData != null){
+            $all_data_in_arr = $lotData->pluck('lot_id','id')->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Raw images', 
+            'description' => count($all_data_in_arr).' Lots Listed in '.$dateString,
+            'event' => 'Shoot Raw images Lots List', 
+            'subject_type' => 'App\Models\Lots', 
+            'subject_id' => '0', 
+            'properties' => [$all_data_in_arr], 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
         return view('clients.ClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl'));
     }
 
@@ -111,6 +155,20 @@ class clientFileManager extends Controller
 
         $logged_in_user_id = Auth::id();
         $wrc_data = Wrc::where('lot_id',$lot_id)->where('user_id',$logged_in_user_id)->get();
+        if($wrc_data != null){
+            $all_data_in_arr = $wrc_data->pluck('wrc_id','id')->toArray();
+        }else{
+            $all_data_in_arr = '';
+        }
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Raw Images', 
+            'description' => count($wrc_data).' Wrc Data viewed for lot_id '.$lot_id,
+            'event' => 'Shoot Raw Images Wrc List', 
+            'subject_type' => 'App\Models\Wrc', 
+            'subject_id' => '0', 
+            'properties' => [$all_data_in_arr], 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
         return view('clients.ClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl'));
     }
 
@@ -127,6 +185,21 @@ class clientFileManager extends Controller
 
         $logged_in_user_id = Auth::id();
         $sku_data = Skus::where('wrc_id',$wrc_id)->where('user_id',$logged_in_user_id)->get();
+
+        if($sku_data != null){
+            $all_data_in_arr = $sku_data->pluck('sku_code','id')->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }   
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Raw Images', 
+            'description' => count($sku_data).' skus viewed for adaptation '.$id,
+            'event' => 'Shoot Raw Images skus List', 
+            'subject_type' => 'App\Models\Skus', 
+            'subject_id' => '0', 
+            'properties' => [$all_data_in_arr], 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
         return view('clients.ClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl'));
 
     }
@@ -163,7 +236,21 @@ class clientFileManager extends Controller
             'sku.sku_code'
         )
         ->get();
-        // dd($file_data);
+        if($file_data != null){
+            $all_data_in_arr = $file_data->pluck('filename','id')->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }   
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Raw Images', 
+            'description' => count($file_data).' Uploaded image viewed for sku '.$id,
+            'event' => 'Shoot Raw Images List', 
+            'subject_type' => 'App\Models\Skus', 
+            'subject_id' => '0', 
+            'properties' => [$all_data_in_arr], 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
+        // dd($data_array , $all_data_in_arr);
         return view('clients.ClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl'));
     }
     // download lot data zip folder
