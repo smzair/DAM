@@ -253,6 +253,7 @@ class clientFileManager extends Controller
         // dd($data_array , $all_data_in_arr);
         return view('clients.ClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl'));
     }
+    
     // download lot data zip folder
     public function downloadLotData(Request $request, $id){ 
         // dd($id);
@@ -277,6 +278,19 @@ class clientFileManager extends Controller
                 $this->addContent($zip, $path);
                 $zip->close();
     
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Raw Images Download', 
+                    'description' => 'Shoot Lot Raw Images Download for lot_no '.$lot_no,
+                    'event' => 'Shoot Lot Raw Images Download', 
+                    'subject_type' => 'App\Models\Lots', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
                 return abort(404, "Sorry, File does not exist in our server or may have been deleted!");
@@ -290,17 +304,29 @@ class clientFileManager extends Controller
     public function downloadYearData(Request $request, $id){ 
         // dd($id);
         $year = $id; // lot id
-        $fileName = $year . ".zip";
-
+        $fileName = $year . ".zip"; 
         $path=  "raw_img_directory/". $year;
-
-
         $zip = new ZipArchive;
-
+        
         if ($zip->open($fileName, ZipArchive::CREATE) === TRUE) {
             if (file_exists($path)) {
                 $this->addContent($zip, $path);
                 $zip->close();
+
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Raw Images Download', 
+                    'description' => 'Shoot Lot Raw Images Download for year '.$year,
+                    'event' => 'Shoot Lot Raw Images Download', 
+                    'subject_type' => '', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
+    
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
                 return abort(404, "Sorry, File does not exist in our server or may have been deleted!");
@@ -333,6 +359,19 @@ class clientFileManager extends Controller
             if (file_exists($path)) {
                 $this->addContent($zip, $path);
                 $zip->close();
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Raw Images Download', 
+                    'description' => 'Shoot Lot Raw Images Download for wrc_no '.$wrc_no,
+                    'event' => 'Shoot Lot Raw Images Download', 
+                    'subject_type' => 'App\Models\Wrc', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
     
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
@@ -361,6 +400,19 @@ class clientFileManager extends Controller
             if (file_exists($path)) {
                 $this->addContent($zip, $path);
                 $zip->close();
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Raw Images Download', 
+                    'description' => 'Shoot Lot Raw Images Download for year_month '.$year_month,
+                    'event' => 'Shoot Lot Raw Images Download', 
+                    'subject_type' => '', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
                 return abort(404, "Sorry, File does not exist in our server or may have been deleted!");
@@ -399,7 +451,21 @@ class clientFileManager extends Controller
             if (file_exists($path)) {
                 $this->addContent($zip, $path);
                 $zip->close();
-    
+                
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Raw Images Download', 
+                    'description' => 'Shoot Lot Raw Images Download for sku_code '.$sku_code,
+                    'event' => 'Shoot Lot Raw Images Download', 
+                    'subject_type' => 'App\Models\Skus', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
+
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
                 return abort(404, "Sorry, File does not exist in our server or may have been deleted!");
