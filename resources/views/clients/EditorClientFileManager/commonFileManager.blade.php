@@ -167,14 +167,30 @@
         </script>
          {{-- script for copy url --}}
          <script>
-            function copyToClipboard(text) {
+            async function copyToClipboard(text, action='Not Define') {
                 console.log('text', text)
+                console.log('action', action)
                 var dummy = document.createElement("textarea");
                 document.body.appendChild(dummy);
                 dummy.value = text;
                 dummy.select();
                 document.execCommand("copy");
                 document.body.removeChild(dummy);
+                await $.ajax({
+                    url: "{{ url('Client-user-activty-log') }}",
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        text,
+                        action,
+                        module: 'Shoot Edited Image',
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(res) {
+                        console.log(res)
+                    }
+                });
+                
                 alert("Download Url copied to clipboard!");
             }
             </script>

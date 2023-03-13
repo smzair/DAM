@@ -22,7 +22,7 @@
                                                 </ul>
                                                 <ul>
                                                     <li>
-                                                        <a href="#" onclick="copyToClipboard('{{route('downloadDataBasedOnWrc', ['id' => $object->id])}}'); return false;">
+                                                        <a href="#" onclick="copyToClipboard('{{route('downloadDataBasedOnWrc', ['id' => $object->id])}}','wrc'); return false;">
                                                             Copy Link
                                                         </a>
                                                     </li>
