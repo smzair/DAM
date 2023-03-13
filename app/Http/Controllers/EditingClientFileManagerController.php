@@ -378,6 +378,20 @@ class EditingClientFileManagerController extends Controller
         )
         ->get();
         // dd($file_data);
+        if($file_data != null){
+            $all_data_in_arr = $file_data->pluck('adaptation','id')->toArray();
+        }else{
+            $all_data_in_arr = [];
+        }   
+        $data_array = array(
+            'log_name' => 'File Manger - Shoot Editing', 
+            'description' => count($file_data).' images viewed for sku_id '.$id,
+            'event' => 'Shoot Editing images List', 
+            'subject_type' => 'App\Models\editorSubmission', 
+            'subject_id' => '0', 
+            'properties' => [], 
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
         return view('clients.ClientFileManager.commonFileManager',compact('lotData','all_years','monthly_data','year','wrc_data','sku_data','file_data','previousUrl'));
     }
 
@@ -396,6 +410,20 @@ class EditingClientFileManagerController extends Controller
             if (file_exists($path)) {
                 $this->addContent($zip, $path);
                 $zip->close();
+                
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Edited Images Download', 
+                    'description' => 'Shoot Lot Edited Images Download for year '.$year,
+                    'event' => 'Shoot Lot Edited Images Download', 
+                    'subject_type' => '', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
                 return abort(404, "Sorry, File does not exist in our server or may have been deleted!");
@@ -423,6 +451,20 @@ class EditingClientFileManagerController extends Controller
             if (file_exists($path)) {
                 $this->addContent($zip, $path);
                 $zip->close();
+                
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Edited Images Download', 
+                    'description' => 'Shoot Lot Edited Images Download for year-month '.$year_month,
+                    'event' => 'Shoot Lot Edited Images Download', 
+                    'subject_type' => '', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
                 return abort(404, "Sorry, File does not exist in our server or may have been deleted!");
@@ -456,6 +498,19 @@ class EditingClientFileManagerController extends Controller
                 $this->addContent($zip, $path);
                 $zip->close();
     
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Edited Images Download', 
+                    'description' => 'Shoot Lot Edited Images Download for lot_no '.$lot_no,
+                    'event' => 'Shoot Lot Edited Images Download', 
+                    'subject_type' => 'App\Models\Lots', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
                 return abort(404, "Sorry, File does not exist in our server or may have been deleted!");
@@ -488,6 +543,20 @@ class EditingClientFileManagerController extends Controller
             if (file_exists($path)) {
                 $this->addContent($zip, $path);
                 $zip->close();
+
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Edited Images Download', 
+                    'description' => 'Shoot Lot Edited Images Download for wrc_no '.$wrc_no,
+                    'event' => 'Shoot Lot Edited Images Download', 
+                    'subject_type' => 'App\Models\Wrc', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
     
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
@@ -529,6 +598,20 @@ class EditingClientFileManagerController extends Controller
             if (file_exists($path)) {
                 $this->addContent($zip, $path);
                 $zip->close();
+                
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Edited Images Download', 
+                    'description' => 'Shoot Lot Edited Images Download for adaptation - code '.$id,
+                    'event' => 'Shoot Lot Edited Images Download', 
+                    'subject_type' => 'App\Models\Skus', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
     
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {
@@ -569,6 +652,19 @@ class EditingClientFileManagerController extends Controller
             if (file_exists($path)) {
                 $this->addContent($zip, $path);
                 $zip->close();
+                $all_data_in_arr = array(
+                    'fileName' => $fileName,
+                    'path' => $path,
+                );
+                $data_array = array(
+                    'log_name' => 'File Manger - Shoot Edited Images Download', 
+                    'description' => 'Shoot Lot Edited Images Download for sku_code '.$sku_code,
+                    'event' => 'Shoot Lot Edited Images Download', 
+                    'subject_type' => 'App\Models\Skus', 
+                    'subject_id' => '0', 
+                    'properties' => [$all_data_in_arr], 
+                );
+                ClientActivityLog::saveClient_activity_logs($data_array);
     
                 return response()->download($fileName)->deleteFileAfterSend(true);
             } else {

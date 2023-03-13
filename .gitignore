@@ -6,6 +6,7 @@
 /public/editing_raw_img_uploads/
 /public/edited_img_uploads/
 raw_img_directory
+edited_img_directory
 .env
 .env.backup
 .phpunit.result.cache
