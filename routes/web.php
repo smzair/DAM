@@ -535,6 +535,7 @@ Route::post('Editing-client-wrc-AR', [EditingClientARController::class, 'Editing
 Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
     Route::get('/clients-user-list', [ClientUserManagementController::class, 'ClientsUserList'])->name('ClientsUserList');
     Route::post('/Update-clients-user', [ClientUserManagementController::class, 'updateClientsUser'])->name('updateClientsUser');
+    Route::get('/clients-activity-log', [ClientUserManagementController::class, 'ClientsActivityLog'])->name('ClientsActivityLog');
     
 });
 
@@ -574,6 +575,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/client-user-validation', [ClientUserManagementController::class, 'clientUserValid']);
     Route::post('/save-client-users', [ClientUserManagementController::class, 'saveUserClient']);
     Route::get('/user-management/{id}', [ClientUserManagementController::class, 'edit'])->name('editClientUser');
+    Route::post('/Client-user-activty-log', [ClientUserManagementController::class, 'saveUserActivty']);
 
 
 

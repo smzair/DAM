@@ -223,5 +223,57 @@ class ClientUserManagementController extends Controller
         }
 
     }
+   
+
+    public function ClientsActivityLog(){
+        $sub_users_list = ClientActivityLog::
+        leftJoin('brands_user' , 'brands_user.user_id','=','client_activity_logs.causer_id')->
+        leftJoin('brands' , 'brands_user.brand_id','=','brands.id')->
+        leftJoin('users' , 'users.id','=','client_activity_logs.causer_id')->
+        select(
+            'client_activity_logs.*',
+            'users.name as user_name',
+            DB::raw('GROUP_CONCAT(brands_user.brand_id) as brand_id'),
+            DB::raw('GROUP_CONCAT(" ",brands.name)  as brand_name'),
+            DB::raw('GROUP_CONCAT(brands.short_name) as short_name'),
+            )->
+        groupBY('client_activity_logs.id')->
+        get()->toArray();
+        // toSql();
+        // dd($sub_users_list);
+        return view('admin.Control-panel.clients-activity-log',compact('sub_users_list'));
+    }
+
+    public function saveUserActivty(Request $request){
+        
+        // dd($request->all());
+        $id = Auth::id();
+        $module = $request->module;
+        $action = $request->action;
+        $text = $request->text;
+        
+        try {
+            $properties = ['link' => $text];
+           
+            $ClientActivityLog = new ClientActivityLog();
+            $ClientActivityLog->log_name = $module.' Link Copy';
+            $ClientActivityLog->description = $text. ' Link Copied By '.Auth::user()->name;
+            $ClientActivityLog->event = 'Link Copied '.$action;
+            $ClientActivityLog->subject_type = '';
+            $ClientActivityLog->subject_id = '';
+            $ClientActivityLog->causer_type = 'App\Models\User';
+            $ClientActivityLog->causer_id = Auth::id();
+            $ClientActivityLog->properties = json_encode($properties);
+            $ClientActivityLog->save();
+
+            $massage = "Record updated successfully ";
+            $response = array(
+                'massage' => $massage,
+            );
+            echo json_encode($response);    
+        } catch (\Throwable $error) {
+            throw $error;
+        }
+    }
     
 }

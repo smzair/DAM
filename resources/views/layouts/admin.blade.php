@@ -201,6 +201,12 @@
                   <p>Sub Users List </p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('ClientsActivityLog')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client's activity</p>
+                </a>
+              </li>
             </ul>
           </li>
           @endrole
