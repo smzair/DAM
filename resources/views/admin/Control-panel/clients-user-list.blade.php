@@ -4,6 +4,35 @@
 Sub Clients
 @endsection
 @section('content')
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+
+<style type="text/css">
+  .del-data-pop {
+        color : #fff;
+    }
+
+    .del-data-pop .swal2-title {
+        color:#fff !important;
+    }
+
+    .del-data-pop .swal2-content {
+        color:#fff !important;
+    }
+
+    .light-dsh-mode .del-data-pop .swal2-title,
+    .light-dsh-mode .del-data-pop .swal2-content {
+        color:#000 !important;
+    }
+
+    .del-data-pop .swal2-icon.swal2-warning {
+        border-color: #FBF702;
+        color: #FBF702;
+    }
+    .dropdown-toggle.open-sk:after {
+    transform: rotate(-180deg);
+  }
+</style>
 <style>
     .form-group .error{
         font-size: 16px;
@@ -67,28 +96,36 @@ Sub Clients
                             <tr class="wrc-tt">
                                     <th class="p-2">S. No</th>
                                     <th class="p-2">Name</th>
+                                    <th class="p-2">Role</th>
                                     <th class="p-2">Parent Client</th>
                                     <th class="p-2">Company Name</th>
                                     <th class="p-2">Client Id</th>
                                     <th class="p-2">Email</th>
                                     <th class="p-2">Phone</th>
+                                    <th class="p-2">Dam Status</th>
                                     {{-- <th class="p-2">Brand Name</th> --}}
                                     <th class="p-2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php
-                                    // pre($wrcs);
+                                    // pre($sub_users_list[5]);
                                 @endphp
                                 @foreach ($sub_users_list as $key => $row)
                                     <tr class="tr{{$key}}">
                                         <td>{{$key+1}}</td>
                                         <td id="name{{$key}}">{{$row['name']}}</td>
-                                        <td id="p_name{{$key}}">{{$row['p_name']}}</td>
+                                        <td id="role_name{{$key}}">{{$row['role_name']}}</td>
+                                        <td id="p_name{{$key}}">{{$row['p_name'] != '' ? $row['p_name'] : '-'}}</td>
                                         <td id="Company{{$key}}">{{$row['Company']}}</td>
                                         <td id="client_id{{$key}}">{{$row['client_id']}}</td>
                                         <td id="email{{$key}}">{{$row['email']}}</td>
                                         <td id="phone{{$key}}">{{$row['phone']}}</td>
+                                        <td>
+                                            <div class="d-inline-block">
+                                                <input data-id="{{$row['id']}}" type="checkbox"  data-toggle="toggle" data-on="Dam Enable" data-off="Dam Disable" data-onstyle="success" data-offstyle="warning" data-size="sm" data-width="100" class="toggle-class-dam"  {{ $row['dam_enable'] == 1 ? 'checked' : '' }}>
+                                            </div>
+                                        </td>
                                         <td>
                                             <input type="hidden" id="user_id{{$key}}" value="{{$row['id']}}" >
                                             <button  data-id="{{$row['id']}}" class="btn btn-warning" id="edit{{$key}}" data-toggle="modal" data-target="#allocateWRCPopupCAt" onclick="setvalue({{ $key }})" >Edit</button>
@@ -193,6 +230,22 @@ Sub Clients
 
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
 
+
+<script type="application/javascript" src="plugins/jquery/jquery.min.js">
+</script>
+<script type="application/javascript" src="plugins/jquery-ui/jquery-ui.min.js">
+</script>
+<script type="application/javascript" src="plugins/bootstrap/js/bootstrap.bundle.min.js">
+</script>
+<script type="application/javascript" src="dist/js/adminlte.js">
+</script>
+<script type="application/javascript" src="dist/js/adminlte.min.js">
+</script>
+<script type="application/javascript" src="plugins/sweetalert2/sweetalert2.all.min.js">
+</script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+
 <!-- End of DataTable Plugins Path -->
 
 <!-- Data Table Calling Function -->
@@ -203,6 +256,36 @@ Sub Clients
         "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
         "buttons": ["copy", "csv", "excel", "pdf"]
   }).buttons().container().insertAfter('#masterData_wrapper .dataTables_length');
+</script>
+
+<script>
+    
+     $('.toggle-class-dam').change(async function() {
+        let dam_enable = $(this).prop('checked') == true ? 1 : 0; 
+        let id = $(this).data('id'); 
+        console.log({dam_enable , id})
+        await $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "{{ url('manage-client-dam')}}",
+            data: {
+            'dam_enable': dam_enable,
+            'id': id,
+            _token: '{{ csrf_token() }}'
+
+            },
+            success: function(data){
+                console.log(data)
+                if(!data){
+                    if (dam_enable) {
+                        $(this).prop('checked', false);
+                    } else {
+                        $(this).prop('checked', true);
+                    }
+                }
+            }
+        });
+    });
 </script>
 
 {{-- setvalue to model --}}

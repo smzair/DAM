@@ -159,11 +159,21 @@ class ClientUserManagementController extends Controller
     }
 
     public function ClientsUserList(){
-        $sub_users_list = User::where('users.parent_client_id', '>' , '0')
-        ->leftJoin('users as parent_user' , 'users.parent_client_id','=','parent_user.id')
-        ->select('users.*','parent_user.name as p_name','parent_user.last_name as p_last_name','parent_user.phone as p_phone')
-        ->get()->toArray();
-        // dd($sub_users_list);
+        $users_query = User::leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+        ->leftJoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+        ->leftJoin('users as parent_user', 'users.parent_client_id', '=', 'parent_user.id')
+        ->where('users.parent_client_id', '>', 0)
+        ->orWhere('roles.name', '=', 'Client')
+        ->select(
+            'roles.id as role_id',
+            'roles.name as role_name',
+            'parent_user.name as p_name',
+            'parent_user.last_name as p_last_name',
+            'parent_user.phone as p_phone',
+            'users.*'
+        );
+        $sub_users_list = $users_query->get()->toArray();
+        // dd($users_query->toSql());
         return view('admin.Control-panel.clients-user-list',compact('sub_users_list'));
     }
 

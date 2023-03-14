@@ -536,13 +536,13 @@ Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
     Route::get('/clients-user-list', [ClientUserManagementController::class, 'ClientsUserList'])->name('ClientsUserList');
     Route::post('/Update-clients-user', [ClientUserManagementController::class, 'updateClientsUser'])->name('updateClientsUser');
     Route::get('/clients-activity-log', [ClientUserManagementController::class, 'ClientsActivityLog'])->name('ClientsActivityLog');
+    Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
     
 });
 
 // Client And Sub Client Accesable route
 Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     // *** New routes  *** //
-    Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
 
     // dam (Digital Asset Management) Routing
     Route::get('/client-user', [UserController::class, 'clientIndex'])->name('clientuser.index');
