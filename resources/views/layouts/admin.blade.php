@@ -198,7 +198,7 @@
               <li class="nav-item">
                 <a href="{{route('ClientsUserList')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Sub Users List </p>
+                  <p>Clien's/Sub Client's List </p>
                 </a>
               </li>
               <li class="nav-item">

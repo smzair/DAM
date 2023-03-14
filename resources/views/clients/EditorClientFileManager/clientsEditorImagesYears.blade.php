@@ -26,7 +26,7 @@
                                                 </ul>
                                                 <ul>
                                                     <li>
-                                                        <a href="#" onclick="copyToClipboard('{{route('editorDownloadYearData', ['id' => $object->year])}}'); return false;">
+                                                        <a href="#" onclick="copyToClipboard('{{route('editorDownloadYearData', ['id' => $object->year])}}' , 'Year'); return false;">
                                                             Copy Link
                                                         </a>
                                                     </li>
