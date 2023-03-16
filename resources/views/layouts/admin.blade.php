@@ -207,6 +207,12 @@
                   <p>Client's activity</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('AdminControl')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Admin Control</p>
+                </a>
+              </li>
             </ul>
           </li>
           @endrole

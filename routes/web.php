@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminControlController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\RolesController;
@@ -538,7 +539,12 @@ Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
     Route::get('/clients-activity-log', [ClientUserManagementController::class, 'ClientsActivityLog'])->name('ClientsActivityLog');
     Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
     
+    Route::get('/Admin-Control', [AdminControlController::class, 'index'])->name('AdminControl');
+    Route::post('/get-service-lot-number', [AdminControlController::class, 'getLotNumber']);
+    Route::post('/get-service-wrc-number', [AdminControlController::class, 'getWrcNumber']);
+
 });
+
 
 // Client And Sub Client Accesable route
 Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
@@ -553,9 +559,6 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/client-user-Cataloging-lots', [UserAssetsController::class, 'clientUserCatalogingLots'])->name('clientUserCatalogingLots');
     Route::get('/client-user-Editing-lots', [UserAssetsController::class, 'clientUserEditingLots'])->name('clientUserEditingLots');
 
-    
-});
-
     /******File Manager routing*******/
     Route::get('/client-raw-images-mgmt', [clientFileManager::class, 'clientRawImagesYear'])->name('clientRawImagesMgmt');// client raw images mgmt ( images)
     Route::get('/months/lots/{id}', [clientFileManager::class, 'clientRawImages'])->name('clientRawImages');// client raw images lots ( images)
@@ -567,6 +570,9 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/months/lots/wrc/skus/skusimages/{id}', [clientFileManager::class, 'getClientUploadRawImages'])->name('client-all-images');
     // get client raw images months based on year
     Route::get('/months/{id}', [clientFileManager::class, 'getAllMonthsForClientRawImages'])->name('months');
+    
+});
+
     
 
     // Client User Management Routing

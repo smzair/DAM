@@ -173,11 +173,24 @@ Cataloger Panel
                                 $commercial_id =  $row['commercial_id'];
                                 $lot_id =  $row['lot_id'];
                                 $batch_no =  $row['batch_no'];
+                                if($row['batch_no'] > 0){
+                                    $batch_no_is = ($row['batch'] != '' && $row['batch'] != null) ? $row['batch'] : $row['batch_no'];
+                                }else{
+                                    $batch_no_is =  'None';
+                                }
                                 $market_place = $row['market_place'];
-                                
-                                $market_place_ids = explode(',',$row['market_place']);
+                                if($market_place == ''){
+                                 $market_place_ids = [];
+                                }else{
+                                 $market_place_ids = explode(',',$row['market_place']);
+                                }
+                               
                                 $modeOfDelivary =  $row['modeOfDelivary'];
-                                $modeOfDelivary_is = $modeOfDelivary_arr[$modeOfDelivary];
+                                if($modeOfDelivary != ''){
+                                    $modeOfDelivary_is = $modeOfDelivary_arr[$modeOfDelivary];
+                                }else{
+                                    $modeOfDelivary_is = '';
+                                }
 
                                 $allocated_wrcs_is = array_intersect($allocated_wrcs,array($wrc_id));
                                 
@@ -259,14 +272,17 @@ Cataloger Panel
 
                                             $kind_of_work .= $Up_mar_cre_arr['marketPlace_name'].", ";
                                         }
-                                    }else{  ?>
+                                    }else{ if(count($market_place_ids)>0){
+                                 ?>
+                                  
                                         @foreach ($market_place_ids as $mp_id)
                                             <p class="m-0">{{ $MarketPlace_array_list[$mp_id] }}</p>
                                             @php
                                                 $kind_of_work .= $MarketPlace_array_list[$mp_id].", ";
                                             @endphp
                                         @endforeach
-                                    <?php } 
+                                        @end
+                                    <?php }} 
                                     $kind_of_work = rtrim($kind_of_work,", ")
                                     ?> 
                                 </td>
@@ -282,7 +298,7 @@ Cataloger Panel
                                     ?>    
                                 </td>
                                 <td>
-                                    <?php echo $row['batch_no'] > 0 ? $row['batch_no'] : 'None' ;?>
+                                    <?php echo $batch_no_is;?>
                                 </td>
                                 <td>{{ $allocated_qty }}</td>
                                 <td>
