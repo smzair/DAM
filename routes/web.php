@@ -36,6 +36,7 @@ use App\Http\Controllers\EditingUploadLinkController;
 use App\Http\Controllers\EditingWrcController;
 use App\Http\Controllers\editorLotController;
 use App\Http\Controllers\EditorsCommercialController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageDownloadController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\NewCommercial;
@@ -570,6 +571,9 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/months/lots/wrc/skus/skusimages/{id}', [clientFileManager::class, 'getClientUploadRawImages'])->name('client-all-images');
     // get client raw images months based on year
     Route::get('/months/{id}', [clientFileManager::class, 'getAllMonthsForClientRawImages'])->name('months');
+    
+    //get  clients creative -lot-timeline detail
+    Route::get('/clients-creative-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCreativelotTimeline'])->name('clientsCreativelotTimeline');
     
 });
 

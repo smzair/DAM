@@ -22,7 +22,7 @@ class CheckUserRole
         if (!$user) {
             return redirect('/login');
         }
-    
+        // dd($user->id);
         $roledata = getUsersRole($user->id);
         $role_name = "";
 
