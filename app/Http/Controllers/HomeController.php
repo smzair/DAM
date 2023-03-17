@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ClientsControllers\ClientDashboardController;
+use App\Models\CreativeSubmission;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Lots;
@@ -40,7 +43,9 @@ class HomeController extends Controller
         }
         $user_role = $user->roles->pluck('name');
         if($user->roles->pluck( 'name' )->contains( 'Client' ) || $user->roles->pluck( 'name' )->contains( 'Sub Client' )){
-            return view('clients.ClientDashboard');
+            return ClientDashboardController::index();
+            // return view('clients.ClientDashboard');
+
         }
         
         return view('home',compact('users','lots','raw','skus'));
