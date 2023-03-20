@@ -17,6 +17,8 @@ class CreateAdminControlFileUploadsTable extends Migration
             $table->id();
             $table->integer('lot_id')->unsigned();
             $table->integer('wrc_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->integer('brand_id')->unsigned();
             $table->enum('service', ['Shoot', 'Creative', 'Cataloging','Editing'])->comment('1 for Shoot, 2 for Creative, 3 for Cataloging, 4 for Editing')->nullable();
             $table->string('file_path')->nullable();
             $table->string('filename')->nullable();

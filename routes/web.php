@@ -544,7 +544,9 @@ Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
     Route::post('/get-service-lot-number', [AdminControlController::class, 'getLotNumber']);
     Route::post('/get-service-wrc-number', [AdminControlController::class, 'getWrcNumber']);
     Route::post('/Admin-Control', [AdminControlController::class, 'SaveAdminControlFile'])->name('SaveAdminControlFile');
+    Route::get('/Uploaded-files', [AdminControlController::class, 'AdminControlUploadedFiles'])->name('AdminControlUploadedFiles');
 
+    
 });
 
 
