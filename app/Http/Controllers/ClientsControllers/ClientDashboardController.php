@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ClientsControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\CreativeTimeHash;
+use App\Models\ClientActivityLog;
 use App\Models\CreativeWrcModel;
 use App\Models\CreatLots;
 use Carbon\Carbon;
@@ -16,7 +17,6 @@ class ClientDashboardController extends Controller
 {
     //
     public static function index(){
-
         $resData = [];
         $user_detail = Auth::user();// logged in user detail
         $roledata = getUsersRole($user_detail['id']);
@@ -125,13 +125,61 @@ class ClientDashboardController extends Controller
             $resData = array();
         }
 		// return pre($resData);
+
+        // insert into user activity log
+        $data_array = array(
+            'log_name' => 'Clients Lot Status', 
+            'description' => ' Clients Lot Status',
+            'event' => 'Clients Lot Status', 
+            'subject_type' => 'App\Models\CreatLots', 
+            'subject_id' => '0', 
+            'properties' => [], 
+        );
+        // dd($data_array);
+        ClientActivityLog::saveClient_activity_logs($data_array);
+
         return view('clients.ClientDashboard')->with('resData',$resData);
     }
 
     public function clientsCreativelotTimeline(Request $request, $id){
-        // return pre($resData);
-        $resData = [];
-        return view('clients.Timeline.creativeTimeline')->with('resData',$resData);
-        dd($id);
+        // LOT Generated details
+        $user_detail = Auth::user();// logged in user detail
+        $roledata = getUsersRole($user_detail['id']);
+        $role = $roledata != null ? $roledata->role_name : '-';
+        $client_id = $user_detail['id'];
+        //  get lot info based on  $client_id (logged_in user)
+        $lot_info_with_wrc = CreatLots::where('creative_lots.id',$id)->leftJoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->where('creative_lots.user_id', $client_id);
+
+        // get data for lot generated details
+        $lot_generated_detail = $lot_info_with_wrc->select('creative_lots.lot_number', 'creative_lots.created_at', DB::raw('sum(creative_wrc.order_qty) as inward_quantity'))->get();
+
+        // get data for Work Request Code Generated Details
+        $wrc_with_order_qty = $lot_info_with_wrc->select('creative_wrc.wrc_number', 'creative_wrc.created_at', 'creative_wrc.order_qty', 'creative_wrc.qc_status')->get();
+
+        $wrc_info = $lot_info_with_wrc->leftJoin('creative_allocation', 'creative_allocation.wrc_id','creative_wrc.id')
+        ->where('creative_allocation.wrc_id', '!=', null);
+
+        // get data for allocation to team
+        $allocated_wrc_details =  $wrc_info->groupBy('creative_allocation.wrc_id')->select('creative_allocation.wrc_id', 'creative_wrc.wrc_number', DB::raw('sum(creative_allocation.allocated_qty) as allocated_qty'), 'creative_allocation.created_at as allocation_created_at')->get();
+
+        // get data for allocation to team
+        $Submission_link_details =  $wrc_info
+        ->leftJoin('creative_upload_links', 'creative_upload_links.allocation_id', 'creative_allocation.id')
+        ->select('creative_allocation.wrc_id', 'creative_wrc.wrc_number', DB::raw('sum(creative_allocation.allocated_qty) as allocated_qty'), 'creative_wrc.created_at as wrc_created_at', DB::raw('GROUP_CONCAT(creative_upload_links.creative_link) as creative_link_arr') ,DB::raw('GROUP_CONCAT(creative_upload_links.copy_link) as copy_link_arr'))->get();
+
+         // insert into user activity log
+         $data_array = array(
+            'log_name' => 'Lot Timeline Details', 
+            'description' => ' Lot Timeline Details',
+            'event' => 'Lot Timeline Details', 
+            'subject_type' => 'App\Models\CreatLots', 
+            'subject_id' => '0', 
+            'properties' => [], 
+        );
+        // dd($data_array);
+        ClientActivityLog::saveClient_activity_logs($data_array);
+
+        // dd($Submission_link_details);
+        return view('clients.Timeline.creativeTimeline', compact('lot_generated_detail', 'wrc_with_order_qty', 'allocated_wrc_details', 'Submission_link_details'));
     }
 }

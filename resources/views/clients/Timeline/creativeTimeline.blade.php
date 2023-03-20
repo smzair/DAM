@@ -35,7 +35,11 @@
 			grid-template-columns: repeat(4, 1fr);
 			grid-gap: 1px;
 		}
+		.copyCreativeurl{
+		text-decoration: none; /* remove the underline */
+		}
 	</style>
+	
 @endsection
 
 
@@ -60,7 +64,7 @@
 									Creative Lot Timeline Details
 								</h5>
 								<h6 class="action-subtext tracked-order-id" id="trackedorderId">
-									Lot ID: ODN10022023-BEUCBFW31
+									Lot ID: {{$lot_generated_detail[0] != null ? $lot_generated_detail[0]['lot_number'] : "-"}}
 								</h6>
 							</span>
 						</div>
@@ -84,9 +88,9 @@
 													</thead>
 													<tbody>
 													<tr>
-														<td>ODN10022023-BEUCBFW31</td>
-														<td>15</td>
-														<td>17-03-2023</td>
+														<td>{{$lot_generated_detail[0] != null ? $lot_generated_detail[0]['lot_number'] : "-"}}</td>
+														<td>{{$lot_generated_detail[0] != null ? $lot_generated_detail[0]['inward_quantity'] : "-"}}</td>
+														<td>{{$lot_generated_detail[0] != null ? dateFormet_dmy($lot_generated_detail[0]['created_at']) : "-"}}</td>
 													</tr>
 													</tbody>
 												</table>
@@ -105,25 +109,16 @@
 															<th>Wrc No</th>
 															<th>Quantity</th>
 															<th>Date</th>
-
 														</tr>
 														</thead>
 														<tbody>
-														<tr>
-															<td>BEUCBWP14-A</td>
-															<td>15</td>
-															<td>17-03-2023</td>
-														</tr>
-														<tr>
-															<td>BEUCBWP14-B</td>
-															<td>25</td>
-															<td>17-03-2023</td>
-														</tr>
-														<tr>
-															<td>BEUCBWP14-C</td>
-															<td>18</td>
-															<td>17-03-2023</td>
-														</tr>
+															@foreach ($wrc_with_order_qty as $wrc_val)
+																<tr>
+																	<td class="text-wrap">{{$wrc_val['wrc_number']}}</td>
+																	<td class="text-wrap">{{$wrc_val['order_qty']}}</td>
+																	<td class="text-wrap">{{dateFormet_dmy($wrc_val['created_at'])}}</td>
+																</tr>
+															@endforeach
 														</tbody>
 													</table>
 												</div>
@@ -144,21 +139,13 @@
 													</tr>
 													</thead>
 													<tbody>
-													<tr>
-														<td>BEUCBWP14-A</td>
-														<td>15</td>
-														<td>17-03-2023</td>
-													</tr>
-													<tr>
-														<td>BEUCBWP14-B</td>
-														<td>25</td>
-														<td>17-03-2023</td>
-													</tr>
-													<tr>
-														<td>BEUCBWP14-C</td>
-														<td>18</td>
-														<td>17-03-2023</td>
-													</tr>
+														@foreach ($allocated_wrc_details as $allo_wrc_val)
+															<tr>
+																<td class="text-wrap">{{$allo_wrc_val['wrc_number']}}</td>
+																<td class="text-wrap">{{$allo_wrc_val['allocated_qty']}}</td>
+																<td class="text-wrap">{{dateFormet_dmy($allo_wrc_val['allocation_created_at'])}}</td>
+															</tr>
+														@endforeach
 													</tbody>
 												</table>
 											</div>
@@ -174,30 +161,25 @@
 													<thead>
 													<tr>
 														<th>Wrc No</th>
-														<th>Pending</th>
-														<th>Completed</th>
-														<th>Date</th>
+														<th>Status</th>
+														{{-- <th>Completed</th> --}}
+														{{-- <th>Date</th> --}}
 													</tr>
 													</thead>
 													<tbody>
-													<tr>
-														<td>BEUCBWP14-A</td>
-														<td>13</td>
-														<td>6</td>
-														<td>17-03-2023</td>
-													</tr>
-													<tr>
-														<td>BEUCBWP14-B</td>
-														<td>25</td>
-														<td>14</td>
-														<td>17-03-2023</td>
-													</tr>
-													<tr>
-														<td>BEUCBWP14-C</td>
-														<td>18</td>
-														<td>9</td>
-														<td>17-03-2023</td>
-													</tr>
+														@foreach ($wrc_with_order_qty as $wrc_val)
+														<tr>
+															<td class="text-wrap">{{$wrc_val['wrc_number']}}</td>
+															@if ($wrc_val['qc_status'] == 0)
+																<td><p style = "border-radius:20px; width:30%" class="text-wrap card-text bg-warning d-flex align-items-center justify-content-center status-tag text-white"> &nbsp;Pending&nbsp; </p></td>	
+															@endif
+
+															@if ($wrc_val['qc_status'] == 1)
+																<td><p style = "border-radius:20px; width:30%" class="text-wrap card-text bg-success d-flex align-items-center justify-content-center status-tag text-white"> &nbsp;Completed&nbsp; </p></td>		
+															@endif
+															{{-- <td class="text-wrap">{{dateFormet_dmy($wrc_val['created_at'])}}</td> --}}
+														</tr>
+													@endforeach
 													</tbody>
 												</table>
 											</div>
@@ -213,26 +195,57 @@
 													<thead>
 													<tr>
 														<th>Wrc No</th>
-														<th>Click To Copy Final Link</th>
+														<th>Copy Link</th>
+														<th> Creative Link</th>
 														<th>Date</th>
 													</tr>
 													</thead>
+													
+
 													<tbody>
-													<tr>
-														<td>BEUCBWP14-A</td>
-														<td><a href="#">http://127.0.0.1:8000/clients-creative-lot-timeline/31</a></td>
-														<td>17-03-2023</td>
-													</tr>
-													<tr>
-														<td>BEUCBWP14-B</td>
-														<td><a href="#">http://127.0.0.1:8000/clients-creative-lot-timeline/31</a></td>
-														<td>17-03-2023</td>
-													</tr>
-													<tr>
-														<td>BEUCBWP14-C</td>
-														<td><a href="#">http://127.0.0.1:8000/clients-creative-lot-timeline/31</a></td>
-														<td>17-03-2023</td>
-													</tr>
+														@foreach ($Submission_link_details as $sub_val)
+																@php
+																$creative_link_arr = explode(',',$sub_val['creative_link_arr']);
+																$copy_link_arr = explode(',',$sub_val['copy_link_arr'])
+																@endphp
+															<tr>
+																<td class="text-wrap">{{$sub_val['wrc_number']}}</td>
+
+																<td>
+																	<ul class="list-group mt-2">
+																		@foreach($creative_link_arr as $key => $val)
+																		@if($val == "")
+																			<li title="{{$val}}"><p  class="copyCreativeurl" >No link for copy</p></li>
+																		@endif
+																		@if($val != "")
+																			<li title="{{$val}}">
+																				<a class="copyCreativeurl" href="{{$val}}" onclick="copyUrl(event)">Click Here</a>
+																				<span class="copy-message" style="display:none"><br>Link copied!</span>
+																			</li>
+																		@endif
+																		
+																		@endforeach
+																	</ul>
+																</td>
+
+																<td>
+																	<ul class="list-group mt-2" >
+																		@foreach($copy_link_arr as $ckey => $cval)
+																		@if($cval == "")
+																			<li title="{{$cval}}"><p  class="copyCreativeurl" >No link for copy</p></li>
+																		@endif
+																		@if($cval != "")
+																			<li title="{{$cval}}">
+																			<a class="copyCreativeurl" href="{{$cval}}" onclick="copyUrl(event)">Click Here</a>
+																			<span class="copy-message" style="display:none"><br>Link copied!</span>
+																		</li>
+																		@endif
+																		@endforeach
+																	</ul>
+																</td>
+																<td class="text-wrap">{{dateFormet_dmy($sub_val['wrc_created_at'])}}</td>
+															</tr>
+														@endforeach
 													</tbody>
 												</table>
 											</div>
@@ -262,8 +275,6 @@
 											</div>
 										  </div>
 										</div>
-
-										
 									  </li>
 									  
 									<li></li>
@@ -291,4 +302,24 @@
 			console.log('first')
 		}
 	</script>
+	<script>
+		function copyUrl(event) {
+		  event.preventDefault(); // prevent the link from navigating to the URL
+		  
+		  const url = event.target.getAttribute('href'); // get the URL from the link's href attribute
+		  navigator.clipboard.writeText(url) // copy the URL to the clipboard
+			.then(() => {
+			  console.log('URL copied to clipboard');
+			  const message = event.target.nextElementSibling; // get the next sibling element (the message element)
+			  message.style.display = 'inline'; // show the message element
+			  setTimeout(() => {
+				message.style.display = 'none'; // hide the message element after a few seconds
+			  }, 3000);
+			})
+			.catch((error) => {
+			  console.error('Failed to copy URL: ', error);
+			});
+		}
+		</script>
+	
 @endsection

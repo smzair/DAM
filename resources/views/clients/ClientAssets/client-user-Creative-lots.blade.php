@@ -4,6 +4,16 @@
 @endsection
 @section('css_links')
 	<link rel="stylesheet" href="">	
+	<style>
+		 /* target the link using the "lotLink" class */
+		 .lotLink {
+			color: #7F7FAA; /* set the color to white */
+			text-decoration: none; /* remove the underline */
+    	}
+		.lotLink:hover {
+			color: #393a3b; /* set the color to gray */
+		}
+	</style>
 @endsection
 
 @section('main_content')
@@ -42,7 +52,7 @@
 						@endphp
                         <tr>
                             <td width="5%" class="pl-3">{{$index +1 }}</td>
-							<td>{{$row['lot_number']}}</td>
+							<td><a class="lotLink" target="_blank" href={{route('clientsCreativelotTimeline',$row['id'])}}>{{$row['lot_number']}}</a></td>
 							<td>{{$row['project_name']}}</td>
 							<td>{{$row['verticle']}}</td>
 							<td>{{$row['client_bucket']}}</td>
