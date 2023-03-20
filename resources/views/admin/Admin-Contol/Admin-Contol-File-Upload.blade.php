@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-Admin Control
+Admin Control - File Upload
 @endsection
 @section('content')
 <link rel="stylesheet" href="{{asset('plugins/datepicker-in-bootstrap-modal/css/datepicker.css')}}">
@@ -235,6 +235,7 @@ Admin Control
         if(filesInput.files.length > 0){
             uploadForm.querySelector('#uploading').innerHTML += '<span><i class="fa-solid fa-file"></i>' + filesInput.files[0].name + '</span>';
             document.querySelector(".progress").style.display = "block";
+            console.log(filesInput.files)
         }
     };
 
@@ -254,9 +255,14 @@ Admin Control
             request.open('POST', uploadForm.action);
 
             request.upload.addEventListener('progress', event => {
-                console.log(event)
+                console.log("loaded ", event.loaded)
+                console.log("total ", event.total)
+                console.log("total in mb ", (event.total/(1024*1024)).toFixed(2) + 'MB')
+                let loaded_size_in_mb = event.loaded/(1024*1024) * 1;
+                let tot_size_in_mb = event.total/(1024*1024) * 1;
                 
-                uploadForm.querySelector('button').innerHTML = 'Uploading... ' + '(' + ((event.loaded/event.total)*100).toFixed(2) + '%)';
+                // uploadForm.querySelector('button').innerHTML = 'Uploading... ' + '(' + ((event.loaded/event.total)*100).toFixed(2) + '%)';
+                uploadForm.querySelector('button').innerHTML = 'Uploading... ' + '(' + loaded_size_in_mb.toFixed(2) + 'MB/'+tot_size_in_mb.toFixed(2) + 'MB)';
                 // Update the progress bar
                 uploadForm.querySelector('.progress').style.background = 'linear-gradient(to right, #2be564, #066a24 ' + Math.round((event.loaded/event.total)*100) + '%, #e6e8ec ' + Math.round((event.loaded/event.total)*100) + '%)';
                 

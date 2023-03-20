@@ -185,6 +185,7 @@
           @endrole
 
           @role('Super Admin|Admin')
+          {{-- Control Panel --}}
           <li class="nav-item">
             <a  class="nav-link" style="cursor:pointer;">
               <i class="nav-icon fas fa-users"></i>
@@ -207,10 +208,27 @@
                   <p>Client's activity</p>
                 </a>
               </li>
+            </ul>
+          </li>
+          {{-- Admin Control --}}
+          <li class="nav-item">
+            <a  class="nav-link" style="cursor:pointer;">
+              <i class="nav-icon fas fa-code-branch"></i>
+              <p> Admin Control <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('AdminControl')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Admin Control</p>
+                  <p>Upload File</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('AdminControlUploadedFiles')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Uploaded Files</p>
                 </a>
               </li>
             </ul>
