@@ -543,6 +543,7 @@ Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
     Route::get('/Admin-Control', [AdminControlController::class, 'index'])->name('AdminControl');
     Route::post('/get-service-lot-number', [AdminControlController::class, 'getLotNumber']);
     Route::post('/get-service-wrc-number', [AdminControlController::class, 'getWrcNumber']);
+    Route::post('/Admin-Control', [AdminControlController::class, 'SaveAdminControlFile'])->name('SaveAdminControlFile');
 
 });
 
@@ -625,3 +626,4 @@ Route::get('/editordownloadlot/{id}', [EditingClientFileManagerController::class
 Route::get('/editordownloaddatabasedonwrc/{id}', [EditingClientFileManagerController::class, 'editorDownloadDataBasedOnWrc'])->name('editorDownloadDataBasedOnWrc');//download wrc data based on year
 Route::get('/downloadadaptationdata/{id}', [EditingClientFileManagerController::class, 'downloadAdaptationdata'])->name('downloadAdaptationData');//download adaption data based 
 Route::get('/editordownloaddatabasedonsku/{id}', [EditingClientFileManagerController::class, 'editorDownloadDataBasedOnSku'])->name('editorDownloadDataBasedOnSku');//download sku data based 
+
