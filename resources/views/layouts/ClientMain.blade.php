@@ -9,7 +9,7 @@
 
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('ClientsPlugins/bootstrap-5.1.3-dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     {{-- Other css pluging --}}
     @yield('css_links')
     <!-- Common Style -->
@@ -273,6 +273,50 @@
                                 </span>
                             </a>
                         </li>
+
+                        @if (Auth::user()->dam_enable == 1)
+                            <li class="nav-item">
+                                <a  class="nav-link" >
+                                    <p>
+                                        <i class="nav-icon fas fa-file-contract"></i>
+                                        Other Files
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-list-item">
+                                <a href="{{route('AdminControlUploadedFileList')}}" class="sidebar-menu-list-link">
+                                    <span class="menu-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20.5" height="20.5"
+                                            viewBox="0 0 20.5 20.5">
+                                            <g id="Group_5315" data-name="Group 5315"
+                                                transform="translate(7675.25 4638.25)">
+                                                <path id="Path_2081" data-name="Path 2081"
+                                                    d="M20.447,4.977H15.918V1.383a.469.469,0,0,0-.468-.468H1.383a.469.469,0,0,0-.468.468V17.946a2.972,2.972,0,0,0,2.969,2.969H17.946a2.972,2.972,0,0,0,2.969-2.969V5.446A.469.469,0,0,0,20.447,4.977Zm-16.563,15a2.034,2.034,0,0,1-2.032-2.032V1.852H14.977V17.946a3.058,3.058,0,0,0,.806,2.032Zm16.094-2.032a2.032,2.032,0,1,1-4.064,0V5.912h4.063Z"
+                                                    transform="translate(-7675.915 -4638.915)" fill="#7f7faa"
+                                                    stroke="#7f7faa" stroke-width="0.5" />
+                                                <path id="Path_2082" data-name="Path 2082"
+                                                    d="M8.1,12.583a.469.469,0,0,0,.625,0c.119-.106,2.911-2.611,3.566-3.456a2.445,2.445,0,0,0,.421-2.092,2.786,2.786,0,0,0-1.568-1.859,2.522,2.522,0,0,0-2.729.582,2.519,2.519,0,0,0-2.729-.582A2.784,2.784,0,0,0,4.116,7.035a2.441,2.441,0,0,0,.421,2.092C5.189,9.972,7.983,12.477,8.1,12.583ZM5.025,7.259a1.855,1.855,0,0,1,1.05-1.231,1.206,1.206,0,0,1,.508-.116,2.241,2.241,0,0,1,1.47.8.488.488,0,0,0,.728,0c.009-.013.964-1.156,1.977-.69A1.853,1.853,0,0,1,11.8,7.259a1.51,1.51,0,0,1-.252,1.292A42.77,42.77,0,0,1,8.416,11.6,42.73,42.73,0,0,1,5.276,8.55a1.514,1.514,0,0,1-.25-1.292Z"
+                                                    transform="translate(-7675.915 -4638.915)" fill="#7f7faa"
+                                                    stroke="#7f7faa" stroke-width="0.5" />
+                                                <path id="Path_2083" data-name="Path 2083"
+                                                    d="M12.321,14.158H4.509a.468.468,0,0,0,0,.937h7.812a.468.468,0,1,0,0-.937Z"
+                                                    transform="translate(-7675.915 -4638.915)" fill="#7f7faa"
+                                                    stroke="#7f7faa" stroke-width="0.5" />
+                                                <path id="Path_2084" data-name="Path 2084"
+                                                    d="M12.321,16.549H4.509a.469.469,0,1,0,0,.938h7.812a.469.469,0,0,0,0-.938Z"
+                                                    transform="translate(-7675.915 -4638.915)" fill="#7f7faa"
+                                                    stroke="#7f7faa" stroke-width="0.5" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                    <span class="menu-text">
+                                        Admin Control - Uploaded Files
+                                    </span>
+                                </a>
+                            </li>
+                        @endif
+
+
                         {{-- <li class="sidebar-menu-list-item">
                             <a href="allorders.html" class="sidebar-menu-list-link">
                                 <span class="menu-icon">
@@ -288,7 +332,7 @@
                                 </span>
                             </a>
                         </li> --}}
-                        <li class="sidebar-menu-list-item">
+                        {{-- <li class="sidebar-menu-list-item">
                             <a href="brandguideline-listing.html" class="sidebar-menu-list-link">
                                 <span class="menu-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18.182" height="20"
@@ -317,8 +361,8 @@
                                     Brand guidelines
                                 </span>
                             </a>
-                        </li>
-                        <li class="sidebar-menu-list-item">
+                        </li> --}}
+                        {{-- <li class="sidebar-menu-list-item">
                             <a href="invoices-listing.html" class="sidebar-menu-list-link">
                                 <span class="menu-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20.5" height="20.5"
@@ -348,9 +392,9 @@
                                     Invoices
                                 </span>
                             </a>
-                        </li>
+                        </li> --}}
                        
-                        <li class="sidebar-menu-list-item">
+                        {{-- <li class="sidebar-menu-list-item">
                             <a href="profile.html" class="sidebar-menu-list-link">
                                 <span class="menu-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
@@ -364,7 +408,7 @@
                                     Your profile
                                 </span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="sidebar-menu-list-item">
                             <a href="settings.html" class="sidebar-menu-list-link">
                                 <span class="menu-icon">

@@ -64,7 +64,7 @@ Admin Control - File Upload List
                     <div class="card-body table-responsive p-0"  style="max-height: 750px; height: 100%;">
                         <table id="wrcTableCat" class="table table-head-fixed table-hover text-nowrap data-table">
                             <thead>
-                            <tr class="wrc-tt">
+                                <tr class="wrc-tt">
                                     <th class="p-2">S. No</th>
                                     <th class="p-2">service</th>
                                     <th class="p-2">Lot Number</th>

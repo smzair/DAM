@@ -78,28 +78,28 @@ class AdminControlController extends Controller
             $service = 'Shoot';
             $wrc_query = Wrc::leftjoin('lots','lots.id', 'wrc.lot_id')->
             where('wrc.id', '=',$wrc_id)->
-            where('lot_id', '=',$lot_id)->
+            where('wrc.lot_id', '=',$lot_id)->
             select('wrc.id', 'wrc.wrc_id as wrc_number' , 'lots.created_at', 'lots.brand_id', 'lots.user_id', 'lots.lot_id as lot_number' );
 
         }else if($service_id == 2){ // Creative
             $service = 'Creative';
             $wrc_query = CreativeWrcModel::leftjoin('creative_lots','creative_lots.id', 'creative_wrc.lot_id')->
             where('creative_wrc.id', '=',$wrc_id)->
-            where('lot_id', '=',$lot_id)->
+            where('creative_wrc.lot_id', '=',$lot_id)->
             select('creative_wrc.id', 'creative_wrc.wrc_number' , 'creative_lots.created_at', 'creative_lots.brand_id', 'creative_lots.user_id', 'creative_lots.lot_number');
             
         }else if($service_id == 3){  // Cataloging
             $service = 'Cataloging';
             $wrc_query = CatlogWrc::leftjoin('lots_catalog','lots_catalog.id', 'catlog_wrc.lot_id')->
             where('catlog_wrc.id', '=',$wrc_id)->
-            where('lot_id', '=',$lot_id)->
+            where('catlog_wrc.lot_id', '=',$lot_id)->
             select('catlog_wrc.id', 'catlog_wrc.wrc_number' , 'lots_catalog.created_at', 'lots_catalog.brand_id', 'lots_catalog.user_id', 'lots_catalog.lot_number');
             
         }else if($service_id == 4){  // Editing
             $service = 'Editing';
             $wrc_query = EditingWrc::leftjoin('editor_lots','editor_lots.id', 'editing_wrcs.lot_id')->
             where('editing_wrcs.id', '=',$wrc_id)->
-            where('lot_id', '=',$lot_id)->
+            where('editing_wrcs.lot_id', '=',$lot_id)->
             select('editing_wrcs.id', 'editing_wrcs.wrc_number' , 'editor_lots.created_at', 'editor_lots.brand_id', 'editor_lots.user_id', 'editor_lots.lot_number');
         }
 
@@ -163,9 +163,13 @@ class AdminControlController extends Controller
 
     public function AdminControlUploadedFiles(){
         $AdminControlUploadedFiles = AdminControlFileUpload::AdminControlUploadedFiles();
-
         return view('admin.Admin-Contol.Admin-Contol-File-Uploaded-Files')->with('data',$AdminControlUploadedFiles);
+    }
 
+    public function AdminControlUploadedFileListForClient(){
+        $AdminControlUploadedFileListForClient = AdminControlFileUpload::AdminControlUploadedFileListForClient();
+        
+        return view('clients.ClientFileManager.Admin-Control-uploded-File-List')->with('data',$AdminControlUploadedFileListForClient);
     }
 
 
