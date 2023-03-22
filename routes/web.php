@@ -22,6 +22,8 @@ use App\Http\Controllers\CatalogInvoiceController;
 use App\Http\Controllers\CatalogWrcMasterSheetController;
 use App\Http\Controllers\clientFileManager;
 use App\Http\Controllers\ClientsControllers\ClientDashboardController;
+use App\Http\Controllers\ClientsControllers\ClientProfileController;
+use App\Http\Controllers\ClientsControllers\ClientSettingsController;
 use App\Http\Controllers\ClientUserManagementController;
 use App\Http\Controllers\ConsolidatedLotController;
 use App\Http\Controllers\CreativeQcController;
@@ -579,6 +581,16 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/clients-creative-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCreativelotTimeline'])->name('clientsCreativelotTimeline');
     
     Route::get('/Uploaded-file-list', [AdminControlController::class, 'AdminControlUploadedFileListForClient'])->name('AdminControlUploadedFileList'); // Admin Control Uploaded File List
+    // ClientProfile Routes
+    Route::get('/Client-Profile', [ClientProfileController::class, 'index'])->name('ClientProfile'); 
+    Route::post('/Client-Profile', [ClientProfileController::class, 'UpdateClientProfile'])->name('UpdateClientProfile'); 
+    Route::post('/Client-Profile-companyDetails', [ClientProfileController::class, 'UpdateClientcompanyDetails'])->name('UpdateClientcompanyDetails'); 
+    Route::post('/Client-Profile-billingDetails', [ClientProfileController::class, 'UpdateClientbillingDetails'])->name('UpdateClientbillingDetails'); 
+    
+    // Client Settings Routes
+    Route::get('/Client-Settings', [ClientSettingsController::class, 'index'])->name('ClientSetting'); 
+
+
 
 
 });
