@@ -18,7 +18,9 @@ class CatalogSubmission extends Model
     public static function catalog_Wrc_list_for_Submission($tsak_status_is)
     {
         $catalog_Wrc_list_for_Submission = CatalogAllocation::
-        WHERE('catalog_time_hash.task_status', '=', $tsak_status_is)->leftJoin(
+        WHERE('catalog_time_hash.task_status', '=', $tsak_status_is)->
+        WHERE('lots_catalog.lot_number', '<>', null)->
+        leftJoin(
             'catalog_wrc_batches',
             function ($join) {
                 $join->on('catalog_wrc_batches.wrc_id', '=', 'catalog_allocation.wrc_id');
@@ -82,8 +84,10 @@ class CatalogSubmission extends Model
 
             DB::raw('GROUP_CONCAT(catalog_allocation.id) as catalog_allocation_ids'),
             DB::raw('GROUP_CONCAT(allocated_users.id) as allo_users_id'),
-            DB::raw('GROUP_CONCAT(allocated_users.name) as allocated_users_name'),
-        )->groupBy(['catalog_allocation.wrc_id', 'catalog_allocation.batch_no'])->get()->toArray();
+            DB::raw('GROUP_CONCAT(allocated_users.name) as allocated_users_name')
+        )->
+        selectRaw('(SELECT batch from catalog_wrc_skus WHERE catalog_wrc_skus.batch_no = catalog_wrc_batches.batch_no AND catalog_wrc_batches.wrc_id = catalog_wrc_skus.wrc_id limit 1) as "batch"')->
+        groupBy(['catalog_allocation.wrc_id', 'catalog_allocation.batch_no'])->get()->toArray();
         return $catalog_Wrc_list_for_Submission;
     }
 
@@ -170,7 +174,6 @@ class CatalogSubmission extends Model
             'catalog_wrc_batches.id as submissionId',
             // 'catalog_submissions.id as submissionId',
             'catalog_wrc_batches.created_at as wrc_created_at',
-
             'catalog_wrc_batches.wrc_id',
             'catlog_wrc.commercial_id',
             'catlog_wrc.alloacte_to_copy_writer',
@@ -182,8 +185,9 @@ class CatalogSubmission extends Model
             'create_commercial_catalog.market_place',
             'create_commercial_catalog.type_of_service as project_type',
             'users.c_short',
-            'brands.short_name',
+            'brands.short_name'
         )->
+        selectRaw('(SELECT batch from catalog_wrc_skus WHERE catalog_wrc_skus.batch_no = catalog_wrc_batches.batch_no AND catalog_wrc_batches.wrc_id = catalog_wrc_skus.wrc_id limit 1) as "batch"')->
         groupBy(['catalog_submissions.wrc_id', 'catalog_submissions.batch_no'])->
         orderBy('catalog_submissions.updated_at')->
         get()->toArray();
@@ -214,5 +218,4 @@ class CatalogSubmission extends Model
         return json_encode($response);
     }
     
-
 }

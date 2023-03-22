@@ -13,6 +13,7 @@ use Spatie\Activitylog\LogOptions;
 
 
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable 
 {
@@ -119,6 +120,62 @@ class User extends Authenticatable
 
     public function ParentUserDetail(){
     return  $this->hasOne('App\Models\User','parent_client_id','id');
+    }
+    
+    public static function getClientData(){
+      $user_id = Auth::id();
+
+      $roledata = getUsersRole($user_id);
+      $role = $roledata->role_name;
+      $data_query = User::where('users.id','=',$user_id)->select(
+        'users.id',
+        'users.client_id',
+        'users.name',
+        'users.last_name',
+        'users.email',
+        'users.email_verified',
+        'users.am_email',
+        'users.active_status',
+        'users.avatar',
+        'users.email_verified_at',
+        'users.phone',
+        'users.phone_verified',
+        'users.Address',
+        'users.Company',
+        'users.Gst_number',
+        'users.pen_number',
+        'users.postal_code',
+        'users.status',
+        'users.dam_enable',
+        'users.oms_enable');
+      
+      if($role == 'Client'){
+        $data_query = $data_query->addSelect(
+          'users.id as parent_client_id',
+          'users.name as company_user_name',
+          'users.Company as company_name',
+          'users.phone as company_phone',
+          'users.last_name as company_last_name',
+          'users.email as company_email',
+        );
+
+      }else{
+        $data_query = $data_query->
+        leftJoin('users as parent_users' , 'parent_users.id','=','users.parent_client_id' )->
+        addSelect(
+          'parent_users.id as parent_client_id',
+          'parent_users.name as company_user_name',
+          'parent_users.Company as company_name',
+          'parent_users.phone as company_phone',
+          'parent_users.last_name as company_last_name',
+          'parent_users.email as company_email',
+        );
+      }
+      $data = $data_query->first()->toArray();
+
+      $data['role'] = $role;
+      // dd($roledata , $data_query, $data);
+      return $data;
     }
     
   }

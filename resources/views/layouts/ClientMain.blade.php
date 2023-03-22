@@ -394,8 +394,8 @@
                             </a>
                         </li> --}}
                        
-                        {{-- <li class="sidebar-menu-list-item">
-                            <a href="profile.html" class="sidebar-menu-list-link">
+                        <li class="sidebar-menu-list-item">
+                            <a href="{{route('ClientProfile')}}" class="sidebar-menu-list-link">
                                 <span class="menu-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
                                         viewBox="0 0 16 20">
@@ -408,9 +408,9 @@
                                     Your profile
                                 </span>
                             </a>
-                        </li> --}}
+                        </li>
                         <li class="sidebar-menu-list-item">
-                            <a href="settings.html" class="sidebar-menu-list-link">
+                            <a href="{{route('ClientSetting')}}" class="sidebar-menu-list-link">
                                 <span class="menu-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="19.98" height="20"
                                         viewBox="0 0 19.98 20">
