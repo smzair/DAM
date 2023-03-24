@@ -21,6 +21,7 @@ use App\Http\Controllers\CatlaogQcController;
 use App\Http\Controllers\CatalogInvoiceController;
 use App\Http\Controllers\CatalogWrcMasterSheetController;
 use App\Http\Controllers\clientFileManager;
+use App\Http\Controllers\ClientsControllers\ClientCommonController;
 use App\Http\Controllers\ClientsControllers\ClientDashboardController;
 use App\Http\Controllers\ClientsControllers\ClientProfileController;
 use App\Http\Controllers\ClientsControllers\ClientSettingsController;
@@ -589,9 +590,13 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     
     // Client Settings Routes
     Route::get('/Client-Settings', [ClientSettingsController::class, 'index'])->name('ClientSetting'); 
+    Route::post('/Client-Settings', [ClientSettingsController::class, 'ChangePassword'])->name('ChangePassword');
+    Route::post('/verify-oldpass', [ClientSettingsController::class, 'verifyOldPass'])->name('verifyOldPass');
 
-
-
+    // Ajax Route
+    Route::post('/send-otp', [ClientCommonController::class, 'sendOtp'])->name('sendOtp'); 
+    Route::post('/verify-otp', [ClientCommonController::class, 'verifyOtp'])->name('verifyOtp'); 
+    
 
 });
 

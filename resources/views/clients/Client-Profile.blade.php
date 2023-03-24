@@ -4,6 +4,11 @@
 @endsection
 @section('css_links')
 	<link rel="stylesheet" href="">	
+    <style>
+        #email-verify-form-wrapper , #phone-verify-form-wrapper{
+            display: block;
+        }
+    </style>
 	
 @endsection
 @section('main_content')
@@ -33,7 +38,7 @@
                 @endif
 
                 @if (Session::has('false'))
-                    <div class="alert alert-false" role="alert">
+                    <div class="alert alert-danger" role="alert">
                         {{ Session::get('false') }}
                     </div>
                 @endif
@@ -164,7 +169,7 @@
                                                             <div class="group-inner">
                                                                 <input type="email" class="formInput client-email-input" name="clientEmail" id="clientEmail" value="{{$data['email']}}">
                                                                 @if (!$data['email_verified'])
-                                                                    <span class="verify-link email-verify" id="emailVerify" data-bs-toggle="modal" data-bs-target="#emailverficationModal" disabled>verify</span>
+                                                                    <span class="verify-link email-verify" id="emailVerify" data-bs-toggle="modal" data-bs-target="#emailverficationModal" onclick="sendotp(1)">verify</span>
                                                                 @else
                                                                     <span class="verify-link email-verify verified" disabled>
                                                                         <img src="assets-images\Desktop-Assets\settings\verify.svg" alt="Verified Tick">
@@ -185,7 +190,7 @@
                                                                 <input type="tel" class="formInput client-phone-input masked" name="clientPhone" id="clientPhone"  value="{{$data['phone']}}" maxlength="10" onkeypress="return isNumber(event)" >
                                                                 
                                                                 @if (!$data['phone_verified'])
-                                                                    <span class="verify-link phone-verify" id="phoneVerify" data-bs-toggle="modal" data-bs-target="#phoneverficationModal">verify</span>
+                                                                    <span class="verify-link phone-verify" id="phoneVerify" data-bs-toggle="modal" data-bs-target="#phoneverficationModal" onclick="sendotp(2)">verify</span>
                                                                 @else
                                                                     <span class="verify-link email-verify verified" disabled>
                                                                         <img src="assets-images\Desktop-Assets\settings\verify.svg" alt="Verified Tick">
@@ -529,30 +534,31 @@
                                 <div class="modal-close" data-bs-dismiss="modal">
                                     <img src="assets-images\Desktop-Assets\settings\close.svg" alt="Close">
                                 </div>
-                                <div class="custom-modal-form-wrapper email-verify-form-wrapper">
-                                    <form action="" method="POST" class="verification-global-form email-verify-form" id="emailVerifyform">
-                                        <div class="verification-process">
-                                            <div class="verification-info">
-                                                <h5>Verification code</h5>
-                                                <p>we’ve sent the 4-digit verification code to your email address
-                                                    <span id="yourMail">your@mail.com</span></p>
-                                            </div>
-                                            <div class="verification-otp">
-                                                <div class="inputs" id="emailverifyInputs">
-                                                    <input maxlength="1" class="verification-inputs" id="E-vInput1" placeholder="_" value="">
-                                                    <input maxlength="1" class="verification-inputs" id="E-vInput2" placeholder="_" value="">
-                                                    <input maxlength="1" class="verification-inputs" id="E-vInput3" placeholder="_" value="">
-                                                    <input maxlength="1" class="verification-inputs" id="E-vInput4" placeholder="_" value="">
-                                                </div>
+                                <div class="custom-modal-form-wrapper email-verify-form-wrapper" id="email-verify-form-wrapper">
+                                    <div class="verification-process">
+                                        <div class="verification-info">
+                                            <h5>Verification code</h5>
+                                            <p>we’ve sent the 4-digit verification code to your email address
+                                                <span id="yourMail1">your@mail.com</span></p>
+                                        </div>
+                                        <div class="verification-otp">
+                                            <div class="inputs" id="emailverifyInputs">
+                                                <input maxlength="1" class="verification-inputs" id="E-vInput1" placeholder="_" value="">
+                                                <input maxlength="1" class="verification-inputs" id="E-vInput2" placeholder="_" value="">
+                                                <input maxlength="1" class="verification-inputs" id="E-vInput3" placeholder="_" value="">
+                                                <input maxlength="1" class="verification-inputs" id="E-vInput4" placeholder="_" value="">
                                             </div>
                                         </div>
-                                        <div class="acnt-verify-wrapper">
-                                            <a href="javascript:;" class="btn verify-btn" id="emailverifyBtn">Submit</a>
-                                            <p>Didn’t receive the code? <a href="javascript:;" class="resend-link">Resend code</a></p>
-                                        </div>
-                                    </form>
+                                    </div>
+                                    <div class="acnt-verify-wrapper">
+                                        <button onclick="verifyOtp(1)" class="btn verify-btn" id="emailverifyBtn">Submit</button>
+                                        <p>Didn’t receive the code? <a href="javascript:;" onclick="sendotp(1,1)" class="resend-link">Resend code</a></p>
+                                    </div>
+                                    <div class="otpError d-none" style="color: red;padding: 10px">
+                                        
+                                    </div>
                                 </div>
-                                <div class="custom-verification-success-msg emailverify-success-msg">
+                                <div class="custom-verification-success-msg emailverify-success-msg" id="emailverify-success-msg">
                                     <div class="success-checkmark">
                                         <div class="check-icon">
                                           <span class="icon-line line-tip"></span>
@@ -576,30 +582,31 @@
                             <div class="modal-close" data-bs-dismiss="modal">
                                 <img src="assets-images\Desktop-Assets\settings\close.svg" alt="Close">
                             </div>
-                            <div class="custom-modal-form-wrapper phone-verify-form-wrapper">
-                                <form action="" method="POST" class="verification-global-form phone-verify-form" id="phoneVerifyform">
-                                    <div class="verification-process">
-                                        <div class="verification-info">
-                                            <h5>Verification code</h5>
-                                            <p>we’ve sent the 4-digit verification code to your phone number
-                                                <span id="yourNumber">+918505854319</span></p>
-                                        </div>
-                                        <div class="verification-otp">
-                                            <div class="inputs" id="phoneverifyInputs">
-                                                <input maxlength="1" class="verification-inputs" id="P-vInput1" placeholder="_" value="">
-                                                <input maxlength="1" class="verification-inputs" id="P-vInput2" placeholder="_" value="">
-                                                <input maxlength="1" class="verification-inputs" id="P-vInput3" placeholder="_" value="">
-                                                <input maxlength="1" class="verification-inputs" id="P-vInput4" placeholder="_" value="">
-                                            </div>
+                            <div class="custom-modal-form-wrapper phone-verify-form-wrapper" id="phone-verify-form-wrapper">
+                                <div class="verification-process">
+                                    <div class="verification-info">
+                                        <h5>Verification code</h5>
+                                        <p>we’ve sent the 4-digit verification code to your email address
+                                            <span id="yourMail2">+918505854319</span></p>
+                                    </div>
+                                    <div class="verification-otp">
+                                        <div class="inputs" id="phoneverifyInputs">
+                                            <input maxlength="1" class="verification-inputs" id="P-vInput1" placeholder="_" value="">
+                                            <input maxlength="1" class="verification-inputs" id="P-vInput2" placeholder="_" value="">
+                                            <input maxlength="1" class="verification-inputs" id="P-vInput3" placeholder="_" value="">
+                                            <input maxlength="1" class="verification-inputs" id="P-vInput4" placeholder="_" value="">
                                         </div>
                                     </div>
-                                    <div class="acnt-verify-wrapper">
-                                        <a href="javascript:;" class="btn verify-btn" id="phoneverifyBtn">Submit</a>
-                                        <p>Didn’t receive the code? <a href="javascript:;" class="resend-link">Resend code</a></p>
-                                    </div>
-                                </form>
+                                </div>
+                                <div class="acnt-verify-wrapper">
+                                    <a href="javascript:;" onclick="verifyOtp(2)" class="btn verify-btn" id="phoneverifyBtn">Submit</a>
+                                    <p>Didn’t receive the code? <a href="javascript:;" onclick="sendotp(2,1)" class="resend-link">Resend code</a></p>
+                                </div>
+                                <div class="otpError d-none" style="color: red;padding: 10px">
+                                
+                                </div>
                             </div>
-                            <div class="custom-verification-success-msg phoneverify-success-msg">
+                            <div class="custom-verification-success-msg phoneverify-success-msg" id="phoneverify-success-msg">
                                 <div class="success-checkmark">
                                     <div class="check-icon">
                                       <span class="icon-line line-tip"></span>
@@ -615,6 +622,7 @@
                     </div>
                 </div>
                 </div>
+
                 <div class="modal fade custom-global-modal verfication-modal change-password-modal" id="changePasswordModal" tabindex="-1"
                 aria-hidden="true">
                 <div class="modal-dialog global-modal-dialog">
@@ -813,8 +821,103 @@
         $(document).ready(function() {
             setTimeout(() => {
                 $('#msg_div').attr("style", "display:none")
+                $(".otpError").addClass('d-none')
             }, 3500);
         });
     </script>
+
+    {{-- Send Otp --}}
+    <script>
+        async function sendotp(otpfor,resend = 0){
+            // 1 for emailVerify 2 for phoneVerify
+            $("#yourMail"+otpfor).text('')
+
+            if(otpfor == 1){
+                input_id = "#E-vInput"
+            }else{
+                input_id = "#P-vInput"
+            }
+
+            for(let i = 1; i<= 4; i++){
+                $(input_id+i).val('');
+            }
+            await $.ajax({
+                url: "{{ url('send-otp') }}",
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    otpfor,
+                    resend,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(res) {
+                    console.log('res', res)
+                    massage = res.massage;
+                    $("#yourMail"+otpfor).text(res.email)
+                    $(".otpError").text(res.massage)
+                }
+            });
+            setTimeout(() => {
+                $(".otpError").addClass('d-none')
+            }, 4000);
+        }
+    </script>
+
+    {{-- Verify Otp --}}
+    <script>
+        async function verifyOtp(otpfor){
+            // 1 for emailVerify 2 for phoneVerify
+            let otpIs = '';
+            let display_block = d_none = input_id = '';
+
+            if(otpfor == 1){
+                display_block = 'emailverify-success-msg'
+                d_none = 'email-verify-form-wrapper'
+                input_id = "#E-vInput"
+            }else{
+                display_block = 'phoneverify-success-msg'
+                d_none = 'phone-verify-form-wrapper'
+                input_id = "#P-vInput"
+            }
+
+            for(let i = 1; i<= 4; i++){
+                let value = $(input_id+i).val();
+                otpIs = otpIs+''+value
+            }
+
+            if(otpIs.length != 4){
+                $(".otpError").text('4 digit OTP not entered')
+                $(".otpError").removeClass('d-none')
+                setTimeout(() => {
+                    $(".otpError").addClass('d-none')
+                }, 2000); 
+                return
+            }
+            let final_otp = otpIs*1
+            await $.ajax({
+                url: "{{ url('verify-otp') }}",
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    otpfor,
+                    final_otp,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(res) {
+                    if(res.status){
+                        $("#"+d_none).css('display', 'none');
+                        $("#"+display_block).css('display', 'block');
+                    }else{
+                        $(".otpError").text(res.massage)
+                        $(".otpError").removeClass('d-none')
+                    }
+                }
+            });
+            setTimeout(() => {
+                $(".otpError").addClass('d-none')
+            }, 2000); 
+        }
+    </script>
+
 
 @endsection

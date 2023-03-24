@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\emailPhoneVerifcationOtp;
 use App\Mail\NotifyUsers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -117,4 +118,13 @@ class Controller extends BaseController
         Mail::to($users)->send(new NotifyUsers($notification_data, $creation_type, $subject));// send mail to user
 
     }
+
+    public function sent_otp_to_mail($user_data , $other_data){
+
+        $email = $user_data->email;
+        Mail::to($user_data->email)->send(new emailPhoneVerifcationOtp($user_data,$other_data));// send mail to user
+
+    }
+
+
 }
