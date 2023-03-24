@@ -7,6 +7,7 @@
 /public/edited_img_uploads/
 raw_img_directory
 AdminControlFile
+uploades
 .env
 .env.backup
 .phpunit.result.cache
