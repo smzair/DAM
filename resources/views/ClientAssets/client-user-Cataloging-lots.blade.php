@@ -87,7 +87,6 @@ Cataloging Lots
               <td>{{$row->lot_number}}</td>
               <td>{{$row->serviceType}}</td>
               <td>{{$row->requestType}}</td>
-              
             </tr>
             @endforeach
           </tbody>

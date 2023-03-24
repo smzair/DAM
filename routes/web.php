@@ -580,6 +580,16 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     
     //get  clients creative -lot-timeline detail
     Route::get('/clients-creative-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCreativelotTimeline'])->name('clientsCreativelotTimeline');
+
+    
+    // clients shoot lot Timeline Detail 
+    Route::get('/clients-shoot-lot-timeline/{id}', [ClientDashboardController::class, 'clientsShootlotTimeline'])->name('clientsShootlotTimeline');
+
+     // clients catlog lot Timeline Detail 
+     Route::get('/clients-catlog-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCatloglotTimeline'])->name('clientsCatloglotTimeline');
+
+     //clients Editor Lot Timeline Detail
+     Route::get('/clients-editor-lot-timeline/{id}', [ClientDashboardController::class, 'clientsEditorLotTimeline'])->name('clientsEditorLotTimeline');
     
     Route::get('/Uploaded-file-list', [AdminControlController::class, 'AdminControlUploadedFileListForClient'])->name('AdminControlUploadedFileList'); // Admin Control Uploaded File List
     // ClientProfile Routes

@@ -68,4 +68,9 @@ class Skus extends Model {
         return $result->get();
     }
 
+    // get editor Submission Info 
+    public function editorSubmissionInfo(){
+		return $this->hasMany('App\Models\Wrc','lot_id','id')->with('getWrcSkus:id,lot_id,wrc_id,sku_code,user_id,brand_id');
+	}
+
 }
