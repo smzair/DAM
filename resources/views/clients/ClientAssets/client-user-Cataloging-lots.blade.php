@@ -40,7 +40,8 @@
 						@endphp
                         <tr>
                             <td width="5%" class="pl-3">{{$index +1 }}</td>
-							<td>{{$row['lot_number']}}</td>
+							{{-- <td>{{$row['lot_number']}}</td> --}}
+							<td><a class="lotLink" target="_blank" href={{route('clientsCatloglotTimeline',$row['id'])}}>{{$row['lot_number']}}</a></td>
 							<td>{{$row['serviceType']}}</td>
 							<td>{{$row['requestType']}}</td>
                             <td style="position: relative;">

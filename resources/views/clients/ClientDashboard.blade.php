@@ -131,7 +131,7 @@
 				<div class="card dashboard-content-card order-summary-card">
 					<div class="row">
 						<div class="order-summary-details whitebg-order-summary">
-							<div class="row">
+							<div class="row mb-1">
 								<div class="col-xl-9 col-12">
 									<span class="action-icon order-icn">
 										<img src="assets-images\Desktop-Assets\dashboard home\order-icon-for-card.svg" alt="Order icon">
@@ -142,13 +142,13 @@
 								</div>
 							</div>
 							<div class="row">
-								@foreach ($resData as $key => $val)
+								@foreach ($resDataCatlog as $key => $val)
 									<div class="col-xl-6 col-md-6 col-sm-12">
-										<div class="order-timeline-details greenbg-order-summary mb-2" style="width: 100%;">
+										<div class="order-timeline-details greenbg-order-summary mb-1" style="width: 100%;">
 											<div class="row">
 												<div class="col-xl-12 col-sm-12">
 													<div class="status-text">
-														Lot No:- {{ $val['lot_number'] }}
+														<h6><a class="lotLink" target="_blank" href={{route('clientsCatloglotTimeline',$val['lot_id'])}}>Lot No:- {{ $val['lot_number'] }}</a></h6>
 													</div>
 													<div class="order-timeline">
 														<ul style="overflow: auto;padding-top: 15px;padding-left: 10px;">
@@ -184,6 +184,124 @@
 					</div>
 				</div>
 				{{-- -----lot status catlog end-----}}
+
+				{{-- -----lot status for editor start--- --}}
+				<div class="card dashboard-content-card order-summary-card">
+					<div class="row">
+						<div class="order-summary-details whitebg-order-summary">
+							<div class="row mb-1">
+								<div class="col-xl-9 col-12">
+									<span class="action-icon order-icn">
+										<img src="assets-images\Desktop-Assets\dashboard home\order-icon-for-card.svg" alt="Order icon">
+									</span>
+									<span class="action-text order-nm" id="orderName">
+										Clients Lot Status (Editor)
+									</span>
+								</div>
+							</div>
+							<div class="row">
+								@foreach ($resDataEditor as $key => $val)
+									<div class="col-xl-6 col-md-6 col-sm-12">
+										<div class="order-timeline-details greenbg-order-summary mb-1" style="width: 100%;">
+											<div class="row">
+												<div class="col-xl-12 col-sm-12">
+													<div class="status-text">
+														<h6><a class="lotLink" target="_blank" href={{route('clientsEditorLotTimeline',$val['lot_id'])}}>Lot No:- {{ $val['lot_number'] }}</a></h6>
+													</div>
+													<div class="order-timeline">
+														<ul style="overflow: auto;padding-top: 15px;padding-left: 10px;">
+															@php 
+																$previousActive = true;
+															@endphp
+															@foreach(['Inverd Pending', 'Allocation Pending', 'Uploading Pending', 'Qc Pending', 'Submission Pending'] as $status)
+																@php 
+																	$active = ($val['lot_status'] == $status);
+																@endphp
+																<li 
+																	@if ($active)
+																		class="active-status" 
+																		@php $previousActive = false; @endphp 
+																	@elseif ($previousActive) 
+																		class="active-status" 
+																	@endif
+																>
+																	<span class="status-tag" id="{{ strtolower(str_replace(' ', '', $status)) }}">
+																		{{ $status }}
+																	</span>
+																</li>
+															@endforeach
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								@endforeach
+							</div>
+						</div>
+					</div>
+				</div>
+				{{-- -----lot status for editor end--- --}}
+
+				{{-- -----lot status shoot start--- --}}
+				<div class="card dashboard-content-card order-summary-card">
+					<div class="row">
+						<div class="order-summary-details whitebg-order-summary">
+							<div class="row mb-1">
+								<div class="col-xl-9 col-12">
+									<span class="action-icon order-icn">
+										<img src="assets-images\Desktop-Assets\dashboard home\order-icon-for-card.svg" alt="Order icon">
+									</span>
+									<span class="action-text order-nm" id="orderName">
+										Clients Lot Status (Shoot)
+									</span>
+								</div>
+							</div>
+							<div class="row">
+								@foreach ($resDataShoot as $key => $val)
+									<div class="col-xl-6 col-md-6 col-sm-12">
+										<div class="order-timeline-details greenbg-order-summary mb-1" style="width: 100%;">
+											<div class="row">
+												<div class="col-xl-12 col-sm-12">
+													<div class="status-text">
+														<h6><a class="lotLink" target="_blank" href={{route('clientsShootlotTimeline',$val['lot_id'])}}>Lot No:- {{ $val['lot_number'] }}</a></h6>
+													</div>
+													<div class="order-timeline">
+														<ul style="overflow: auto;padding-top: 15px;padding-left: 10px;">
+															@php 
+																$previousActive = true;
+															@endphp
+															@foreach(['Inverd Done', 'Shoot Done', 'Editing/Qc Done', 'Submission Done', 'Invoice Done'] as $status)
+																@php 
+																	$active = ($val['lot_status'] == $status);
+																@endphp
+																<li 
+																	@if ($active)
+																		class="active-status" 
+																		@php $previousActive = false; @endphp 
+																	@elseif ($previousActive) 
+																		class="active-status" 
+																	@endif
+																>
+																	<span class="status-tag" id="{{ strtolower(str_replace(' ', '', $status)) }}">
+																		{{ $status }}
+																	</span>
+																</li>
+															@endforeach
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								@endforeach
+							</div>
+						</div>
+					</div>
+				</div>
+				{{-- -----lot status shoot end-----}}
+
+				
 			</div>
 		</div><!-- /.container-fluid -->
 	</div>
