@@ -137,6 +137,7 @@ class User extends Authenticatable
         'users.am_email',
         'users.active_status',
         'users.avatar',
+        'users.profile_avtar',
         'users.email_verified_at',
         'users.phone',
         'users.phone_verified',
@@ -155,6 +156,7 @@ class User extends Authenticatable
           'users.name as company_user_name',
           'users.Company as company_name',
           'users.phone as company_phone',
+          'users.company_logo',
           'users.last_name as company_last_name',
           'users.email as company_email',
         );
@@ -167,6 +169,7 @@ class User extends Authenticatable
           'parent_users.name as company_user_name',
           'parent_users.Company as company_name',
           'parent_users.phone as company_phone',
+          'parent_users.company_logo',
           'parent_users.last_name as company_last_name',
           'parent_users.email as company_email',
         );

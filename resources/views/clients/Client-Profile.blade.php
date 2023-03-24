@@ -78,8 +78,22 @@
                     </ul>
 
                     @php
-                        // pre($data);
                         $id = $data['id'];
+                        $profile_avtar = $data['profile_avtar'];
+                        $profile_avtar_path =  asset('uploades/profileavtar/'.$profile_avtar);
+                        if(!file_exists($profile_avtar_path) && $profile_avtar != ''){
+                            $profile_avtar_src = $profile_avtar_path;
+                        }else{
+                            $profile_avtar_src = "assets-images\Desktop-Assets\your profile\blank-avtar.jpg";
+                        }
+
+                        $company_logo = $data['company_logo'];
+                        $company_logo_path =  asset('uploades/company_logo/'.$company_logo);
+                        if(!file_exists($company_logo_path) && $company_logo != ''){
+                            $company_logo_src = $company_logo_path;
+                        }else{
+                            $company_logo_src = "assets-images\Desktop-Assets\your profile\blank-avtar.jpg";
+                        }
                     @endphp
 					{{--  --}}
                     <div class="tab-listing-content custom-profilelisting-content" id="profilesContent">
@@ -97,18 +111,22 @@
                                             <div class="row">
                                                 {{-- user profile --}}
                                                 <div class="col-12">
-                                                    <div class="profile-avtar">
-                                                        <div class="avtar-logo">
-                                                            <div class="avtar-logo-inner">
-                                                                <img src="assets-images\Desktop-Assets\your profile\blank-avtar.jpg" class="profile-pic" alt="No Picture">
+                                                    <form method="POST" action="{{route('UploadeClientAvtar')}}" class="custom-profiles-form personal-details-form" id="UploadeClientAvtar" enctype="multipart/form-data">
+                                                        @csrf;
+                                                        <div class="profile-avtar">
+                                                            <div class="avtar-logo">
+                                                                <div class="avtar-logo-inner">
+                                                                    <img src="{{$profile_avtar_src}}" class="profile-pic" alt="No Picture">
+                                                                </div>
+                                                            </div>
+                                                            <div class="avtar-action-btn">
+                                                                <a href="javascript:;" class="btn pic-change-btn" id="picChangeBTN">Change Photo</a>
+                                                                <button class="btn pic-upload-btn mb-2 d-none" id="picUploadBTN">Upload Photo</button>
+                                                                <a href="javascript:;" class="btn pic-delete-btn" id="picDeleteBTN">Delete</a>
+                                                                <input class="file-upload-avtar" type="file" name="profileavtar" accept="image/*" id="avtarUpload"/>
                                                             </div>
                                                         </div>
-                                                        <div class="avtar-action-btn">
-                                                            <a href="javascript:;" class="btn pic-change-btn" id="picChangeBTN">Change Photo</a>
-                                                            <a href="javascript:;" class="btn pic-delete-btn" id="picDeleteBTN">Delete</a>
-                                                            <input class="file-upload-avtar" type="file" accept="image/*" id="avtarUpload"/>
-                                                        </div>
-                                                    </div>
+                                                    </form>
                                                 </div>
                                             </div>
 
@@ -291,20 +309,25 @@
                                         <div class="left-col-details">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="profile-avtar">
-                                                        <div class="avtar-logo">
-                                                            <div class="avtar-logo-inner">
-                                                                <img src="assets-images\Desktop-Assets\your profile\blank-avtar.jpg" class="company-pic" alt="No Picture">
+                                                    <form action="{{route('UploadeCompanyLogo')}}" method="POST" enctype="multipart/form-data" >
+                                                        @csrf;
+                                                        <div class="profile-avtar">
+                                                            <div class="avtar-logo">
+                                                                <div class="avtar-logo-inner">
+                                                                    <img src="{{$company_logo_src}}" class="company-pic" alt="Company logo">
+                                                                </div>
+                                                            </div>
+                                                            <div class="avtar-action-btn">
+                                                                @if ($data['role'] == 'Client')
+
+                                                                    <a href="javascript:;" class="btn company-pic-change-btn" id="companypicChangeBTN">Change Logo</a>
+                                                                    <button class="btn company-logo-upload-btn mb-2 d-none" id="compLogoUploadBTN">Upload logo</button>
+                                                                    <a href="javascript:;" class="btn company-pic-delete-btn" id="companypicDeleteBTN">Delete</a>
+                                                                    <input class="file-upload-company" name="company_logo" type="file" accept="image/*" id="companyavtarUpload"/>
+                                                                @endif
                                                             </div>
                                                         </div>
-                                                        <div class="avtar-action-btn">
-                                                            <a href="javascript:;" class="btn company-pic-change-btn" id="companypicChangeBTN">Change Logo</a>
-                                                            <a href="javascript:;" class="btn company-pic-delete-btn" id="companypicDeleteBTN">Delete</a>
-                                                            <form action="" action="" >
-                                                                <input class="file-upload-company" type="file" accept="image/*" value="" id="companyavtarUpload"/>
-                                                            </form>
-                                                        </div>
-                                                    </div>
+                                                    </form>
                                                 </div>
                                             </div>  
                                             <form method="POST" action="{{route('UpdateClientcompanyDetails')}}" class="custom-profiles-form company-details-form" id="companyDetailsForm">
@@ -729,7 +752,8 @@
 
 		$(".file-upload-avtar").on('change', function () {
 			readURL(this);
-
+            $("#picUploadBTN").removeClass('d-none')
+            $("#picChangeBTN").addClass('d-none')
 		});
 
 		$(".pic-change-btn").on('click', function () {
@@ -738,6 +762,9 @@
 
 		$(".pic-delete-btn").on('click', function () {
 			$('.profile-pic').attr('src', 'assets-images/Desktop-Assets/your profile/blank-avtar.jpg');
+            $('.file-upload-avtar').val('')
+            $("#picUploadBTN").addClass('d-none')
+            $("#picChangeBTN").removeClass('d-none')
 		});
 
 		// Company logo uploader
@@ -755,6 +782,8 @@
 
 		$(".file-upload-company").on('change', function () {
 			readURL2(this);
+            $("#compLogoUploadBTN").removeClass('d-none')
+            $("#companypicChangeBTN").addClass('d-none')
 		});
 
 		$(".company-pic-change-btn").on('click', function () {
@@ -763,6 +792,9 @@
 
 		$(".company-pic-delete-btn").on('click', function () {
 			$('.company-pic').attr('src', 'assets-images/Desktop-Assets/your profile/blank-avtar.jpg');
+            $('.file-upload-company').val('')
+            $("#companypicChangeBTN").removeClass('d-none')
+            $("#compLogoUploadBTN").addClass('d-none')
 		});
 
 		$(".edit-btn").on('click', function () {

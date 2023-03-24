@@ -597,6 +597,8 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::post('/Client-Profile', [ClientProfileController::class, 'UpdateClientProfile'])->name('UpdateClientProfile'); 
     Route::post('/Client-Profile-companyDetails', [ClientProfileController::class, 'UpdateClientcompanyDetails'])->name('UpdateClientcompanyDetails'); 
     Route::post('/Client-Profile-billingDetails', [ClientProfileController::class, 'UpdateClientbillingDetails'])->name('UpdateClientbillingDetails'); 
+    Route::post('/UploadeClientAvtar', [ClientProfileController::class, 'UploadeClientAvtar'])->name('UploadeClientAvtar'); 
+    Route::post('/UploadeCompanyLogo', [ClientProfileController::class, 'UploadeCompanyLogo'])->name('UploadeCompanyLogo'); 
     
     // Client Settings Routes
     Route::get('/Client-Settings', [ClientSettingsController::class, 'index'])->name('ClientSetting'); 

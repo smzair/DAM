@@ -123,4 +123,40 @@ class ClientProfileController extends Controller
         return redirect()->route('ClientProfile');
     }
 
+    public function UploadeClientAvtar(Request $request){
+        $file = $request->file('profileavtar');
+        $filename = $file->getClientOriginalName();
+        $file_path = "uploades/profileavtar/";
+        $file->move($file_path, $filename);
+
+        $user_data = User::find(Auth::id());
+        $user_data->profile_avtar = $filename;
+        $status = $user_data->update();
+        if($status){
+            request()->session()->flash('success', 'Profile Avtar Successfully Updated!!');
+        }else{
+            request()->session()->flash('false', 'Somthing went wrong try again!!!');
+        }
+        return redirect()->route('ClientProfile');
+        // dd( $status ,$user_data, $request->all());
+    }
+
+    public function UploadeCompanyLogo(Request $request){
+        $file = $request->file('company_logo');
+        $filename = $file->getClientOriginalName();
+        $file_path = "uploades/company_logo/";
+        $file->move($file_path, $filename);
+
+        $user_data = User::find(Auth::id());
+        $user_data->company_logo = $filename;
+        $status = $user_data->update();
+        if($status){
+            request()->session()->flash('success', 'company_logo Successfully Updated!!');
+        }else{
+            request()->session()->flash('false', 'Somthing went wrong try again!!!');
+        }
+        // dd( $status ,$user_data, $request->all());
+        return redirect()->route('ClientProfile');
+    }
+
 }
