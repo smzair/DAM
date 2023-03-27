@@ -560,6 +560,17 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     // dam (Digital Asset Management) Routing
     Route::get('/client-user', [UserController::class, 'clientIndex'])->name('clientuser.index');
 
+    // Client User Management Routing
+    Route::get('/client-user-management', [ClientUserManagementController::class, 'Index'])->name('ClientUserManagement');
+    Route::get('/user-management', [ClientUserManagementController::class, 'create'])->name('addClientUser');
+    Route::get('/client-user-validation', [ClientUserManagementController::class, 'clientUserValid']);
+    Route::post('/save-client-users', [ClientUserManagementController::class, 'saveUserClient']);
+    Route::get('/user-management/{id}', [ClientUserManagementController::class, 'edit'])->name('editClientUser');
+    Route::post('/Client-user-activty-log', [ClientUserManagementController::class, 'saveUserActivty']);
+    
+    Route::post('/client-user-management', [ClientUserManagementController::class, 'sub_users_access_permission'])->name('sub_users_access_permission'); // Give side bar mennu to sub users
+    
+
     // client User Your assets Routes
     Route::get('/client-user-shoot-lots', [UserAssetsController::class, 'clientUserShootLots'])->name('clientUserShootLots');
     Route::get('/client-user-Creative-lots', [UserAssetsController::class, 'clientUserCreativeLots'])->name('clientUserCreativeLots');
@@ -615,13 +626,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
 
     
 
-    // Client User Management Routing
-    Route::get('/client-user-management', [ClientUserManagementController::class, 'Index'])->name('ClientUserManagement');
-    Route::get('/user-management', [ClientUserManagementController::class, 'create'])->name('addClientUser');
-    Route::get('/client-user-validation', [ClientUserManagementController::class, 'clientUserValid']);
-    Route::post('/save-client-users', [ClientUserManagementController::class, 'saveUserClient']);
-    Route::get('/user-management/{id}', [ClientUserManagementController::class, 'edit'])->name('editClientUser');
-    Route::post('/Client-user-activty-log', [ClientUserManagementController::class, 'saveUserActivty']);
+    
 
 
 
