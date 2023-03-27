@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ClientsControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClientActivityLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -151,12 +152,53 @@ class ClientProfileController extends Controller
         $user_data->company_logo = $filename;
         $status = $user_data->update();
         if($status){
-            request()->session()->flash('success', 'company_logo Successfully Updated!!');
+            request()->session()->flash('success', 'Company Logo Successfully Updated!!');
         }else{
             request()->session()->flash('false', 'Somthing went wrong try again!!!');
         }
         // dd( $status ,$user_data, $request->all());
         return redirect()->route('ClientProfile');
+    }
+
+    // delete-image
+    function deleteImage(Request $request){
+        $user_data = User::find(Auth::id());
+        $profile_avtar = $user_data->profile_avtar;
+        $company_logo = $user_data->company_logo;
+        $deleteImageFor = $request->deleteImageFor;
+
+        if($deleteImageFor == 1){
+            $user_data->profile_avtar = null;
+            $event = $log_name = "Profile Image Delete";
+            $file_path = "uploades/profileavtar/".$profile_avtar;
+
+        }else{
+            $user_data->company_logo = null;
+            $event = $log_name = "Company Logo Delete";
+            $file_path = "uploades/company_logo/".$company_logo;
+        }
+
+        $update_status = $user_data->update();
+
+        if($update_status){
+            $ClientActivityLog = new ClientActivityLog();
+            
+            $ClientActivityLog->log_name = $log_name;
+            $ClientActivityLog->description = $log_name.' By '.$user_data->name;
+            $ClientActivityLog->event = $event;
+            $ClientActivityLog->subject_type = 'App\Models\User';
+            $ClientActivityLog->subject_id = 0;
+            $ClientActivityLog->causer_type = 'App\Models\User';
+            $ClientActivityLog->causer_id = $user_data->id;
+            $ClientActivityLog->properties = [];
+            if(($deleteImageFor == 1 && $profile_avtar != '') || ($deleteImageFor == 2 && $company_logo != '')){
+                $ClientActivityLogSatus = $ClientActivityLog->save();
+                if (file_exists($file_path)) {
+                    unlink($file_path);
+                }
+            }
+        }
+        echo "Success"; 
     }
 
 }

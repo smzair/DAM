@@ -599,6 +599,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::post('/Client-Profile-billingDetails', [ClientProfileController::class, 'UpdateClientbillingDetails'])->name('UpdateClientbillingDetails'); 
     Route::post('/UploadeClientAvtar', [ClientProfileController::class, 'UploadeClientAvtar'])->name('UploadeClientAvtar'); 
     Route::post('/UploadeCompanyLogo', [ClientProfileController::class, 'UploadeCompanyLogo'])->name('UploadeCompanyLogo'); 
+    Route::post('/delete-image', [ClientProfileController::class, 'deleteImage'])->name('deleteImage'); 
     
     // Client Settings Routes
     Route::get('/Client-Settings', [ClientSettingsController::class, 'index'])->name('ClientSetting'); 
