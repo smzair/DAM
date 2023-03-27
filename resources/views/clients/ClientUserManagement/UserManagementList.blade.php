@@ -73,7 +73,7 @@
                       </div>
                     <h6 class="card-title"></h6>
                 </div>
-                <div class="card-body " >
+                <div class="card-body" style="position: relative; overflow-y: scroll" >
                     <table class="table table-responsive p-0">
                         <thead>
                             <tr style="font-size: 14px;">
@@ -84,8 +84,8 @@
                               <th>Email </th>
                               <th>Address </th>
                               <th>Phone No </th>
-                              {{-- <th>Action </th> --}}
                               <th>Onboard Date </th>
+                              <th>Action </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -103,6 +103,9 @@
                                 <a class="btn btn-warning px-1 py-1 btn-xs mt-1" href="{{ route('editClientUser', ['id'=>$user->id]) }}"  data-id="{{$user->id}}">Edit</a>
                                 </td> --}}
                                 <td> {{$user->created_at}} </td>
+                                <td>
+                                  <button>Give Permission</button>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

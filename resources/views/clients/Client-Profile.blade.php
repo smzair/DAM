@@ -736,6 +736,28 @@
 @section('js_scripts')
 	<script type="text/javascript" src="{{asset('ClientsPlugins\vanilla-js-input-mask-main\js\input-mask.js')}}"></script>
 
+    <script>
+        async function deleteImage(deleteImageFor){
+            // 1 for profile Image 2 for Company Logo
+            await $.ajax({
+                url: "{{ url('delete-image') }}",
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    deleteImageFor,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(res) {
+                    console.log('res', res)
+                    massage = res?.massage;
+                }
+            });
+            setTimeout(() => {
+                $(".otpError").addClass('d-none')
+            }, 4000);
+        }
+    </script>
+
 	<script>
 		// Personal logo uploader
 		var readURL = function (input) {
@@ -765,6 +787,7 @@
             $('.file-upload-avtar').val('')
             $("#picUploadBTN").addClass('d-none')
             $("#picChangeBTN").removeClass('d-none')
+            deleteImage(1);
 		});
 
 		// Company logo uploader
@@ -795,6 +818,7 @@
             $('.file-upload-company').val('')
             $("#companypicChangeBTN").removeClass('d-none')
             $("#compLogoUploadBTN").addClass('d-none')
+            deleteImage(2);
 		});
 
 		$(".edit-btn").on('click', function () {
