@@ -233,7 +233,6 @@ class ClientUserManagementController extends Controller
         }
 
     }
-   
 
     public function ClientsActivityLog(){
         $sub_users_list = ClientActivityLog::
@@ -285,5 +284,67 @@ class ClientUserManagementController extends Controller
             throw $error;
         }
     }
+    
+    // sub_users_access_permission
+    public function sub_users_access_permission(Request $request){
+        $ya_shoot = ($request->ya_shoot && ($request->ya_shoot == 'on' || $request->ya_shoot == 1 )) ? true : false ;
+        $ya_Creative = ($request->ya_Creative && ($request->ya_Creative == 'on' || $request->ya_Creative == 1 )) ? true : false ;
+        $ya_Cataloging = ($request->ya_Cataloging && ($request->ya_Cataloging == 'on' || $request->ya_Cataloging == 1 )) ? true : false ;
+        $ya_Editing = ($request->ya_Editing && ($request->ya_Editing == 'on' || $request->ya_Editing == 1 )) ? true : false ;
+        
+        $fm_shoot = ($request->fm_shoot && ($request->fm_shoot == 'on' || $request->fm_shoot == 1 )) ? true : false ;
+        $fm_Creative = ($request->fm_Creative && ($request->fm_Creative == 'on' || $request->fm_Creative == 1 )) ? true : false ;
+        $fm_Cataloging = ($request->fm_Cataloging && ($request->fm_Cataloging == 'on' || $request->fm_Cataloging == 1 )) ? true : false ;
+        $fm_Editing = ($request->fm_Editing && ($request->fm_Editing == 'on' || $request->fm_Editing == 1 )) ? true : false ;
+
+        $your_assets_permissions = json_encode(array(
+            'shoot' => $ya_shoot,
+            'Creative' => $ya_Creative,
+            'Cataloging' => $ya_Cataloging,
+            'Editing' => $ya_Editing
+        ),true);
+
+        $file_manager_permissions = json_encode(array(
+            'shoot' => $fm_shoot,
+            'Creative' => $fm_Creative,
+            'Cataloging' => $fm_Cataloging,
+            'Editing' => $fm_Editing
+        ),true);
+
+        $user_id = $request->user_id;
+        $user_data = User::find($user_id);
+
+        $properties = array(
+            'attributes' => array(
+                "file_manager_permissions" => $file_manager_permissions,
+                "file_manager_permissions" => $file_manager_permissions,
+            ),
+            'old' => array(
+                "file_manager_permissions" => $user_data->file_manager_permissions,
+                "file_manager_permissions" => $user_data->file_manager_permissions,
+            ),
+        );
+        
+        $user_data->your_assets_permissions = $your_assets_permissions;
+        $user_data->file_manager_permissions = $file_manager_permissions;
+        $update_status = $user_data->update();
+        if($update_status){
+            $ClientActivityLog = new ClientActivityLog();
+            $ClientActivityLog->log_name = 'Sub Client Permission Updated';
+            $ClientActivityLog->description = 'Sub Client Permition Updated By '.Auth::user()->name;
+            $ClientActivityLog->event = 'Sub Client Permission Updated';
+            $ClientActivityLog->subject_type = 'App\Models\User';
+            $ClientActivityLog->subject_id = $user_id;
+            $ClientActivityLog->causer_type = 'App\Models\User';
+            $ClientActivityLog->causer_id = Auth::id();
+            $ClientActivityLog->properties = json_encode($properties);
+            $ClientActivityLog->save();
+            request()->session()->flash('success', 'Permission Successfully Updated!!');
+        }else{
+            request()->session()->flash('false', 'Somthing went wrong try again!!!');
+        }
+        return redirect()->route('ClientUserManagement');
+    }
+
     
 }
