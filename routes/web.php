@@ -555,21 +555,20 @@ Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
 
 // Client And Sub Client Accesable route
 Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
-    // *** New routes  *** //
-
-    // dam (Digital Asset Management) Routing
     Route::get('/client-user', [UserController::class, 'clientIndex'])->name('clientuser.index');
 
     // Client User Management Routing
-    Route::get('/client-user-management', [ClientUserManagementController::class, 'Index'])->name('ClientUserManagement');
-    Route::get('/user-management', [ClientUserManagementController::class, 'create'])->name('addClientUser');
+    Route::middleware(['auth', 'role:Client'])->group(function () {
+        Route::get('/client-user-management', [ClientUserManagementController::class, 'Index'])->name('ClientUserManagement');
+        Route::get('/user-management', [ClientUserManagementController::class, 'create'])->name('addClientUser');
+        Route::post('/save-client-users', [ClientUserManagementController::class, 'saveUserClient']);
+        Route::post('/client-user-management', [ClientUserManagementController::class, 'sub_users_access_permission'])->name('sub_users_access_permission'); // Give side bar mennu to sub users
+    });
+
     Route::get('/client-user-validation', [ClientUserManagementController::class, 'clientUserValid']);
-    Route::post('/save-client-users', [ClientUserManagementController::class, 'saveUserClient']);
     Route::get('/user-management/{id}', [ClientUserManagementController::class, 'edit'])->name('editClientUser');
     Route::post('/Client-user-activty-log', [ClientUserManagementController::class, 'saveUserActivty']);
-    
-    Route::post('/client-user-management', [ClientUserManagementController::class, 'sub_users_access_permission'])->name('sub_users_access_permission'); // Give side bar mennu to sub users
-    
+
 
     // client User Your assets Routes
     Route::get('/client-user-shoot-lots', [UserAssetsController::class, 'clientUserShootLots'])->name('clientUserShootLots');

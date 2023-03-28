@@ -155,7 +155,7 @@
           @csrf;
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel" style="margin-bottom: 5px">Give Permition</h5>
+              <h5 class="modal-title" id="exampleModalLabel" style="margin-bottom: 5px">Give Permission</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             {{-- modal-body --}}
@@ -193,7 +193,7 @@
             <div class="modal-footer">
               <input type="hidden" name="user_id" id="user_id" value="">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Save changes</button>
+              <button type="submit" class="btn btn-primary">Update</button>
             </div>
           </div>
         </form>
