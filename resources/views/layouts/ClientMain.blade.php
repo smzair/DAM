@@ -106,11 +106,14 @@
                         
                         
                         @php
-                           $user = Auth::user();
-                        //    dd($user);
+                            $user = Auth::user();
+                            $your_assets_permissions = json_decode($user->your_assets_permissions,true);
+                            $file_manager_permissions = json_decode($user->file_manager_permissions,true);
+                            $roledata = getUsersRole($user->id);
+                            $user_role = $roledata != null ? $roledata->role_name : '-';
                         @endphp
 
-                        @if (Auth::user()->dam_enable == 1)
+                        @if ($user->dam_enable )
                             @hasanyrole('Client')
                                 <li class="nav-item">
                                     <a  class="nav-link" >
@@ -168,113 +171,132 @@
                                 </li>
                                
                             @endhasanyrole
-
-                            <li class="nav-item">
-                                <a  class="nav-link" >
-                                    <p>
-                                        Your Assets
-                                    </p>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-list-item">
-                                <a href="{{route('clientUserShootLots')}}"  class="sidebar-menu-list-link">
-                                    <span class="menu-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.988"
-                                            viewBox="0 0 20 19.988">
-                                            <path id="__TEMP__SVG__"
-                                                d="M21.99,7.949a.96.96,0,0,0-.029-.214c-.007-.025-.021-.049-.03-.074a1.036,1.036,0,0,0-.07-.165.766.766,0,0,0-.057-.075.974.974,0,0,0-.1-.13c-.023-.022-.053-.04-.078-.061a.933.933,0,0,0-.12-.094s-.009,0-.014-.006l-.008-.006L12.5,2.136a1,1,0,0,0-.97,0l-9.02,4.99a.042.042,0,0,1-.011.01l-.01,0c-.035.02-.061.049-.094.073a1.068,1.068,0,0,0-.106.082.9.9,0,0,0-.079.1.888.888,0,0,0-.079.1.918.918,0,0,0-.059.139.654.654,0,0,0-.041.1.975.975,0,0,0-.029.21C2.005,7.965,2,7.98,2,8v8a1,1,0,0,0,.515.874l8.977,4.987h0l.02.011a1.022,1.022,0,0,0,.135.054.821.821,0,0,0,.1.039,1.013,1.013,0,0,0,.506,0,.984.984,0,0,0,.1-.039.938.938,0,0,0,.135-.054l.02-.011h0l8.977-4.987A1,1,0,0,0,22,16V8c0-.017-.006-.031-.007-.048ZM11.97,11.871,5.057,8,7.819,6.477l6.833,3.9-2.682,1.49Zm.048-7.719L18.939,8,16.695,9.246l-6.829-3.9,2.152-1.191ZM13,19.3l0-5.678,3-1.678V15l2-1V10.824l2-1.119v5.7L13,19.3Z"
-                                                transform="translate(-1.999 -2.01)" fill="#7f7faa" />
-                                        </svg>
-                                    </span>
-                                    <span class="menu-text">Shoot Lots</span>
-                                </a>
-                            </li>
-
-                            <li class="sidebar-menu-list-item">
-                                <a href="{{route('clientUserCreativeLots')}}"  class="sidebar-menu-list-link">
-                                    <span class="menu-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.988"
-                                            viewBox="0 0 20 19.988">
-                                            <path id="__TEMP__SVG__"
-                                                d="M21.99,7.949a.96.96,0,0,0-.029-.214c-.007-.025-.021-.049-.03-.074a1.036,1.036,0,0,0-.07-.165.766.766,0,0,0-.057-.075.974.974,0,0,0-.1-.13c-.023-.022-.053-.04-.078-.061a.933.933,0,0,0-.12-.094s-.009,0-.014-.006l-.008-.006L12.5,2.136a1,1,0,0,0-.97,0l-9.02,4.99a.042.042,0,0,1-.011.01l-.01,0c-.035.02-.061.049-.094.073a1.068,1.068,0,0,0-.106.082.9.9,0,0,0-.079.1.888.888,0,0,0-.079.1.918.918,0,0,0-.059.139.654.654,0,0,0-.041.1.975.975,0,0,0-.029.21C2.005,7.965,2,7.98,2,8v8a1,1,0,0,0,.515.874l8.977,4.987h0l.02.011a1.022,1.022,0,0,0,.135.054.821.821,0,0,0,.1.039,1.013,1.013,0,0,0,.506,0,.984.984,0,0,0,.1-.039.938.938,0,0,0,.135-.054l.02-.011h0l8.977-4.987A1,1,0,0,0,22,16V8c0-.017-.006-.031-.007-.048ZM11.97,11.871,5.057,8,7.819,6.477l6.833,3.9-2.682,1.49Zm.048-7.719L18.939,8,16.695,9.246l-6.829-3.9,2.152-1.191ZM13,19.3l0-5.678,3-1.678V15l2-1V10.824l2-1.119v5.7L13,19.3Z"
-                                                transform="translate(-1.999 -2.01)" fill="#7f7faa" />
-                                        </svg>
-                                    </span>
-                                    <span class="menu-text">Creative Lots</span>
-                                </a>
-                            </li>
-
-                            <li class="sidebar-menu-list-item">
-                                <a href="{{route('clientUserCatalogingLots')}}"  class="sidebar-menu-list-link">
-                                    <span class="menu-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.988"
-                                            viewBox="0 0 20 19.988">
-                                            <path id="__TEMP__SVG__"
-                                                d="M21.99,7.949a.96.96,0,0,0-.029-.214c-.007-.025-.021-.049-.03-.074a1.036,1.036,0,0,0-.07-.165.766.766,0,0,0-.057-.075.974.974,0,0,0-.1-.13c-.023-.022-.053-.04-.078-.061a.933.933,0,0,0-.12-.094s-.009,0-.014-.006l-.008-.006L12.5,2.136a1,1,0,0,0-.97,0l-9.02,4.99a.042.042,0,0,1-.011.01l-.01,0c-.035.02-.061.049-.094.073a1.068,1.068,0,0,0-.106.082.9.9,0,0,0-.079.1.888.888,0,0,0-.079.1.918.918,0,0,0-.059.139.654.654,0,0,0-.041.1.975.975,0,0,0-.029.21C2.005,7.965,2,7.98,2,8v8a1,1,0,0,0,.515.874l8.977,4.987h0l.02.011a1.022,1.022,0,0,0,.135.054.821.821,0,0,0,.1.039,1.013,1.013,0,0,0,.506,0,.984.984,0,0,0,.1-.039.938.938,0,0,0,.135-.054l.02-.011h0l8.977-4.987A1,1,0,0,0,22,16V8c0-.017-.006-.031-.007-.048ZM11.97,11.871,5.057,8,7.819,6.477l6.833,3.9-2.682,1.49Zm.048-7.719L18.939,8,16.695,9.246l-6.829-3.9,2.152-1.191ZM13,19.3l0-5.678,3-1.678V15l2-1V10.824l2-1.119v5.7L13,19.3Z"
-                                                transform="translate(-1.999 -2.01)" fill="#7f7faa" />
-                                        </svg>
-                                    </span>
-                                    <span class="menu-text">Catalogue Lots</span>
-                                </a>
-                            </li>
                             
-                            <li class="sidebar-menu-list-item">
-                                <a href="{{route('clientUserEditingLots')}}"  class="sidebar-menu-list-link">
-                                    <span class="menu-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.988"
-                                            viewBox="0 0 20 19.988">
-                                            <path id="__TEMP__SVG__"
-                                                d="M21.99,7.949a.96.96,0,0,0-.029-.214c-.007-.025-.021-.049-.03-.074a1.036,1.036,0,0,0-.07-.165.766.766,0,0,0-.057-.075.974.974,0,0,0-.1-.13c-.023-.022-.053-.04-.078-.061a.933.933,0,0,0-.12-.094s-.009,0-.014-.006l-.008-.006L12.5,2.136a1,1,0,0,0-.97,0l-9.02,4.99a.042.042,0,0,1-.011.01l-.01,0c-.035.02-.061.049-.094.073a1.068,1.068,0,0,0-.106.082.9.9,0,0,0-.079.1.888.888,0,0,0-.079.1.918.918,0,0,0-.059.139.654.654,0,0,0-.041.1.975.975,0,0,0-.029.21C2.005,7.965,2,7.98,2,8v8a1,1,0,0,0,.515.874l8.977,4.987h0l.02.011a1.022,1.022,0,0,0,.135.054.821.821,0,0,0,.1.039,1.013,1.013,0,0,0,.506,0,.984.984,0,0,0,.1-.039.938.938,0,0,0,.135-.054l.02-.011h0l8.977-4.987A1,1,0,0,0,22,16V8c0-.017-.006-.031-.007-.048ZM11.97,11.871,5.057,8,7.819,6.477l6.833,3.9-2.682,1.49Zm.048-7.719L18.939,8,16.695,9.246l-6.829-3.9,2.152-1.191ZM13,19.3l0-5.678,3-1.678V15l2-1V10.824l2-1.119v5.7L13,19.3Z"
-                                                transform="translate(-1.999 -2.01)" fill="#7f7faa" />
-                                        </svg>
-                                    </span>
-                                    <span class="menu-text">Editing Lots</span>
-                                </a>
-                            </li>
+                            {{-- Your Assets --}}
+                            @if ($user_role == 'Client' || $your_assets_permissions['shoot'] || $your_assets_permissions['Creative'] || $your_assets_permissions['Cataloging'] || $your_assets_permissions['Editing'])
+                                <li class="nav-item">
+                                    <a  class="nav-link" >
+                                        <p>
+                                            Your Assets
+                                        </p>
+                                    </a>
+                                </li>
+                                @if ($user_role == 'Client' || $your_assets_permissions['shoot'])
+                                    <li class="sidebar-menu-list-item">
+                                        <a href="{{route('clientUserShootLots')}}"  class="sidebar-menu-list-link">
+                                            <span class="menu-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.988"
+                                                    viewBox="0 0 20 19.988">
+                                                    <path id="__TEMP__SVG__"
+                                                        d="M21.99,7.949a.96.96,0,0,0-.029-.214c-.007-.025-.021-.049-.03-.074a1.036,1.036,0,0,0-.07-.165.766.766,0,0,0-.057-.075.974.974,0,0,0-.1-.13c-.023-.022-.053-.04-.078-.061a.933.933,0,0,0-.12-.094s-.009,0-.014-.006l-.008-.006L12.5,2.136a1,1,0,0,0-.97,0l-9.02,4.99a.042.042,0,0,1-.011.01l-.01,0c-.035.02-.061.049-.094.073a1.068,1.068,0,0,0-.106.082.9.9,0,0,0-.079.1.888.888,0,0,0-.079.1.918.918,0,0,0-.059.139.654.654,0,0,0-.041.1.975.975,0,0,0-.029.21C2.005,7.965,2,7.98,2,8v8a1,1,0,0,0,.515.874l8.977,4.987h0l.02.011a1.022,1.022,0,0,0,.135.054.821.821,0,0,0,.1.039,1.013,1.013,0,0,0,.506,0,.984.984,0,0,0,.1-.039.938.938,0,0,0,.135-.054l.02-.011h0l8.977-4.987A1,1,0,0,0,22,16V8c0-.017-.006-.031-.007-.048ZM11.97,11.871,5.057,8,7.819,6.477l6.833,3.9-2.682,1.49Zm.048-7.719L18.939,8,16.695,9.246l-6.829-3.9,2.152-1.191ZM13,19.3l0-5.678,3-1.678V15l2-1V10.824l2-1.119v5.7L13,19.3Z"
+                                                        transform="translate(-1.999 -2.01)" fill="#7f7faa" />
+                                                </svg>
+                                            </span>
+                                            <span class="menu-text">Shoot Lots</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                
+                                @if ($user_role == 'Client' || $your_assets_permissions['Creative'])
+                                    <li class="sidebar-menu-list-item">
+                                        <a href="{{route('clientUserCreativeLots')}}"  class="sidebar-menu-list-link">
+                                            <span class="menu-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.988"
+                                                    viewBox="0 0 20 19.988">
+                                                    <path id="__TEMP__SVG__"
+                                                        d="M21.99,7.949a.96.96,0,0,0-.029-.214c-.007-.025-.021-.049-.03-.074a1.036,1.036,0,0,0-.07-.165.766.766,0,0,0-.057-.075.974.974,0,0,0-.1-.13c-.023-.022-.053-.04-.078-.061a.933.933,0,0,0-.12-.094s-.009,0-.014-.006l-.008-.006L12.5,2.136a1,1,0,0,0-.97,0l-9.02,4.99a.042.042,0,0,1-.011.01l-.01,0c-.035.02-.061.049-.094.073a1.068,1.068,0,0,0-.106.082.9.9,0,0,0-.079.1.888.888,0,0,0-.079.1.918.918,0,0,0-.059.139.654.654,0,0,0-.041.1.975.975,0,0,0-.029.21C2.005,7.965,2,7.98,2,8v8a1,1,0,0,0,.515.874l8.977,4.987h0l.02.011a1.022,1.022,0,0,0,.135.054.821.821,0,0,0,.1.039,1.013,1.013,0,0,0,.506,0,.984.984,0,0,0,.1-.039.938.938,0,0,0,.135-.054l.02-.011h0l8.977-4.987A1,1,0,0,0,22,16V8c0-.017-.006-.031-.007-.048ZM11.97,11.871,5.057,8,7.819,6.477l6.833,3.9-2.682,1.49Zm.048-7.719L18.939,8,16.695,9.246l-6.829-3.9,2.152-1.191ZM13,19.3l0-5.678,3-1.678V15l2-1V10.824l2-1.119v5.7L13,19.3Z"
+                                                        transform="translate(-1.999 -2.01)" fill="#7f7faa" />
+                                                </svg>
+                                            </span>
+                                            <span class="menu-text">Creative Lots</span>
+                                        </a>
+                                    </li>
+                                @endif
+
+                                @if ($user_role == 'Client' || $your_assets_permissions['Cataloging'])
+                                    <li class="sidebar-menu-list-item">
+                                        <a href="{{route('clientUserCatalogingLots')}}"  class="sidebar-menu-list-link">
+                                            <span class="menu-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.988"
+                                                    viewBox="0 0 20 19.988">
+                                                    <path id="__TEMP__SVG__"
+                                                        d="M21.99,7.949a.96.96,0,0,0-.029-.214c-.007-.025-.021-.049-.03-.074a1.036,1.036,0,0,0-.07-.165.766.766,0,0,0-.057-.075.974.974,0,0,0-.1-.13c-.023-.022-.053-.04-.078-.061a.933.933,0,0,0-.12-.094s-.009,0-.014-.006l-.008-.006L12.5,2.136a1,1,0,0,0-.97,0l-9.02,4.99a.042.042,0,0,1-.011.01l-.01,0c-.035.02-.061.049-.094.073a1.068,1.068,0,0,0-.106.082.9.9,0,0,0-.079.1.888.888,0,0,0-.079.1.918.918,0,0,0-.059.139.654.654,0,0,0-.041.1.975.975,0,0,0-.029.21C2.005,7.965,2,7.98,2,8v8a1,1,0,0,0,.515.874l8.977,4.987h0l.02.011a1.022,1.022,0,0,0,.135.054.821.821,0,0,0,.1.039,1.013,1.013,0,0,0,.506,0,.984.984,0,0,0,.1-.039.938.938,0,0,0,.135-.054l.02-.011h0l8.977-4.987A1,1,0,0,0,22,16V8c0-.017-.006-.031-.007-.048ZM11.97,11.871,5.057,8,7.819,6.477l6.833,3.9-2.682,1.49Zm.048-7.719L18.939,8,16.695,9.246l-6.829-3.9,2.152-1.191ZM13,19.3l0-5.678,3-1.678V15l2-1V10.824l2-1.119v5.7L13,19.3Z"
+                                                        transform="translate(-1.999 -2.01)" fill="#7f7faa" />
+                                                </svg>
+                                            </span>
+                                            <span class="menu-text">Catalogue Lots</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                
+                                @if ($user_role == 'Client' || $your_assets_permissions['Editing'])
+                                    <li class="sidebar-menu-list-item">
+                                        <a href="{{route('clientUserEditingLots')}}"  class="sidebar-menu-list-link">
+                                            <span class="menu-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19.988"
+                                                    viewBox="0 0 20 19.988">
+                                                    <path id="__TEMP__SVG__"
+                                                        d="M21.99,7.949a.96.96,0,0,0-.029-.214c-.007-.025-.021-.049-.03-.074a1.036,1.036,0,0,0-.07-.165.766.766,0,0,0-.057-.075.974.974,0,0,0-.1-.13c-.023-.022-.053-.04-.078-.061a.933.933,0,0,0-.12-.094s-.009,0-.014-.006l-.008-.006L12.5,2.136a1,1,0,0,0-.97,0l-9.02,4.99a.042.042,0,0,1-.011.01l-.01,0c-.035.02-.061.049-.094.073a1.068,1.068,0,0,0-.106.082.9.9,0,0,0-.079.1.888.888,0,0,0-.079.1.918.918,0,0,0-.059.139.654.654,0,0,0-.041.1.975.975,0,0,0-.029.21C2.005,7.965,2,7.98,2,8v8a1,1,0,0,0,.515.874l8.977,4.987h0l.02.011a1.022,1.022,0,0,0,.135.054.821.821,0,0,0,.1.039,1.013,1.013,0,0,0,.506,0,.984.984,0,0,0,.1-.039.938.938,0,0,0,.135-.054l.02-.011h0l8.977-4.987A1,1,0,0,0,22,16V8c0-.017-.006-.031-.007-.048ZM11.97,11.871,5.057,8,7.819,6.477l6.833,3.9-2.682,1.49Zm.048-7.719L18.939,8,16.695,9.246l-6.829-3.9,2.152-1.191ZM13,19.3l0-5.678,3-1.678V15l2-1V10.824l2-1.119v5.7L13,19.3Z"
+                                                        transform="translate(-1.999 -2.01)" fill="#7f7faa" />
+                                                </svg>
+                                            </span>
+                                            <span class="menu-text">Editing Lots</span>
+                                        </a>
+                                    </li>
+                                @endif
+                            @endif
                         @endif
-                        <li class="nav-item">
-                            <a  class="nav-link" style="cursor:pointer;">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    File Manager
-                                  <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                        </li>
 
-                        <li class="sidebar-menu-list-item">
-                            <a href="{{route('clientRawImagesYear')}}" class="sidebar-menu-list-link">
-                                <span class="menu-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
-                                        viewBox="0 0 16 20">
-                                        <path id="__TEMP__SVG__"
-                                            d="M5,20H19a1,1,0,0,1,0,2H5a1,1,0,0,1,0-2ZM4,15,14,5l3,3L7,18H4ZM15,4l2-2,3,3L18,7Z"
-                                            transform="translate(-4 -2)" fill="#7f7faa" fill-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                <span class="menu-text">
-                                   Raw Images
-                                </span>
-                            </a>
-                        </li>
+                        {{-- File Manager --}}
+                        @if ($user->dam_enable )
+                            @if ($user_role == 'Client' || $file_manager_permissions['shoot'] || $file_manager_permissions['Creative'] || $file_manager_permissions['Cataloging'] || $file_manager_permissions['Editing'])
+                                <li class="nav-item">
+                                    <a  class="nav-link" style="cursor:pointer;">
+                                        <p>
+                                            <i class="nav-icon fas fa-file"></i> File Manager
+                                        {{-- <i class="fas fa-angle-left right"></i> --}}
+                                        </p>
+                                    </a>
+                                </li>
+                                @if ($user_role == 'Client' || $file_manager_permissions['shoot'])
+                                    <li class="sidebar-menu-list-item">
+                                        <a href="{{route('clientRawImagesYear')}}" class="sidebar-menu-list-link">
+                                            <span class="menu-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
+                                                    viewBox="0 0 16 20">
+                                                    <path id="__TEMP__SVG__"
+                                                        d="M5,20H19a1,1,0,0,1,0,2H5a1,1,0,0,1,0-2ZM4,15,14,5l3,3L7,18H4ZM15,4l2-2,3,3L18,7Z"
+                                                        transform="translate(-4 -2)" fill="#7f7faa" fill-rule="evenodd" />
+                                                </svg>
+                                            </span>
+                                            <span class="menu-text">
+                                            Raw Images
+                                            </span>
+                                        </a>
+                                    </li>
+            
+                                    <li class="sidebar-menu-list-item">
+                                        <a href="{{route('clientEditorImagesYear')}}" class="sidebar-menu-list-link">
+                                            <span class="menu-icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
+                                                    viewBox="0 0 16 20">
+                                                    <path id="__TEMP__SVG__"
+                                                        d="M5,20H19a1,1,0,0,1,0,2H5a1,1,0,0,1,0-2ZM4,15,14,5l3,3L7,18H4ZM15,4l2-2,3,3L18,7Z"
+                                                        transform="translate(-4 -2)" fill="#7f7faa" fill-rule="evenodd" />
+                                                </svg>
+                                            </span>
+                                            <span class="menu-text">
+                                            Editing Images
+                                            </span>
+                                        </a>
+                                    </li>
+                                @endif
+                                
+                            @endif
+                        @endif
+                        
 
-                        <li class="sidebar-menu-list-item">
-                            <a href="{{route('clientEditorImagesYear')}}" class="sidebar-menu-list-link">
-                                <span class="menu-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20"
-                                        viewBox="0 0 16 20">
-                                        <path id="__TEMP__SVG__"
-                                            d="M5,20H19a1,1,0,0,1,0,2H5a1,1,0,0,1,0-2ZM4,15,14,5l3,3L7,18H4ZM15,4l2-2,3,3L18,7Z"
-                                            transform="translate(-4 -2)" fill="#7f7faa" fill-rule="evenodd" />
-                                    </svg>
-                                </span>
-                                <span class="menu-text">
-                                   Editing Images
-                                </span>
-                            </a>
-                        </li>
-
-                        @if (Auth::user()->dam_enable == 1)
+                        @if ($user->dam_enable == 1)
                             <li class="nav-item">
                                 <a  class="nav-link" >
                                     <p>
