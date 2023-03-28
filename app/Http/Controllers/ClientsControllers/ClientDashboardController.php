@@ -35,9 +35,21 @@ class ClientDashboardController extends Controller
         $roledata = getUsersRole($user_detail['id']);
         $role = $roledata != null ? $roledata->role_name : '-';
         $client_id = $user_detail['id'];
-        // dd($client_id);
         $parent_client_id = $user_detail['parent_client_id'];
-        if($role == "Client"){
+
+        $role_name = "";
+        $role_id = "";
+        $brand_arr = [];
+
+        if ($roledata != null) {
+            $role_id = $roledata->role_id;
+            $role_name = $roledata->role_name;
+        }
+        $brand_arr = DB::table('brands_user')->where('user_id', $client_id)->get()->pluck('brand_id')->toArray();
+        $parent_client_id = $user_detail['parent_client_id'];
+        // dd($parent_client_id);
+
+        if($role == "Client" || $role == "Sub Client"){
             /* response data to get creative lot information with status start*/
             $resData =  CreatLots::orderBy('creative_lots.id','DESC')
                 ->leftJoin('creative_wrc', 'creative_lots.id', 'creative_wrc.lot_id')
@@ -54,8 +66,6 @@ class ClientDashboardController extends Controller
                         $join->on('creative_submissions.batch_no', '=', 'creative_allocation.batch_no');
                     })
                     ->leftJoin('creative_time_hash', 'creative_time_hash.allocation_id', 'creative_allocation.id')
-                    
-                    
                 ->select('creative_wrc.wrc_number','creative_wrc.qc_status','creative_lots.user_id','creative_lots.brand_id','creative_lots.lot_number','users.Company as Company_name','brands.name','creative_lots.client_bucket','create_commercial.project_name','create_commercial.kind_of_work','create_commercial.per_qty_value','creative_wrc_batch.work_initiate_date','creative_wrc_batch.work_committed_date','creative_submissions.submission_date','creative_submissions.status as submission_status','creative_allocation.wrc_id as submission_wrc_id','creative_allocation.id as allocation_id','creative_allocation.batch_no as submission_batch_no','creative_wrc_batch.work_initiate_date', 'creative_wrc_batch.work_committed_date','creative_lots.lot_delivery_days','creative_lots.id as lot_id','creative_wrc_batch.wrc_id as batch_wrc_id','creative_wrc_batch.batch_no','creative_time_hash.task_status')
                 // ->groupBy('creative_wrc_batch.wrc_id')
                 // ->groupBy('creative_wrc_batch.batch_no')
@@ -64,10 +74,17 @@ class ClientDashboardController extends Controller
                     ->orWhere('creative_submissions.status', '=', null)
                     ->orWhere('creative_submissions.status', '=', 0);
                 })
-                ->groupBy('creative_lots.id')
-                ->where('creative_lots.user_id',$client_id)
+                ->whereIn('creative_lots.brand_id', $brand_arr)
+                ->groupBy('creative_lots.id');
+                if ($role_name == 'Sub Client') {
+                    $resData =  $resData->where('creative_lots.user_id',$parent_client_id);
+                }
+                if ($role_name == 'Client') {
+                    $resData =  $resData->where('creative_lots.user_id',$client_id);
+                }
+
                     //->groupBy(['creative_wrc_batch.wrc_id','creative_wrc_batch.batch_no'])
-            ->get();
+                    $resData=  $resData->get();
             foreach($resData as $key => $val){
                 
                 $lot_status = "--";
@@ -100,15 +117,20 @@ class ClientDashboardController extends Controller
 
             /* response data to get catlog lot information with status start*/
             $resDataCatlog = LotsCatalog::orderBy('lots_catalog.id','DESC')
-            ->where('lots_catalog.user_id',$client_id)
             ->leftJoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id')
             ->leftJoin('catalog_wrc_batches', function($join){
                 $join->on('catalog_wrc_batches.wrc_id', '=', 'catlog_wrc.id');
-                // $join->on('catalog_wrc_batches.batch_no', '=', 'catlog_wrc.batch_no');
                 })
             ->select('lots_catalog.id as lot_id', 'lots_catalog.lot_number','catalog_wrc_batches.wrc_id as batch_wrc_id')
-            ->groupBy('lots_catalog.id')
-            ->get();
+            ->whereIn('lots_catalog.brand_id', $brand_arr)
+            ->groupBy('lots_catalog.id');
+            if ($role_name == 'Sub Client') {
+                $resDataCatlog =  $resDataCatlog->where('lots_catalog.user_id',$parent_client_id);
+            }
+            if ($role_name == 'Client') {
+                $resDataCatlog =  $resDataCatlog->where('lots_catalog.user_id',$client_id);
+            }
+             $resDataCatlog =  $resDataCatlog->get();
 
             foreach($resDataCatlog as $key => $val){
                 // dd($val);
@@ -157,11 +179,18 @@ class ClientDashboardController extends Controller
 
             /* response data to get editor lot information with status start*/
             $resDataEditor = EditorLotModel::orderBy('editor_lots.id','DESC')
-            ->where('editor_lots.user_id',$client_id)
             ->leftJoin('editing_wrcs', 'editing_wrcs.lot_id', 'editor_lots.id')
             ->select('editor_lots.id as lot_id', 'editor_lots.lot_number','editing_wrcs.id as wrc_id')
-            ->groupBy('editor_lots.id')
-            ->get();
+            ->whereIn('editor_lots.brand_id', $brand_arr)
+            ->groupBy('editor_lots.id');
+            if ($role_name == 'Sub Client') {
+                $resDataEditor = $resDataEditor->where('editor_lots.user_id',$parent_client_id);
+            }
+            if ($role_name == 'Client') {
+                $resDataEditor = $resDataEditor->where('editor_lots.user_id',$client_id);
+            }
+
+            $resDataEditor = $resDataEditor->get();
 
             foreach($resDataEditor as $key => $val){
                 // dd($val);
@@ -177,11 +206,6 @@ class ClientDashboardController extends Controller
                     $val['lot_status']  = $lot_status;
                 }
 
-                // $task_status = DB::table('editing_allocations')->where('wrc_id',$val['wrc_id'])
-                //     ->where('catalog_time_hash.task_status', '=', '1')
-                //     ->select('catalog_time_hash.task_status')
-                //     ->get();
-
                 if($lot_status == 'Uploading Pending'){
 
                     if(count($task_status) < 0 ){
@@ -190,30 +214,22 @@ class ClientDashboardController extends Controller
                     }
                 }
 
-                // $task_status_sum = DB::table('catalog_allocation')->where('wrc_id',$val['wrc_id'])
-                //     ->leftJoin('catalog_time_hash', 'catalog_time_hash.allocation_id', 'catalog_allocation.id')
-                //     ->select(DB::raw('sum(catalog_time_hash.task_status) as task_status_sum'))
-                //     ->get();
-                    
-
-                // if($lot_status == 'Qc Pending'){
-                //     // $submission_status = $val['submission_status'];
-
-                //     if((count($task_status) * 2) == $task_status_sum[0]->task_status_sum){
-                //         $lot_status = $submission_status  == 0 ? 'Submission Pending' : 'Submitted';
-                //         $val['lot_status']  = $lot_status;
-                //     }
-                   
-                // }
             }
 
 
             /* response data to get shoot lot information with status start*/
             $resDataShoot = Lots::orderBy('lots.id','DESC')
-            ->where('lots.user_id',$client_id)
             ->select('lots.id as lot_id', 'lots.lot_id as lot_number')
-            ->groupBy('lots.id')
-            ->get();
+            ->whereIn('lots.brand_id', $brand_arr)
+            ->groupBy('lots.id');
+            if ($role_name == 'Sub Client') {
+                $resDataShoot = $resDataShoot->where('lots.user_id',$parent_client_id);
+            }
+            if ($role_name == 'Client') {
+                $resDataShoot = $resDataShoot->where('lots.user_id',$client_id);
+            }
+
+            $resDataShoot = $resDataShoot->get();
 
             foreach ($resDataShoot as $key => $val) {
                 $lot_status = "--";
