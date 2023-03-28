@@ -30,7 +30,7 @@ class ClientUserManagementController extends Controller
         $client_id = Auth::id();
         $brands = Brands_user::leftJoin('brands', 'brands.id', '=', 'brands_user.brand_id')
         ->select('*')
-        ->where('user_id', '=', 357)
+        ->where('user_id', '=', $client_id)
         ->whereNotNull('brands.name')
         ->get()->toArray();
         $roles= Role::latest()->get();
