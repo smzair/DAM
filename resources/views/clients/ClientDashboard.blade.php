@@ -69,6 +69,16 @@
 		<div class="container-fluid">
 		<!-- body (Stat box) -->
 			<div class="col-lg-12 col-12">
+				@php
+					$user = Auth::user();
+					$your_assets_permissions = json_decode($user->your_assets_permissions,true);
+					$file_manager_permissions = json_decode($user->file_manager_permissions,true);
+					$roledata = getUsersRole($user->id);
+					$user_role = $roledata != null ? $roledata->role_name : '-';
+				@endphp
+				@if ($user->dam_enable)
+
+				@if ($user_role == 'Client' || $your_assets_permissions['Creative'])
 				{{-- -----lot status for creative start--- --}}
 				<div class="card dashboard-content-card order-summary-card">
 					<div class="row">
@@ -126,7 +136,9 @@
 					</div>
 				</div>
 				{{-- -----lot status for creative end--- --}}
+				@endif
 
+				@if ($user_role == 'Client' || $your_assets_permissions['Cataloging'])
 				{{-- -----lot status catlog start--- --}}
 				<div class="card dashboard-content-card order-summary-card">
 					<div class="row">
@@ -184,7 +196,9 @@
 					</div>
 				</div>
 				{{-- -----lot status catlog end-----}}
+				@endif
 
+				@if ($user_role == 'Client' || $your_assets_permissions['Editing'])
 				{{-- -----lot status for editor start--- --}}
 				<div class="card dashboard-content-card order-summary-card">
 					<div class="row">
@@ -242,7 +256,9 @@
 					</div>
 				</div>
 				{{-- -----lot status for editor end--- --}}
+				@endif
 
+				@if ($user_role == 'Client' || $your_assets_permissions['shoot'])
 				{{-- -----lot status shoot start--- --}}
 				<div class="card dashboard-content-card order-summary-card">
 					<div class="row">
@@ -300,8 +316,8 @@
 					</div>
 				</div>
 				{{-- -----lot status shoot end-----}}
-
-				
+				@endif
+				@endif
 			</div>
 		</div><!-- /.container-fluid -->
 	</div>
