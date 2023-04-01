@@ -149,6 +149,7 @@ class CatalogSubmission extends Model
     {
         $catalog_Wrc_list_for_Submission = CatalogSubmission::
         WHERE('catalog_submissions.ar_status', '=', '1')->
+        WHERE('lots_catalog.lot_number', '<>', null)->
         leftJoin(
             'catalog_wrc_batches',
             function ($join) {

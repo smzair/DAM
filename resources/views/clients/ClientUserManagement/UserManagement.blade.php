@@ -139,7 +139,7 @@
                       <p class="error"></p> 
                     </div>
                   </div>
-                  <p style="color: #111"><span >Default Password :</span> Odn@2023</p>
+                  {{-- <p style="color: #111"><span >Default Password :</span> Odn@2023</p> --}}
                   <div class="col-md-12">
                     <input type="hidden" name="role" value="Sub Client">
                     <button class="btn btn-warning" onclick="createUsers()" >Save User</button>

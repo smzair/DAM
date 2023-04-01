@@ -80,32 +80,22 @@ class ClientUserManagementController extends Controller
         $brand_id_array     = $request->brand;
         $sub_client_name    = $request->name;
         $sub_client_email   = $request->email;
-        $sub_client_address = $request->address;
-        $sub_client_phone   = $request->phone;
 
         $check = $parent_client_data  != null;
 
-        $parent_client_dam_enable =     $check ? $parent_client_data['dam_enable'] : 0;
         $parent_client_am_email   =     $check ? $parent_client_data['am_email'] : 0;
-        $parent_active_status     =     $check ? $parent_client_data['active_status'] : 0;
-        $parent_dark_mode         =     $check ? $parent_client_data['dark_mode'] : 0;
-        $parent_messenger_color   =     $check ? $parent_client_data['messenger_color'] : 0;
-        $parent_avatar            =     $check ? $parent_client_data['avatar'] : 0;
         $parent_payment_term      =     $check ? $parent_client_data['payment_term'] : 0;
-        $parent_phone_verified    =     $check ? $parent_client_data['phone_verified'] : 0;
         $parent_Company           =     $check ? $parent_client_data['Company'] : 0;
         $parent_c_short           =     $check ? $parent_client_data['c_short'] : 0;
-        $parent_location          =     $check ? $parent_client_data['location'] : 0;
         $parent_Gst_number        =     $check ? $parent_client_data['Gst_number'] : 0;
-        $parent_status            =     $check ? $parent_client_data['status'] : 0;
-        $parent_photo             =     $check ? $parent_client_data['photo'] : 0;
         $client_id         =     $check ? $parent_client_data['client_id'] : 0;
 
-
+        
         DB::beginTransaction();
         try {   
             // create sub client 
-            $password = 'Odn@2023';
+            $password = User::genratePassword($parent_Company, $sub_client_name);
+            // $password = 'Odn@2023';
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
@@ -147,6 +137,13 @@ class ClientUserManagementController extends Controller
                 $ClientActivityLog->causer_id = Auth::id();
                 $ClientActivityLog->properties = json_encode($request->all());
                 $ClientActivityLog->save();
+                $user_data = array(
+                    'name' => $sub_client_name,
+                    'client_id' => $client_id,
+                    'email' => $sub_client_email,
+                    'password' => $password
+                );
+                $this->send_password_to_mail($user_data);
             }
 
             DB::commit();
