@@ -180,5 +180,13 @@ class User extends Authenticatable
       // dd($roledata , $data_query, $data);
       return $data;
     }
+
+    public static function genratePassword($company, $name){
+      $company = strtolower(str_replace(' ', '' , $company));
+      $name = strtolower(str_replace(' ', '' , $name));
+      $password = ucfirst(substr($company,0,4).substr($name,0,4)."@".date('NWy'));
+      return $password;
+    }
+    
     
   }

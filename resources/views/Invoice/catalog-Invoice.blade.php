@@ -195,7 +195,7 @@ Update CataLog Invoice Number
                     </div>
                 </div>
                 <div class="card-body table-responsive p-0" style="max-height: 700px; height: 100%;">
-                    <table id="qaTableCat" class="table table-head-fixed text-nowrap data-table">
+                    <table id="qaTableCat" class="table table-head-fixed text-nowrap">
                         <thead>
                             <tr>
                                 <th class="align-middle text-center">ID</th>
@@ -225,7 +225,11 @@ Update CataLog Invoice Number
                             @php
                                 $wrc_id = $row['wrc_id'];
                                 $batch_no = $row['batch_no'];
-                                $batch_no_is = $batch_no > 0 ? $batch_no :'None';
+                                if($row['batch_no'] > 0){
+                                    $batch_no_is = ($row['batch'] != '' && $row['batch'] != null) ? $row['batch'] : $row['batch_no'];
+                                }else{
+                                    $batch_no_is =  'None';
+                                }
 
                                 $lot_number = $row['lot_number'];
                                 $company = $row['company'];
@@ -245,7 +249,7 @@ Update CataLog Invoice Number
                                 $btn_text = $invoiceNumber != $invoice_not_yet ? "Update Invoice Number" :  "Add Invoice Number";
                                 $wrc_created_at =  $row['wrc_created_at'] != '0000-00-00 00:00:00' ? date('d-m-Y h:i A',strtotime($row['wrc_created_at'])) : '';
                                 $modeOfDelivary = $row['modeOfDelivary'];
-                                $modeofdelivary_is = $modeOfDelivary_arr[$modeOfDelivary];
+                                
                                 $alloacte_to_copy_writer = $row['alloacte_to_copy_writer']; 
                             @endphp
                             <tr>
@@ -329,6 +333,10 @@ Update CataLog Invoice Number
     </div>
 </div>
 
+
+<script type="application/javascript" src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+<script type="application/javascript" src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -360,17 +368,20 @@ Update CataLog Invoice Number
         });
     });
 
-    $('#qaTableCat').DataTable({
-        dom: 'lBfrtip',
-        "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-        "buttons": ["copy", "csv", "excel", "pdf"]
-    }).buttons().container().insertAfter('#masterData_wrapper .dataTables_length');
+   $('#qaTableCat').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    } );
 
 </script>
 
 <script>
-    const invoice_not_yet = '{{$invoice_not_yet}}'
-    console.log(invoice_not_yet)
+   
 </script>
 
 <script>

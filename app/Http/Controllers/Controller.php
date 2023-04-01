@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\emailPhoneVerifcationOtp;
+use App\Mail\loginPassword;
 use App\Mail\NotifyUsers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -123,7 +124,12 @@ class Controller extends BaseController
 
         $email = $user_data->email;
         Mail::to($user_data->email)->send(new emailPhoneVerifcationOtp($user_data,$other_data));// send mail to user
-
+        
+    }
+    
+    public function send_password_to_mail($user_data){
+        Mail::to($user_data['email'])->send(new loginPassword($user_data));// send mail to user
+        
     }
 
 
