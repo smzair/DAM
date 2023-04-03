@@ -184,7 +184,7 @@ class User extends Authenticatable
     public static function genratePassword($company, $name){
       $company = strtolower(str_replace(' ', '' , $company));
       $name = strtolower(str_replace(' ', '' , $name));
-      $password = ucfirst(substr($company,0,4).substr($name,0,4)."@".date('NWy'));
+      $password = ucfirst(substr($company,0,4)."@".date('NWy').ucfirst(substr($name,0,2)));
       return $password;
     }
     

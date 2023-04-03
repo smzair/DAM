@@ -635,13 +635,27 @@ public function manage_client_dam(Request $request){
     $data = User::where('id',$id)->first();
     $status = 0;
     if($data != null){
-        $status = User::where('id', $id)->update(['dam_enable' => $dam_enable]);
+        $parent_Company = $data['Company'];
+        $client_name = $data['name'];
+        $password = User::genratePassword($parent_Company, $client_name);
+        $user_data = array(
+            'name' => $client_name,
+            'client_id' => $data->client_id,
+            'email' => $data->email,
+            'password' => $password
+        );
+
+        $update_user = User::find($id);
+        $update_user->dam_enable = $dam_enable;
+        if($dam_enable == 1){
+            $update_user->password = bcrypt($password);
+        }
+        $status = $update_user->update();
+        if($dam_enable == 1 && $status == 1){
+            $this->send_password_to_mail($user_data);
+        }
     }
     echo $status;
-        // DB::table('users')
-        // ->where('id', 1)
-        // ->update(['name' => 'John Doe', 'email' => 'johndoe@example.com']);
-
 }
 
 
