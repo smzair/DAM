@@ -43,6 +43,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageDownloadController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\NewCommercial;
+use App\Http\Controllers\NotificationControllers\ClientNotificationController;
 use App\Http\Controllers\UserAssetsController;
 use App\Http\Controllers\WrcInvoiceNumber;
 use Illuminate\Support\Facades\Auth;
@@ -549,7 +550,12 @@ Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
     Route::post('/Admin-Control', [AdminControlController::class, 'SaveAdminControlFile'])->name('SaveAdminControlFile');
     Route::get('/Uploaded-files', [AdminControlController::class, 'AdminControlUploadedFiles'])->name('AdminControlUploadedFiles');
 
-    
+    // Clients Notification (Manual)
+    Route::get('Client-Notification',[ClientNotificationController::class, 'create'])->name('CreateClientNotification');
+    Route::post('Client-Notification',[ClientNotificationController::class, 'save'])->name('SaveClientNotification');
+    Route::get('Client-Notification-List',[ClientNotificationController::class, 'index'])->name('ClientNotificationList');
+    Route::get('Client-Notification/{id}',[ClientNotificationController::class, 'edit'])->name('editClientNotification');
+    Route::post('Client-Notification-Update',[ClientNotificationController::class, 'update'])->name('UpdateClientNotification');
 });
 
 
