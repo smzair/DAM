@@ -233,6 +233,31 @@
               </li>
             </ul>
           </li>
+
+          {{-- Manual Notification  --}}
+          <li class="nav-item">
+            <a  class="nav-link" style="cursor:pointer;">
+              <i class="nav-icon fas fa-bell"></i>
+              <p> Notification <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('CreateClientNotification')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client's Notification</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('ClientNotificationList')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client's Notification List</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           @endrole
 
           @hasanyrole('Client')
