@@ -447,6 +447,12 @@
                             </a>
                         </li>
                         <li class="sidebar-menu-list-item">
+                            <a href="{{route('allnotification')}}" class="sidebar-menu-list-link">
+                                <span class="menu-icon"><i class="fa fa-bell" aria-hidden="true"></i></span>
+                                <span class="menu-text">Notification</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-list-item">
                             <a  href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="sidebar-menu-list-link red-clr">
                                 <span class="menu-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18.461" height="20"
