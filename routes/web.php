@@ -627,6 +627,9 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::post('/verify-otp', [ClientCommonController::class, 'verifyOtp'])->name('verifyOtp'); 
 
     Route::get('/allnotification', [ClientNotificationController::class, 'allnotification'])->name('allnotification'); 
+    Route::get('/Notification-Detail/{id}', [ClientNotificationController::class, 'ClientNotificatioDetail'])->name('ClientNotificatioDetail'); 
+    Route::get('/set-notification-seen', [ClientNotificationController::class, 'setNotificationSeen'])->name('setNotificationSeen'); 
+    Route::post('/set-notification-seen', [ClientNotificationController::class, 'setNotificationSeen']); 
 
     
 

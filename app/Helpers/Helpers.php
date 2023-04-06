@@ -872,3 +872,31 @@ if(!function_exists('getNotificationList')){
     }
 }
 
+// timeBefore
+if(!function_exists('timeBefore')){
+    function timeBefore($created_at){
+
+        $create_date_is = date('Y-m-d H:i:s',strtotime($created_at));										
+        $cur_date = date("Y-m-d H:i:s");
+        $date1=date_create($create_date_is);
+        $date2=date_create($cur_date);
+        $diff=date_diff($date1,$date2);
+        $day_ago = $diff->format("%m month %a days %H hour %i min %s sec ago \n");
+        $created_at_new = ", At ".date('d-M-Y h:i A',strtotime($created_at));
+
+        if ($diff->format("%Y") != 0) {
+            $day_ago = $diff->format("%Y Year ago").$created_at_new;										 	
+        }else  if ($diff->format("%m") > 0) {
+            $day_ago = $diff->format("%m Month ago").$created_at_new;
+        }else  if ($diff->format("%a") != 0) {
+            $day_ago = $diff->format("%a day ago").", At ".date('h:i A',strtotime($created_at));
+        }else  if ($diff->format("%H") != 0) {
+            $day_ago = $diff->format("%H hour ago").", At ".date('h:i A',strtotime($created_at));
+        }else{
+            $day_ago = $diff->format("%i minute %s second ago");
+        }
+        return $day_ago;        
+    }
+}
+
+

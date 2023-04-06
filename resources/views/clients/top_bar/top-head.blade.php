@@ -17,8 +17,8 @@
             <!-- Notification HTML -->
             <div class="notification-bell">
                 <span class="bell-drop">
-                  <img src="assets-images\Desktop-Assets\main-dashboard_Icons\notification.svg" class="bell-normal" alt="Notification Bell">
-                  <img src="assets-images\Desktop-Assets\main-dashboard_Icons\notification-active.svg" class="bell-active" alt="Notification Bell">
+                  <img src="{{asset('assets-images\Desktop-Assets\main-dashboard_Icons\notification.svg')}}" class="bell-normal" alt="Notification Bell">
+                  <img src="{{asset('assets-images\Desktop-Assets\main-dashboard_Icons\notification-active.svg')}}" class="bell-active" alt="Notification Bell">
                   <i id="notify-count">{{$tot_notification}}</i>
                 </span>
                 <div class="notification-dropdown">
@@ -61,13 +61,15 @@
                                 ?>
                                 <div class="notification-item noread-notification-item">
                                     <div class="notify-item-details">
-                                        <p class="notify-alert" id="notifyalert">{{$row['subject']}}</p>
-                                        <span class="notify-date" id="notifydate">{{$day_ago}}</span>
+                                        <a href="{{route('ClientNotificatioDetail',[base64_encode($row['id'])])}}">
+                                            <p class="notify-alert" id="notifyalert">{{$row['subject']}}</p>
+                                            <span class="notify-date" id="notifydate">{{$day_ago}}</span>
+                                        </a>
                                     </div>
                                     <div class="notify-close">
                                         <a href="javascript:;" class="close-link-notify">
                                             <input type="hidden" name="notificationId" value="{{base64_encode($row['id'])}}">
-                                            <img id="{{base64_encode($row['id'])}}" src="assets-images\Desktop-Assets\dashboard home\notification-close.svg" alt="Close">
+                                            <img id="{{base64_encode($row['id'])}}" src="{{asset('assets-images\Desktop-Assets\dashboard home\notification-close.svg')}}" alt="Close">
                                         </a>
                                     </div>
                                 </div>

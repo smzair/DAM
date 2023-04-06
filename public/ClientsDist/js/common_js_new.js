@@ -49,6 +49,21 @@ $(document).ready(function() {
     $('.close-link-notify').click(function() {
         var notificationId = $(this).find('input[name="notificationId"]').val();
         let n_count = +$('#notify-count').text();
+        $.ajax({
+            url: "set-notification-seen",
+            type: "get",
+            dataType: 'json',
+            data: {
+                notificationId: notificationId,
+            },
+            success: function(res) {
+                console.log('res', res)
+            },
+            error: function (data) {
+                console.log("error");
+                console.log(data);
+            }
+        });
 
         $(this).closest('.notification-item').addClass('d-none');
         $(this).closest('.notification-item').remove();
@@ -61,7 +76,7 @@ $(document).ready(function() {
         }else{
             $('#notify-count').text(n_count-1)
         }
-        console.log("n_count => ",n_count);
+        console.log("notificationId => ",notificationId);
     });
 });
 
