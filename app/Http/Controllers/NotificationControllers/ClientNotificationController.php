@@ -12,7 +12,8 @@ class ClientNotificationController extends Controller
 {
 
     public function Index(){
-        $data = ClientNotification::leftJoin('users', 'users.id', 'client_notifications.user_id')->
+        $data = ClientNotification::where('is_manual_notification','=','Yes')->
+        leftJoin('users', 'users.id', 'client_notifications.user_id')->
         leftjoin('brands', 'brands.id' , 'client_notifications.brand_id' )->
         select('users.name as user_name','users.Company as company', 'brands.name as brand_name' , 'client_notifications.*')->
         get()->toArray();
@@ -45,6 +46,8 @@ class ClientNotificationController extends Controller
             $save_ClientNotification->brand_id = $brand_id;
             $save_ClientNotification->subject = $subject;
             $save_ClientNotification->discription = $discription;
+            $save_ClientNotification->is_manual_notification = 'Yes';
+            $save_ClientNotification->created_by = Auth::id();;
             $status = $save_ClientNotification->save();
             if($status){
                 DB::commit();

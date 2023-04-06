@@ -55,10 +55,10 @@ Create New Commercial for Creative
                                 <div class="form-group">
                                     <label class="control-label required">Company Name</label>
                                     <input type="hidden" name="id" value="{{ $commercial_data->id }}">
-                                    <select class="custom-select form-control-border" id="user_id" name="user_id" aria-hidden="true" style="width: 100%;">
+                                    <select class="custom-select select2 form-control-border" id="user_id" name="user_id" aria-hidden="true" style="width: 100%;">
                                         <option value="" >Select Company Name</option>
                                         @foreach ($users as $user)
-                                        <option  value="{{$user->id}}" data-client_id="{{$user->client_id}}">{{$user->Company}}</option>
+                                        <option  value="{{$user->id}}" data-client_id="{{$user->client_id}}">{{$user->Company."(.$user->name.)"}}</option>
                                         @endforeach
                                     </select>
                                     <p class="input_err" style="color: red; display: none;" id="user_id_err"></p>
@@ -77,8 +77,8 @@ Create New Commercial for Creative
                             {{-- Client Id --}}
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label>Client ID</label>
-                                    <input type="text" class="form-control form-control-border" id="client_id" name="client_id" placeholder="Client ID" readonly>
+                                    <label>Client Id</label>
+                                    <input type="text" class="form-control form-control-border" id="client_id" name="client_id" placeholder="Client Id" readonly>
                                 </div>
                                 <p class="input_err" style="color: red; display: none;" id="client_id_err"></p>
                             </div>
@@ -103,14 +103,12 @@ Create New Commercial for Creative
                                     {{-- <select class="custom-select select2bs4 form-control-border js-example-basic-multiple" placeholder="Select Marketplace" name="market_place[]" id="market_place" aria-hidden="true" style="width: 100%;" multiple="multiple"> --}}
                                         @php
 
-                                        // dd($commercial_data);
-
                                         $commercial_id_is = $commercial_data->id;
                                           $market_place_arr =  explode(',',$commercial_data->market_place);
                                         //   $market_place_arr =  json_decode($commercial_data->market_place,true);
                                         //   print_r($market_place_arr);
                                         @endphp
-                                    <select class="custom-select select2bs4 form-control-border" placeholder="Select Marketplace" name="market_place[]" id="market_place" aria-hidden="true" style="width: 100%;" multiple="multiple">
+                                    <select class="custom-select select2 select2bs4 form-control-border js-example-basic-multiple" placeholder="Select Marketplace" name="market_place[]" id="market_place" aria-hidden="true" style="width: 100%;" multiple="multiple">
                                         <option value="" disabled>Select Marketplace</option>
                                         @foreach($marketPlace as $index => $getProduct)
 
@@ -135,7 +133,7 @@ Create New Commercial for Creative
                             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                                 <div class="form-group">
                                     <label class="control-label required">Type of Service</label>
-                                    <select class="custom-select form-control-border reset" id="type_of_service" placeholder="Select Type of Service" name="type_of_service">
+                                    <select class="custom-select select2 form-control-border reset" id="type_of_service" placeholder="Select Type of Service" name="type_of_service">
                                         <option value="">Select Type of Service</option>
                                         @foreach($typeOfService as $index => $service)
                                         <option value="{{$index}}">{{$service}}</option>
@@ -164,7 +162,7 @@ Create New Commercial for Creative
 
                                 @php
                                     if($commercial_data->id == 0 || $commercial_data->id == ''){  
-                                        echo '<button type="submit" name="save" value="2" class="btn btn-info ml-1 wrc-btn">Save & Add Another</button>';
+                                        echo '<button type="submit" name="save" value="2" class="btn btn-info ml-1 wrc-btn">Save And Add</button>';
                                     }
                                 @endphp
 

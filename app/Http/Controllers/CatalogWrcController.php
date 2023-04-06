@@ -7,7 +7,9 @@ use App\Models\CatalogWrcBatch;
 use App\Models\CatalogWrcSku;
 use App\Models\CatlogWrc;
 use App\Models\Marketplace;
+use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CatalogWrcController extends Controller
@@ -281,8 +283,16 @@ class CatalogWrcController extends Controller
                  /* send notification start */
                     $data = CatlogWrc::find($createWrc->id);
                     $creation_type = 'CatlogWrc';
-                    $this->send_notification($data, $creation_type);
-                /******  send notification end*******/  
+                    // $this->send_notification($data, $creation_type);
+                /******  send notification end*******/
+                $user_data = Auth::user();
+                $save_ClientNotification = new ClientNotification();
+                $save_ClientNotification->user_id = $request->user_id;
+                $save_ClientNotification->brand_id = $request->brand_id;
+                $save_ClientNotification->subject = "New Wrc Created!!";
+                $save_ClientNotification->discription = "New Wrc Created By ".$user_data->name.". Created WRC is ".$wrcNumber;
+                $save_ClientNotification->created_by = $user_data->id;
+                $status = $save_ClientNotification->save();  
                 DB::commit();
                 request()->session()->flash('success', 'Catlog Wrc Successfully added');
             } else {
@@ -334,12 +344,19 @@ class CatalogWrcController extends Controller
     {
         $wrcs =  CatlogWrc::OrderBy('catlog_wrc.updated_at', 'DESC')
             ->leftJoin('catalog_wrc_batches', 'catalog_wrc_batches.wrc_id', 'catlog_wrc.id')
+            ->leftJoin(
+            'catalog_wrc_skus',
+            function ($join) {
+                $join->on('catalog_wrc_batches.wrc_id', '=', 'catalog_wrc_skus.wrc_id');
+                $join->on('catalog_wrc_batches.batch_no', '=', 'catalog_wrc_skus.batch_no');
+            })
             ->leftJoin('lots_catalog', 'lots_catalog.id', 'catlog_wrc.lot_id')
             ->leftJoin('users', 'users.id', 'lots_catalog.user_id')
             ->leftJoin('brands', 'brands.id', 'lots_catalog.brand_id')
             ->select(
             'catlog_wrc.*',
             'catalog_wrc_batches.batch_no',
+            'catalog_wrc_skus.batch',
             'catalog_wrc_batches.updated_at',
             'lots_catalog.user_id',
             'lots_catalog.brand_id', 
@@ -347,6 +364,7 @@ class CatalogWrcController extends Controller
             'users.Company as Company_name', 
             'brands.name'
             )
+            -> groupBy(['catalog_wrc_batches.wrc_id', 'catalog_wrc_batches.batch_no'])
             ->get();
         //    dd($wrcs);
         return view('Wrc.Catalog-view-wrc')->with('wrcs', $wrcs);
