@@ -8,6 +8,7 @@ use App\Models\Lots;
 use Illuminate\Support\Facades\DB;
 use App\Models\CatalogMarketplaceCredentials;
 use App\Models\Marketplace;
+use App\Models\NotificationModel\ClientNotification;
 
 if (!function_exists('s3object')) {
 
@@ -861,3 +862,13 @@ if (!function_exists('getUsersRole')) {
         return $users;
     }
 }
+
+// all unseen client's notification list 
+if(!function_exists('getNotificationList')){
+    function getNotificationList($user_data){
+        $is_seen= 0;
+        $clientNotificationList = ClientNotification::clientNotificationList($user_data , $is_seen);
+        return $clientNotificationList;
+    }
+}
+
