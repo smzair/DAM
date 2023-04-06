@@ -13,7 +13,7 @@ class ClientNotification extends Model
     protected $table = 'client_notifications';
     protected $fillable = [ 'user_id', 'brand_id' , 'subject', 'discription'];
 
-// all unseen client's notification list 
+    // all unseen client's notification list 
     public static function clientNotificationList($user_data, $is_seen = 0){
         $user_id_is = $user_data->id;
         $user_roles = getUsersRole($user_id_is);
@@ -45,6 +45,8 @@ class ClientNotification extends Model
         }
         return $update_status;
     }
+
+    
 
 
 }

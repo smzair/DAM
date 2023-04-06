@@ -22,6 +22,8 @@ class CreateClientNotificationsTable extends Migration
             $table->enum('is_seen',[0,1])->default(0)->comment('0 for not seen , 1 for seen');
             $table->integer('seen_by')->unsigned()->default(0);
             $table->dateTime('seen_at')->default('0000-00-00 00:00:00');
+            $table->enum('is_manual_notification',['Yes','No'])->default('No');
+            $table->integer('created_by')->unsigned();
             $table->timestamps();
         });
     }

@@ -83,7 +83,7 @@ Client Notification List
                           <td>{{$row['is_seen'] == 1 ? date('d-M-Y h:i A' , strtotime($row['seen_at'])) : '-'}}</td>
                           <td>{{ date('d-M-Y h:i A' , strtotime($row['created_at'])) }}</td>
                           <td>
-                            @if ($row['is_seen'] == 1 )
+                            @if ($row['is_seen'] == 1 || $row['is_manual_notification'] == 'No' )
                                 <button disabled class="btn btn-warning">Notification Seen Can't Edit</button>
                             @else
                               <a class="btn btn-warning px-1 py-1 btn-xs mt-1" href="{{ route('editClientNotification', [base64_encode($id)]) }}">Edit</a>

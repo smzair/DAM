@@ -75,10 +75,14 @@ View WRC
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    // pre($wrcs);
-                                @endphp
                                 @foreach($wrcs as $index => $wrc)
+                                @php
+                                    if($wrc->batch_no > 0){
+                                        $batch_no_is = ($wrc->batch != '' && $wrc->batch != null) ? $wrc->batch : $wrc->batch_no;
+                                    }else{
+                                        $batch_no_is =  'None';
+                                    }
+                                @endphp
                                 <tr class="wrc-tt">
                                     <td class="p-sm-2 p-1">{{$index+1}}</td>
                                     <td id="lotNum" class="p-sm-2 p-1">{{$wrc->lot_number}}</td>
@@ -91,7 +95,7 @@ View WRC
                                     <td id="orderQuantity" class="p-sm-2 p-1">{{$wrc->document1}}</td>
                                     <td id="orderQuantity" class="p-sm-2 p-1">{{$wrc->document2}}</td> -->
                                     <td id="brndName" class="p-sm-2 p-1">
-                                        {{ $wrc->batch_no > 0 ? $wrc->batch_no : 'None' }}
+                                        {{ $batch_no_is }}
                                     </td>
                                     <td id="brndName" class="p-sm-2 p-1">{{$wrc->sku_qty}}</td>
                                     <td id="brndName" class="p-sm-2 p-1">{{$wrc->generic_data_format_link}}</td>
