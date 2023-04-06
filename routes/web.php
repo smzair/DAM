@@ -625,6 +625,9 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     // Ajax Route
     Route::post('/send-otp', [ClientCommonController::class, 'sendOtp'])->name('sendOtp'); 
     Route::post('/verify-otp', [ClientCommonController::class, 'verifyOtp'])->name('verifyOtp'); 
+
+    Route::get('/allnotification', [ClientNotificationController::class, 'allnotification'])->name('allnotification'); 
+
     
 
 });

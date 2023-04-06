@@ -5,6 +5,7 @@ namespace App\Http\Controllers\NotificationControllers;
 use App\Http\Controllers\Controller;
 use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ClientNotificationController extends Controller
@@ -96,6 +97,13 @@ class ClientNotificationController extends Controller
             request()->session()->flash('error', 'Somthing went wrong!! Please try again!!');
         }
         return redirect()-> route('editClientNotification', [base64_encode($id)]);
+    }
+
+    // allnotification  List in clients panel
+    public function allnotification(){
+        $user_data = Auth::user();         
+        $ClientNotification = ClientNotification::clientNotificationList($user_data , 'all');
+        return view('clients.Notification.allnotification')->with('ClientNotification', $ClientNotification);
     }
 
 }

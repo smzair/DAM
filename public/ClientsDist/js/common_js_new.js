@@ -32,3 +32,36 @@ function isAlphabet(evt) {
     }
     return false;
 }
+
+$(document).ready(function() {
+    $(".bell-drop").click(function() {
+        let parentClasses = $('.notification-bell').attr("class");
+        classArray = parentClasses.split(' ')
+        if (classArray.includes("notification-open")) {
+            $('.notification-bell').removeClass('notification-open')
+        } else {
+            $('.notification-bell').addClass('notification-open')
+        }
+    });
+});
+
+$(document).ready(function() {
+    $('.close-link-notify').click(function() {
+        var notificationId = $(this).find('input[name="notificationId"]').val();
+        let n_count = +$('#notify-count').text();
+
+        $(this).closest('.notification-item').addClass('d-none');
+        $(this).closest('.notification-item').remove();
+
+        if(n_count == 1){
+            $('#notify-count').text(0)
+            let newElement = `<div><p>No unseen new notification.</p></div>`
+            $('.notification-body').append(newElement);
+            console.log('newElement', newElement)
+        }else{
+            $('#notify-count').text(n_count-1)
+        }
+        console.log("n_count => ",n_count);
+    });
+});
+
