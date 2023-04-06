@@ -4,6 +4,26 @@
 @endsection
 @section('css_links')
 	<link rel="stylesheet" href="">	
+	<style>
+		.card-inner .listing-notify .notification-alert{
+			margin-bottom: 4px;
+		}
+		.card-inner .listing-notify .seen_notification{
+			background-color:#b9f1e4dc;
+			border: 1px solid #92ecd6;
+    	border-radius: 5px;
+		}
+		
+		.card-inner .listing-notify .unseen_notification{
+			background-color: #f3dce1ce;
+			border: 1px solid #f8a7b2;
+    	border-radius: 5px;
+		}
+
+		.card-inner .listing-notify .arrival-time{
+			font-size: 10.1px
+		}
+	</style>
 
 @endsection
 
@@ -16,7 +36,7 @@
 		<!-- /.navbar -->
 
 		<!-- Main content -->
-		<div class="content custom-dashboard-content">
+		<div class="content custom-dashboard-content mt-3">
 			<div class="container-fluid">
 				<div class="row dashboard-template-row notification-template-row">
 					<div class="col-12">
@@ -34,37 +54,24 @@
 
                           @foreach ($ClientNotification as $row)
 
-                          <?php 
-                            $create_date_is = date('Y-m-d H:i:s',strtotime($row['created_at']));										
-                            $cur_date = date("Y-m-d H:i:s") ;
-                            $date1=date_create($create_date_is);
-                            $date2=date_create($cur_date);
-                            $diff=date_diff($date1,$date2);
-                            $day_ago = $diff->format("%m month %a days %H hour %i minyu %s sec ago \n");
-
-                            if ($diff->format("%Y") != 0) {
-                                $day_ago = $diff->format("%Y Year ago");										 	
-                            }else  if ($diff->format("%m") > 0) {
-                                $day_ago = $diff->format("%m Month ago");
-                            }else  if ($diff->format("%a") != 0) {
-                                $day_ago = $diff->format("%a day ago");
-                            }else  if ($diff->format("%H") != 0) {
-                                $day_ago = $diff->format("%H hour ago");
-                            }else{
-                                $day_ago = $diff->format("%i minute %s second ago");
-                            }
+                          <?php
+														$day_ago = timeBefore($row['created_at']);
+														$is_seen = $row['is_seen'];
+														$seen_class = $is_seen == 1 ? 'seen_notification' : 'unseen_notification';
                           ?>
-                            <div class="alert alert-dismissible fade show notification-alert" role="alert">
-                                <div class="notification-alert-body">
-                                    <div class="notification-alert-content">
-                                      <span class="notification-byline notification-alert-icon">
-                                      </span>
-                                      <span class="notification-byline notification-alert-desc">
-                                          <p class="alert-label notificitaion-label">{{$row['subject']}}</p>
-                                          <span class="alert-label notificitaion-time arrival-time">{{$day_ago}}</span>
-                                      </span>
-                                    </div>
-                                </div>
+                            <div class="alert alert-dismissible fade show notification-alert {{$seen_class}} " role="alert">
+															<a href="{{route('ClientNotificatioDetail',[base64_encode($row['id'])])}}">
+																<div class="notification-alert-body">
+																	<div class="notification-alert-content">
+																		<span class="notification-byline notification-alert-icon">
+																		</span>
+																		<span class="notification-byline notification-alert-desc">
+																				<p class="alert-label notificitaion-label" style="text-transform: uppercase;">{{$row['subject']}}</p>
+																				<span class="alert-label notificitaion-time arrival-time">{{$day_ago}} </span>
+																		</span>
+																	</div>
+																</div>
+															</a>
                             </div>
                           @endforeach
 

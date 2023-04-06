@@ -4,6 +4,7 @@ namespace App\Models\NotificationModel;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ClientNotification extends Model
@@ -31,6 +32,19 @@ class ClientNotification extends Model
         get()->toArray();
         return $clientNotificationList;
     }
-    
+
+    public static function update_is_seen($notificationId){
+        $id = base64_decode($notificationId);
+        $update_status= 1;
+        $update_query = ClientNotification::find($id);
+        if($update_query->is_seen == 0){
+            $update_query->is_seen = '1';
+            $update_query->seen_at = date('Y-m-d H:i:s');
+            $update_query->seen_by =  Auth::id();
+            $update_status = $update_query->update();
+        }
+        return $update_status;
+    }
+
 
 }

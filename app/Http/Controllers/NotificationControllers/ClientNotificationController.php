@@ -106,4 +106,27 @@ class ClientNotificationController extends Controller
         return view('clients.Notification.allnotification')->with('ClientNotification', $ClientNotification);
     }
 
+    public function ClientNotificatioDetail($notificationId){
+        $id = base64_decode($notificationId);
+        $ClientNotificatioDetail = [];
+        $update_query = ClientNotification::find($id);
+        if($update_query){
+            if($update_query->is_seen == 0){
+                $update_query->is_seen = '1';
+                $update_query->seen_at = date('Y-m-d H:i:s');
+                $update_query->seen_by =  Auth::id();
+                $update_query->update();
+            }
+            $ClientNotificatioDetail = $update_query->getAttributes();
+        }
+        return view('clients.Notification.Notification-Detail')->with('ClientNotificatioDetail', $ClientNotificatioDetail);
+    }
+
+    public function setNotificationSeen(Request $request){
+        $id = $request->notificationId;
+        $update_status = ClientNotification::update_is_seen($id);
+        echo $update_status;
+    }
+    
+
 }
