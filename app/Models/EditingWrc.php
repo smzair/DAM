@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class EditingWrc extends Model
 {
@@ -16,6 +18,7 @@ class EditingWrc extends Model
     // Store a newly created resource in storage.
     public static function storedata($request)
     {
+        DB::beginTransaction();
         $s_type_arr = explode(" ", $request->s_type);
         $count = count($s_type_arr);
         $s_type_is = "";
@@ -62,9 +65,19 @@ class EditingWrc extends Model
         $id =  $EditingWrc->id;
 
         if ($status) {
+            $save_ClientNotification_data = array(
+                'user_id' => $user_id,
+                'brand_id' => $brand_id,
+                'wrc_number' => $wrc_number,
+                'service' => 'Editing',
+                'subject' => 'Creation',
+            );
+            $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+            DB::commit();
             request()->session()->flash('success', 'Wrc Created Successfully!!');
         } else {
             $wrc_number = "";
+            DB::rollBack();
             request()->session()->flash('false', 'Please try again!!');
         }
 
