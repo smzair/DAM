@@ -62,19 +62,24 @@ class ClientNotification extends Model
         if($subject == 'Planning' || $subject == 'allocation'){
             $subject_is = "Wrc Planning Completed!!";
             if($service == 'Cataloging'){           
-                $discription = $service." Wrc Planning Done By ".$user_data->name.". Allocated WRC is ".$wrc_number;    
+                $discription = "Cataloging Wrc Planning Done By ".$user_data->name.". Allocated WRC is ".$wrc_number;    
+            }else if($service == 'Creative'){ 
+                $discription = "Creative Wrc Planning Done By ".$user_data->name.". Allocated WRC is ".$wrc_number;    
             }
         }elseif($subject == 'Submission'){
             $subject_is = "Wrc Submission Done!!";
             if($service == 'Cataloging'){           
                 $discription = $service." Wrc Submission Done By ".$user_data->name.". Submited WRC is ".$wrc_number;    
             }
+            elseif($service == 'Creative'){           
+                $discription = "Creative Wrc Submission Done By ".$user_data->name.". Submited WRC is ".$wrc_number;    
+            }
         }elseif($subject == 'Creation'){
             $subject_is = "New Wrc Created!!";
             if($service == 'Editing'){           
                 $discription = "New Wrc Created By ".$user_data->name.". Created Editing WRC is ".$wrc_number;
-            }elseif($service == 'Editing'){
-                $discription = "New Wrc Created By ".$user_data->name.". Created Editing WRC is ".$wrc_number;
+            }elseif($service == 'Creative'){
+                $discription = "New Wrc Created By ".$user_data->name.". Created Creative WRC is ".$wrc_number;
             }
         }
 
@@ -88,10 +93,7 @@ class ClientNotification extends Model
         $save_ClientNotification->created_by = $user_data->id;
         $status = $save_ClientNotification->save();
         return $status;
-        
     }
-
-    
 
 
 }

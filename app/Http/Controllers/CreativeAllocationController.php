@@ -7,10 +7,12 @@ use App\Models\CreativeUploadLink;
 use App\Models\CreativeTimeHash;
 use App\Models\CreativeWrcBatch;
 use App\Models\CreativeWrcSkus as ModelsCreativeWrcSkus;
+use App\Models\NotificationModel\ClientNotification;
 use Carbon\Carbon;
 use CreativeWrcSkus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 
 class CreativeAllocationController extends Controller
@@ -32,6 +34,7 @@ class CreativeAllocationController extends Controller
     // assign wrc to user
     public function store(Request $request){
         // dd($request);
+        DB::beginTransaction();
         $requestedData = $request->all();
         $msgCheck = false;
 
@@ -113,10 +116,88 @@ class CreativeAllocationController extends Controller
             }
         }
         if($msgCheck){
+            
+            $graphic_designer_ids = DB::table('users')
+            ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
+            ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
+            ->where([ ['roles.name','=', 'GD']])->pluck('users.id')->toArray();
+
+            $CreativeWrc_gd_query = CreativeWrcModel::
+            leftJoin('creative_wrc_batch as creative_wrc_batch', 'creative_wrc_batch.wrc_id', 'creative_wrc.id')->            
+            leftjoin('creative_allocation',function ($join) {
+                $join->on('creative_allocation.wrc_id', '=', 'creative_wrc_batch.wrc_id');
+                $join->on('creative_allocation.batch_no', '=', 'creative_wrc_batch.batch_no');
+            })->
+            leftJoin('creative_lots', 'creative_lots.id', 'creative_wrc.lot_id')->
+            select(
+                'creative_wrc.wrc_number',
+                'creative_wrc.alloacte_to_copy_writer',
+                'creative_lots.user_id',
+                'creative_lots.brand_id',
+                'creative_wrc_batch.wrc_id',
+                'creative_wrc_batch.batch_no',
+                'creative_wrc_batch.order_qty',
+                // 'creative_wrc_batch.sku_count',
+                'creative_allocation.allocated_qty',
+                DB::raw('SUM(creative_allocation.allocated_qty) as gd_sum'),
+                DB::raw('(case when creative_wrc.sku_required = 0 then creative_wrc_batch.order_qty else creative_wrc_batch.sku_count END ) as sku_count')
+            )->
+            where('creative_wrc_batch.wrc_id', $wrc_id)->where('creative_wrc_batch.batch_no', $batch_no);
+            $CreativeWrc_gd_query = $CreativeWrc_gd_query->whereIn('creative_allocation.user_id', $graphic_designer_ids);
+            $CreativeWrc_gd_data = $CreativeWrc_gd_query->first()->toArray();
+
+            
+            $copy_writer_ids = DB::table('users')
+            ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
+            ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
+            ->where([ ['roles.name','=', 'CW']])->pluck('users.id')->toArray();
+
+        
+            $CreativeWrc_cw_query = CreativeWrcModel::leftJoin('creative_wrc_batch as creative_wrc_batch', 'creative_wrc_batch.wrc_id', 'creative_wrc.id')->
+            leftjoin('creative_allocation',function ($join) {
+                $join->on('creative_allocation.wrc_id', '=', 'creative_wrc_batch.wrc_id');
+                $join->on('creative_allocation.batch_no', '=', 'creative_wrc_batch.batch_no');
+            })->
+            select(
+                'creative_wrc.wrc_number',
+                'creative_wrc.wrc_number',
+                'creative_wrc.alloacte_to_copy_writer',
+                'creative_wrc_batch.wrc_id',
+                'creative_wrc_batch.batch_no',
+                'creative_wrc_batch.order_qty',
+                'creative_wrc_batch.sku_count',
+                'creative_allocation.allocated_qty',
+                DB::raw('SUM(creative_allocation.allocated_qty) as cw_sum'),
+                DB::raw('(case when creative_wrc.sku_required = 0 then creative_wrc_batch.order_qty else creative_wrc_batch.sku_count END ) as sku_count')
+            )->
+            where('creative_wrc_batch.wrc_id', $wrc_id)->where('creative_wrc_batch.batch_no', $batch_no)->whereIn('creative_allocation.user_id', $copy_writer_ids);
+            $CreativeWrc_cw_data = $CreativeWrc_cw_query->first()->toArray();
+
+            $alloacte_to_copy_writer = $CreativeWrc_gd_data['alloacte_to_copy_writer'];
+            $sku_count = $CreativeWrc_gd_data['sku_count'];
+            $gd_allocated_qty = $CreativeWrc_gd_data['gd_sum'];
+            $cw_allocated_qty = $CreativeWrc_cw_data['cw_sum'];
+
+            $save_ClientNotification_data = [];
+
+            if(($alloacte_to_copy_writer == 1 && $gd_allocated_qty == $sku_count && $sku_count == $cw_allocated_qty) || ($alloacte_to_copy_writer == 0 && $gd_allocated_qty == $sku_count )){
+                $save_ClientNotification_data = array(
+                    'user_id' => $CreativeWrc_gd_data['user_id'],
+                    'brand_id' => $CreativeWrc_gd_data['brand_id'],
+                    'wrc_number' => $CreativeWrc_gd_data['wrc_number'],
+                    'service' => 'Creative',
+                    'subject' => 'Planning',
+                );
+                $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+            }
+            // dd($CreativeWrc_gd_data , $CreativeWrc_cw_data , $request->all() , $save_ClientNotification_data );
+            DB::commit();
+
             request()->session()->flash('success','Wrc Allocated Successfully');
         }
         else{
             request()->session()->flash('error','Please try again!!');
+            DB::rollBack();
         }
 
         /* send notification start */
