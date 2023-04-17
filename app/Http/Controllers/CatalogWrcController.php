@@ -280,10 +280,10 @@ class CatalogWrcController extends Controller
             $tot_sku_qty_is = $saved_rows + $sku_qty_is;
             CatlogWrc::where('id', $wrc_id_is)->update(['sku_qty' => $tot_sku_qty_is]);
             if ($createWrcStatus) {
-                 /* send notification start */
-                    $data = CatlogWrc::find($createWrc->id);
-                    $creation_type = 'CatlogWrc';
-                    // $this->send_notification($data, $creation_type);
+                /* send notification start */
+                $data = CatlogWrc::find($createWrc->id);
+                $creation_type = 'CatlogWrc';
+                // $this->send_notification($data, $creation_type);
                 /******  send notification end*******/
                 $user_data = Auth::user();
                 $save_ClientNotification = new ClientNotification();
@@ -308,28 +308,28 @@ class CatalogWrcController extends Controller
             // dd($users_data);
 
             $CatlogWrc = (object) [
-                    'id' => 0,
-                    'user_id' => '',
-                    'brand_id' => '',
-                    'lot_id' => '',
-                    'commercial_id' => '',
-                    'img_recevied_date' => '',
-                    'missing_info_notify_date' => '',
-                    'missing_info_recived_date' => '',
-                    'confirmation_date' => '',
-                    'sku_qty' => $saved_rows,
-                    'work_brief' => '',
-                    'modeOfDelivary' => '0',
-                    'generic_data_format_link' => '',
-                    'img_as_per_guidelines' => '',
-                    'guidelines' => '',
-                    'document1' => '',
-                    'document2' => '',
-                    'wrc_number' => $wrcNumber,
-                    'alloacte_to_copy_writer' => 1,
-                    'button_name' => 'Create New Catlog WRC',
-                    'route' => 'STORECATLOGWRC'
-                ];
+                'id' => 0,
+                'user_id' => '',
+                'brand_id' => '',
+                'lot_id' => '',
+                'commercial_id' => '',
+                'img_recevied_date' => '',
+                'missing_info_notify_date' => '',
+                'missing_info_recived_date' => '',
+                'confirmation_date' => '',
+                'sku_qty' => $saved_rows,
+                'work_brief' => '',
+                'modeOfDelivary' => '0',
+                'generic_data_format_link' => '',
+                'img_as_per_guidelines' => '',
+                'guidelines' => '',
+                'document1' => '',
+                'document2' => '',
+                'wrc_number' => $wrcNumber,
+                'alloacte_to_copy_writer' => 1,
+                'button_name' => 'Create New Catlog WRC',
+                'route' => 'STORECATLOGWRC'
+            ];
             return view('Wrc.Catalog-wrc-create')->with('users_data', $users_data)->with('CatlogWrc', $CatlogWrc)->with('sku_details', $sku_details);;
 
             // return $this->Index($request, $createWrc->id);

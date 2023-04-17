@@ -2,220 +2,167 @@
 @extends('layouts.admin')
 
 @section('title')
-
-Creative Allocation
-
+Catalogin Re-Allocation
 @endsection
 @section('content')
+<!-- New Allocation View -->
 
-<style type="text/css">
-        .custom-new-form-group {
-        display: flex;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
+<!-- New Allocation Table View (For Catalogue) -->
 
-    .group-inner.select-wrapper {
-        flex: 1 1 auto;
-        max-width: 80%;
-    }
-
-    .group-inner.input-wrapper {
-        flex: 0 0 auto;
-        max-width: 20%;
-        padding-left: 10px;
-    }
-
-    .custom-info {
-        width: 100%;
-        display: block;
-        margin-top: 16px;
-    }
-
-    .custom-info p {
-        margin: 0;
-    }
-
-    .info-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: block;
-    }
-
-    .info-list > li {
-        display: block;
-        width: 100%;
-        position: relative;
-    }
-
-    .info-list > li:not(:last-child) {
-        margin-bottom: 4px;
-    }
-
-    .info-list > li > span, .info-list > li > a {
-        display: inline-block;
-    }
-
-    .info-list > li > a:hover, .info-list > li > a:focus {
-        text-decoration: underline !important;
-    }
-
-    .date, .time {
-        display: block;
-        width: 100%;
-    }
-
-    .time {
-        font-weight: 700;
-    }
-
-    .allocation-wrc-modal .modal-body {
-        padding: 1rem 1.2rem;
-    }
-
-    .alloc-action-btn.inactive {
-        pointer-events: none;
-        opacity: 0.5;
-    }
-
-    .card.card-transparent .table td .task-start-button .btn {
-        background-color: #FBF702 !important;
-        color: #000 !important;
-        border-color: transparent;
-        width: 100%;
-    }
-
-    .card.card-transparent .table td .task-start-button .btn:hover, 
-    .card.card-transparent .table td .task-start-button .btn:focus {
-        background-color: #ba8b00 !important;
-    }
-
-    .alloc-action-btn {
-        display: block;
-    }
-
-    .alloc-action-btn:first-of-type {
-        margin-bottom: 10px;
-    }
-
-</style>
 <div class="container-fluid mt-5 plan-shoot new-allocation-table-main">
+     <style>
+
+        .custom-new-form-group {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+        }
+
+        .group-inner.select-wrapper {
+            flex: 1 1 auto;
+            max-width: 80%;
+        }
+
+          .group-inner.input-wrapper {
+            flex: 0 0 auto;
+            max-width: 20%;
+            padding-left: 10px;
+        }
+        .input_err , #msg_box{
+            margin: 0.1em 0;
+            background: #928c8cfc;
+            display: block;
+            padding: 0.3em;
+        }
+
+        .msg_box{
+            margin: 0.1em 0;
+            background: #928c8cfc;
+            display: none;
+            padding: 0.3em;
+        }
+    </style>
+
+    <style>
+        @media (min-width: 992px){
+            .modal-lg, .modal-xl {
+                min-width: 950px !important;
+            }
+        }
+    </style>
     <div class="row">
         <div class="col-12">
             <div class="card card-transparent">
                 <div class="card-header">
-                    <h3 class="card-title">Creative Allocation</h3>
-                    @if (Session::has('success'))
-                        <div class="alert alert-success" id="msg_div" role="alert">
-                            {{ Session::get('success') }}
-                        </div>
-                        {{ Session::forget('success') }}
-                    @endif
+                    {{-- <h3 class="card-title">Catalog Re-Allocation</h3> --}}
+                    <h3 class="card-title">Re-Allocation - To be Allocated</h3>
+                    <a style="float: right;" class="btn btn-success swalDefaultSuccess" href="{{route('CATALOG_ALLOCTED_DETAILS')}}">Allocation Details</a>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0" style="max-height: 700px; height: 100%;">
-                    <table id="allocTable" class="table table-head-fixed text-nowrap data-table">
+
+                    {{-- getCataloguer --}}
+
+                    @php
+                        $getCataloguer = getCataloguer();
+                        $getcopywriter = getcopywriter();
+                        $MarketPlaces = getMarketPlace();
+                        $market_place_arr = array_column($MarketPlaces, 'marketPlace_name', 'id');
+                        // $wrcList_arr = array_column($wrcList, 'wrc_number', 'id');
+                        // pre($market_place_arr);
+                        // pre($wrcList_arr);
+                    @endphp
+                    <table id="allocTableC" class="table table-head-fixed text-nowrap data-table">
                         <thead>
                             <tr>
                                 <th>WRC</th>
                                 <th>LOT Numbers</th>
                                 <th>Company Name</th>
                                 <th>Brand Name</th>
-                                <th>Project Type</th>
-                                <th>Kind of Work</th>
+                                <th>Marketplace</th>
+                                <th>Type of Service</th>
                                 <th>WRC Created At</th>
-                                <th >Batches No</th>
-                                <th>Allocated Users Name</th>
-                                <th>Order Qty</th>
-                                <th>Sku Qty</th>
-                                <th>GD Allocated Qty</th>
-                                <th>GD Pending Qty</th>
+                                <th>Batch Number</th>
+                                <th>SKU Count</th>
+                                <th>Cata Allocated Qty</th>
+                                <th>Cata Pending Qty</th>
                                 <th>CW Allocated Qty</th>
                                 <th>CW Pending Qty</th>
-                                <th>Work Initiate Date</th>
-                                <th>Work Committed Date</th>
-                              
+                                {{-- <th>Request Receive Date</th> --}}
+                                {{-- <th>Raw Image Receive Date</th> --}}
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($allocationList['resData']  as $key => $lotinfo)
-                            <?php  if( ((($lotinfo['gd_allocated_qty'] == null || $lotinfo['gd_allocated_qty'] == 0) ? 0 : $lotinfo['gd_allocated_qty']) != 0) || ((($lotinfo['cw_allocated_qty'] == null || $lotinfo['cw_allocated_qty'] == 0) ? 0 : $lotinfo['cw_allocated_qty']) != 0)) {?>
-                                <tr>
-                                    {{-- <?php dd($lotinfo); ?> --}}
-                                    <td id="wrc_number{{$key}}">{{$lotinfo['wrc_number']}}</td>
-                                    <td style="display: none;" id="wrc_number_id{{$key}}">{{$lotinfo['wrc_id']}}</td>
-                                    <td style="display: none;" id="alloacte_to_copy_writer{{$key}}">{{$lotinfo['alloacte_to_copy_writer']}}</td>
-                                    <td id="lot_number{{$key}}">{{$lotinfo['lot_number']}}</td>
-                                    <td id="Company{{$key}}">{{$lotinfo['Company']}}</td>
-                                    <td id="brand_name{{$key}}">{{$lotinfo['brand_name']}}</td>
-                                    <td id="project_name{{$key}}">{{$lotinfo['project_name']}}</td>
-                                    <td id="kind_of_work{{$key}}">{{$lotinfo['kind_of_work']}}</td>
-                                    <td id="created_at{{$key}}">{{dateFormat($lotinfo->created_at)}}<br><b>{{timeFormat($lotinfo->created_at)}}</td>
-                                    <td title="0 for not retainer and other for retainer" id="batch_batch_no{{$key}}">{{$lotinfo['batch_batch_no'] != null ? $lotinfo['batch_batch_no'] : 'None'}}</td>
-                                    <td id="brand_name{{$key}}">
-                                        @foreach($lotinfo['allocated_users']  as $ukey => $uval)
-                                        <ul>{{$uval['name']}}</ul>
+                           
+                            @foreach($wrcList as $key => $row)
+                                @php
 
+                                    if($key == 1){
+                                        // pre($row);
+                                    }
+                                    $sku_qty = $row['sku_qty'];
+                                    $cataloger_sum = $row['cataloger_sum'];
+                                    $cp_sum = $row['cp_sum'];
+                                    $batch_no = $row['batch_no'] > 0 ? $row['batch_no'] : 'None';
+                                    if($row['batch_no'] > 0){
+                                        $batch_no_is = ($row['batch'] != '' && $row['batch'] != null) ? $row['batch'] : $row['batch_no'];
+                                    }else{
+                                        $batch_no_is =  'None';
+                                    }
+
+                                    if($cataloger_sum == 0 && $cp_sum == 0){
+                                        continue;
+                                    }
+
+                                    $market_place = $row['market_place'];
+                                    $market_place_ids = explode(',',$market_place);
+
+                                    $alloacte_to_copy_writer = $row['alloacte_to_copy_writer'];
+                                    if(($alloacte_to_copy_writer == 1 && $sku_qty == $cp_sum && $sku_qty == $cataloger_sum) || ($alloacte_to_copy_writer == 0 && $sku_qty == $cataloger_sum) ){
+                                        continue;
+                                    }
+                                @endphp
+
+                                <tr id="tr{{ $key }}" >
+                                    <td data-value="wrc_number">
+                                        {{ $row['wrc_number'] }}
+                                    </td>
+                                    <td data-value="lot_number">{{ $row['lot_number'] }}</td>
+                                    <td data-value="Company">{{ $row['Company'] }}</td>
+                                    <td data-value="name">{{ $row['name'] }}
+                                        
+                                    </td>
+                                    <td data-value="market_place">
+                                        @foreach ($market_place_ids as $id)
+                                            <p class="m-0">{{ $market_place_arr[$id] }}</p>
                                         @endforeach
-                                        
-                                        
-                                    
-                                    
                                     </td>
-                                    <!-- <td>{{--count($lotinfo['wrcs'])--}}</td> -->
+                                    <td data-value="type_of_service">{{ $row['type_of_service'] }}</td>
+                                    <td data-value="wrc_cr_at">{{ dateFormet_dmy($row['created_at']) }}</td>
+                                    <td data-value="batch_no">{{ $batch_no_is }}</td>
+                                    <td data-value="sku_qty">{{ $row['sku_qty'] }}</td>
 
-
-                                    {{-- add this logic for lot with Retainer client bucket --start--}}
-                                    <?php 
-                                    if($lotinfo['client_bucket'] == 'Retainer'){ ?>
-                                        <td id="order_qty{{$key}}">{{$lotinfo['batch_order_qty'] != null ? $lotinfo['batch_order_qty'] : 0}}</td>
-                                        <td id="sku_count{{$key}}">{{$lotinfo['batch_sku_count'] != null ? $lotinfo['batch_sku_count'] : 0}}</td>
-                                    <?php }else { ?>
-                                        <td id="order_qty{{$key}}">{{$lotinfo['order_qty'] != null ? $lotinfo['order_qty'] : 0}}</td>
-                                        <td id="sku_count{{$key}}">{{$lotinfo['sku_count'] != null ? $lotinfo['sku_count'] : 0}}</td>
-                                    <?php  } ?>
-                                    {{-- add this logic for lot with Retainer client bucket --end--}}
-                                    
-
-                                    <td id="gd_allocated_qty{{$key}}">{{($lotinfo['gd_allocated_qty'] == null || $lotinfo['gd_allocated_qty'] == 0) ? 0 : $lotinfo['gd_allocated_qty']}}</td>
-
-                                    <?php 
-                                    if($lotinfo['client_bucket'] == 'Retainer'){ ?>
-                                        <td id="pending_qty_gd{{$key}}">{{ (($lotinfo['batch_order_qty'] == '' || $lotinfo['batch_order_qty'] == 0 || $lotinfo['batch_order_qty'] == null) ? $lotinfo['batch_sku_count'] : $lotinfo['batch_order_qty']) - $lotinfo['gd_allocated_qty']}}</td>
-
-                                    <?php }else { ?>
-                                        <td id="pending_qty_gd{{$key}}">{{ (($lotinfo['order_qty'] == '' || $lotinfo['order_qty'] == 0 || $lotinfo['order_qty'] == null) ? $lotinfo['sku_count'] : $lotinfo['order_qty']) - $lotinfo['gd_allocated_qty']}}</td>
-                                    <?php  } ?>
-
-                                    <td id="cw_allocated_qty{{$key}}">{{($lotinfo['cw_allocated_qty'] == null || $lotinfo['cw_allocated_qty'] == 0) ? 0 : $lotinfo['cw_allocated_qty']}}</td>
-
-                                    <?php 
-                                    if($lotinfo['client_bucket'] == 'Retainer'){ ?>
-                                        <td id="pending_qty_cw{{$key}}">{{(($lotinfo['batch_order_qty'] == '' || $lotinfo['batch_order_qty'] == 0 || $lotinfo['batch_order_qty'] == null) ? $lotinfo['batch_sku_count'] : $lotinfo['batch_order_qty'])- $lotinfo['cw_allocated_qty']}}</td>
-
-                                    <?php }else { ?>
-                                        <td id="pending_qty_cw{{$key}}">{{(($lotinfo['order_qty'] == '' || $lotinfo['order_qty'] == 0 || $lotinfo['order_qty'] == null) ? $lotinfo['sku_count'] : $lotinfo['order_qty'])- $lotinfo['cw_allocated_qty']}}</td>
-                                    <?php  } ?>
-                                
-
-                                   
-                                    <td id="work_initiate_date{{$key}}">{{dateFormat($lotinfo->work_initiate_date)}}
-                                        {{--<br> <b>{{timeFormat($lotinfo->work_initiate_date)}}</b> --}}
-                                    </td>
-                                    <td id="Comitted_initiate_date{{$key}}">{{dateFormat($lotinfo->Comitted_initiate_date)}}
-                                        {{--<br> <b>{{timeFormat($lotinfo->Comitted_initiate_date)}}</b> --}}
-                                    </td>
-                                   
+                                    <td data-value="cataloger_sum">{{ $row['cataloger_sum'] }}</td>
+                                    <td data-value="cataloger_pen">{{ $row['sku_qty'] - $row['cataloger_sum'] }}</td>
+                                    <td data-value="cp_sum">{{ $row['cp_sum'] }}</td>
+                                    <td data-value="cp_pen">{{ $row['alloacte_to_copy_writer'] == 1 ? $row['sku_qty'] - $row['cp_sum'] : 0 }}</td>
+                                    {{-- <td data-value="img_recevied_date">{{ dateFormet_dmy($row['img_recevied_date']) }}</td> --}}
+                                    {{-- <td data-value="raw_img_date">{{ dateFormet_dmy($row['created_at']) }}</td> --}}
                                     <td>
-                                        <button class="btn btn-warning" id="allocateBTn" data-toggle="modal" data-target="#allocateWRCPopup" onclick='setdata(<?php echo $key;?>)'>
+
+                                        <input type="hidden" id="wrc_id{{ $key }}" data-alloacte_to_copy_writer="{{ $row['alloacte_to_copy_writer'] }}" value="{{ $row['id'] }}">
+                                        <input type="hidden" id="batch_no{{ $key }}"  value="{{ $row['batch_no'] }}">
+                                        <input type="hidden" id="wrc_batch_id{{ $key }}"  value="{{ $row['wrc_batch_id'] }}">
+                                        <input type="hidden" id="work_initiate_date{{ $key }}"  value="{{ $row['work_initiate_date'] }}">
+                                        <input type="hidden" id="work_committed_date{{ $key }}"  value="{{ $row['work_committed_date'] }}">
+                                        <button class="btn btn-warning" id="allocateBTnC" data-toggle="modal" 
+                                        data-target="#allocateWRCPopupCAt" onclick="setvalue({{ $key }})">
                                             Allocate
                                         </button>
                                     </td>
                                 </tr>
-                            <?php } ?>
-                            @endforeach
+                            @endforeach 
                         </tbody>
                     </table>
                 </div>
@@ -225,171 +172,160 @@ Creative Allocation
     <!-- /.card-body -->
 </div>
 
-<div class="modal fade allocation-wrc-modal" id="allocateWRCPopup">
+<div class="modal fade allocation-wrc-modal" id="allocateWRCPopupCAt">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header py-2">
-                <h4 class="modal-title">Creative - Allocate WRC</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick='resetdata()'> 
+                <h4 class="modal-title">Shoot Allocation WRC</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="custom-dt-row wrc-details">
-                    <div class="row">
+                {{-- <form class="" method="POST" action="" id="allocWRCform"> --}}
+                    <div class="custom-dt-row wrc-details mb-3">
+                        <div class="row mb-3">
+                            <div class="col-sm-3 col-6">
+                                <div class="col-ac-details">
+                                    <h6>WRC Number</h6>
+                                    <p id="wrcNo"></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-6">
+                                <div class="col-ac-details">
+                                    <h6>SKU Count</h6>
+                                    <p id="sku_qty"></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-6">
+                                <div class="col-ac-details">
+                                    <h6>Batch Number</h6>
+                                    <p id="batch_number"></p>
+                                </div>
+                            </div>
 
-                        <div class="col-sm-4 col-6">
-                            <div class="col-ac-details">
-                                <h6>Selected LOT</h6>
-                                <p class="selLot"></p>
+                            <div class="col-sm-3 col-6">
+                                <div class="col-ac-details">
+                                    <h6>Selected LOT</h6>
+                                    <input id="lot_number" rows="3" cols="4" style="width: 100%;" disabled />
+                                </div>
                             </div>
                         </div>
-
-                        <div class="col-sm-4 col-12">
-                            <div class="col-ac-details">
-                                <h6>WRC Number</h6>
-                                <p class="wrcNo"></p>
+                        {{-- Cataloger Allocated SKU --}}
+                        <div class="row ">
+                            <div class="col-sm-3 col-12">
+                                <div class="col-ac-details">
+                                    <h6>Cataloger Allocated SKU</h6>
+                                    <p id="cata_allocated_sku"></p>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="col-sm-4 col-12">
-                            <div class="col-ac-details">
-                                <h6 title="0 for not retainer and other for retainer">Batches No</h6>
-                                <p class="batchesNo"></p>
+                             <div class="col-sm-3 col-12">
+                                <div class="col-ac-details">
+                                    <h6>Cataloger Pending SKU</h6>
+                                    <p id="cata_pending_sku">5</p>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="col-sm-4 col-6">
-                            <div class="col-ac-details">
-                                <h6 class="hideTotalOrderQtyLable">Order Quantity</h6>
-                                <h6 class="hideTotalSkuCountLable">Sku Count</h6>
-                                <p class="QuntyCount"></p>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-6">
-                            <div class="col-ac-details">
-                                <h6>GD Allocated Qty</h6>
-                                <p class="AllocatedCountGd"></p>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-6">
-                            <div class="col-ac-details">
-                                <h6>GD Pending Qty</h6>
-                                <p class="PendingCountGd"></p>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-6">
-                            <div class="col-ac-details">
-                                <h6>CW Allocated Qty</h6>
-                                <p class="AllocatedCountCw"></p>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-6">
-                            <div class="col-ac-details">
-                                <h6>CW Pending Qty</h6>
-                                <p class="PendingCountCw"></p>
-                            </div>
-                        </div>
-                       
-                       
-                        
-                    </div>
-                </div>
-                <div class="custom-dt-row allocater-selection">
-                    <form class="" method="POST" action="{{ route('CREATIVE_ALLOCATION_STORE') }}" id="allocWRCform" onsubmit="return validateForm(event)">
-                        @csrf
-                        <input type="hidden" name="wrc_id" class="wrc_id" value="" />
-                        <input type="hidden" name="batch_no" class="batch_no" value="" />
-                        <input type="hidden" name="alloacte_to_copy_writer" class="alloacte_to_copy_writer" value="" />
-                        <?php
-                            $reqArray = [1,2,3];
-
-                            $graphicDesignerData = '<option selected value = 0>Select Graphic Designer</option>';
-                            $copyWriterData = '<option selected value = 0>Select Copywriter</option>';    
-                                                                 
-                            foreach($allocationList['graphic_designer_users_data']  as $gkey => $gdata){
-                                // dd($gdata->name);
-                                $graphicDesignerData .= '<option value="'.$gdata->id.'">'.$gdata->name.'</option>';
-                            }
-                            foreach($allocationList['copy_writer_users_data']  as $ckey => $cdata){
-                                $copyWriterData .= '<option value="'.$cdata->id.'">'.$cdata->name.'</option>';
-                            }
-                            $check = '';
-                            foreach( $reqArray  as $data){
-                               $check .= '<div class="col-sm-6 col-12">
-                                    <div class="form-group custom-new-form-group">
-                                        <div class="group-inner select-wrapper">
-                                            <label class="control-label required">Graphic Designer '.$data.'</label>
-                                            <select class="custom-select form-control-border designer-name GDNAMESTYLE'.$data.'" name="designerName[]" >
-                                                 '.$graphicDesignerData.' 
-                                            </select>
+                            {{-- </div> --}}
+                            {{-- Copy Writer Allocated SKU  --}}
+                            <div class="col-sm-6">
+                                <div  id="copywriter_sky_row">
+                                    <div class="col-sm-6 col-12">
+                                        <div class="col-ac-details">
+                                            <h6>Copy Writer Allocated SKU</h6>
+                                            <p id="cp_allocated_sku">15</p>
                                         </div>
-                                        <div class="group-inner input-wrapper">
-                                            <label class="control-label">Qty</label>
-                                            <input type="text" class="form-control GDQTYSTYLE'.$data.'" id="GraphicDesignerQty"  onkeypress="return isNumber(event);" name="GraphicDesignerQty[]">
-                                        </div>  
                                     </div>
-                                </div>
-                                <div class="col-sm-6 col-12 CWSTYLE'.$data.'">
-                                    <div class="form-group custom-new-form-group">
-                                        <div class="group-inner select-wrapper">
-                                            <label class="control-label required">Copy Writer '.$data.'</label>
-                                            <select class="custom-select form-control-border copywriter-name CWNAMESTYLE'.$data.'" name="copywriterName[]">
-                                             '.$copyWriterData.'
-                                            </select>
+                                    <div class="col-sm-6 col-12">
+                                        <div class="col-ac-details">
+                                            <h6>Copy Writer Pending SKU</h6>
+                                            <p id="cp_pending_sku">5</p>
                                         </div>
-                                        <div class="group-inner input-wrapper">
-                                            <label class="control-label">Qty</label>
-                                            <input type="text" class="form-control CWQTYSTYLE'.$data.'" onkeypress="return isNumber(event);" name="copyWriterQty[]" id="copyWriterQty">
-                                        </div>  
                                     </div>
-                                </div>';
-                            }
-                        ?>
-                          <div class="row">
-                          <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="control-label required">Work Initiate Date</label>
-                                    <div class="input-group">
-                                        {{-- <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="far fa-calendar-alt"></i>
-                                            </span>
-                                        </div> --}}
-                                        <input type="text" class="form-control int_date" name="int_date" id="int_date" placeholder="yyyy-mm-dd" data-toggle="datepicker" value="">
-                                    </div>
-                                    <p class="input_err" style="color: red; display: none;" id="int_date_err"></p>
                                 </div>
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label class="control-label required">Work Committed Date</label>
-                                    <div class="input-group">
-                                        {{-- <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="far fa-calendar-alt"></i>
-                                            </span>
-                                        </div> --}}
-                                        <input type="text" class="form-control cmt_date" name="cmt_date" id="cmt_date" placeholder="yyyy-mm-dd" data-toggle="datepicker" value="">
-                                    </div>
-                                    <p class="input_err" style="color: red; display: none;" id="cmt_date_err"></p>
-                                </div>
-                        </div>
-                          </div>
+
                         <div class="row">
-                            <?= $check ?>
-                            <div class="col-sm-12 col-12">
-                                <button type="submit" class="btn btn-sm btn-warning md-2" >Complete Allocation</button>
+                            <div class="col-sm-4">
+                                 <div class="form-group">
+                                    <label class="control-label w-100 required" for="work_initiate_date_is">Work Initiate Date <span style="color: red">*</span></label>
+                                    <input class="form-control" type="date" name="work_initiate_date_is" id="work_initiate_date_is">
+                                </div>
+                                <p class="" style="color: red; display: none;"  id="work_initiate_date_is_err"></p>
+
                             </div>
-                            <p class="input_err" style="color: red; display: none;" id="total_allocated_qty_err"></p>
+                            <div class="col-sm-2">
+                            </div>
+
+                            <div class="col-sm-4">
+                                 <div class="form-group">
+                                    <label class="control-label  w-100 required" for="work_committed_date_is">Work Committed Date <span style="color: red">*</span></label>
+                                    <input class="form-control" type="date" name="work_committed_date_is" id="work_committed_date_is">
+                                </div>
+                                <p class="" style="color: red; display: none;"  id="work_committed_date_is_err"></p>
+
+                            </div>
+                             <div class="col-sm-2">
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="custom-dt-row allocater-selection"> 
+                        {{-- Allocate users dropdwon row  --}}
+                        <div class="row">
+                            <div class="col-sm-6 col-12" id="Cataloguer_row">
+                                <div class="form-group custom-new-form-group">
+                                    <div class="group-inner select-wrapper">
+                                        <label class="control-label required">Allocate Cataloguer</label>
+                                        <select class="custom-select form-control-border Cataloguer-name" name="CataloguerName"  id="CataloguerName" style="width:100%;">
+                                            <option value="">--Select Cataloguer--</option>
+                                            @foreach ($getCataloguer as $row)
+                                                <option value="{{ $row->id }}" data-name="{{ $row->name }}">{{ $row->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="group-inner input-wrapper">
+                                        <label class="control-label">Qty</label>
+                                        <input type="number" class="form-control" name="Cataloguer_Qty" id="Cataloguer_Qty">
+                                    </div> 
+                                </div>
+                                <p class="input_err" style="color: red; display: none;"  id="user_id_err"></p>
+                            </div>
+                            {{-- Select copywriter Dropdown --}}
+                             <div class="col-sm-6 col-12" id="copy_writer_row" style="display: block">
+                                <div class="form-group custom-new-form-group">
+                                    <div class="group-inner select-wrapper">
+                                        <label class="control-label required">Allocate copywriter</label>
+                                        <select class="custom-select form-control-border Cataloguer-name" name="copywriterName"  id="copywriterName" style="width:100%;">
+                                            <option value="" data-name="">--Select copywriter--</option>
+                                            @foreach ($getcopywriter as $row)
+                                                <option value="{{ $row->id }}" data-name="{{ $row->name }}">{{ $row->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="group-inner input-wrapper">
+                                        <label class="control-label">Qty</label>
+                                        <input type="number" class="form-control" name="copywriter_Qty" id="copywriter_Qty">
+                                    </div> 
+                                </div>
+                                <p class="input_err" style="color: red; display: none;" id="copywriter_err"></p>
+                            </div>
+
+                            <div class="col-sm-12 col-12" style="text-align: end">
+                                <input id="wrc_id" name="wrcNo" type="hidden" value="">
+                                <input id="batch_no" name="batch_no" type="hidden" value="">
+                                <input id="wrc_batch_id_is" name="wrc_batch_id_is" type="hidden" value="">
+                                <input id="key_is" name="key" type="hidden" value="">
+                                <button class="btn btn-warning" onclick="saveData()" >Complete Allocation</button>
+                                <span class="msg_box" id="msg_box1" style="color: red; display: none;"></span>
+                                <span class="msg_box" id="msg_box2" style="color: red; display: none;"></span>
+                            </div>
+                        </div>
+                    </div>
+                {{-- </form> --}}
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- DataTable Plugins Path -->
 
@@ -405,266 +341,256 @@ Creative Allocation
 
 <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
 
+
 <!-- End of DataTable Plugins Path -->
 
+<!-- Data Table Calling Function -->
+
 <script>
-    $('#allocTable').DataTable({
+  $('#allocTableC').DataTable({
         dom: 'lBfrtip',
         "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
         "buttons": ["copy", "csv", "excel", "pdf"]
-    }).buttons().container().insertAfter('#masterData_wrapper .dataTables_length');
+  }).buttons().container().insertAfter('#masterData_wrapper .dataTables_length');
 </script>
 
-<!-- get dynamic data in modal -->
+
+{{-- setvalue to model --}}
 <script>
-    function setdata(id){
+   async function setvalue(val){
+        document.querySelector("#CataloguerName").value = "";
+        document.querySelector("#copywriterName").value = "";
+        document.querySelector("#Cataloguer_Qty").value = "";
+        document.querySelector("#copywriter_Qty").value = "";
+        $("#copy_writer_row").css("display", "none");
+        $("#copywriter_sky_row").css("display", "none");
 
-        // document.querySelector("#CWQTYSTYLE1").value = "";
-        // document.querySelector("#CWQTYSTYLE2").value = "";
-        // document.querySelector("#CWQTYSTYLE2").value = "";
-        // document.querySelector("#CWNAMESTYLE1").value = "";
-        // document.querySelector("#CWNAMESTYLE2").value = "";
-        // document.querySelector("#CWNAMESTYLE3").value = "";
-        // document.querySelector("#GDQTYSTYLE1").value = "";
-        // document.querySelector("#GDQTYSTYLE2").value = "";
-        // document.querySelector("#GDQTYSTYLE2").value = "";
-        // document.querySelector("#GDNAMESTYLE1").value = "";
-        // document.querySelector("#GDNAMESTYLE2").value = "";
-        // document.querySelector("#GDNAMESTYLE3").value = "";
+        let data = {}
+        var rowItems = $("#tr"+val).children('td').map(function () {
+            data = {
+                ...data,
+                [this.getAttribute('data-value')]: this.innerHTML
+            }
+        })
         
+        const wrc_id_is = document.querySelector("#wrc_id"+val).value
+        const batch_no_is = document.querySelector("#batch_no"+val).value
+        const sku_qty = data.sku_qty
 
-        // set order qty
-        const order_qty_td = "order_qty"+id;
-        const order_qty = document.getElementById(order_qty_td).innerHTML;
+        const wrc_batch_id_is = document.querySelector("#wrc_batch_id"+val).value
+        const work_initiate_date_is = document.querySelector("#work_initiate_date"+val).value
+        const work_committed_date_is = document.querySelector("#work_committed_date"+val).value
 
-        // set sku  qty
-        const sku_count_td = "sku_count"+id;
-        const sku_count = document.getElementById(sku_count_td).innerHTML; 
+        document.querySelector("#wrc_batch_id_is").value =  wrc_batch_id_is
+        document.querySelector("#work_initiate_date_is").value =  work_initiate_date_is != '0000:00:00' ? work_initiate_date_is : ''
+        document.querySelector("#work_committed_date_is").value =  work_committed_date_is != '0000:00:00' ? work_committed_date_is : ''
+        document.querySelector("#key_is").value =  val
 
-        if(order_qty == 0){
-            document.querySelector('.hideTotalOrderQtyLable').style.display = 'none';
-            document.querySelector('.hideTotalSkuCountLable').style.display = 'block';
-            document.querySelector('.QuntyCount').innerHTML = sku_count;
+        document.querySelector("#wrc_id").value =  wrc_id_is
+        document.querySelector("#batch_no").value =  batch_no_is
+        document.querySelector("#wrcNo").innerHTML = data.wrc_number
+        document.querySelector("#batch_number").innerHTML = data.batch_no != 'None' ? data.batch_no : '-'
+        document.querySelector("#sku_qty").innerHTML = sku_qty
+        document.querySelector("#lot_number").value = data.lot_number
+        const alloacte_to_copy_writer = $("#wrc_id"+val).data("alloacte_to_copy_writer") 
+        console.log(alloacte_to_copy_writer)
+        if(alloacte_to_copy_writer === 1){
+            $("#copy_writer_row").css("display", "block");
+            $("#copywriter_sky_row").css("display", "flex");
         }
-
-        if(sku_count == 0){
-            document.querySelector('.hideTotalSkuCountLable').style.display = 'none';
-            document.querySelector('.hideTotalOrderQtyLable').style.display = 'block';
-            document.querySelector('.QuntyCount').innerHTML = order_qty;
-        }
-
         
-
-        // set copy writer allocated qty
-        const cw_allocated_qty_td = "cw_allocated_qty"+id;
-        const cw_allocated_qty = document.getElementById(cw_allocated_qty_td).innerHTML;
-        document.querySelector('.AllocatedCountCw').innerHTML = cw_allocated_qty;
-
-         // set graphics designer allocated qty
-         const gd_allocated_qty_td = "gd_allocated_qty"+id;
-        const gd_allocated_qty = document.getElementById(gd_allocated_qty_td).innerHTML;
-        document.querySelector('.AllocatedCountGd').innerHTML = gd_allocated_qty;
-
-        // set GD Pending qty
-        const pending_qty_gd_td = "pending_qty_gd"+id;
-        const pending_qty_gd = document.getElementById(pending_qty_gd_td).innerHTML;
-        document.querySelector('.PendingCountGd').innerHTML = pending_qty_gd;
-
-        // set CW Pending qty
-        const pending_qty_cw_td = "pending_qty_cw"+id;
-        const pending_qty_cw = document.getElementById(pending_qty_cw_td).innerHTML;
-        document.querySelector('.PendingCountCw').innerHTML = pending_qty_cw;
-
-        // set wrc number
-        const wrc_number_td = "wrc_number"+id;
-        const wrc_number = document.getElementById(wrc_number_td).innerHTML;
-        document.querySelector('.wrcNo').innerHTML = wrc_number;
-
-        // set batch_batch_no number
-        const batch_batch_no_td = "batch_batch_no"+id;
-        const batch_batch_no = document.getElementById(batch_batch_no_td).innerHTML;
-        document.querySelector('.batchesNo').innerHTML = batch_batch_no;
-
-        // set batch no
-        if(batch_batch_no == 'None'){
-            document.querySelector(".batch_no").value = 0
-        }else{
-            document.querySelector(".batch_no").value = batch_batch_no
-        }
-
-        // set lot number
-        const lot_number_td = "lot_number"+id;
-        const lot_number = document.getElementById(lot_number_td).innerHTML;
-        document.querySelector('.selLot').innerHTML = lot_number;
-       
-        // set wrc id
-        const wrc_id_td = "wrc_number_id"+id;
-        const wrc_id = document.getElementById(wrc_id_td).innerHTML;
-        document.querySelector(".wrc_id").value = wrc_id
-
-        // work_initiate_date
-        const work_initiate_date_td = "work_initiate_date"+id;
-        const work_initiate_date = document.getElementById(work_initiate_date_td).innerHTML;
-        console.log('work_initiate_date', work_initiate_date)
-        // document.querySelector(".int_date").value = work_initiate_date
-        document.getElementById("int_date").value = work_initiate_date
-
-        // cmt_date
-
-        // Comitted_initiate_date
-        const Comitted_initiate_date_td = "Comitted_initiate_date"+id;
-        const Comitted_initiate_date = document.getElementById(Comitted_initiate_date_td).innerHTML;
-        // document.querySelector(".cmt_date").value = Comitted_initiate_date
-        document.getElementById("cmt_date").value = Comitted_initiate_date
-
-        // set wrc id
-        const alloacte_to_copy_writer_td = "alloacte_to_copy_writer"+id;
-        const alloacte_to_copy_writer = document.getElementById(alloacte_to_copy_writer_td).innerHTML;
-        document.querySelector(".alloacte_to_copy_writer").value = alloacte_to_copy_writer
-
-        console.log('alloacte_to_copy_writer', alloacte_to_copy_writer)
-        if(alloacte_to_copy_writer == 0){
-            document.querySelector(".CWSTYLE1").style.display = 'none'
-            document.querySelector(".CWSTYLE2").style.display = 'none'
-            document.querySelector(".CWSTYLE3").style.display = 'none'
-        }else{
-            document.querySelector(".CWSTYLE1").style.display = 'block'
-            document.querySelector(".CWSTYLE2").style.display = 'block'
-            document.querySelector(".CWSTYLE3").style.display = 'block'
-
-        }
+        await $.ajax({
+            url: "{{ url('catalog-allocated-sku-count') }}",
+            type: "POST",
+            dataType: 'json',
+            data: {
+                wrc_id: wrc_id_is,
+                batch_no: batch_no_is,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(res) {
+                if(res !== 0){
+                    cataloger_sum = res[0].cataloger_sum;
+                    cp_sum = res[0].cp_sum;
+                    if(cataloger_sum == null){
+                        cataloger_sum = 0;
+                    }
+                    if(cp_sum == null){
+                        cp_sum = 0
+                    }
+                    document.querySelector("#cata_allocated_sku").innerHTML = cataloger_sum 
+                    document.querySelector("#cata_pending_sku").innerHTML = sku_qty - cataloger_sum 
+                    document.querySelector("#cp_allocated_sku").innerHTML = cp_sum 
+                    document.querySelector("#cp_pending_sku").innerHTML = sku_qty - cp_sum 
+                }else{
+                    cataloger_sum = 0;
+                    cp_sum = 0;
+                    document.querySelector("#cata_allocated_sku").innerHTML = cataloger_sum 
+                    document.querySelector("#cata_pending_sku").innerHTML = sku_qty - cataloger_sum 
+                    document.querySelector("#cp_allocated_sku").innerHTML = cp_sum 
+                    document.querySelector("#cp_pending_sku").innerHTML = sku_qty - cp_sum 
+                }
+            }
+        });
     }
 </script>
 
-
-
-<!-- msg div script -->
+{{-- save Data to allocation   --}}
 <script>
-    setTimeout(function(){
-        document.getElementById('msg_div').style.display = "none";
-    },3000)
-</script>
+    const saveData = async () => {
 
-
-<!-- validateForm script -->
-<script>
-    function validateForm(event) {
+        const wrc_id =  document.querySelector("#wrc_id").value 
+        const batch_no =  document.querySelector("#batch_no").value 
+        const user_id_is =  document.querySelector("#CataloguerName").value 
+        const Cataloguer_Qty =  +document.querySelector("#Cataloguer_Qty").value 
+        const CataloguerName = $("#CataloguerName").find(':selected').data('name');
         
-        // event.preventDefault() // this will stop the form from submitting
+        const copywriter_id_is =  document.querySelector("#copywriterName").value 
+        const copywriter_Qty =  +document.querySelector("#copywriter_Qty").value 
+        const copywriterName = $("#copywriterName").find(':selected').data('name');
+
+        const cata_allocated_sku =   +document.querySelector("#cata_allocated_sku").innerHTML 
+        const cata_pending_sku   =   +document.querySelector("#cata_pending_sku").innerHTML 
+        const cp_allocated_sku   =   +document.querySelector("#cp_allocated_sku").innerHTML 
+        const cp_pending_sku     =   +document.querySelector("#cp_pending_sku").innerHTML 
+
+
+        console.log({user_id_is,Cataloguer_Qty,wrc_id,batch_no,copywriter_id_is,copywriter_Qty})
+        
+        // console.log({user_id_is,CataloguerName, Cataloguer_Qty ,copywriter_id_is,copywriterName , copywriter_Qty})
+
         $(".input_err").css("display", "none");
-        $(".input_err").html("");
-
-        const int_date = document.getElementById('int_date').value;
-        const cmt_date = document.getElementById('cmt_date').value;
-        console.log('int_date', int_date)
-        console.log('cmt_date', cmt_date)
-
-        if(int_date == ''){
-            return alert("Work Initiate Date is required"),false; 
+        if(user_id_is === ''  &&  copywriter_id_is === ''){
+            document.querySelector("#user_id_err").innerHTML  = "Cataloguer/copywriter not selected "
+            $(".input_err").css("display", "block");
+            $("#copywriter_err").css("display", "none");
+            return
+        }
+        if(user_id_is > 0 &&  (Cataloguer_Qty < 1 || Cataloguer_Qty == '')){
+            document.querySelector("#user_id_err").innerHTML  = "Qty not entered"
+            $(".input_err").css("display", "block");
+            $("#copywriter_err").css("display", "none");
+            return
         }
 
-        if(cmt_date == ''){
-            return alert("Work Committed Date is required"),false; 
+
+        if(copywriter_Qty > cp_pending_sku){
+            document.querySelector("#copywriter_err").innerHTML  = "Allocated qty is more then pending qty";
+            if(cp_pending_sku === 0){
+                document.querySelector("#copywriter_err").innerHTML  = "No qty for allocation";
+                document.querySelector("#copywriterName").value = "";
+            }
+            document.querySelector("#copywriter_Qty").value = "";
+            $("#copywriter_err").css("display", "block");
+            return
         }
 
-        var GraphicDesignerQtyTotal = 0;
-        var copyWriterQtyTotal = 0;
-
-        var GraphicDesignerNameValues = $("select[name='designerName[]']")
-        .map(function(){return $(this).val();}).get();
-
-        var copyWriterNameValues = $("select[name='copywriterName[]']")
-              .map(function(){return $(this).val();}).get();
-
-        var GraphicDesignerQtyValues = $("input[name='GraphicDesignerQty[]']")
-        .map(function(){return $(this).val();}).get();
-
-        var copyWriterQtyValues = $("input[name='copyWriterQty[]']")
-              .map(function(){return $(this).val();}).get();
-
-              console.log('GraphicDesignerNameValues', GraphicDesignerNameValues)
-              console.log('GraphicDesignerQtyValues', GraphicDesignerQtyValues)
-
-        let gd = false // for graphic designer validation
-        let gdq = false // for graphic designer qty validation
-        let cw = false // for copy writer validation
-        let cwq = false // for copy writer qty validation
-
-        GraphicDesignerNameValues.find((val)=>{
-            if(val != 0){
-                return gd = true
+        if(Cataloguer_Qty > cata_pending_sku){
+            document.querySelector("#user_id_err").innerHTML  = "Allocated qty is more then pending qty";
+            if(cata_pending_sku === 0){
+                document.querySelector("#user_id_err").innerHTML  = "No qty for allocation";
+                document.querySelector("#CataloguerName").value = "";
             }
-        })
-        copyWriterNameValues.find((val)=>{
-            if(val != 0){
-                return cw = true
-            }
-        })
-
-        if((!cw) && (!gd)){
-            return alert("At least one graphic designer or copywriter should be selected"),false; 
+            document.querySelector("#Cataloguer_Qty").value = "";
+            $("#user_id_err").css("display", "block");
+            return
         }
 
-        GraphicDesignerQtyValues.find((val)=>{
-            if(val != 0){
-                return gdq = true
-            }
-        })
-        copyWriterQtyValues.find((val)=>{
-            if(val != 0){
-                return cwq = true
-            }
-        })
-
-        if((!cwq) && (!gdq)){
-            return alert("Qty is required with selected user"),false; 
+        if(copywriter_id_is > 0 &&  (copywriter_Qty < 1 || copywriter_Qty == '')){
+            document.querySelector("#copywriter_err").innerHTML  = "Qty not entered"
+            $(".input_err").css("display", "block");
+            $("#user_id_err").css("display", "none");
+            return
         }
 
-        $(GraphicDesignerQtyValues).each(function (index, element) {
-            GraphicDesignerQtyTotal = GraphicDesignerQtyTotal + Number(element);
+        const key_is =  document.querySelector("#key_is").value 
+        const wrc_batch_id_is =  document.querySelector("#wrc_batch_id_is").value 
+        const work_initiate_date_is =  document.querySelector("#work_initiate_date_is").value 
+        const work_committed_date_is =  document.querySelector("#work_committed_date_is").value 
+
+        console.log({work_initiate_date_is , work_committed_date_is })
+
+        // debugger
+        // if(work_initiate_date_is == ''){
+        //     document.querySelector("#work_initiate_date_is_err").innerHTML  = "Work Initiate Date not selected "
+        //     return
+        // }
+
+        await $.ajax({
+            url: "{{ url('set-catalog-allocation') }}",
+            type: "POST",
+            dataType: 'json',
+            data: {
+                user_id: user_id_is,
+                Cataloguer_Qty,
+                wrc_id,
+                batch_no,
+                wrc_batch_id_is,
+                work_initiate_date_is,
+                work_committed_date_is,
+                allocation_type : 2,
+                copywriter_id : copywriter_id_is,
+                copywriter_Qty,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(res) {
+                    
+                if(res.update_status){
+                    document.querySelector("#work_initiate_date"+key_is).value = work_initiate_date_is
+                    document.querySelector("#work_committed_date"+key_is).value = work_initiate_date_is
+                }
+
+                console.log(res.user)
+                if(user_id_is > 0 && Cataloguer_Qty > 0){
+                    if(res.user == 1){
+                        document.querySelector("#CataloguerName").value = "";
+                        document.querySelector("#Cataloguer_Qty").value = "";
+                        $("#msg_box1").css("color", "green");
+                        document.querySelector("#cata_allocated_sku").innerHTML  = cata_allocated_sku + Cataloguer_Qty
+                        document.querySelector("#cata_pending_sku").innerHTML  = cata_pending_sku - Cataloguer_Qty
+                        document.querySelector("#msg_box1").innerHTML  = "Catalog Wrc allocated to "+CataloguerName+" Successfully"
+                    }else if(res.user == 3){
+                        document.querySelector("#CataloguerName").value = "";
+                        document.querySelector("#Cataloguer_Qty").value = "";
+                        $("#msg_box1").css("color", "red");
+                        document.querySelector("#msg_box1").innerHTML  = "This Wrc already allocated to "+CataloguerName;
+                    }else if(res.user == 2) {
+                        $("#msg_box1").css("color", "red");
+                        document.querySelector("#msg_box1").innerHTML  = "Somthing went Wrong please try again!!!"
+                    }
+                    $("#msg_box1").css("display", "block");
+                }
+
+                if(copywriter_id_is > 0 && copywriter_Qty > 0){
+                    if(res.copywriter == 1){
+                        document.querySelector("#copywriterName").value = "";
+                        document.querySelector("#copywriter_Qty").value = "";
+                        document.querySelector("#cp_allocated_sku").innerHTML = cp_allocated_sku + copywriter_Qty
+                        document.querySelector("#cp_pending_sku").innerHTML  = cp_pending_sku - copywriter_Qty
+                        $("#msg_box2").css("color", "green");
+                        document.querySelector("#msg_box2").innerHTML  = "Catalog Wrc allocated to "+copywriterName+" Successfully"
+                    }else if(res.copywriter == 3){
+                        document.querySelector("#copywriterName").value = "";
+                        document.querySelector("#copywriter_Qty").value = "";
+                        $("#msg_box2").css("color", "red");
+                        document.querySelector("#msg_box2").innerHTML  = "This Wrc already allocated to "+copywriterName;
+                    }else if(res.copywriter == 2) {
+                        $("#msg_box2").css("color", "red");
+                        document.querySelector("#msg_box2").innerHTML  = "Somthing went Wrong please try again!!!"
+                    }
+                    $("#msg_box2").css("display", "block");
+                }
+            }
         });
-        $(copyWriterQtyValues).each(function (index, element) {
-            copyWriterQtyTotal = copyWriterQtyTotal + Number(element);
-        });
-
-        const pending_qty_gd = document.querySelector('.PendingCountGd').innerHTML;
-        const pending_qty_cw = document.querySelector('.PendingCountCw').innerHTML;
-        // const validate_allocated_qty = (Number(copyWriterQtyTotal) + Number(GraphicDesignerQtyTotal));
-
-        //The allocated quantity cannot be greater than the pending quantity
-        if(GraphicDesignerQtyTotal > pending_qty_gd){
-            alert("Sum of Graphics designer Qty cannot be greater than the GD pending quantity");
-            return false
-        }
-
-        if(copyWriterQtyTotal > pending_qty_cw){
-            alert("Sum of Copy Writer Qty cannot be greater than the CW pending quantity");
-            return false
-        }
-        return true
-        
-    }
-</script>
-
-<script type="application/javascript" src="{{asset('plugins/datepicker-in-bootstrap-modal/js/datepicker.js')}}"></script>
-<script type="text/javascript">
- 
- $('[data-toggle="datepicker"]').datepicker({
-    autoHide: true,
-    zIndex: 2048,
-    format: 'yyyy-mm-dd'
-});
-
-</script>
-
-{{-- reset enable disable of sku and order qty modal reset--}}
-<script type="application/javascript"> 
-    
-    function resetdata(){
-        $(".inverdnewPopup").on("hidden.bs.modal", function(){
-            document.querySelector('.hideTotalOrderQtyLable').style.display = 'block';
-            document.querySelector('.hideTotalSkuCountLable').style.display = 'block';
-        });
+        setTimeout( () => {
+            $(".input_err").css("display", "none");
+            $('#msg_box1').html("");
+            $('#msg_box2').html("");
+            $("#msg_box1").css("display", "none");
+            $("#msg_box2").css("display", "none");
+        }, 3000);
     }
 </script>
 @endsection
+
+<!-- End of Data Table Calling Function  -->

@@ -631,16 +631,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/set-notification-seen', [ClientNotificationController::class, 'setNotificationSeen'])->name('setNotificationSeen'); 
     Route::post('/set-notification-seen', [ClientNotificationController::class, 'setNotificationSeen']); 
 
-    
-
 });
-
-    
-
-    
-
-
-
 
 // route for global search in file manager system
 Route::post('/commonsearch', [clientFileManager::class, 'commonSearch']);

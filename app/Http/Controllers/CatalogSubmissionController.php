@@ -12,9 +12,7 @@ class CatalogSubmissionController extends Controller
     // catalog Wrc list for ready for Submission done in qc panel
     public function index()
     {
-        // dd('fdsfkg');
         $tsak_status_is = 2; // catalog ready for Submission
-
         $catalog_Wrc_list_for_Submission = CatalogSubmission::catalog_Wrc_list_for_Submission($tsak_status_is);
         // dd($catalog_Wrc_list_for_Submission);
         return view('Submission.catalog-submission')->with('catalog_Wrc_list_for_Submission', $catalog_Wrc_list_for_Submission);
@@ -23,9 +21,10 @@ class CatalogSubmissionController extends Controller
     
     public function comp_submission(Request $request){
         $wrc_id = $request->wrc_id;
+        $batch_no = $request->batch_no;
         $catalog_allocation_ids = $request->catalog_allocation_ids;
         $submission_date = date('Y-m-d');
-        echo $responce = CatalogSubmission::comp_submission($wrc_id, $submission_date, $catalog_allocation_ids);
+        echo $responce = CatalogSubmission::comp_submission($wrc_id, $batch_no , $submission_date, $catalog_allocation_ids);
 
     }
 
@@ -41,7 +40,5 @@ class CatalogSubmissionController extends Controller
     public function comp_submission_details(Request $request){
         $wrc_id = $request->wrc_id;
        echo  $responce = CatalogSubmission::comp_submission_details($wrc_id);
-
-
     }
 }
