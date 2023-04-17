@@ -98,7 +98,7 @@ Catalogin Allocation
                             @foreach($wrcList as $key => $row)
                                 @php
 
-                                    if($row['wrc_id'] == 8){
+                                    if($key == 1){
                                         // pre($row);
                                     }
                                     // echo " key => $key "; batch_no
@@ -107,6 +107,11 @@ Catalogin Allocation
                                     $cataloger_sum = $row['cataloger_sum'];
                                     $cp_sum = $row['cp_sum'];
                                     $batch_no = $row['batch_no'] > 0 ? $row['batch_no'] : 'None';
+                                    if($row['batch_no'] > 0){
+                                        $batch_no_is = ($row['batch'] != '' && $row['batch'] != null) ? $row['batch'] : $row['batch_no'];
+                                    }else{
+                                        $batch_no_is =  'None';
+                                    }
 
                                     if($cataloger_sum > 0 || $cp_sum > 0){
                                         continue;
@@ -139,7 +144,7 @@ Catalogin Allocation
                                     </td>
                                     <td data-value="type_of_service">{{ $row['type_of_service'] }}</td>
                                     <td data-value="wrc_cr_at">{{ dateFormet_dmy($row['created_at']) }}</td>
-                                    <td data-value="batch_no">{{ $batch_no }}</td>
+                                    <td data-value="batch_no">{{ $batch_no_is }}</td>
                                     <td data-value="sku_qty">{{ $row['sku_qty'] }}</td>
 
                                     <td data-value="cataloger_sum">{{ $row['cataloger_sum'] }}</td>
@@ -387,7 +392,7 @@ Catalogin Allocation
         document.querySelector("#wrc_id").value =  wrc_id_is
         document.querySelector("#batch_no").value =  batch_no_is
         document.querySelector("#wrcNo").innerHTML = data.wrc_number
-        document.querySelector("#batch_number").innerHTML = data.batch_no > 0 ? data.batch_no : '-'
+        document.querySelector("#batch_number").innerHTML = data.batch_no != 'None' ? data.batch_no : '-'
         document.querySelector("#sku_qty").innerHTML = sku_qty
         document.querySelector("#lot_number").value = data.lot_number
         const alloacte_to_copy_writer = $("#wrc_id"+val).data("alloacte_to_copy_writer") 

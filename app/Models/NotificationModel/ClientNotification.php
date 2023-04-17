@@ -46,6 +46,43 @@ class ClientNotification extends Model
         return $update_status;
     }
 
+    public static function save_ClientNotification($save_ClientNotification_data){
+        
+        $subject = $save_ClientNotification_data['subject'];
+        $service = $save_ClientNotification_data['service'];
+        $user_id = $save_ClientNotification_data['user_id'];
+        $brand_id = $save_ClientNotification_data['brand_id'];
+        $wrc_number = $save_ClientNotification_data['wrc_number'];
+
+        $user_data = Auth::user();
+        $subject_is = "New Wrc Created!!";
+        $discription = "New Wrc Created By ".$user_data->name.". Created WRC is ".$wrc_number;
+        
+        if($subject == 'Planning' || $subject == 'allocation'){
+            $subject_is = "Wrc Planning Completed!!";
+            if($service == 'Cataloging'){           
+                $discription = $service." Wrc Planning Done By ".$user_data->name.". Allocated WRC is ".$wrc_number;    
+            }
+        }elseif($subject == 'Submission'){
+            $subject_is = "Wrc Submission Done!!";
+            if($service == 'Cataloging'){           
+                $discription = $service." Wrc Submission Done By ".$user_data->name.". Submited WRC is ".$wrc_number;    
+            }
+        }
+
+        // dd($save_ClientNotification_data, "model");
+        
+        $save_ClientNotification = new ClientNotification();
+        $save_ClientNotification->user_id = $user_id;
+        $save_ClientNotification->brand_id = $brand_id;
+        $save_ClientNotification->subject = $subject_is;
+        $save_ClientNotification->discription = $discription;
+        $save_ClientNotification->created_by = $user_data->id;
+        $status = $save_ClientNotification->save();
+        return $status;
+        
+    }
+
     
 
 

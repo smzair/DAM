@@ -8,6 +8,7 @@ use App\Models\CatalogUploadedMarketplaceCount;
 use App\Models\CatalogUploadLinks;
 use App\Models\CatalogWrcBatch;
 use App\Models\CatlogWrc;
+use App\Models\NotificationModel\ClientNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +49,29 @@ class CatalogAllocationController extends Controller
         $res = [];
 
         // SELECT `id`, `wrc_id`, `user_id`, `user_role`, `allocated_qty`, `created_at`, `updated_at` FROM `catalog_allocation` WHERE 1
+
+        DB::beginTransaction();
+        $wrc_data_is = CatlogWrc::where('catalog_wrc_batches.wrc_id', $wrc_id)->where('catalog_wrc_batches.batch_no', $batch_no)->
+        leftJoin('catalog_wrc_batches', 'catalog_wrc_batches.wrc_id', 'catlog_wrc.id')->
+        leftJoin(
+        'catalog_allocation',
+        function ($join) {
+            $join->on('catalog_allocation.wrc_id', '=', 'catalog_wrc_batches.wrc_id');
+            $join->on('catalog_allocation.batch_no', '=', 'catalog_wrc_batches.batch_no');
+        })->
+        leftJoin('lots_catalog', 'lots_catalog.id', 'catlog_wrc.lot_id')->
+        select(
+            'catlog_wrc.wrc_number',
+            'catlog_wrc.alloacte_to_copy_writer',
+            'lots_catalog.user_id',
+            'lots_catalog.brand_id',
+            'catalog_wrc_batches.wrc_id',
+            'catalog_wrc_batches.batch_no',
+            'catalog_wrc_batches.sku_count',
+            DB::raw('SUM(CASE  	WHEN user_role = 0 THEN allocated_qty else 0 END)  as cataloger_sum'),
+            DB::raw('SUM(CASE  	WHEN user_role = 1 THEN allocated_qty else 0 END)  as cp_sum'),
+        )->get()->first()->toArray();
+        
 
         $res['user'] = '0';
         $res['copywriter'] = '0';
@@ -113,31 +137,45 @@ class CatalogAllocationController extends Controller
         $res['update_status'] = $update_status;
         if($update_status){
             /* send notification start */
-            $catlog_allocation_data = CatalogAllocation::where('id',$catalog_allocation_user->id)->first(['wrc_id','user_id']);
-            $wrc_id = $catlog_allocation_data != null ? $catlog_allocation_data->wrc_id : 0;
-            $user_id = $catlog_allocation_data != null ? $catlog_allocation_data->user_id : 0;
-            $allocated_qty = CatalogAllocation::where('wrc_id',$wrc_id)->where('user_id',$user_id)->sum('allocated_qty');
+            if($user_id > 0) {
+                $catlog_allocation_data = CatalogAllocation::where('id',$catalog_allocation_user->id)->first(['wrc_id','user_id']);
+                $wrc_id = $catlog_allocation_data != null ? $catlog_allocation_data->wrc_id : 0;
+                $user_id = $catlog_allocation_data != null ? $catlog_allocation_data->user_id : 0;
+                $allocated_qty = CatalogAllocation::where('wrc_id',$wrc_id)->where('user_id',$user_id)->sum('allocated_qty');
+            }
             // $max_batch_no = CatalogAllocation::where('wrc_id', $wrc_id)->max('batch_no');
 
             $wrc_data = CatlogWrc::where('id',$wrc_id)->first(['wrc_number']);
             $wrc_number = $wrc_data != null ? $wrc_data->wrc_number : "";
 
-            $data = new stdClass();
-            $data->batch_no = $batch_no;
-            $data->wrc_number = $wrc_number;
-            $data->allocated_count = $allocated_qty;
-            $data->catlogure_user_data = $request->user_id;
-            $data->cw_user_data = $request->copywriter_id;
-            $creation_type = 'WrcAllocationCatlog';
-            $this->send_notification($data, $creation_type);
+            $cataloger_sum = $wrc_data_is['cataloger_sum'] + $Cataloguer_Qty;
+            $cp_sum = $wrc_data_is['cp_sum'] + $copywriter_Qty;
+            $sku_count = $wrc_data_is['sku_count'];
+
+            if(($wrc_data_is['alloacte_to_copy_writer'] == 1 && $cataloger_sum == $sku_count && $sku_count == $cp_sum) || ($wrc_data_is['alloacte_to_copy_writer'] == 0 && $cataloger_sum == $sku_count )){
+                $save_ClientNotification_data = array(
+                    'user_id' => $wrc_data_is['user_id'],
+                    'brand_id' => $wrc_data_is['brand_id'],
+                    'wrc_number' => $wrc_data_is['wrc_number'],
+                    'service' => 'Cataloging',
+                    'subject' => 'Planning',
+                );
+                $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+            }
+            DB::commit();
+            if($user_id > 0) {
+                $data = new stdClass();
+                $data->batch_no = $batch_no;
+                $data->wrc_number = $wrc_number;
+                $data->allocated_count = $allocated_qty;
+                $data->catlogure_user_data = $request->user_id;
+                $data->cw_user_data = $request->copywriter_id;
+                $creation_type = 'WrcAllocationCatlog';
+                $this->send_notification($data, $creation_type);
+            }
             /******  send notification end*******/ 
         }
-        // echo "user_id => $user_id , Cataloguer_Qty => $Cataloguer_Qty , copywriter_id => $copywriter_id, copywriter_Qty => $copywriter_Qty , wrc_id => $wrc_id";
-
-        // dd($res);
         echo json_encode($res,true);
-        // echo json_encode(array('data' => $res),true);
-        
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +94,7 @@ class CatalogSubmission extends Model
 
     // complte wrc submission
     public static function comp_submission($wrc_id , $batch_no , $submission_date, $catalog_allocation_ids ){
+        DB::beginTransaction();
 
         $submission_id = CatalogSubmission::
         where('wrc_id', $wrc_id)->where('batch_no', $batch_no)->
@@ -115,8 +117,30 @@ class CatalogSubmission extends Model
 
             if($status){
                 $ids = explode(',', $catalog_allocation_ids);
-                $task_update_status = CatalogTimeHash::whereIn('allocation_id', $ids)
-                    ->update(['task_status' => 3]);
+                $task_update_status = CatalogTimeHash::whereIn('allocation_id', $ids)->update(['task_status' => 3]);
+
+                $wrc_data_is = CatlogWrc::where('catalog_wrc_batches.wrc_id', $wrc_id)->
+                where('catalog_wrc_batches.batch_no', $batch_no)->
+                leftJoin('catalog_wrc_batches', 'catalog_wrc_batches.wrc_id', 'catlog_wrc.id')->
+                leftJoin('lots_catalog', 'lots_catalog.id', 'catlog_wrc.lot_id')->
+                select(
+                    'catlog_wrc.wrc_number',
+                    'catlog_wrc.alloacte_to_copy_writer',
+                    'lots_catalog.user_id',
+                    'lots_catalog.brand_id',
+                    'catalog_wrc_batches.wrc_id',
+                    'catalog_wrc_batches.batch_no',
+                    'catalog_wrc_batches.sku_count',
+                )->get()->first()->toArray();
+                $save_ClientNotification_data = array(
+                    'user_id' => $wrc_data_is['user_id'],
+                    'brand_id' => $wrc_data_is['brand_id'],
+                    'wrc_number' => $wrc_data_is['wrc_number'],
+                    'service' => 'Cataloging',
+                    'subject' => 'Submission',
+                );
+                ClientNotification::save_ClientNotification($save_ClientNotification_data);
+                DB::commit();
             }
         }
 
