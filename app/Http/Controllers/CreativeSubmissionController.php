@@ -12,6 +12,7 @@ use App\Models\CreativeWRCclientApproval;
 use App\Models\CreativeSubmission;
 use App\Models\CreativeWrcBatch as ModelsCreativeWrcBatch;
 use App\Models\CreativeWrcSkus;
+use App\Models\NotificationModel\ClientNotification;
 use Carbon\Carbon;
 use CreativeAllocation;
 use CreativeWrcBatch;
@@ -29,6 +30,7 @@ class CreativeSubmissionController extends Controller
         $wrc_id = $request['wrc_id'];
         $batch_no = $request['batch_no'];
         $allocation_id_array = array();
+        DB::beginTransaction();
 
         $creative_allocation = ModelsCreativeAllocation::where('wrc_id',$wrc_id)->where('batch_no',$batch_no)->get();
         foreach($creative_allocation as $ckey => $cdata){
@@ -62,6 +64,34 @@ class CreativeSubmissionController extends Controller
                     $creativeSubmission->submission_date =  $submission_date;
                     $creativeSubmission->Status =  1;
                     $creativeSubmission->save();
+
+                    $CreativeWrc_gd_query = CreativeWrcModel::
+                    leftJoin('creative_wrc_batch as creative_wrc_batch', 'creative_wrc_batch.wrc_id', 'creative_wrc.id')->            
+                    leftJoin('creative_lots', 'creative_lots.id', 'creative_wrc.lot_id')->
+                    select(
+                        'creative_wrc.wrc_number',
+                        'creative_wrc.alloacte_to_copy_writer',
+                        'creative_lots.user_id',
+                        'creative_lots.brand_id',
+                        'creative_wrc_batch.wrc_id',
+                        'creative_wrc_batch.batch_no',
+                        'creative_wrc_batch.order_qty',
+                    )->
+                    where('creative_wrc_batch.wrc_id', $wrc_id)->where('creative_wrc_batch.batch_no', $batch_no);
+                    $CreativeWrc_gd_data = $CreativeWrc_gd_query->first()->toArray();
+
+                    $save_ClientNotification_data = array(
+                        'user_id' => $CreativeWrc_gd_data['user_id'],
+                        'brand_id' => $CreativeWrc_gd_data['brand_id'],
+                        'wrc_number' => $CreativeWrc_gd_data['wrc_number'],
+                        'service' => 'Creative',
+                        'subject' => 'Planning',
+                    );
+                    // dd($save_ClientNotification_data);
+                    ClientNotification::save_ClientNotification($save_ClientNotification_data);
+                    DB::commit();
+
+
                 }else{
                     $creativeSubmission =  CreativeSubmission::find($sub_id);
                     $creativeSubmission->wrc_id = $wrc_id;
@@ -69,14 +99,15 @@ class CreativeSubmissionController extends Controller
                     $creativeSubmission->Status =  1;
                     $creativeSubmission->submission_date =  $submission_date;
                     $creativeSubmission->update();
-                }
+                    DB::commit();
 
-                
+                }
 
                 request()->session()->flash('success','Wrc Submitted Successfully');
                 return $this->getCreativeSubmission($request);
 
             }else{
+                DB::rollBack();
                 request()->session()->flash('error','Uncompleted WRC - First complete WRC');
                 return $this->getCreativeSubmission($request);
             }

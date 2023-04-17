@@ -16,23 +16,17 @@ class CreativeWrcModel extends Model
 
     public static function getDataForCreativeAllocation(){
 
-        // Graphic Designer  list
-        $gd_role_data = DB::table('roles')->where('name','=','GD')->first(['id']);
-        $cw_role_data = DB::table('roles')->where('name','=','CW')->first(['id']);
-        $gd_id = $gd_role_data != null ? $gd_role_data->id : 0;
-        $cw_id = $cw_role_data != null ? $cw_role_data->id : 0;
-
         $graphic_designer_users_data = DB::table('users')
         ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
         ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
-        ->where([ ['users.Company' ,'<>' ,NULL], ['model_has_roles.role_id','=', $gd_id]])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);   
+        ->where([ ['roles.name','=', 'GD']])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);   
 
         // dd(dump($graphic_designer_users_data));
 
         $copy_writer_users_data = DB::table('users')
         ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
         ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
-        ->where([ ['users.Company' ,'<>' ,NULL], ['model_has_roles.role_id','=', $cw_id]])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);
+        ->where([ ['roles.name','=', 'CW']])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);
 
         // dd(dump($copy_writer_users_data));
 
@@ -61,7 +55,7 @@ class CreativeWrcModel extends Model
                     $join->on('create_commercial.brand_id', '=', 'cl.brand_id');
                     $join->on('create_commercial.id', '=', 'creative_wrc.commercial_id');
                 })
-        ->select('creative_wrc.id as wrc_id','creative_wrc.lot_id', 'creative_wrc.wrc_number', 'creative_wrc.commercial_id', 'creative_wrc.order_qty', 'creative_wrc.work_brief', 'creative_wrc.guidelines', 'creative_wrc.document1', 'creative_wrc.document2', 'creative_wrc.status', 'cl.user_id', 'cl.brand_id', 'cl.lot_number', 'cl.project_name', 'cl.client_bucket', 'users.Company as Company', 'brands.name as brand_name','create_commercial.project_name', 'create_commercial.kind_of_work','creative_wrc.alloacte_to_copy_writer','creative_wrc.sku_count','creative_wrc_batch.order_qty as batch_order_qty','creative_wrc_batch.sku_count as batch_sku_count','creative_wrc_batch.batch_no as batch_batch_no','creative_wrc_batch.work_initiate_date','creative_wrc_batch.work_committed_date as Comitted_initiate_date')
+        ->select('creative_wrc.id as wrc_id','creative_wrc.lot_id', 'creative_wrc.wrc_number', 'creative_wrc.commercial_id', 'creative_wrc.order_qty', 'creative_wrc.work_brief', 'creative_wrc.guidelines', 'creative_wrc.document1', 'creative_wrc.document2', 'creative_wrc.status', 'cl.user_id', 'cl.brand_id', 'cl.lot_number', 'cl.project_name', 'cl.client_bucket', 'users.Company as Company', 'brands.name as brand_name','create_commercial.project_name', 'create_commercial.kind_of_work','creative_wrc.alloacte_to_copy_writer','creative_wrc.sku_count','creative_wrc.created_at','creative_wrc_batch.order_qty as batch_order_qty','creative_wrc_batch.sku_count as batch_sku_count','creative_wrc_batch.batch_no as batch_batch_no','creative_wrc_batch.work_initiate_date','creative_wrc_batch.work_committed_date as Comitted_initiate_date')
         // ->groupBy('creative_wrc.id')
         // ->groupBy('creative_wrc_batch.id')
         ->get();
@@ -84,23 +78,19 @@ class CreativeWrcModel extends Model
 
     public static function getDataForCreativeReAllocation(){
 
-        $gd_role_data = DB::table('roles')->where('name','=','GD')->first(['id']);
-        $cw_role_data = DB::table('roles')->where('name','=','CW')->first(['id']);
-        $gd_id = $gd_role_data != null ? $gd_role_data->id : 0;
-        $cw_id = $cw_role_data != null ? $cw_role_data->id : 0;
 
         // Graphic Designer  list
         $graphic_designer_users_data = DB::table('users')
         ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
         ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
-        ->where([ ['users.Company' ,'<>' ,NULL], ['model_has_roles.role_id','=', $gd_id]])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);   
+        ->where([ ['roles.name','=', 'GD']])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);   
 
         // dd(dump($graphic_designer_users_data));
 
         $copy_writer_users_data = DB::table('users')
         ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
         ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
-        ->where([ ['users.Company' ,'<>' ,NULL], ['model_has_roles.role_id','=', $cw_id]])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);
+        ->where([ ['roles.name','=', 'CW']])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);
 
         // dd(dump($copy_writer_users_data));
 
@@ -179,7 +169,7 @@ class CreativeWrcModel extends Model
        ->leftJoin('creative_submissions', function($join){
         $join->on('creative_submissions.wrc_id', '=', 'creative_allocation.wrc_id');
         $join->on('creative_submissions.batch_no', '=', 'creative_allocation.batch_no');
-    })
+        })
        ->select('creative_wrc.*','creative_lots.user_id','creative_lots.brand_id','creative_lots.id as lot_id','creative_lots.lot_number','users.Company as Company_name','brands.name','create_commercial.kind_of_work',DB::raw('MAX(creative_wrc_batch.batch_no) as batch_no'),'creative_wrc_batch.wrc_id as batch_wrc_id','creative_submissions.status as submission_status')
        ->get();
 
@@ -228,11 +218,5 @@ class CreativeWrcModel extends Model
        return $wrcs;
 
     }
-
-    // get Creative Wrcs allocation
-    public function wrcAllocations(){
-        return $this->hasMany('App\Models\CreativeAllocation','wrc_id','id');
-    }
-
 
 }

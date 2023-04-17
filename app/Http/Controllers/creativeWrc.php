@@ -6,6 +6,7 @@ use App\Models\CreativeWrcModel;
 use App\Models\CreatLots;
 use App\Models\CreativeWrcSkus;
 use App\Models\CreativeWrcBatch;
+use App\Models\NotificationModel\ClientNotification;
 use Carbon\Carbon;
 use CreativeLots;
 use Illuminate\Http\Request;
@@ -80,6 +81,16 @@ class creativeWrc extends Controller
 
         try {
             // dd($request);
+            $lot_id  = $request->lot_id;
+            $lot_data = DB::table('creative_lots')->where('id',$lot_id)->first(['user_id','brand_id']);
+            $lot_user_id =  $lot_data != null ?  $lot_data->user_id : 0;
+            $lot_brand_id =  $lot_data != null ?  $lot_data->brand_id : 0;
+
+            $commercial_data = DB::table('create_commercial')->where(['user_id'=> $lot_user_id,'brand_id'=> $lot_brand_id])->first(['kind_of_work']);
+            $kind_of_work = $commercial_data != null ?  $commercial_data->kind_of_work : '';
+            $kind_of_work_ini = $kind_of_work != '' ? $kind_of_work[0] : '';
+         
+
             // $wrcNumber = $lotInfo->c_short . $lotInfo->short_name . $lotInfo->s_type . $lotInfo->id . '-' . chr($wrcCount + 65);
             $project_name_array = explode(" ",$request->s_type);
             $count = count($project_name_array);
@@ -100,7 +111,10 @@ class creativeWrc extends Controller
 
             $alloacte_to_copy_writer = ((isset($request->alloacte_to_copy_writer) && $request->alloacte_to_copy_writer == 1)) ? 1 : 0;
 
-            $wrcNumber = $request->c_short . $request->short_name . $project_name . $request->lot_id . '-' . chr($wrcCount + 65);
+            // $wrcNumber = $request->c_short . $request->short_name . $project_name . $request->lot_id . '-' . chr($wrcCount + 65);
+            // project name change to ct 
+            $wrcNumber = $request->c_short . $request->short_name . 'CT' . $kind_of_work_ini . $request->lot_id . '-' . chr($wrcCount + 65);
+            
             $sku_required_num = 0;
             $sku_required = $request->sku_required;
             if($sku_required == 'sku_yes'){
@@ -190,10 +204,18 @@ class creativeWrc extends Controller
                 $creativeWrcBatch->save();
             }
 
-            DB::commit();
             
             if($createWrc){
                 request()->session()->flash('success','Wrc Successfully added');
+                $save_ClientNotification_data = array(
+                    'user_id' => $request->user_id,
+                    'brand_id' => $request->brand_id,
+                    'wrc_number' => $createWrc->wrc_number,
+                    'service' => 'Creative',
+                    'subject' => 'Creation',
+                );
+                $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+                DB::commit();
             }
             else{
                 request()->session()->flash('error','Please try again!!');
@@ -208,8 +230,8 @@ class creativeWrc extends Controller
             // return $this->edit($request,$createWrc->id);// update in same page
             // all good
         } catch (\Exception $e) {
-            throw $e;
             DB::rollback();
+            throw $e;
             // something went wrong
         }
         
