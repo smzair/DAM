@@ -105,7 +105,7 @@ Create Editing WRCs
                                     <input type="hidden" name="s_type" id="s_type" value="">
 
                                     <label class="control-label required">Company Name</label>
-                                    <select class="custom-select form-control-border" id="user_id" name="user_id"  aria-hidden="true" style="width: 100%;">
+                                    <select class="custom-select select2 form-control-border" id="user_id" name="user_id"  aria-hidden="true" style="width: 100%;">
                                         <option value="" selected>Select Company Name</option>
                                         @foreach ($UserCompanyData as $user)
                                                 <option value="{{ $user->id }}" data-c_short="{{ $user->c_short }}">

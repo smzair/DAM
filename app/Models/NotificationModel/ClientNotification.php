@@ -47,6 +47,7 @@ class ClientNotification extends Model
     }
 
     public static function save_ClientNotification($save_ClientNotification_data){
+        // dd($save_ClientNotification_data);
         
         $subject = $save_ClientNotification_data['subject'];
         $service = $save_ClientNotification_data['service'];
@@ -67,6 +68,13 @@ class ClientNotification extends Model
             $subject_is = "Wrc Submission Done!!";
             if($service == 'Cataloging'){           
                 $discription = $service." Wrc Submission Done By ".$user_data->name.". Submited WRC is ".$wrc_number;    
+            }
+        }elseif($subject == 'Creation'){
+            $subject_is = "New Wrc Created!!";
+            if($service == 'Editing'){           
+                $discription = "New Wrc Created By ".$user_data->name.". Created Editing WRC is ".$wrc_number;
+            }elseif($service == 'Editing'){
+                $discription = "New Wrc Created By ".$user_data->name.". Created Editing WRC is ".$wrc_number;
             }
         }
 
