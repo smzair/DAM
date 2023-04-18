@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,7 @@ class EditingSubmission extends Model
             'editing_wrcs.wrc_number',
             'editing_wrcs.commercial_id',
             'editing_wrcs.imgQty',
+            'editing_wrcs.uploaded_img_qty',
             'editing_wrcs.imgQty as wrc_t_sku_qty',
             'editor_lots.brand_id',
             'editor_lots.lot_number',
@@ -53,7 +55,7 @@ class EditingSubmission extends Model
             DB::raw('GROUP_CONCAT(allocated_users.id) as allo_users_id'),
             DB::raw('GROUP_CONCAT(allocated_users.name) as allocated_users_name'),
         )->
-        // havingRaw("editor_allocated_qty > 0 AND editor_allocated_qty = imgQty")->
+        havingRaw("editor_allocated_qty > 0 AND editor_allocated_qty = uploaded_img_qty")->
         groupBy(['editing_allocations.wrc_id'])->
         get()->toArray();
         return $Editing_Wrc_list_ready_for_Submission;
@@ -65,7 +67,7 @@ class EditingSubmission extends Model
         $wrc_id = $request->wrc_id;
         $editor_allocation_ids = $request->editor_allocation_ids;
         $submission_date = date('Y-m-d');
-        // DB::beginTransaction();
+        DB::beginTransaction();
         try {
             $submission_data = EditingSubmission::where('wrc_id', $wrc_id)->get(['id'])->first();
             $submission_id_is = $submission_data != null ?  $submission_data->id : 0;
@@ -89,6 +91,19 @@ class EditingSubmission extends Model
                     $task_status = 2;
                     $task_update_status = EditingUploadLink::whereIn('allocation_id', $ids)->update(['task_status' => $task_status]);
                     if ($task_update_status == count($ids) && count($ids) > 0) {
+                        $EditingWrc = EditingWrc::where(['editing_wrcs.id' => $wrc_id])->
+                        leftjoin('editor_lots','editor_lots.id' , '=' , 'editing_wrcs.lot_id')->
+                        select('editor_lots.user_id','editor_lots.brand_id','editor_lots.lot_number','editing_wrcs.*')->
+                        first();
+                        $save_ClientNotification_data = array(
+                            'user_id' => $EditingWrc->user_id,
+                            'brand_id' => $EditingWrc->brand_id,
+                            'wrc_number' => $EditingWrc->wrc_number,
+                            'service' => 'Editing',
+                            'subject' => 'Submission',
+                        );
+                        $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+                        
                         DB::commit();
                     }else
                     {
@@ -122,6 +137,60 @@ class EditingSubmission extends Model
             )->get()->toArray();
 
         return json_encode($comp_submission_details);
+    }
+
+    // Catalog Wrc List For Invoice Genrate 
+    public static function Editing_Wrc_list_for_Invoice()
+    {
+        $Editing_Wrc_list_for_Invoice = EditingSubmission::WHERE('editing_submissions.ar_status', '<>', '0')->
+        leftJoin('editing_wrcs', 'editing_wrcs.id', 'editing_submissions.wrc_id')->
+        leftJoin('editor_lots', 'editor_lots.id', 'editing_wrcs.lot_id')->
+        leftJoin('editors_commercials', 'editors_commercials.id', 'editing_wrcs.commercial_id')->
+        leftJoin('users', 'users.id', 'editor_lots.user_id')->
+        leftJoin('brands', 'brands.id', 'editor_lots.brand_id')->
+        select(
+            'editing_submissions.id as submission_id',
+            'editing_submissions.wrc_id',
+            'editing_submissions.submission_date',
+            'editing_submissions.ar_status',
+            'editing_submissions.action_date',
+            'editor_lots.lot_number',
+            'editor_lots.brand_id',
+            'users.Company as company',
+            'users.c_short',
+            'brands.name as brands_name',
+            'brands.short_name',
+            'editors_commercials.type_of_service',
+            'editors_commercials.CommercialPerImage',
+            'editors_commercials.type_of_service as project_type',
+            'editing_wrcs.wrc_number',
+            'editing_wrcs.commercial_id',
+            'editing_wrcs.imgQty as imgqty',
+            'editing_wrcs.lot_id',
+            'editing_wrcs.invoice_number',
+            'editing_wrcs.created_at as wrc_created_at',
+        )->
+        orderBy('editing_submissions.updated_at')->get()->toArray();
+        return $Editing_Wrc_list_for_Invoice;
+    }
+
+    // Catalog Wrc Invoice Save / Update
+    public static function SaveEditingInvoiceNumber($request)
+    {
+        $wrc_id = $request->wrc_id;
+        $invoice_number = $request->invoice_number;
+        $update_status = 0;
+        $massage = "somthing went Wrong!!!";
+        $update_status = EditingWrc::where('id', $wrc_id)->update(['invoice_number' => $invoice_number]);
+        if ($update_status) {
+            $massage = "Wrc Invoice Number Updated!!";
+        }
+        $response = array(
+            'wrc_id' => $wrc_id,
+            'update_status' => $update_status,
+            'massage' => $massage,
+        );
+        return json_encode($response);
     }
 
 }

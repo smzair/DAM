@@ -6,6 +6,7 @@ use App\Models\EditingAllocation;
 use App\Models\EditingRawImgUpload;
 use App\Models\EditingUploadedImages;
 use App\Models\EditingWrc;
+use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -41,13 +42,19 @@ class ImageUploadController extends Controller
         $exist_count = 0;
         $sendfiles = $request->file('sku_images');
 
-        $EditingWrc = EditingWrc::where(['lot_id' => $lot_id, 'id' => $wrc_id])->first();
+        $EditingWrc = EditingWrc::where(['editing_wrcs.lot_id' => $lot_id, 'editing_wrcs.id' => $wrc_id])->
+        leftjoin('editor_lots','editor_lots.id' , '=' , 'editing_wrcs.lot_id')->
+        select('editor_lots.user_id','editor_lots.brand_id','editor_lots.lot_number','editing_wrcs.*')->
+        first();
+        
         $uploaded_img_qty = $EditingWrc->uploaded_img_qty;
         $file_path = $EditingWrc->file_path;
-        if($file_path== '' || $file_path == null){
+        if($file_path == '' || $file_path == null){
             $file_path = "editing_raw_img_uploads/" . date('Y') . "/" . date('M') . "/" . $lot_text . "/" . $wrc_text . "/" ;
         }
         $message = "Somthing Went Wrong";
+        $imgQty = $EditingWrc->imgQty;
+        
         foreach ($sendfiles as $file) {
             $filename = $file->getClientOriginalName();
             $ext = pathinfo($filename, PATHINFO_EXTENSION);
@@ -59,16 +66,37 @@ class ImageUploadController extends Controller
             if (!file_exists($path . $filename)) {
                 $is_saved = $file->move($path, $filename);
                 if (file_exists($is_saved)){
-                    $EditingRawImgUpload = new EditingRawImgUpload();
-                    $EditingRawImgUpload->wrc_id = $wrc_id;
-                    $EditingRawImgUpload->filename = $filename;
-                    $EditingRawImgUpload->file_path = $path;
-                    $EditingRawImgUpload->save();
+                    // $EditingRawImgUpload = new EditingRawImgUpload();
+                    // $EditingRawImgUpload->wrc_id = $wrc_id;
+                    // $EditingRawImgUpload->filename = $filename;
+                    // $EditingRawImgUpload->file_path = $path;
+                    // $EditingRawImgUpload->save();
                     $uploded_count++;
                     
+                    // dd($uploaded_img_qty + $uploded_count == $imgQty, $uploaded_img_qty , $uploded_count, $imgQty ,$EditingWrc);
+                    
+                    if($uploaded_img_qty + $uploded_count == $imgQty){
+
+                        $save_ClientNotification_data = array(
+                            'user_id' => $EditingWrc->user_id,
+                            'brand_id' => $EditingWrc->brand_id,
+                            'wrc_number' => $EditingWrc->wrc_number,
+                            'service' => 'Editing',
+                            'subject' => 'Raw Upload',
+                        );
+                        $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+                    }
                 }
-            }else{
+            } else {
+                $is_saved = $file->move($path, $filename);
                 $exist_count++;
+            }
+
+            if (file_exists($is_saved)) {
+                $EditingRawImgUpload = EditingRawImgUpload::updateOrCreate(
+                    ['wrc_id' => $wrc_id, 'filename' => $filename],
+                    ['file_path' => $path]
+                );
             }
 
             if ($uploded_count > 0) {
@@ -76,9 +104,7 @@ class ImageUploadController extends Controller
                 if($exist_count > 0){
                     $message .= $exist_count . " Image Exist!!";
                 }
-            } else {
-
-            }
+            } 
         }
         if ($exist_count > 0  && $uploded_count == 0) {
             $message = $exist_count . " Image Exist!!";

@@ -140,11 +140,16 @@ Editing -Ready for Submission
                                 <th class="align-middle text-center">WRC Number</th>
                                 <th class="align-middle text-center">Wrc Created At</th>
                                 <th class="align-middle text-center">Total Tentative Image Count</th>
+                                <th class="align-middle text-center">Total Uploaded Count</th>
                                 <th class="align-middle text-center">Total Allocated Qty</th>
+                                <th class="align-middle text-center">Download Uploaded Image</th>
                                 <th class="align-middle text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                // pre($Editing_Wrc_list_ready_for_Submission);
+                            @endphp
                             @foreach($Editing_Wrc_list_ready_for_Submission as $row)
                                 @php
                                     $wrc_id = $row['wrc_id'];
@@ -156,6 +161,7 @@ Editing -Ready for Submission
                                     $wrc_id_is = ""; 
                                     $company = $row['company'];
                                     $imgQty = $row['imgQty'];
+                                    $uploaded_img_qty = $row['uploaded_img_qty'];
                                     $brands_name = $row['brands_name'];
                                     $lot_number = $row['lot_number'];
                                     $wrc_number = $row['wrc_number'];
@@ -167,6 +173,11 @@ Editing -Ready for Submission
                                     $allo_users_id = $row['allo_users_id'];
                                     $allocated_users_name = $row['allocated_users_name'];
                                     $editor_allocation_ids = $row['editor_allocation_ids'];
+
+                                    $editor_allocation_id_arr = explode(',', $editor_allocation_ids);
+                                    $allocated_users_name_arr = explode(',', $allocated_users_name);
+                                    $final_link_list_arr = explode(',', $final_link_list);
+                                    $editor_allocation_id_arr = explode(',', $editor_allocation_ids);
                                 @endphp
                                 <tr>
                                     <td class="text-center">{{ $wrc_id }}</td>
@@ -176,7 +187,25 @@ Editing -Ready for Submission
                                     <td class="text-center">{{ $wrc_number }}</td>
                                     <td class="text-center">{{ $wrc_created_at }}</td>
                                     <td class="text-center">{{ $imgQty }}</td>
+                                    <td class="text-center">{{ $uploaded_img_qty }}</td>
                                     <td class="text-center">{{ $editor_allocated_qty }}</td>
+
+                                    <td>
+
+                                        @foreach ($final_link_list_arr as $pos => $link)
+                                            @if ($link != '')
+                                                @php
+                                                $allocation_id = $editor_allocation_ids[$pos];
+                                                $allocated_users_name_is = $allocated_users_name_arr[$pos];
+                                                @endphp
+                                                <p>
+                                                    <a title="Download {{$allocated_users_name_is}} Uploaded Files" href="{{route('Editing_User_Edited_Image_Download', [base64_encode($allocation_id)])}}">Download </a>
+                                                </p>
+                                            @endif
+                                        
+                                        @endforeach
+                                    </td>
+
                                     <td>
                                         <div class="d-inline-block mt-1">
                                             <p class="d-none" id="data_id_{{ $wrc_id }}" 
@@ -186,6 +215,7 @@ Editing -Ready for Submission
                                             data-lot_number="{{ $lot_number }}"  
                                             data-wrc_number="{{ $wrc_number }}"  
                                             data-imgqty="{{ $imgQty }}"  
+                                            data-uploaded_img_qty="{{ $uploaded_img_qty }}"  
                                             data-final_link_list="{{ $final_link_list }}"  
                                             data-allo_users_id="{{ $allo_users_id }}"  
                                             data-allocated_users_name="{{ $allocated_users_name }}"  
@@ -241,6 +271,12 @@ Editing -Ready for Submission
                                 <label for="tot_sku">Total Tentative Image Count</label>
                                 <p id="tot_sku"></p>
                             </div>
+
+                            <div class="col-4 form-group">
+                                <label for="uploaded_img_qty">Total Uploaded Count</label>
+                                <p id="uploaded_img_qty"></p>
+                            </div>
+
                             <div class="col-4">
                                 <label for="editor_allocated_qty_is">Allocated to Editor</label>
                                 <p id="editor_allocated_qty_is"></p>
@@ -252,7 +288,7 @@ Editing -Ready for Submission
                             <div class="col-12">
                                 <div class="row px-3">
                                     <div class="col-12" style="background: #eee; color:#232323 ">
-                                        <div class="row head_row"  >
+                                        <div class="row head_row d-none "  >
                                             <div class="col-3">
                                                 <p class="m-0">Link To Editor</p>
                                             </div>
@@ -335,6 +371,7 @@ Editing -Ready for Submission
         const lot_number = $("#"+data_id).data("lot_number")
         const company = $("#"+data_id).data("company")
         const tot_sku = $("#"+data_id).data("imgqty") 
+        const uploaded_img_qty = $("#"+data_id).data("uploaded_img_qty") 
         
         const final_link_list = $("#"+data_id).data("final_link_list")
         const allo_users_id = $("#"+data_id).data("allo_users_id")
@@ -355,6 +392,7 @@ Editing -Ready for Submission
         document.getElementById("brand_name").innerHTML = brand_name;
         document.getElementById("company").innerHTML = company;
         document.getElementById("tot_sku").innerHTML = tot_sku;
+        document.getElementById("uploaded_img_qty").innerHTML = uploaded_img_qty;
         document.getElementById("editor_allocated_qty_is").innerHTML = editor_allocated_qty;
 
         $("#link_row").removeClass("d-none");
@@ -365,7 +403,11 @@ Editing -Ready for Submission
                 const allocated_users_is = allocated_users_arr[index];
                 const editor_allocation_id_is = editor_allocation_id_arr[index];
 
-                editor_li += `<p class="pointer m-0"> <span title="uploaded by ${allocated_users_arr[index]}" id="p_${editor_allocation_id_is}">${link}  </span> <i class="fa fa-copy" id="i_p_${editor_allocation_id_is}" onclick="copyToClipboard('p_${editor_allocation_id_is}')"></i></p>`
+                console.log(editor_allocation_id_is)
+                // editor_li += `<p class="pointer m-0"> <a title="uploaded by ${allocated_users_arr[index]}" id="p_${editor_allocation_id_is}">${link}  </a> <i class="fa fa-copy" id="i_p_${editor_allocation_id_is}" onclick="copyToClipboard('p_${editor_allocation_id_is}')"></i></p>`
+
+                // editor_li += `<p class="pointer m-0"> <a title="uploaded by ${allocated_users_arr[index]}" href="{{route('Editing_User_Edited_Image_Download', [base64_encode('${editor_allocation_id_is}')])}}" id="p_${editor_allocation_id_is}">Download  ${allocated_users_arr[index]} File</a> <i class="fa fa-copy" id="i_p_${editor_allocation_id_is}" onclick="copyToClipboard('p_${editor_allocation_id_is}')"></i></p>`
+
             }
         });
         document.getElementById("link_to_cata_logure").innerHTML = editor_li;
