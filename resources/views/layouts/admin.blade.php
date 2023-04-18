@@ -1093,6 +1093,13 @@
                                                         <p>Editing Wrc List</p>
                                                     </a>
                                                 </li>
+
+                                                <li class="nav-item">
+                                                  <a href="{{route('EditingWrcListForImgUpload')}}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Editing Raw Image Upload</p>
+                                                  </a>
+                                                </li>
                                                  
                                                  <li class="nav-item">
                                                     <a href="{{route('Editing_Allocation')}}" class="nav-link">

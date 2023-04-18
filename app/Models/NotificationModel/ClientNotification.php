@@ -74,6 +74,9 @@ class ClientNotification extends Model
             elseif($service == 'Creative'){           
                 $discription = "Creative Wrc Submission Done By ".$user_data->name.". Submited WRC is ".$wrc_number;    
             }
+            elseif($service == 'Editing'){           
+                $discription = "Editing Wrc Submission Done By ".$user_data->name.". Submited WRC is ".$wrc_number;    
+            }
         }elseif($subject == 'Creation'){
             $subject_is = "New Wrc Created!!";
             if($service == 'Editing'){           
@@ -81,6 +84,12 @@ class ClientNotification extends Model
             }elseif($service == 'Creative'){
                 $discription = "New Wrc Created By ".$user_data->name.". Created Creative WRC is ".$wrc_number;
             }
+        }else if($subject == 'Raw Upload'){
+            $subject_is = "Editing Raw Images Upload!!";
+            if($service == 'Editing'){           
+                $discription = "Raw Images Uploaded By ".$user_data->name.". Editing WRC is ".$wrc_number;
+            }
+
         }
 
         // dd($save_ClientNotification_data, "model");
