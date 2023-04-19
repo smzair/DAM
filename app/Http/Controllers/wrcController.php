@@ -11,6 +11,7 @@ use App\Models\WrcStatus;
 use App\Models\Skus;
 use App\Models\skusStatus;
 use App\Mail\wrcNotify;
+use App\Models\NotificationModel\ClientNotification;
 use Mail;
 
 class wrcController extends Controller {
@@ -251,6 +252,16 @@ public function saveWrc(Request $request) {
     $skuIds = $request->sku_id;
     $wrcNumber = $request->wrc_id;
 
+    if($wrcId > 0){
+        $save_ClientNotification_data = array(
+        'user_id' => $data->user_id,
+        'brand_id' => $data->brand_id,
+        'wrc_number' => $data->wrc_id,
+        'service' => 'Shoot',
+        'subject' => 'Creation',
+        );
+        $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+    }
 
 
     $am_mail = User::getUserInfo(['user_id' => $request->user_id])->pluck('am_email');
