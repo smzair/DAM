@@ -83,6 +83,8 @@ class ClientNotification extends Model
                 $discription = "New Wrc Created By ".$user_data->name.". Created Editing WRC is ".$wrc_number;
             }elseif($service == 'Creative'){
                 $discription = "New Wrc Created By ".$user_data->name.". Created Creative WRC is ".$wrc_number;
+            }elseif($service == 'Shoot'){
+                $discription = "New Wrc Created By ".$user_data->name.". Created Shoot WRC is ".$wrc_number;
             }
         }else if($subject == 'Raw Upload'){
             $subject_is = "Editing Raw Images Upload!!";
