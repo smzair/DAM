@@ -66,7 +66,7 @@ class ClientDashboardController extends Controller
                         $join->on('creative_submissions.batch_no', '=', 'creative_allocation.batch_no');
                     })
                     ->leftJoin('creative_time_hash', 'creative_time_hash.allocation_id', 'creative_allocation.id')
-                ->select('creative_wrc.wrc_number','creative_wrc.qc_status','creative_lots.user_id','creative_lots.brand_id','creative_lots.lot_number','users.Company as Company_name','brands.name','creative_lots.client_bucket','create_commercial.project_name','create_commercial.kind_of_work','create_commercial.per_qty_value','creative_wrc_batch.work_initiate_date','creative_wrc_batch.work_committed_date','creative_submissions.submission_date','creative_submissions.status as submission_status','creative_allocation.wrc_id as submission_wrc_id','creative_allocation.id as allocation_id','creative_allocation.batch_no as submission_batch_no','creative_wrc_batch.work_initiate_date', 'creative_wrc_batch.work_committed_date','creative_lots.lot_delivery_days','creative_lots.id as lot_id','creative_wrc_batch.wrc_id as batch_wrc_id','creative_wrc_batch.batch_no','creative_time_hash.task_status')
+                ->select('creative_wrc.wrc_number','creative_wrc.qc_status','creative_lots.user_id','creative_lots.brand_id','creative_lots.lot_number','creative_lots.created_at','users.Company as Company_name','brands.name','creative_lots.client_bucket','create_commercial.project_name','create_commercial.kind_of_work','create_commercial.per_qty_value','creative_wrc_batch.work_initiate_date','creative_wrc_batch.work_committed_date','creative_submissions.submission_date','creative_submissions.status as submission_status','creative_allocation.wrc_id as submission_wrc_id','creative_allocation.id as allocation_id','creative_allocation.batch_no as submission_batch_no','creative_wrc_batch.work_initiate_date', 'creative_wrc_batch.work_committed_date','creative_lots.lot_delivery_days','creative_lots.id as lot_id','creative_wrc_batch.wrc_id as batch_wrc_id','creative_wrc_batch.batch_no','creative_time_hash.task_status')
                 // ->groupBy('creative_wrc_batch.wrc_id')
                 // ->groupBy('creative_wrc_batch.batch_no')
                 ->where(function ($query) {
@@ -121,7 +121,7 @@ class ClientDashboardController extends Controller
             ->leftJoin('catalog_wrc_batches', function($join){
                 $join->on('catalog_wrc_batches.wrc_id', '=', 'catlog_wrc.id');
                 })
-            ->select('lots_catalog.id as lot_id', 'lots_catalog.lot_number','catalog_wrc_batches.wrc_id as batch_wrc_id')
+            ->select('lots_catalog.id as lot_id','lots_catalog.created_at', 'lots_catalog.lot_number','catalog_wrc_batches.wrc_id as batch_wrc_id')
             ->whereIn('lots_catalog.brand_id', $brand_arr)
             ->groupBy('lots_catalog.id');
             if ($role_name == 'Sub Client') {
@@ -180,7 +180,7 @@ class ClientDashboardController extends Controller
             /* response data to get editor lot information with status start*/
             $resDataEditor = EditorLotModel::orderBy('editor_lots.id','DESC')
             ->leftJoin('editing_wrcs', 'editing_wrcs.lot_id', 'editor_lots.id')
-            ->select('editor_lots.id as lot_id', 'editor_lots.lot_number','editing_wrcs.id as wrc_id')
+            ->select('editor_lots.id as lot_id', 'editor_lots.created_at','editor_lots.lot_number','editing_wrcs.id as wrc_id')
             ->whereIn('editor_lots.brand_id', $brand_arr)
             ->groupBy('editor_lots.id');
             if ($role_name == 'Sub Client') {
@@ -219,7 +219,7 @@ class ClientDashboardController extends Controller
 
             /* response data to get shoot lot information with status start*/
             $resDataShoot = Lots::orderBy('lots.id','DESC')
-            ->select('lots.id as lot_id', 'lots.lot_id as lot_number')
+            ->select('lots.id as lot_id', 'lots.lot_id as lot_number','lots.created_at')
             ->whereIn('lots.brand_id', $brand_arr)
             ->groupBy('lots.id');
             if ($role_name == 'Sub Client') {
@@ -352,7 +352,8 @@ class ClientDashboardController extends Controller
         );
         // dd($resDataShoot);
         ClientActivityLog::saveClient_activity_logs($data_array);
-        return view('clients.ClientDashboard',compact('resData','resDataShoot', 'resDataCatlog', 'resDataEditor'));
+        // return view('clients.ClientDashboard',compact('resData','resDataShoot', 'resDataCatlog', 'resDataEditor'));
+        return view('clients.ClientDashboardDam',compact('resData','resDataShoot', 'resDataCatlog', 'resDataEditor'));
     }
 
     // clients creative time line detail

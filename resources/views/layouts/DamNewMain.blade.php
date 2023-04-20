@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>@yield('title')</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="{{ asset('ClientsPlugins/bootstrap-5.1.3-dist/css/bootstrap.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('ClientsPlugins/fontawesome-free/css/all.min.css') }}">
+
+  <link rel="icon" href="{{ asset('IMG/ODN Logo.jpeg')}}">
+	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
+	<link rel="stylesheet" href="{{ asset('css/dam_new_style.css')}}">
+</head>
+
+<body>
+	<div class="wrapper">
+    <?php 
+      $user_data = Auth::user();         
+      $ClientNotification = getNotificationList($user_data);
+      $tot_notification = count($ClientNotification);
+      // dd($tot_notification , $ClientNotification);
+    ?>
+		<!-- Top navigation bar -->
+		<div class="top-section">
+			<div class="top_navbar">
+				<div class="hamburger w-100">
+					<div class="row">
+						<div class="col-sm-1 d-flex flex-row align-item-center justify-content-space-around">
+							<h2 class="p-0 m-0">ODN</h2>
+						</div>
+						<div class="col-sm-2 d-flex flex-row align-item-center justify-content-space-around">
+							<p class="p-0 m-0"><?php echo date('l, d M Y') ?></p>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Search...">
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary" type="button">
+										<i class="fa fa-search"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-3 d-flex" style="justify-content:space-around;">
+							<div class="notification-bell">
+								<span class="bell-drop">
+									<i class="fa fa-bell"></i><span class="notify-count">{{$tot_notification}}</span>
+								</span>
+							</div>
+							<div class="user-details" style=" display: flex;align-items: center;">
+								<strong>{{ ucwords($user_data->name) }}</strong>
+								<div class="user-image" style="float: right;padding-left: 30px;">
+									<img src="{{ asset('IMG/ODN Logo.jpeg')}}" style="max-width: 40px; height: auto;border-radius: 50%;" alt="user">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Top navigation bar END -->
+
+		<!--Left side Bar -->
+		<!-- <div class="sidebar">
+			<ul>
+				<li>
+					<a href="#" class="active">
+						<span class="icon"><i class="fas fa-home"></i></span>
+						<span class="item">Home</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="icon"><i class="fas fa-desktop"></i></span>
+						<span class="item">My Dashboard</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="icon"><i class="fas fa-user-friends"></i></span>
+						<span class="item">People</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+						<span class="item">Perfomance</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="icon"><i class="fas fa-database"></i></span>
+						<span class="item">Development</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="icon"><i class="fas fa-chart-line"></i></span>
+						<span class="item">Reports</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="icon"><i class="fas fa-user-shield"></i></span>
+						<span class="item">Admin</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<span class="icon"><i class="fas fa-cog"></i></span>
+						<span class="item">Settings</span>
+					</a>
+				</li>
+			</ul>
+		</div> -->
+		<!--Left side Bar END -->
+
+		<!-- ODN given code -->
+		<div class="container-fluid" style="background: #FFFFFF;">
+			<!-- Sidebar start -->
+			<div class="row viewport">
+				<div class="col-lg-2 border border-end-0 ">
+					<div class="row">
+						<div class="col-12">
+							<div class="dropdown">
+								<button class="btn btn-light dropdown-toggle siderbar-button" type="button" id="dropdownMenuButton2"
+									data-bs-toggle="dropdown" aria-expanded="false" style="background: #D1D1D1;">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect width="20" height="20" fill="#9F9F9F" />
+										<line x1="3.35355" y1="2.64645" x2="17.3536" y2="16.6464" stroke="#D1D1D1" />
+										<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
+									</svg>
+									TRACK LOTS
+								</button>
+								<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"
+									style="background: #EBEBEB;color: #B8B8B8;">
+									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Active</a></li>
+									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Completed</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="dropdown">
+								<button class="btn btn-light dropdown-toggle siderbar-button" type="button" id="dropdownMenuButton2"
+									data-bs-toggle="dropdown" aria-expanded="false" style="background: #D1D1D1;">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect width="20" height="20" fill="#9F9F9F" />
+										<line x1="3.35355" y1="2.64645" x2="17.3536" y2="16.6464" stroke="#D1D1D1" />
+										<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
+									</svg>
+									YOUR ASSETS
+								</button>
+								<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"
+									style="background: #EBEBEB;color: #B8B8B8;">
+									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Active</a></li>
+									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Completed</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="dropdown">
+								<button class="btn btn-light dropdown-toggle siderbar-button" type="button" id="dropdownMenuButton2"
+									data-bs-toggle="dropdown" aria-expanded="false" style="background: #D1D1D1;">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect width="20" height="20" fill="#9F9F9F" />
+										<line x1="3.35355" y1="2.64645" x2="17.3536" y2="16.6464" stroke="#D1D1D1" />
+										<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
+									</svg>
+									ADMIN PANEL
+								</button>
+								<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"
+									style="background: #EBEBEB;color: #B8B8B8;">
+									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Active</a></li>
+									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Completed</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Sidebar End -->
+
+				<div class="col-sm-10 border main-container-resp">
+          @yield('main_content')
+				</div>
+			</div>
+		</div>
+		<!-- ODN given code END -->
+	</div><!-- wrapper End -->
+
+	<script src="{{ asset('ClientsPlugins/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('ClientsPlugins\jquery\jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('ClientsPlugins\jquery-nice-select-1.1.0\js\jquery.nice-select.js') }}"></script>
+</body>
+</html>
