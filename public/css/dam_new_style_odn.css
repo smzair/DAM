@@ -57,12 +57,13 @@ body {
 
 .siderbar-button {
   width: 100%;
-  height: 40px;
+  height: 68px;
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   color: #9F9F9F;
+  background-color: #D1D1D1 !important;
 }
 
 .lotnoF {
@@ -93,6 +94,180 @@ body {
   height: 100vh;
 }
 
+.accordion-body {
+  background: #EBEBEB;
+}
+
+.under-button {
+  background: #EBEBEB;
+  color: #B8B8B8;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+/* Lot Details Css */
+
+.back-btn {
+  color: #9F9F9F;
+  background: #FFFFFF;
+  margin-top: 24px;
+  /* margin-left: 19px; */
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.lot-no-sty {
+  font-weight: 400;
+  font-size: 22px;
+  color: #9F9F9F;
+  /* margin-left: 24px; */
+  margin-top: 40px;
+}
+
+.lot-date-sty {
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.25px;
+  color: #9F9F9F;
+  margin-top: 12px;
+  /* margin-left: 24px; */
+}
+
+.inward-sty {
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+  color: #9F9F9F;
+  margin-top: 60px;
+}
+
+.table-heading-sty {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #9F9F9F;
+}
+
+.wrc-no-sty {
+  font-weight: 400;
+  font-size: 16px;
+  color: #666666;
+}
+
+.table-column {
+  font-weight: 400;
+  font-size: 16px;
+  color: #9F9F9F;
+}
+
+.table-img {
+  display: flex;
+  justify-content: center;
+}
+
+.table-invoice {
+  background: #EBEBEB !important;
+  width: 85px;
+  height: 27px;
+}
+
+.last-button {
+  font-weight: 500;
+  font-size: 16px;
+  color: #9F9F9F;
+  /* padding: 14px 33px 14px 33px; */
+}
+
+.last-button-mar {
+  /* margin-left: 24px; */
+  margin-top: 40px;
+  /* width: 100%; */
+}
+
+.download-invoice {
+  font-weight: 500;
+  font-size: 14px;
+  color: #9F9F9F;
+  margin-top: 50px;
+  /* margin-right: 24px; */
+  text-decoration: none;
+}
+
+.progress-box {
+  background-color: #EBEBEB;
+  padding: 7px;
+  border-radius: 0px;
+}
+
+.progress {
+  height: 13px;
+  border-radius: 0px;
+  background-color: #ddd;
+  position: relative;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: #1abc9c;
+}
+
+.progress-bar-2 {
+  left: 20%;
+  background-color: #3498db;
+}
+
+.progress-bar-3 {
+  left: 40%;
+  background-color: #9b59b6;
+}
+
+.progress-bar-4 {
+  left: 60%;
+  background-color: #f1c40f;
+}
+
+.progress-bar-5 {
+  left: 80%;
+  background-color: #e74c3c;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.progress-label {
+  width: 20%;
+  text-align: center;
+  color: #fff;
+}
+
+.progress-label h5 {
+  margin: 0;
+}
+
+.progress-upper-heading {
+  font-weight: 400;
+  font-size: 14px;
+  color: #9F9F9F;
+}
+
+.progress-bottom-heading {
+  font-weight: 500;
+  font-size: 11px;
+  color: #9F9F9F;
+}
+
+.log-btn-mob-sty {
+  width: 100%;
+  background: #D1D1D1;
+  height: 60px;
+  margin-top: 430px;
+}
 
 @media only screen and (min-width: 576px) and (max-width: 991px) {
   .main-container-resp {
@@ -102,6 +277,10 @@ body {
   .box-container-responsive {
     justify-content: center;
   }
+
+  .log-btn-mob-sty {
+    margin-top: 0px;
+  }
 }
 
 
@@ -110,9 +289,86 @@ body {
   .box-container-responsive {
     justify-content: center;
   }
+
+  .log-btn-mob-sty {
+    margin-top: 0px;
+  }
+
+  .main-container-resp {
+    width: 100%;
+  }
+
+  .last-button-mar {
+    justify-content: center;
+  }
+
+  .last-btn-div {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .progress-bottom-heading {
+    font-weight: 500;
+    font-size: 8px;
+    color: #9F9F9F;
+  }
+
+  .progress-upper-heading {
+    font-weight: 400;
+    font-size: 10px;
+    color: #9F9F9F;
+  }
+
+  .lot-no-sty {
+    font-weight: 400;
+    font-size: 12px;
+    color: #9F9F9F;
+    /* margin-left: 24px; */
+    margin-top: 40px;
+  }
+
+  .lot-date-sty {
+    font-weight: 400;
+    font-size: 9px;
+    letter-spacing: 0.25px;
+    color: #9F9F9F;
+    margin-top: 12px;
+  }
+
+  .inward-sty {
+    font-weight: 400;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    margin-right: 4px;
+    color: #9F9F9F;
+    margin-top: 60px;
+  }
+
+  .table-heading-sty {
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 20px;
+    color: #9F9F9F;
+  }
+
+  .table-column {
+    font-weight: 400;
+    font-size: 8px;
+    color: #9F9F9F;
+  }
+
+  .wrc-no-sty {
+    font-weight: 400;
+    font-size: 9px;
+    color: #666666;
+  }
+
+  .last-button {
+    font-weight: 500;
+    font-size: 12px;
+    color: #9F9F9F;
+  }
 }
-
-
 
 @keyframes growProgressBar {
 
