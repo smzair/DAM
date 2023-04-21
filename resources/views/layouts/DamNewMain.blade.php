@@ -127,60 +127,75 @@
 			<!-- Sidebar start -->
 			<div class="row viewport">
 				<div class="col-lg-2 border border-end-0 ">
-					<div class="row">
-						<div class="col-12">
-							<div class="dropdown">
-								<button class="btn btn-light dropdown-toggle siderbar-button" type="button" id="dropdownMenuButton2"
-									data-bs-toggle="dropdown" aria-expanded="false" style="background: #D1D1D1;">
+					<div class="accordion accordion-flush" id="accordionFlushExample">
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="flush-headingOne">
+								<button class="accordion-button collapsed siderbar-button" type="button" data-bs-toggle="collapse"
+									data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
 									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<rect width="20" height="20" fill="#9F9F9F" />
 										<line x1="3.35355" y1="2.64645" x2="17.3536" y2="16.6464" stroke="#D1D1D1" />
 										<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
-									</svg>
+									</svg> &nbsp;&nbsp;
 									TRACK LOTS
 								</button>
-								<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"
-									style="background: #EBEBEB;color: #B8B8B8;">
-									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Active</a></li>
-									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Completed</a></li>
-								</ul>
+							</h2>
+							<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+								data-bs-parent="#accordionFlushExample">
+								<div class="accordion-body">
+									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Active</button>
+									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Completed</button>
+								</div>
 							</div>
 						</div>
-						<div class="col-12">
-							<div class="dropdown">
-								<button class="btn btn-light dropdown-toggle siderbar-button" type="button" id="dropdownMenuButton2"
-									data-bs-toggle="dropdown" aria-expanded="false" style="background: #D1D1D1;">
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="flush-headingTwo">
+								<button class="accordion-button collapsed siderbar-button" type="button" data-bs-toggle="collapse"
+									data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
 									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<rect width="20" height="20" fill="#9F9F9F" />
 										<line x1="3.35355" y1="2.64645" x2="17.3536" y2="16.6464" stroke="#D1D1D1" />
 										<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
-									</svg>
+									</svg> &nbsp;&nbsp;
 									YOUR ASSETS
 								</button>
-								<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"
-									style="background: #EBEBEB;color: #B8B8B8;">
-									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Active</a></li>
-									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Completed</a></li>
-								</ul>
+							</h2>
+							<div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+								data-bs-parent="#accordionFlushExample">
+								<div class="accordion-body">
+									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Active</button>
+									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Completed</button>
+								</div>
 							</div>
 						</div>
-						<div class="col-12">
-							<div class="dropdown">
-								<button class="btn btn-light dropdown-toggle siderbar-button" type="button" id="dropdownMenuButton2"
-									data-bs-toggle="dropdown" aria-expanded="false" style="background: #D1D1D1;">
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="flush-headingThree">
+								<button class="accordion-button collapsed siderbar-button" type="button" data-bs-toggle="collapse"
+									data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
 									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<rect width="20" height="20" fill="#9F9F9F" />
 										<line x1="3.35355" y1="2.64645" x2="17.3536" y2="16.6464" stroke="#D1D1D1" />
 										<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
-									</svg>
+									</svg> &nbsp;&nbsp;
 									ADMIN PANEL
 								</button>
-								<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"
-									style="background: #EBEBEB;color: #B8B8B8;">
-									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Active</a></li>
-									<li><a class="dropdown-item" href="#" style="color: #B8B8B8;">Completed</a></li>
-								</ul>
+							</h2>
+							<div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+								data-bs-parent="#accordionFlushExample">
+								<div class="accordion-body">
+									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Active</button>
+									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Completed</button>
+								</div>
 							</div>
+						</div>
+						<div class="col">
+							<button type="button" class="btn border btn-lg last-button log-btn-mob-sty">LOG OUT</button>
 						</div>
 					</div>
 				</div>
