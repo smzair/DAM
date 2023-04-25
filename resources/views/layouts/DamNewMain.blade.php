@@ -15,8 +15,8 @@
 	<link rel="stylesheet" href="{{ asset('ClientsPlugins/fontawesome-free/css/all.min.css') }}">
 
   <link rel="icon" href="{{ asset('IMG/ODN Logo.jpeg')}}">
-	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style.css')}}">
+	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
 </head>
 
 <body>
@@ -212,5 +212,7 @@
 	<script src="{{ asset('ClientsPlugins/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('ClientsPlugins\jquery\jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('ClientsPlugins\jquery-nice-select-1.1.0\js\jquery.nice-select.js') }}"></script>
+	@yield('js_links')
+	@yield('js_scripts')
 </body>
 </html>

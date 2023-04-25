@@ -23,6 +23,7 @@ use App\Http\Controllers\CatalogWrcMasterSheetController;
 use App\Http\Controllers\clientFileManager;
 use App\Http\Controllers\ClientsControllers\ClientCommonController;
 use App\Http\Controllers\ClientsControllers\ClientDashboardController;
+use App\Http\Controllers\ClientsControllers\ClientDashboardControllerNew;
 use App\Http\Controllers\ClientsControllers\ClientProfileController;
 use App\Http\Controllers\ClientsControllers\ClientSettingsController;
 use App\Http\Controllers\ClientUserManagementController;
@@ -596,7 +597,8 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/months/{id}', [clientFileManager::class, 'getAllMonthsForClientRawImages'])->name('months');
     
     //get  clients creative -lot-timeline detail
-    Route::get('/clients-creative-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCreativelotTimeline'])->name('clientsCreativelotTimeline');
+    // Route::get('/clients-creative-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCreativelotTimeline'])->name('clientsCreativelotTimeline');
+    Route::get('/clients-creative-lot-timeline/{id}', [ClientDashboardControllerNew::class, 'clientsCreativelotTimeline'])->name('clientsCreativelotTimeline');
 
     
     // clients shoot lot Timeline Detail 
@@ -604,6 +606,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
 
      // clients catlog lot Timeline Detail 
      Route::get('/clients-catlog-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCatloglotTimeline'])->name('clientsCatloglotTimeline');
+     Route::get('/clients-catlog-lot-timelineNew/{id}', [ClientDashboardControllerNew::class, 'clientsCatloglotTimeline'])->name('clientsCatloglotTimelineNew');
 
      //clients Editor Lot Timeline Detail
      Route::get('/clients-editor-lot-timeline/{id}', [ClientDashboardController::class, 'clientsEditorLotTimeline'])->name('clientsEditorLotTimeline');
