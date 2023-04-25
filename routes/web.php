@@ -597,19 +597,25 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/months/{id}', [clientFileManager::class, 'getAllMonthsForClientRawImages'])->name('months');
     
     //get  clients creative -lot-timeline detail
-    // Route::get('/clients-creative-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCreativelotTimeline'])->name('clientsCreativelotTimeline');
-    Route::get('/clients-creative-lot-timeline/{id}', [ClientDashboardControllerNew::class, 'clientsCreativelotTimeline'])->name('clientsCreativelotTimeline');
-
+    Route::get('/clients-creative-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCreativelotTimeline'])->name('clientsCreativelotTimeline');
     
     // clients shoot lot Timeline Detail 
     Route::get('/clients-shoot-lot-timeline/{id}', [ClientDashboardController::class, 'clientsShootlotTimeline'])->name('clientsShootlotTimeline');
 
      // clients catlog lot Timeline Detail 
      Route::get('/clients-catlog-lot-timeline/{id}', [ClientDashboardController::class, 'clientsCatloglotTimeline'])->name('clientsCatloglotTimeline');
-     Route::get('/clients-catlog-lot-timelineNew/{id}', [ClientDashboardControllerNew::class, 'clientsCatloglotTimeline'])->name('clientsCatloglotTimelineNew');
 
      //clients Editor Lot Timeline Detail
      Route::get('/clients-editor-lot-timeline/{id}', [ClientDashboardController::class, 'clientsEditorLotTimeline'])->name('clientsEditorLotTimeline');
+    
+    //  Clients Lots timeline Details
+
+    Route::get('/clients-catlog-lot-timelineNew/{id}', [ClientDashboardControllerNew::class, 'clientsCatloglotTimeline'])->name('clientsCatloglotTimelineNew'); // Cataloging
+
+    Route::get('/clients-creative-lot-timelineNew/{id}', [ClientDashboardControllerNew::class, 'clientsCreativelotTimelineNew'])->name('clientsCreativelotTimelineNew'); // Creative
+    
+    Route::get('/clients-editor-lot-timelineNew/{id}', [ClientDashboardControllerNew::class, 'clientsEditorLotTimelineNew'])->name('clientsEditorLotTimelineNew'); // Editing
+
     
     Route::get('/Uploaded-file-list', [AdminControlController::class, 'AdminControlUploadedFileListForClient'])->name('AdminControlUploadedFileList'); // Admin Control Uploaded File List
     // ClientProfile Routes

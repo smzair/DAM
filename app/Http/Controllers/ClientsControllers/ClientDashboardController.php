@@ -395,9 +395,8 @@ class ClientDashboardController extends Controller
         // dd($data_array);
         ClientActivityLog::saveClient_activity_logs($data_array);
 
-        dd($lot_generated_detail,$wrc_with_order_qty,$allocated_wrc_details,$Submission_link_details);
-        return view('clients.Timeline.creativeTimeline_New', compact('lot_generated_detail', 'wrc_with_order_qty', 'allocated_wrc_details', 'Submission_link_details'));
-        // return view('clients.Timeline.creativeTimeline', compact('lot_generated_detail', 'wrc_with_order_qty', 'allocated_wrc_details', 'Submission_link_details'));
+        // dd($lot_generated_detail,$wrc_with_order_qty,$allocated_wrc_details,$Submission_link_details);
+        return view('clients.Timeline.creativeTimeline', compact('lot_generated_detail', 'wrc_with_order_qty', 'allocated_wrc_details', 'Submission_link_details'));
     }
 
     // clients shoot time line detail

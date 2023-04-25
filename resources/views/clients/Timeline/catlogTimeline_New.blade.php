@@ -50,7 +50,7 @@
 							<p class="progress-upper-heading">WRC Generated</p>
 						</div>
 						<div class="progress-label progress-label-3">
-							<p class="progress-upper-heading">Shoot started</p>
+							<p class="progress-upper-heading">Task Assigned</p>
 						</div>
 						<div class="progress-label progress-label-4">
 							<p class="progress-upper-heading">Editing & QC</p>
@@ -60,15 +60,15 @@
 						</div>
 					</div>
 					<div class="progress">
-						<div class="progress-bar progress-bar-1" role="progressbar" style="width: 20%;" aria-valuenow="20"
+						<div class="progress-bar progress-bar-1" role="progressbar_new" style="width: 20%;" aria-valuenow="20"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-2" role="progressbar" style="width: 20%;" aria-valuenow="40"
+						<div class="progress-bar progress-bar-2" role="progressbar_new" style="width: 20%;" aria-valuenow="40"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-3" role="progressbar" style="width: 20%;" aria-valuenow="60"
+						<div class="progress-bar progress-bar-3" role="progressbar_new" style="width: 20%;" aria-valuenow="60"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-4" role="progressbar" style="width: 20%;" aria-valuenow="80"
+						<div class="progress-bar progress-bar-4" role="progressbar_new" style="width: 20%;" aria-valuenow="80"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-5" role="progressbar" style="width: 20%;" aria-valuenow="100"
+						<div class="progress-bar progress-bar-5" role="progressbar_new" style="width: 20%;" aria-valuenow="100"
 							aria-valuemin="0" aria-valuemax="100"></div>
 					</div>
 					<div class="progress-labels">
@@ -154,7 +154,7 @@
 												</p>
 											@endforeach
 										@else
-												<p class="m-0 p-0">No Links</p>
+												<p class="m-0 p-0">No links available</p>
 										@endif
 
 									</div>
@@ -202,17 +202,11 @@
 				newElement = $('#wrcLink'+val);
 			}
 			let hasClass = newElement.hasClass('d-none')
-			console.log('hasClass', hasClass)
-
 			let myElement = $('.card-div');
-			console.log('myElement', myElement)
 			myElement.addClass('d-none');
-			
 			if(hasClass){
 				newElement.removeClass('d-none');
 			}
-			
-		
 		}
 	</script>
 @endsection
