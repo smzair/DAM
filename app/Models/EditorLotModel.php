@@ -106,5 +106,143 @@ class EditorLotModel extends Model
 		return $this->hasMany('App\Models\Wrc','lot_id','id')->with('getWrcSkus:id,lot_id,wrc_id,sku_code,user_id,brand_id');
 	}
 
+    // clients Editor Lot Timeline
+    public static function clientsEditorLotTimeline($id){
+        $lot_info_with_wrc_query = EditorLotModel::where('editor_lots.id', $id)->leftJoin('editing_wrcs', 'editing_wrcs.lot_id', 'editor_lots.id');
+    
+        $lot_detail = $lot_info_with_wrc_query->select('editor_lots.id as lot_id','editor_lots.lot_number', 'editor_lots.created_at', DB::raw('sum(editing_wrcs.uploaded_img_qty) as inward_quantity'))->get()->toArray();
+        
+        $wrc_detail_query = $lot_info_with_wrc_query->
+        leftJoin('editing_allocations', 'editing_allocations.wrc_id', 'editing_wrcs.id')->
+        leftJoin('editing_upload_links', 'editing_upload_links.allocation_id', 'editing_allocations.id')->
+        leftJoin('editing_submissions', 'editing_submissions.wrc_id', 'editing_wrcs.id')->    
+        select(
+        'editing_wrcs.id as wrc_id',
+        'editing_wrcs.wrc_number',
+        'editing_wrcs.created_at as wrc_created_at',
+        'editing_wrcs.documentUrl',
+        'editing_wrcs.imgQty as imgqty',
+        'editing_wrcs.uploaded_img_qty as wrc_order_qty',
+        'editor_lots.id as lot_id',
+        'editor_lots.lot_number',
+        'editor_lots.request_name',
+        'editor_lots.created_at as lot_created_at',
+
+        'editing_allocations.id as allocation_id',
+        'editing_allocations.created_at as allocated_created_at',
+        'editing_allocations.updated_at as qc_done_at',
+        DB::raw('GROUP_CONCAT(editing_allocations.id) as allocation_ids'),
+        DB::raw('GROUP_CONCAT(editing_allocations.user_id) as ass_cataloger'),
+        DB::raw('GROUP_CONCAT(editing_allocations.user_role) as user_roles'),
+        DB::raw('GROUP_CONCAT(editing_allocations.allocated_qty) as tot_allocated_qty_list'),
+        DB::raw('GROUP_CONCAT(editing_allocations.uploaded_qty) as tot_uploaded_qty_list'),
+        DB::raw('SUM(CASE WHEN editing_allocations.user_role = 0 THEN editing_allocations.allocated_qty else 0 END)  as cata_sum'),
+
+        DB::raw('GROUP_CONCAT(editing_upload_links.id) as uploaded_links_ids'),
+        DB::raw('GROUP_CONCAT(editing_upload_links.final_link) as final_links'),
+        DB::raw('GROUP_CONCAT(editing_upload_links.task_status) as task_status_list'),
+        'editing_submissions.id as submissions_id',
+        'editing_submissions.submission_date',
+        'editing_submissions.ar_status',
+        'editing_submissions.action_date',
+        );
+        $wrc_detail_query = $wrc_detail_query->orderBy('editing_wrcs.id')->orderBy('editing_allocations.id')->orderBy('editing_upload_links.updated_at')->orderBy('editing_submissions.id');
+        $wrc_detail_query = $wrc_detail_query->groupBy('editing_allocations.wrc_id');
+        $wrc_detail = $wrc_detail_query->get()->toArray();
+
+        $wrc_count = DB::table('editing_wrcs')->where('lot_id',$id)->count();
+        $lot_status = $wrc_count > 0 ? 'WRC Generated' : 'Inward';
+        $wrc_progress = $wrc_count > 0 ? '20' : '0';
+        $overall_progress = $wrc_count > 0 ? '40' : '20';
+
+        $lot_detail[0]['lot_status']  = $lot_status;
+        $lot_detail[0]['overall_progress']  = $overall_progress."%";
+        $lot_detail[0]['wrc_progress']  = $wrc_progress."%";
+        $lot_detail[0]['wrc_assign']  = "0%";
+        $lot_detail[0]['wrc_qc']  = "0%";
+        $lot_detail[0]['wrc_submission']  = "0%";
+
+        $count_wrc = 0;
+        $count_qc = 0;
+        $count_submission = 0;
+
+        foreach($wrc_detail as $key => $wrc_row){
+            $lot_detail[0]['wrc_created_at']  = $wrc_row['wrc_created_at'];
+            $lot_detail[0]['allocated_created_at']  = $wrc_row['allocated_created_at'];
+            $cata_sum = $wrc_row['cata_sum'];
+            $sku_count = $wrc_row['wrc_order_qty'];
+            
+            $wrc_detail[$key]['qc_status'] = "Pending";
+            $wrc_detail[$key]['submission_status'] = "Pending";
+            if($cata_sum > 0){
+                $lot_detail[0]['wrc_assign']  = "10%";
+                $lot_detail[0]['overall_progress']  = "50%";
+            }
+        
+            if(($sku_count == $cata_sum) && $sku_count > 0 ){
+                $count_wrc++;
+                if($wrc_row['submissions_id'] > 0){
+                    $wrc_detail[$key]['qc_status'] = "Done";
+                    $wrc_detail[$key]['submission_status'] = "Done";
+                    $count_qc++;
+                    $count_submission++;
+                    $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+                    $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
+                }else{
+                    $allocation_ids = $wrc_row['allocation_ids'];
+                    $allocation_id_arr = explode(",",$allocation_ids);                                
+                    $tot_allocation_ids = count($allocation_id_arr);
+                    
+                    $task_status_list = $wrc_row['task_status_list'];
+                    $task_status_arr = explode(",",$task_status_list);
+                    $tot_task_status = count($task_status_arr);
+                    $task_status_sum = array_sum($task_status_arr);
+
+                    if($task_status_sum == (2*$tot_allocation_ids) && $tot_task_status == $tot_allocation_ids){
+                        $wrc_detail[$key]['qc_status'] = "Done";
+                        $count_qc++;
+                        $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+
+                    }else if($task_status_sum == (3*$tot_allocation_ids) && $tot_task_status == $tot_allocation_ids){
+                        $wrc_detail[$key]['qc_status'] = "Done";
+                        $wrc_detail[$key]['submission_status'] = "Done";
+                        $count_qc++;
+                        $count_submission++;
+                        $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+                        $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
+                    }
+                }
+            }
+        }
+        if(count($wrc_detail) == $count_wrc && count($wrc_detail) > 0){
+            $lot_detail[0]['wrc_assign']  = "20%";
+            $lot_detail[0]['overall_progress']  = "60%";
+            if(count($wrc_detail) == $count_qc){
+                $lot_detail[0]['wrc_qc']  = "20%";
+                $lot_detail[0]['overall_progress']  = "80%";
+                if(count($wrc_detail) == $count_submission){
+                    $lot_detail[0]['wrc_submission']  = "20%";
+                    $lot_detail[0]['overall_progress']  = "100%";
+                }
+            }
+        }
+        // insert into user activity log
+        $data_array = array(
+            'log_name' => 'Lot Timeline Details',
+            'description' => 'Lot Timeline Details',
+            'event' => 'Lot Timeline Details',
+            'subject_type' => 'App\Models\CreatLots',
+            'subject_id' => '0',
+            'properties' => [],
+        );
+        ClientActivityLog::saveClient_activity_logs($data_array);
+
+        return array(
+            'lot_detail' => $lot_detail,
+            'wrc_detail' => $wrc_detail,
+        );
+
+    }
+
 
 }
