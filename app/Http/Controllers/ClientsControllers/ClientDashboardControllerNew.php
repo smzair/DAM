@@ -326,6 +326,13 @@ class ClientDashboardControllerNew extends Controller
     return view('clients.Timeline.creativeTimeline_New')->with('lot_detail', $lot_detail)->with('wrc_detail', $wrc_detail);   
   }
 
-
+  // clients editor lot time line detail
+  public function clientsEditorLotTimelineNew(Request $request, $id)
+  {
+    $LotTimelineData = EditorLotModel::clientsEditorLotTimeline($id);
+    $lot_detail = $LotTimelineData['lot_detail']; 
+    $wrc_detail = $LotTimelineData['wrc_detail']; 
+    return view('clients.Timeline.editorLotTimeline_New')->with('lot_detail', $lot_detail)->with('wrc_detail', $wrc_detail);
+  }
 
 }

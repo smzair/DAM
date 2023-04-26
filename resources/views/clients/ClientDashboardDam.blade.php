@@ -181,7 +181,7 @@
 										style="--value:80"></div>
 								</div>
 								<div class="col-12 d-grid gap-2">
-									<a target="_blank" href={{route('clientsCreativelotTimeline',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
+									<a target="_blank" href={{route('clientsCreativelotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
 										style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
 										View full details
 									</a>
@@ -228,7 +228,7 @@
 									style="--value:80"></div>
 							</div>
 							<div class="col-12 d-grid gap-2">
-								<a target="_blank" href={{route('clientsCatloglotTimeline',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
+								<a target="_blank" href={{route('clientsCatloglotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
 									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
 									View full details
 								</a>
@@ -274,7 +274,7 @@
 									style="--value:80"></div>
 							</div>
 							<div class="col-12 d-grid gap-2">
-								<a target="_blank" href={{route('clientsEditorLotTimeline',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
+								<a target="_blank" href={{route('clientsEditorLotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
 									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
 									View full details
 								</a>
