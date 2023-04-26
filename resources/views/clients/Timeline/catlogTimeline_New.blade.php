@@ -38,7 +38,7 @@
 		<div class="row">
 			<div class="col-lg-1 mt-3      ">
 				<p style="font-weight: 500;font-size: 16px;color: #9F9F9F;">Status:</p>
-				<p style="font-weight: 700;font-size: 16px;color: #9F9F9F;">70%</p>
+				<p style="font-weight: 700;font-size: 16px;color: #9F9F9F;">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'] : "20%"}}</p>
 			</div>
 			<div class="col-lg-11">
 				<div class="progress-box">
@@ -62,30 +62,30 @@
 					<div class="progress">
 						<div class="progress-bar progress-bar-1" role="progressbar_new" style="width: 20%;" aria-valuenow="20"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-2" role="progressbar_new" style="width: 20%;" aria-valuenow="40"
+						<div class="progress-bar progress-bar-2" role="progressbar_new" style="width: {{$lot_detail[0] != null ? $lot_detail[0]['wrc_progress'] : '0%'}};" aria-valuenow="40"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-3" role="progressbar_new" style="width: 20%;" aria-valuenow="60"
+						<div class="progress-bar progress-bar-3" role="progressbar_new" style="width: {{$lot_detail[0] != null ? $lot_detail[0]['wrc_assign'] : '0%'}};" aria-valuenow="60"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-4" role="progressbar_new" style="width: 20%;" aria-valuenow="80"
+						<div class="progress-bar progress-bar-4" role="progressbar_new" style="width: {{$lot_detail[0] != null ? $lot_detail[0]['wrc_qc'] : '0%'}};" aria-valuenow="80"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-5" role="progressbar_new" style="width: 20%;" aria-valuenow="100"
+						<div class="progress-bar progress-bar-5" role="progressbar_new" style="width: {{$lot_detail[0] != null ? $lot_detail[0]['wrc_submission'] : '0%'}};" aria-valuenow="100"
 							aria-valuemin="0" aria-valuemax="100"></div>
 					</div>
 					<div class="progress-labels">
 						<div class="progress-label progress-label-1">
-							<p class="progress-bottom-heading">06-04-2023</p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['created_at']) && $lot_detail[0]['created_at'] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}</p>
 						</div>
 						<div class="progress-label progress-label-2">
-							<p class="progress-bottom-heading">14-04-2023</p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['wrc_created_at']) && $lot_detail[0]['wrc_created_at'] != null ? dateFormet_dmy($lot_detail[0]['wrc_created_at']) : "-"}}</p>
 						</div>
 						<div class="progress-label progress-label-3">
-							<p class="progress-bottom-heading">15-04-2023</p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['allocated_created_at']) && $lot_detail[0]['allocated_created_at'] != null ? dateFormet_dmy($lot_detail[0]['allocated_created_at']) : "-"}}</p>
 						</div>
 						<div class="progress-label progress-label-4">
-							<p class="progress-bottom-heading">24-04-2023</p>
+							<p class="progress-bottom-heading">{{ isset($lot_detail[0]['qc_done_at']) && $lot_detail[0]['qc_done_at'] != null ? dateFormet_dmy($lot_detail[0]['qc_done_at']) : "-"}}</p>
 						</div>
 						<div class="progress-label progress-label-5">
-							<p></p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['submission_date']) && $lot_detail[0]['submission_date'] != null ? dateFormet_dmy($lot_detail[0]['submission_date']) : "-"}}</p>
 						</div>
 					</div>
 				</div>

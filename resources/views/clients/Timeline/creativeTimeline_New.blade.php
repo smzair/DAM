@@ -73,19 +73,19 @@
 					</div>
 					<div class="progress-labels">
 						<div class="progress-label progress-label-1">
-							<p class="progress-bottom-heading">06-04-2023</p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['created_at']) && $lot_detail[0]['created_at'] != null  ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}</p>
 						</div>
 						<div class="progress-label progress-label-2">
-							<p class="progress-bottom-heading">14-04-2023</p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['wrc_created_at']) && $lot_detail[0]['wrc_created_at'] != null && $lot_detail[0]['overall_progress'] > '20%' ? dateFormet_dmy($lot_detail[0]['wrc_created_at']) : "-"}}</p>
 						</div>
 						<div class="progress-label progress-label-3">
-							<p class="progress-bottom-heading">15-04-2023</p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['allocated_created_at']) && $lot_detail[0]['allocated_created_at'] != null  && $lot_detail[0]['overall_progress'] > '40%' ? dateFormet_dmy($lot_detail[0]['allocated_created_at']) : "-"}}</p>
 						</div>
 						<div class="progress-label progress-label-4">
-							<p class="progress-bottom-heading">24-04-2023</p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['qc_done_at']) && $lot_detail[0]['qc_done_at'] != null  && $lot_detail[0]['overall_progress'] > '60%' ? dateFormet_dmy($lot_detail[0]['qc_done_at']) : "-"}}</p>
 						</div>
 						<div class="progress-label progress-label-5">
-							<p></p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['submission_date']) && $lot_detail[0]['submission_date'] != null  && $lot_detail[0]['overall_progress'] == '100%' ? dateFormet_dmy($lot_detail[0]['submission_date']) : "-"}}</p>
 						</div>
 					</div>
 				</div>
