@@ -48,6 +48,8 @@ class ClientDashboardControllerNew extends Controller
       'lots_catalog.id as lot_id',
       'lots_catalog.lot_number',
       'lots_catalog.created_at as lot_created_at',
+      'catalog_allocation.created_at as allocated_created_at',
+      'catalog_time_hash.updated_at as qc_done_at',
       DB::raw('GROUP_CONCAT(catalog_allocation.id) as allocation_ids'),
       DB::raw('GROUP_CONCAT(catalog_allocation.user_id) as ass_cataloger'),
       DB::raw('GROUP_CONCAT(catalog_allocation.user_role) as user_roles'),
@@ -63,24 +65,52 @@ class ClientDashboardControllerNew extends Controller
       'catalog_submissions.ar_status',
       'catalog_submissions.invoiceNumber',
       'catalog_submissions.action_date',
-    )->groupBy('catalog_allocation.wrc_id');
-    // $wrc_detail = $wrc_detail_query->toSql();
+    )->orderBy('catlog_wrc.id')->orderBy('catalog_allocation.id')->orderBy('catalog_time_hash.updated_at')->orderBy('catalog_submissions.id');
+    $wrc_detail_query = $wrc_detail_query->groupBy('catalog_allocation.wrc_id');
     $wrc_detail = $wrc_detail_query->get()->toArray();
+    // dd($lot_detail, $wrc_detail_query->toSql(), $wrc_detail);
 
+    $cataloging_wrc_count = DB::table('catlog_wrc')->where('lot_id',$id)->count();
+    $lot_status = $cataloging_wrc_count > 0 ? 'WRC Generated' : 'Inward';
+    $wrc_progress = $cataloging_wrc_count > 0 ? '20' : '0';
+    $overall_progress = $cataloging_wrc_count > 0 ? '40' : '20';
+
+    $lot_detail[0]['lot_status']  = $lot_status;
+    $lot_detail[0]['overall_progress']  = $overall_progress."%";
+    $lot_detail[0]['wrc_progress']  = $wrc_progress."%";
+    $lot_detail[0]['wrc_assign']  = "0%";
+    $lot_detail[0]['wrc_qc']  = "0%";
+    $lot_detail[0]['wrc_submission']  = "0%";
+    
+    $count_wrc = 0;
+    $count_qc = 0;
+    $count_submission = 0;
+    
     foreach($wrc_detail as $key => $wrc_row){
+      $lot_detail[0]['wrc_created_at']  = $wrc_row['wrc_created_at'];
+      $lot_detail[0]['allocated_created_at']  = $wrc_row['allocated_created_at'];
       $alloacte_to_copy_writer = $wrc_row['alloacte_to_copy_writer'];
       $copy_sum = $wrc_row['copy_sum'];
       $cata_sum = $wrc_row['cata_sum'];
       $sku_count = $wrc_row['wrc_order_qty'];
-
+      
       $wrc_detail[$key]['qc_status'] = "Pending";
       $wrc_detail[$key]['submission_status'] = "Pending";
 
+      if($copy_sum > 0 || $cata_sum > 0){
+        $lot_detail[0]['wrc_assign']  = "10%";
+        $lot_detail[0]['overall_progress']  = "50%";
+      }
+      
       if(($alloacte_to_copy_writer == 1 && $sku_count == $copy_sum && $sku_count == $cata_sum) || ($alloacte_to_copy_writer == 0 && $sku_count == $cata_sum) ){
-
+        $count_wrc++;
         if($wrc_row['submissions_id'] > 0){
           $wrc_detail[$key]['qc_status'] = "Done";
           $wrc_detail[$key]['submission_status'] = "Done";
+          $count_qc++;
+          $count_submission++;
+          $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+          $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
         }else{
           $allocation_ids = $wrc_row['allocation_ids'];
           $allocation_id_arr = explode(",",$allocation_ids);                                
@@ -93,10 +123,29 @@ class ClientDashboardControllerNew extends Controller
   
           if($task_status_sum == (2*$tot_allocation_ids) && $tot_task_status == $tot_allocation_ids){
             $wrc_detail[$key]['qc_status'] = "Done";
+            $count_qc++;
+            $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+
           }else if($task_status_sum == (3*$tot_allocation_ids) && $tot_task_status == $tot_allocation_ids){
             $wrc_detail[$key]['qc_status'] = "Done";
             $wrc_detail[$key]['submission_status'] = "Done";
+            $count_qc++;
+            $count_submission++;
+            $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+            $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
           }
+        }
+      }
+    }
+    if(count($wrc_detail) == $count_wrc && count($wrc_detail) > 0){
+      $lot_detail[0]['wrc_assign']  = "20%";
+      $lot_detail[0]['overall_progress']  = "60%";
+      if(count($wrc_detail) == $count_qc){
+        $lot_detail[0]['wrc_qc']  = "20%";
+        $lot_detail[0]['overall_progress']  = "80%";
+        if(count($wrc_detail) == $count_submission){
+          $lot_detail[0]['wrc_submission']  = "20%";
+          $lot_detail[0]['overall_progress']  = "100%";
         }
       }
     }
@@ -109,8 +158,8 @@ class ClientDashboardControllerNew extends Controller
       'subject_id' => '0',
       'properties' => [],
     );
-    ClientActivityLog::saveClient_activity_logs($data_array);
     // dd($lot_detail, $wrc_detail_query->toSql(), $wrc_detail);
+    ClientActivityLog::saveClient_activity_logs($data_array);
     return view('clients.Timeline.catlogTimeline_New')->with('lot_detail', $lot_detail)->with('wrc_detail', $wrc_detail);
   }
 
@@ -164,6 +213,8 @@ class ClientDashboardControllerNew extends Controller
       'creative_allocation.id as allocation_id',
       'creative_allocation.user_id',
       'creative_allocation.allocated_qty',
+      'creative_allocation.created_at as allocated_created_at',
+      'creative_time_hash.updated_at as qc_done_at',
       DB::raw("CASE WHEN creative_allocation.user_id IN ($graphic_designer_id_str) THEN 'GD' ELSE 'CW' END AS role"),
       DB::raw('GROUP_CONCAT(creative_allocation.id) as allocation_ids'),
       DB::raw('GROUP_CONCAT(creative_allocation.user_id) as ass_cataloger'),
@@ -183,8 +234,9 @@ class ClientDashboardControllerNew extends Controller
       DB::raw('GROUP_CONCAT(creative_upload_links.creative_link) as creative_links'),
       DB::raw('GROUP_CONCAT(creative_upload_links.copy_link) as copy_links'),
       'creative_submissions.id as submissions_id',
+      'creative_submissions.submission_date as submission_date',
       'creative_submissions.Status as status',
-    );
+    )->orderBy('creative_wrc.id')->orderBy('creative_allocation.id')->orderBy('creative_time_hash.updated_at')->orderBy('creative_submissions.id');
     
     $wrc_detail_query= $wrc_detail_query->groupBy('creative_allocation.wrc_id');
     $wrc_detail = $wrc_detail_query->get()->toArray();
@@ -205,6 +257,8 @@ class ClientDashboardControllerNew extends Controller
     $count_qc = 0;
     $count_submission = 0;
     foreach($wrc_detail as $key => $wrc_row){
+      $lot_detail[0]['wrc_created_at']  = $wrc_row['wrc_created_at'];
+      $lot_detail[0]['allocated_created_at']  = $wrc_row['allocated_created_at'];
       $alloacte_to_copy_writer = $wrc_row['alloacte_to_copy_writer'];
       $gd_sum = $wrc_row['gd_sum'];
       $cp_sum = $wrc_row['cp_sum'];
@@ -213,6 +267,11 @@ class ClientDashboardControllerNew extends Controller
       $wrc_detail[$key]['qc_status'] = "Pending";
       $wrc_detail[$key]['submission_status'] = "Pending";
 
+      if($cp_sum > 0 || $gd_sum > 0){
+        $lot_detail[0]['wrc_assign']  = "10%";
+        $lot_detail[0]['overall_progress']  = "50%";
+      }
+
       if(($alloacte_to_copy_writer == 1 && $sku_count == $cp_sum && $sku_count == $gd_sum) || ($alloacte_to_copy_writer == 0 && $sku_count == $gd_sum) ){
         $count_wrc++;
         if($wrc_row['submissions_id'] > 0 && $wrc_row['status'] == 1){
@@ -220,6 +279,8 @@ class ClientDashboardControllerNew extends Controller
           $wrc_detail[$key]['submission_status'] = "Done";
           $count_qc++;
           $count_submission++;
+          $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+          $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
         }else{
           $allocation_ids = $wrc_row['allocation_ids'];
           $allocation_id_arr = explode(",",$allocation_ids);                                
@@ -233,9 +294,9 @@ class ClientDashboardControllerNew extends Controller
           if($task_status_sum == (2*$tot_allocation_ids) && $tot_task_status == $tot_allocation_ids){
             $wrc_detail[$key]['qc_status'] = "Done";            
             $count_qc++;
+            $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
           } 
-        }
-        
+        }        
       }
     }
     if(count($wrc_detail) == $count_wrc && count($wrc_detail) > 0){
@@ -250,7 +311,7 @@ class ClientDashboardControllerNew extends Controller
         }
       }
     }
-    // dd($lot_detail,$wrc_detail);
+    // dd($lot_detail,$wrc_detail, count($wrc_detail) , $count_wrc);
     
     // insert into user activity log
     $data_array = array(
