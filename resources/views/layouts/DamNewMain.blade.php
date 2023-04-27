@@ -195,7 +195,10 @@
 							</div>
 						</div>
 						<div class="col">
-							<button type="button" class="btn border btn-lg last-button log-btn-mob-sty">LOG OUT</button>
+							<button type="button" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"  class="btn border btn-lg last-button log-btn-mob-sty">LOG OUT</button>
+							<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+								@csrf
+							</form>
 						</div>
 					</div>
 				</div>

@@ -177,6 +177,8 @@ class EditorLotModel extends Model
             if($cata_sum > 0){
                 $lot_detail[0]['wrc_assign']  = "10%";
                 $lot_detail[0]['overall_progress']  = "50%";
+                $lot_detail[0]['lot_status']  = 'Task Assigned';
+
             }
         
             if(($sku_count == $cata_sum) && $sku_count > 0 ){
@@ -217,10 +219,13 @@ class EditorLotModel extends Model
         if(count($wrc_detail) == $count_wrc && count($wrc_detail) > 0){
             $lot_detail[0]['wrc_assign']  = "20%";
             $lot_detail[0]['overall_progress']  = "60%";
+            $lot_detail[0]['lot_status']  = 'Task Assigned';
             if(count($wrc_detail) == $count_qc){
                 $lot_detail[0]['wrc_qc']  = "20%";
                 $lot_detail[0]['overall_progress']  = "80%";
+                $lot_detail[0]['lot_status']  = 'QC Done';
                 if(count($wrc_detail) == $count_submission){
+                    $lot_detail[0]['lot_status']  = 'Submission Done';
                     $lot_detail[0]['wrc_submission']  = "20%";
                     $lot_detail[0]['overall_progress']  = "100%";
                 }
