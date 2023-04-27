@@ -106,6 +106,10 @@
 			tabindex="0">
 			<div class="row box-container-responsive">
 				@foreach ($resDataShoot as $key => $val)
+				@php
+					$overall_progress = $val['overall_progress'];
+					$overall_progress = intval(str_replace('%', '', $overall_progress));
+				@endphp	
 				<div class="col-lg-3 box" style="background: #EBEBEB;">
 					<div class="row">
 						<div class="under-content-div">
@@ -122,18 +126,18 @@
 							<div class="col-12 d-flex justify-content-between">
 								<div>
 									<p style="font-weight: 400;font-size: 13px;">
-										Current status:
+										Current status :
 									</p>
 									<p
 										style="font-weight: 400;font-size: 15px;margin-top: -8px; font-family: 'Poppins', sans-serif;">
 										{{$val['lot_status']}}
 									</p>
 								</div>
-								<div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
-									style="--value:80"></div>
+								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100"
+									style="--value:{{$overall_progress}}"></div>
 							</div>
 							<div class="col-12 d-grid gap-2">
-								<a target="_blank" href={{route('clientsShootlotTimeline',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
+								<a target="_blank" href={{route('clientsShootlotTimelineNew',$val['id'])}} class="btn border rounded-0 btn-secondary" type="button"
 									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
 									View full details
 								</a>
@@ -247,6 +251,10 @@
 			tabindex="0">
 			<div class="row box-container-responsive">
 				@foreach ($resDataEditor as $key => $val)
+				@php
+						$overall_progress = $val['overall_progress'];
+						$overall_progress = intval(str_replace('%', '', $overall_progress));
+					@endphp	
 				<div class="col-lg-3 box" style="background: #EBEBEB;">
 					<div class="row">
 						<div class="under-content-div">
@@ -270,8 +278,8 @@
 										{{$val['lot_status']}}
 									</p>
 								</div>
-								<div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
-									style="--value:80"></div>
+								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100"
+									style="--value:{{$overall_progress}}"></div>
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a target="_blank" href={{route('clientsEditorLotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
