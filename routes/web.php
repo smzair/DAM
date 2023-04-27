@@ -616,6 +616,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     
     Route::get('/clients-editor-lot-timelineNew/{id}', [ClientDashboardControllerNew::class, 'clientsEditorLotTimelineNew'])->name('clientsEditorLotTimelineNew'); // Editing
 
+    Route::get('/clients-shoot-lot-timelineNew/{id}', [ClientDashboardControllerNew::class, 'clientsShootlotTimelineNew'])->name('clientsShootlotTimelineNew'); // Shoot
     
     Route::get('/Uploaded-file-list', [AdminControlController::class, 'AdminControlUploadedFileListForClient'])->name('AdminControlUploadedFileList'); // Admin Control Uploaded File List
     // ClientProfile Routes

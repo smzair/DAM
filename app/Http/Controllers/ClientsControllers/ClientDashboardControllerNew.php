@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientActivityLog;
 use App\Models\CreatLots;
 use App\Models\EditorLotModel;
+use App\Models\Lots;
 use App\Models\LotsCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -334,5 +335,17 @@ class ClientDashboardControllerNew extends Controller
     $wrc_detail = $LotTimelineData['wrc_detail']; 
     return view('clients.Timeline.editorLotTimeline_New')->with('lot_detail', $lot_detail)->with('wrc_detail', $wrc_detail);
   }
+
+  // clients editor lot time line detail
+  public function clientsShootlotTimelineNew(Request $request, $id)
+  {
+    $LotTimelineData = Lots::LotTimeline($id);
+    $lot_detail = $LotTimelineData['lot_detail']; 
+    $wrc_detail = $LotTimelineData['wrc_detail']; 
+    // dd($lot_detail, $wrc_detail);
+    return view('clients.Timeline.editorShootTimeline_New')->with('lot_detail', $lot_detail)->with('wrc_detail', $wrc_detail);
+  }
+
+
 
 }
