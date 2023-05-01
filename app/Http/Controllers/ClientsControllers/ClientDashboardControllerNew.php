@@ -140,9 +140,9 @@ class ClientDashboardControllerNew extends Controller
       'subject_id' => '0',
       'properties' => [],
     );
-    ClientActivityLog::saveClient_activity_logs($data_array);
+    // ClientActivityLog::saveClient_activity_logs($data_array);
     // dd($resData);
-    // dd($resData , $resDataCatlog , $resDataEditor ,$resDataShoot);
+    
     return view('clients.ClientDashboardDam', compact('resData', 'resDataShoot', 'resDataCatlog', 'resDataEditor'));
   }
 

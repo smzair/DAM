@@ -87,7 +87,7 @@ class Lots extends Model {
         'lots.lot_id as lot_number',
         'lots.created_at')->get()->toArray(); 
 
-        $wrc_count = wrc::where('lot_id',$id)->count();
+        $wrc_count = Wrc::where('lot_id',$id)->count();
 
         $lot_status = $wrc_count > 0 ? 'WRC Generated' : 'Inward';
         $wrc_progress = $wrc_count > 0 ? '20' : '0';
