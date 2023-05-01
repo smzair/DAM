@@ -133,8 +133,7 @@
 										{{$val['lot_status']}}
 									</p>
 								</div>
-								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100"
-									style="--value:{{$overall_progress}}"></div>
+								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a target="_blank" href={{route('clientsShootlotTimelineNew',$val['id'])}} class="btn border rounded-0 btn-secondary" type="button"
@@ -158,6 +157,10 @@
 			<div class="row box-container-responsive">
 
 				@foreach ($resData as $key => $val)
+				@php
+					$overall_progress = $val['overall_progress'];
+					$overall_progress = intval(str_replace('%', '', $overall_progress));
+				@endphp	
 					<div class="col-lg-3 box" style="background: #EBEBEB;">
 						<div class="row">
 							<div class="under-content-div">
@@ -181,8 +184,7 @@
 											{{$val['lot_status']}}
 										</p>
 									</div>
-									<div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
-										style="--value:80"></div>
+								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>
 								</div>
 								<div class="col-12 d-grid gap-2">
 									<a target="_blank" href={{route('clientsCreativelotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
@@ -205,6 +207,10 @@
 			<div class="row box-container-responsive">
 
 				@foreach ($resDataCatlog as $key => $val)
+				@php
+					$overall_progress = $val['overall_progress'];
+					$overall_progress = intval(str_replace('%', '', $overall_progress));
+				@endphp	
 				<div class="col-lg-3 box" style="background: #EBEBEB;">
 					<div class="row">
 						<div class="under-content-div">
@@ -228,8 +234,7 @@
 										{{$val['lot_status']}}
 									</p>
 								</div>
-								<div role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"
-									style="--value:80"></div>
+								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a target="_blank" href={{route('clientsCatloglotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"

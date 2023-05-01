@@ -108,66 +108,69 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach ($wrc_detail as $wrc_index => $wrc_row)
+				@if ($lot_detail[0]['lot_status'] != 'Inward')
+					@foreach ($wrc_detail as $wrc_index => $wrc_row)
+						<tr>
+							<td class="table-column" style="position: relative;">
+								<p style="cursor: pointer;" onclick="showhideli({{$wrc_index}} , 'wrc')">
+									{{$wrc_row['wrc_number']}}
+								</p>
+								<div class="card-div d-none" id="wrcInfo{{$wrc_index}}">
+									<div class="row">
+										<div class="col-sm-8">
+											{{$wrc_row['wrc_number']}}
+										</div>
+										<div class="col-sm-4" style="text-align: right">
+											Quantity
+										</div>
+										<div class="col-sm-8">
+											{{dateFormet_dmy($wrc_row['wrc_created_at'])}}
+										</div>
+										<div class="col-sm-4" style="text-align: right">
+											{{$wrc_row['wrc_order_qty']}}
+										</div>
+										<div class="col-sm-12">Project name</div>
+										<div class="col-sm-12"></div>
+									</div>
+								</div>
+							</td>
+							<td class="table-column">{{dateFormet_dmy($wrc_row['wrc_created_at'])}}</td>
+							<td class="table-column">{{$wrc_row['wrc_order_qty']}}</td>
+							<td class="table-column">{{$wrc_row['qc_status'] == 'Done' ? $wrc_row['cata_sum'] : '-'}}</td>
+							<td class="table-column table-invoice">{{$wrc_row['submission_status']}}</td>
+							<td class="table-column" style="position: relative;">
+								<button style="padding: 5px"onclick="showhideli({{$wrc_index}} , 'link')">View Links</button>
+								<div class="card-div d-none" id="wrcLink{{$wrc_index}}">
+									<div class="row">
+										@php
+											$final_links = $wrc_row['final_links'];
+											$final_links_arr = explode(",",$final_links);                                
+											$tot_final_links = count($final_links_arr);
+										@endphp
+										<div class="col-sm-12">
+											@if ($tot_final_links > 0 && $final_links != '' && $final_links != null )
+												@foreach ($final_links_arr as $final_links_data)
+													<p  class="m-0 p-0" style="white-space: pre-wrap; word-wrap: break-word;">
+														<a href="{{$final_links_data}}" target="_blank" rel="noopener noreferrer">{{$final_links_data}}</a>
+													</p>
+												@endforeach
+											@else
+													<p class="m-0 p-0">No links available</p>
+											@endif
+
+										</div>
+									</div>
+								</div>
+
+							</td>
+							<td class="table-column table-invoice">{{$wrc_row['invoiceNumber']}}</td>
+						</tr>
+					@endforeach
+				@else
 					<tr>
-						<td class="table-column" style="position: relative;">
-							<p style="cursor: pointer;" onclick="showhideli({{$wrc_index}} , 'wrc')">
-								{{$wrc_row['wrc_number']}}
-							</p>
-							<div class="card-div d-none" id="wrcInfo{{$wrc_index}}">
-								<div class="row">
-									<div class="col-sm-8">
-										{{$wrc_row['wrc_number']}}
-									</div>
-									<div class="col-sm-4" style="text-align: right">
-										Quantity
-									</div>
-									<div class="col-sm-8">
-										{{dateFormet_dmy($wrc_row['wrc_created_at'])}}
-									</div>
-									<div class="col-sm-4" style="text-align: right">
-										{{$wrc_row['wrc_order_qty']}}
-									</div>
-									<div class="col-sm-12">Project name</div>
-									<div class="col-sm-12"></div>
-								</div>
-							</div>
-						</td>
-						<td class="table-column">{{dateFormet_dmy($wrc_row['wrc_created_at'])}}</td>
-						<td class="table-column">{{$wrc_row['wrc_order_qty']}}</td>
-						<td class="table-column">{{$wrc_row['qc_status'] == 'Done' ? $wrc_row['cata_sum'] : '-'}}</td>
-						<td class="table-column table-invoice">{{$wrc_row['submission_status']}}</td>
-						<td class="table-column" style="position: relative;">
-							<button style="padding: 5px"onclick="showhideli({{$wrc_index}} , 'link')">View Links</button>
-							<div class="card-div d-none" id="wrcLink{{$wrc_index}}">
-								<div class="row">
-									@php
-										$final_links = $wrc_row['final_links'];
-										$final_links_arr = explode(",",$final_links);                                
-          					$tot_final_links = count($final_links_arr);
-									@endphp
-									<div class="col-sm-12">
-										@if ($tot_final_links > 0 && $final_links != '' && $final_links != null )
-											@foreach ($final_links_arr as $final_links_data)
-												<p  class="m-0 p-0" style="white-space: pre-wrap; word-wrap: break-word;">
-													<a href="{{$final_links_data}}" target="_blank" rel="noopener noreferrer">{{$final_links_data}}</a>
-												</p>
-											@endforeach
-										@else
-												<p class="m-0 p-0">No links available</p>
-										@endif
-
-									</div>
-								</div>
-							</div>
-
-						</td>
-						<td class="table-column table-invoice">{{$wrc_row['invoiceNumber']}}</td>
+						<td colspan="7"> WRC not generated</td>
 					</tr>
-				@endforeach
-
-				
-				
+			@endif
 			</tbody>
 		</table>
 	</div>
