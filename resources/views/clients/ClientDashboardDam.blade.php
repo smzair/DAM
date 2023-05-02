@@ -136,7 +136,7 @@
 								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>
 							</div>
 							<div class="col-12 d-grid gap-2">
-								<a target="_blank" href={{route('clientsShootlotTimelineNew',$val['id'])}} class="btn border rounded-0 btn-secondary" type="button"
+								<a href={{route('clientsShootlotTimelineNew',$val['id'])}} class="btn border rounded-0 btn-secondary" type="button"
 									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
 									View full details
 								</a>
@@ -187,7 +187,7 @@
 								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>
 								</div>
 								<div class="col-12 d-grid gap-2">
-									<a target="_blank" href={{route('clientsCreativelotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
+									<a href={{route('clientsCreativelotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
 										style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
 										View full details
 									</a>
@@ -237,7 +237,7 @@
 								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>
 							</div>
 							<div class="col-12 d-grid gap-2">
-								<a target="_blank" href={{route('clientsCatloglotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
+								<a href={{route('clientsCatloglotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
 									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
 									View full details
 								</a>
@@ -287,7 +287,7 @@
 									style="--value:{{$overall_progress}}"></div>
 							</div>
 							<div class="col-12 d-grid gap-2">
-								<a target="_blank" href={{route('clientsEditorLotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
+								<a href={{route('clientsEditorLotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
 									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
 									View full details
 								</a>

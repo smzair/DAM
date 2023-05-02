@@ -83,7 +83,7 @@ class CreatLots extends Model
       DB::raw('GROUP_CONCAT(creative_upload_links.copy_link) as copy_links'),
       'creative_submissions.id as submissions_id',
       'creative_submissions.submission_date as submission_date',
-      'creative_submissions.Status as status',
+      'creative_submissions.Status as status'
     )->orderBy('creative_wrc.id')->orderBy('creative_allocation.id')->orderBy('creative_time_hash.updated_at')->orderBy('creative_submissions.id');
 
     $wrc_detail_query = $wrc_detail_query->groupBy('creative_allocation.wrc_id');

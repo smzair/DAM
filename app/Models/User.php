@@ -158,7 +158,7 @@ class User extends Authenticatable
           'users.phone as company_phone',
           'users.company_logo',
           'users.last_name as company_last_name',
-          'users.email as company_email',
+          'users.email as company_email'
         );
 
       }else{
@@ -171,7 +171,7 @@ class User extends Authenticatable
           'parent_users.phone as company_phone',
           'parent_users.company_logo',
           'parent_users.last_name as company_last_name',
-          'parent_users.email as company_email',
+          'parent_users.email as company_email'
         );
       }
       $data = $data_query->first()->toArray();

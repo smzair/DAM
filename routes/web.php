@@ -540,11 +540,12 @@ Route::post('Editing-client-wrc-AR', [EditingClientARController::class, 'Editing
 
 });
 
+Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
+
 Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
     Route::get('/clients-user-list', [ClientUserManagementController::class, 'ClientsUserList'])->name('ClientsUserList');
     Route::post('/Update-clients-user', [ClientUserManagementController::class, 'updateClientsUser'])->name('updateClientsUser');
     Route::get('/clients-activity-log', [ClientUserManagementController::class, 'ClientsActivityLog'])->name('ClientsActivityLog');
-    Route::post('manage-client-dam', [UserController::class, 'manage_client_dam'])->name('manage_client_dam'); // manage client dam
     
     Route::get('/Admin-Control', [AdminControlController::class, 'index'])->name('AdminControl');
     Route::post('/get-service-lot-number', [AdminControlController::class, 'getLotNumber']);
