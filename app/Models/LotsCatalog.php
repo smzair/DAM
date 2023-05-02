@@ -73,8 +73,10 @@ class LotsCatalog extends Model
     $wrc_detail = $wrc_detail_query->get()->toArray();
     // dd($lot_detail, $wrc_detail_query->toSql(), $wrc_detail);
 
+    $creative_and_cataloging_lot_statusArr = creative_and_cataloging_lot_statusArr();
     $cataloging_wrc_count = DB::table('catlog_wrc')->where('lot_id', $id)->count();
-    $lot_status = $cataloging_wrc_count > 0 ? 'WRC Generated' : 'Inward';
+    $lot_status = $cataloging_wrc_count > 0 ? $creative_and_cataloging_lot_statusArr[1] : $creative_and_cataloging_lot_statusArr[0];
+    
     $wrc_progress = $cataloging_wrc_count > 0 ? '20' : '0';
     $overall_progress = $cataloging_wrc_count > 0 ? '40' : '20';
 
@@ -103,6 +105,7 @@ class LotsCatalog extends Model
       if ($copy_sum > 0 || $cata_sum > 0) {
         $lot_detail[0]['wrc_assign']  = "10%";
         $lot_detail[0]['overall_progress']  = "50%";
+        $lot_detail[0]['lot_status']  = $creative_and_cataloging_lot_statusArr[2];
       }
 
       if (($alloacte_to_copy_writer == 1 && $sku_count == $copy_sum && $sku_count == $cata_sum) || ($alloacte_to_copy_writer == 0 && $sku_count == $cata_sum)) {
@@ -142,12 +145,15 @@ class LotsCatalog extends Model
     if (count($wrc_detail) == $count_wrc && count($wrc_detail) > 0) {
       $lot_detail[0]['wrc_assign']  = "20%";
       $lot_detail[0]['overall_progress']  = "60%";
+      $lot_detail[0]['lot_status']  = $creative_and_cataloging_lot_statusArr[2];
       if (count($wrc_detail) == $count_qc) {
         $lot_detail[0]['wrc_qc']  = "20%";
         $lot_detail[0]['overall_progress']  = "80%";
+        $lot_detail[0]['lot_status']  = $creative_and_cataloging_lot_statusArr[3];
         if (count($wrc_detail) == $count_submission) {
           $lot_detail[0]['wrc_submission']  = "20%";
           $lot_detail[0]['overall_progress']  = "100%";
+          $lot_detail[0]['lot_status']  = $creative_and_cataloging_lot_statusArr[4];
         }
       }
     }

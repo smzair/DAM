@@ -143,10 +143,10 @@
 							<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
 								data-bs-parent="#accordionFlushExample">
 								<div class="accordion-body">
-									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
-										style="width: 100%;">Active</button>
-									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
-										style="width: 100%;">Completed</button>
+									<a href="{{route('TrackLots', ['lotStatus' => 'active'])}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Active</a>
+									<a href="{{route('TrackLots', ['lotStatus' => 'completed'])}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Completed</a>
 								</div>
 							</div>
 						</div>

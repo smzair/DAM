@@ -9,10 +9,6 @@ use App\Models\EditorLotModel;
 use App\Models\editorSubmission;
 use App\Models\Lots;
 use App\Models\LotsCatalog;
-use App\Models\Skus;
-use App\Models\submissions;
-use App\Models\uploadraw;
-use App\Models\Wrc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 class ClientDashboardControllerNew extends Controller
 {
 
-  public static function index()
+  public static function index($lotStatus = 'all')
   {
     $resData = array();
     $resDataShoot =  array();
@@ -45,6 +41,7 @@ class ClientDashboardControllerNew extends Controller
     $parent_client_id = $user_detail['parent_client_id'];
 
     if ($role == "Client" || $role == "Sub Client") {
+      $creative_and_cataloging_lot_statusArr = creative_and_cataloging_lot_statusArr();
 
       /* response data to get Creative lot information with status start*/
       $resData =  CreatLots::orderBy('creative_lots.id', 'DESC')->whereIn('creative_lots.brand_id', $brand_arr);
@@ -60,6 +57,15 @@ class ClientDashboardControllerNew extends Controller
         $LotTimelineData = CreatLots::LotTimeline($val['id']);
         $lot_detail = $LotTimelineData['lot_detail']; 
         $resData[$key] = $lot_detail[0];
+        if($lotStatus == 'active'){
+          if ($resData[$key]['lot_status'] == $creative_and_cataloging_lot_statusArr[4]) {
+            unset($resData[$key]);
+          }
+        }elseif($lotStatus == 'completed'){
+          if ($resData[$key]['lot_status'] != $creative_and_cataloging_lot_statusArr[4]) {
+            unset($resData[$key]);
+          }
+        }        
       }
 
       /* response data to get catlog lot information with status start*/
@@ -77,7 +83,16 @@ class ClientDashboardControllerNew extends Controller
         $LotTimelineData = LotsCatalog::LotTimeline($val['id']);
         $lot_detail = $LotTimelineData['lot_detail']; 
         $resDataCatlog[$key] = $lot_detail[0];
-        
+        if($lotStatus == 'active'){
+          if ($resDataCatlog[$key]['lot_status'] == $creative_and_cataloging_lot_statusArr[4]) {
+            unset($resDataCatlog[$key]);
+          }
+        }elseif($lotStatus == 'completed'){
+          if ($resDataCatlog[$key]['lot_status'] != $creative_and_cataloging_lot_statusArr[4]) {
+            unset($resDataCatlog[$key]);
+          }
+        }
+
       }
 
       /* response data to get editor lot information with status start*/
@@ -99,6 +114,15 @@ class ClientDashboardControllerNew extends Controller
         $LotTimelineData = EditorLotModel::clientsEditorLotTimeline($val['lot_id']);
         $lot_detail = $LotTimelineData['lot_detail']; 
         $resDataEditor[$key] = $lot_detail[0];
+        if($lotStatus == 'active'){
+          if ($resDataEditor[$key]['lot_status'] == $creative_and_cataloging_lot_statusArr[4]) {
+            unset($resDataEditor[$key]);
+          }
+        }elseif($lotStatus == 'completed'){
+          if ($resDataEditor[$key]['lot_status'] != $creative_and_cataloging_lot_statusArr[4]) {
+            unset($resDataEditor[$key]);
+          }
+        }        
       }
       // dd($resDataEditor);
 
@@ -115,12 +139,22 @@ class ClientDashboardControllerNew extends Controller
       }
 
       $resDataShoot = $resDataShoot->get()->toArray();
+      $shoot_lot_statusArr = shoot_lot_statusArr();
 
       foreach ($resDataShoot as $key => $val) {
         $LotTimelineData = Lots::LotTimeline($val['lot_id']);
         $lot_detail = $LotTimelineData['lot_detail']; 
         $wrc_detail = $LotTimelineData['wrc_detail'];
         $resDataShoot[$key] = $lot_detail[0];
+        if($lotStatus == 'active'){
+          if ($resDataShoot[$key]['lot_status'] == $shoot_lot_statusArr[4]) {
+            unset($resDataShoot[$key]);
+          }
+        }elseif($lotStatus == 'completed'){
+          if ($resDataShoot[$key]['lot_status'] != $shoot_lot_statusArr[4]) {
+            unset($resDataShoot[$key]);
+          }
+        }
       }
       /* response data to get shoot lot information with status end*/
     } else {

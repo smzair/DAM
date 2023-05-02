@@ -89,7 +89,9 @@ class Lots extends Model {
 
         $wrc_count = Wrc::where('lot_id',$id)->count();
 
-        $lot_status = $wrc_count > 0 ? 'WRC Generated' : 'Inward';
+        $shoot_lot_statusArr = shoot_lot_statusArr();
+        $lot_status = $wrc_count > 0 ? $shoot_lot_statusArr[1] : $shoot_lot_statusArr[0];
+        
         $wrc_progress = $wrc_count > 0 ? '20' : '0';
         $overall_progress = $wrc_count > 0 ? '40' : '20';
         $lot_detail[0]['inward_quantity'] = 0;
@@ -134,7 +136,7 @@ class Lots extends Model {
                     $upload_raw_info_id = [];
                     if(count($upload_raw_info) > 0){
                         $lot_detail[0]['allocated_created_at'] = $upload_raw_info[0]['created_at'];
-                        $lot_detail[0]['lot_status']  = 'Shoot started';
+                        $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[3];
                         $lot_detail[0]['overall_progress']  = 60;
                         $lot_detail[0]['wrc_assign']  = "20";
                         $upload_raw_info_id = array_column($upload_raw_info, 'id');
@@ -145,7 +147,7 @@ class Lots extends Model {
                     $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->get()->toArray();
                     
                     if(count($editor_qc_info) > 0){
-                        $lot_detail[0]['lot_status']  = 'Submissions Pending';
+                        $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[3];
                         $lot_detail[0]['overall_progress']  = 80;
                         $lot_detail[0]['wrc_qc']  = "20";
                         $lot_detail[0]['qc_done_at'] = $editor_qc_info[0]['created_at'];
@@ -158,7 +160,7 @@ class Lots extends Model {
                         if(count($editor_submission_info) > 0 && count($editor_submission_info) == count($editor_qc_info) ){
                             $wrc_info[$key]['submission_status'] =  'Done';
 
-                            $lot_detail[0]['lot_status']  = 'Submissions Done';
+                            $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[4];
                             $lot_detail[0]['overall_progress']  = 100;
                             $lot_detail[0]['wrc_submission']  = "20";
                             $lot_detail[0]['submission_date'] = $editor_submission_info[0]['updated_at'];
