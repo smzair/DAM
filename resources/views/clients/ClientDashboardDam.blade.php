@@ -4,17 +4,30 @@
 @endsection
 
 @section('main_content')
+<?php 
+$lot_status_is = $lot_status_val = "";
+	if(isset($other_data)){
+		if(isset($other_data['lot_status'])){
+			$lot_status_is = $other_data['lot_status'];
+		}
+	}
+	$lot_status_arr = ['all' , 'active' , 'completed'];
+	if (in_array($lot_status_is, $lot_status_arr)) {
+		$lot_status_val = $lot_status_is;
+	} 
+?>
+
 <div class="row" style="margin-top:24px ;">
 	<div class=" col-12 d-flex justify-content-between">
 		<h4 class="headingF">
-			Track Lots - Active
+			Track Lots - {{$lot_status_val}}
 		</h4>
 	</div>
 </div>
 <div class="row" style="margin-top: 12px;">
 	<div class="col-12">
 		<p class="underheadingF">
-			Currently, you are seeing active shoot lots.
+			Currently, you are seeing {{$lot_status_val}} lots.
 		</p>
 	</div>
 </div>
@@ -93,7 +106,7 @@
 </div>
 <div class="row" style="margin-top: 40px;">
 	<div class="col-12">
-		<p class="totallotF">Total Lots: {{ count($resDataShoot) + count($resData) + count($resDataCatlog) + count($resDataEditor) }}</p>
+		<p class="totallotF">Total Lots: {{ count($shoot_lots) + count($creative_lots) + count($lots_catalog) + count($editor_lots) }}</p>
 	</div>
 </div>
 
@@ -105,7 +118,7 @@
 		<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
 			tabindex="0">
 			<div class="row box-container-responsive">
-				@foreach ($resDataShoot as $key => $val)
+				@foreach ($shoot_lots as $key => $val)
 				@php
 					$overall_progress = $val['overall_progress'];
 					$overall_progress = intval(str_replace('%', '', $overall_progress));
@@ -156,7 +169,7 @@
 			tabindex="0">
 			<div class="row box-container-responsive">
 
-				@foreach ($resData as $key => $val)
+				@foreach ($creative_lots as $key => $val)
 				@php
 					$overall_progress = $val['overall_progress'];
 					$overall_progress = intval(str_replace('%', '', $overall_progress));
@@ -206,7 +219,7 @@
 			tabindex="0">
 			<div class="row box-container-responsive">
 
-				@foreach ($resDataCatlog as $key => $val)
+				@foreach ($lots_catalog as $key => $val)
 				@php
 					$overall_progress = $val['overall_progress'];
 					$overall_progress = intval(str_replace('%', '', $overall_progress));
@@ -255,7 +268,7 @@
 		<div class="tab-pane fade" id="pills-editing" role="tabpanel" aria-labelledby="pills-editing-tab"
 			tabindex="0">
 			<div class="row box-container-responsive">
-				@foreach ($resDataEditor as $key => $val)
+				@foreach ($editor_lots as $key => $val)
 				@php
 						$overall_progress = $val['overall_progress'];
 						$overall_progress = intval(str_replace('%', '', $overall_progress));

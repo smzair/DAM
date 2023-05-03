@@ -619,6 +619,8 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
 
     Route::get('/clients-shoot-lot-timelineNew/{id}', [ClientDashboardControllerNew::class, 'clientsShootlotTimelineNew'])->name('clientsShootlotTimelineNew'); // Shoot
     
+    Route::get('/track-lots/{lotStatus?}', [ClientDashboardControllerNew::class, 'index'])->name('TrackLots');
+    
     Route::get('/Uploaded-file-list', [AdminControlController::class, 'AdminControlUploadedFileListForClient'])->name('AdminControlUploadedFileList'); // Admin Control Uploaded File List
     // ClientProfile Routes
     Route::get('/Client-Profile', [ClientProfileController::class, 'index'])->name('ClientProfile'); 
@@ -642,6 +644,10 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/Notification-Detail/{id}', [ClientNotificationController::class, 'ClientNotificatioDetail'])->name('ClientNotificatioDetail'); 
     Route::get('/set-notification-seen', [ClientNotificationController::class, 'setNotificationSeen'])->name('setNotificationSeen'); 
     Route::post('/set-notification-seen', [ClientNotificationController::class, 'setNotificationSeen']); 
+
+    // DAM New UI Routes
+    Route::post('/gloableSearch', [ClientCommonController::class, 'gloableSearch'])->name('gloableSearch');
+    Route::get('/gloableSearch', [App\Http\Controllers\HomeController::class, 'index']);// client raw images mgmt when hit common search
 
 });
 
