@@ -645,6 +645,10 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/set-notification-seen', [ClientNotificationController::class, 'setNotificationSeen'])->name('setNotificationSeen'); 
     Route::post('/set-notification-seen', [ClientNotificationController::class, 'setNotificationSeen']); 
 
+    // DAM New UI Routes
+    Route::post('/gloableSearch', [ClientCommonController::class, 'gloableSearch'])->name('gloableSearch');
+    Route::get('/gloableSearch', [App\Http\Controllers\HomeController::class, 'index']);// client raw images mgmt when hit common search
+
 });
 
 // route for global search in file manager system

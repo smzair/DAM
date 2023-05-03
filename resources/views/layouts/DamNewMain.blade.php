@@ -26,6 +26,12 @@
       $ClientNotification = getNotificationList($user_data);
       $tot_notification = count($ClientNotification);
       // dd($tot_notification , $ClientNotification);
+			$search_query = "";
+			if(isset($other_data)){
+				if(isset($other_data['search_query'])){
+					$search_query = $other_data['search_query'];
+				}
+			}
     ?>
 		<!-- Top navigation bar -->
 		<div class="top-section">
@@ -33,20 +39,25 @@
 				<div class="hamburger w-100">
 					<div class="row">
 						<div class="col-sm-1 d-flex flex-row align-item-center justify-content-space-around">
-							<h2 class="p-0 m-0">ODN</h2>
+							<a style="text-decoration: none;color:#f4fbff; :hover {color: #f4fbff} " href="{{route('home')}}">
+								<h2 class="p-0 m-0">ODN</h2>
+							</a>
 						</div>
 						<div class="col-sm-2 d-flex flex-row align-item-center justify-content-space-around">
 							<p class="p-0 m-0"><?php echo date('l, d M Y') ?></p>
 						</div>
 						<div class="col-sm-6">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Search...">
-								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" type="button">
-										<i class="fa fa-search"></i>
-									</button>
+							<form action="{{route('gloableSearch')}}" method="post">
+								@csrf
+								<div class="input-group">
+									<input type="text" name="search_query" value="{{$search_query}}" class="form-control" placeholder="Search...">
+									<div class="input-group-append">
+										<button class="btn btn-outline-secondary" type="submit">
+											<i class="fa fa-search"></i>
+										</button>
+									</div>
 								</div>
-							</div>
+							</form>
 						</div>
 						<div class="col-sm-3 d-flex" style="justify-content:space-around;">
 							<div class="notification-bell">
