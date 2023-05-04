@@ -17,6 +17,7 @@
   <link rel="icon" href="{{ asset('IMG/ODN Logo.jpeg')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style.css')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -174,12 +175,14 @@
 								</button>
 							</h2>
 							<div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-								data-bs-parent="#accordionFlushExample">
+              data-bs-parent="#accordionFlushExample">
 								<div class="accordion-body">
-									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
-										style="width: 100%;">Active</button>
-									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
-										style="width: 100%;">Completed</button>
+									<a href="{{route('your_assets_files')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">File</a>
+									<a href="#" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Links</a>
+									<a href="#" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Favorites</a>
 								</div>
 							</div>
 						</div>
