@@ -216,16 +216,16 @@ class ClientCommonController extends Controller
         }
 
         /* Gloable search data for Editing */
-        $lots_query_cataloging = Lots::leftJoin('editing_wrcs', 'editing_wrcs.lot_id', '=', 'lots.id')
+        $lots_query_cataloging = Lots::leftJoin('wrc', 'wrc.lot_id', '=', 'lots.id')
         ->whereIn('lots.brand_id', $brand_arr)
         ->where(function($query) use ($searchValue) {
-            $query->where('lots.lot_id', 'like', '%' . $searchValue . '%')->orWhere('editing_wrcs.wrc_number', 'like', '%' . $searchValue . '%');
+            $query->where('lots.lot_id', 'like', '%' . $searchValue . '%')->orWhere('wrc.wrc_id', 'like', '%' . $searchValue . '%');
         })->
         select(
             'lots.id as lot_id',
             'lots.lot_id as lot_number',
-            'editing_wrcs.id as wrc_id',
-            'editing_wrcs.wrc_number'
+            'wrc.id as wrc_id',
+            'wrc.wrc_id as wrc_number'
         )->groupby('lots.id');        
         $shoot_lots = $lots_query_cataloging->where('lots.user_id', $parent_client_id);
         $shoot_lots = $lots_query_cataloging->get()->toArray();

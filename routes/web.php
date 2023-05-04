@@ -26,6 +26,7 @@ use App\Http\Controllers\ClientsControllers\ClientDashboardController;
 use App\Http\Controllers\ClientsControllers\ClientDashboardControllerNew;
 use App\Http\Controllers\ClientsControllers\ClientProfileController;
 use App\Http\Controllers\ClientsControllers\ClientSettingsController;
+use App\Http\Controllers\ClientsControllers\User_Assets_Controller;
 use App\Http\Controllers\ClientUserManagementController;
 use App\Http\Controllers\ConsolidatedLotController;
 use App\Http\Controllers\CreativeQcController;
@@ -648,6 +649,10 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     // DAM New UI Routes
     Route::post('/gloableSearch', [ClientCommonController::class, 'gloableSearch'])->name('gloableSearch');
     Route::get('/gloableSearch', [App\Http\Controllers\HomeController::class, 'index']);// client raw images mgmt when hit common search
+
+    Route::get('/your-assets-Files', [User_Assets_Controller::class, 'your_assets_files'])->name('your_assets_files');
+    Route::get('/your-assets-shoot-wrcs/{id}', [User_Assets_Controller::class, 'your_assets_shoot_wrcs'])->name('your_assets_shoot_wrcs');
+    Route::get('/your-assets-editing-wrcs/{id}', [User_Assets_Controller::class, 'your_assets_editing_wrcs'])->name('your_assets_editing_wrcs');
 
 });
 

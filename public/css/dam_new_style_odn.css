@@ -105,6 +105,38 @@ body {
   font-size: 16px;
 }
 
+.under-content-div .lotnoF{
+  font-size: 14px;
+}
+
+.lot-date {
+  font-weight: 400;
+  font-size: 12px;
+  color: #9F9F9F;
+  margin-top: -8px;
+}
+
+.inward-qty {
+  font-weight: 400;
+  font-size: 12px;
+  color: #9F9F9F;
+}
+
+.inward-qty-num {
+  font-size: 14px;
+  line-height: 24px;
+  color: #9F9F9F;
+  margin-top: -10px;
+}
+
+.view-img {
+  font-weight: 500;
+  font-size: 14px;
+  color: #9F9F9F;
+  margin-top: 8px;
+  padding: 16px;
+}
+
 /* Lot Details Css */
 
 .back-btn {
@@ -269,6 +301,339 @@ body {
   margin-top: 430px;
 }
 
+/* your assets click lot style */
+
+.side-lot {
+  font-weight: 500;
+  font-size: 16px;
+  color: #9F9F9F;
+  word-wrap: break-word;
+}
+
+.side-text {
+  font-weight: 400;
+  font-size: 11px;
+  color: #9F9F9F;
+}
+
+.side-text2 {
+  font-weight: 400;
+  font-size: 16px;
+  color: #9F9F9F;
+}
+
+.share {
+  font-weight: 500;
+  font-size: 14px;
+  color: #9F9F9F;
+}
+
+.link {
+  font-weight: 400;
+  font-size: 16px;
+  color: #9F9F9F;
+  text-decoration: none;
+}
+
+.link-back {
+  background: #EBEBEB;
+  padding: 16px;
+}
+
+.breadcrumb-deco {
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 16px;
+  color: #9F9F9F;
+}
+
+.TAGS {
+  font-weight: 400;
+  font-size: 14px;
+  color: #9F9F9F;
+}
+
+.under-acco-button {
+  font-weight: 400;
+  font-size: 12px;
+  background: #D1D1D1;
+  width: 100%;
+  color: #9F9F9F;
+}
+
+.Assign-tags {
+  font-weight: 400;
+  font-size: 12px;
+  color: #808080;
+}
+
+.heading-details {
+  font-weight: 500;
+  font-size: 14px;
+  color: #9F9F9F;
+}
+
+.remove-tag {
+  font-weight: 400;
+  font-size: 12px;
+  color: #BE5656;
+}
+
+.add-more-tag-btn {
+  font-weight: 400;
+  font-size: 12px;
+  color: #9F9F9F;
+  padding: 10px;
+}
+
+.div-accor-button {
+  background: #D1D1D1;
+  font-weight: 400;
+  font-size: 16px;
+  color: #9F9F9F;
+}
+
+.editedandraw-img-btn {
+  padding: 16px;
+  gap: 8px !important;
+  width: 393px !important;
+  height: 52px !important;
+  font-weight: 500;
+  font-size: 14px;
+  background: #D1D1D1 !important;
+  border-radius: 0px !important;
+  border: 2px solid #ffffff !important;
+}
+
+.Adaptation {
+  background: #EBEBEB;
+  height: 56px;
+  font-weight: 400;
+  font-size: 16px;
+  color: #9F9F9F;
+  width: 100%;
+}
+
+.brand-text {
+  word-wrap: break-word;
+  font-weight: 500;
+  font-size: 12px;
+  margin-top: 4px;
+  color: #9F9F9F;
+}
+
+.brand-div {
+  background: #EBEBEB;
+  height: 64px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.brand {
+  font-weight: 400;
+  font-size: 16px;
+  color: #9F9F9F;
+  margin-top: 9px;
+}
+
+.brand-div2 {
+  height: 56px;
+  background: #EBEBEB;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.brand-img {
+  padding: 16px;
+}
+
+.brand-img-m {
+  margin-left: 0px;
+  margin-right: 0px;
+  background: #EBEBEB;
+}
+
+.brand-img-name {
+  font-weight: 400;
+  font-size: 16px;
+  color: #9F9F9F;
+}
+
+
+/* Admin Panel */
+
+.create-user-btn {
+  font-weight: 500;
+  font-size: 16px;
+  color: #9F9F9F;
+}
+
+.back-btn {
+  color: #9F9F9F;
+  background: #FFFFFF;
+  margin-top: 24px;
+  /* margin-left: 19px; */
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.create-user-txt {
+  font-weight: 400;
+  font-size: 24px;
+  color: #9F9F9F;
+  margin-top: 35px;
+}
+
+.user-form {
+  font-weight: 400;
+  font-size: 16px;
+  color: #B8B8B8;
+}
+
+.mandatory {
+  font-weight: 400;
+  font-size: 12px;
+  color: #9F9F9F;
+}
+
+.user-btn {
+  font-weight: 500;
+  font-size: 16px;
+  color: #EBEBEB;
+  height: 56px;
+  background: #9F9F9F;
+}
+
+.default-pass {
+  font-weight: 400;
+  font-size: 11px;
+  color: #9F9F9F;
+}
+
+.odn-sign {
+  font-size: 16px;
+  line-height: 24px;
+  color: #9F9F9F;
+}
+
+.table-head {
+  font-weight: 500;
+  font-size: 14px;
+  color: #9F9F9F;
+
+}
+
+.table-col {
+  font-weight: 400;
+  font-size: 16px;
+  color: #9F9F9F;
+}
+
+.table-desc {
+  font-weight: 500;
+  font-size: 12px;
+  color: #9F9F9F;
+  background: #EBEBEB;
+  padding: 5px;
+}
+
+.log-out-button {
+  font-weight: 500;
+  font-size: 14px;
+  text-align: left;
+  color: #808080;
+  /* margin-top: 400px; */
+  border-radius: 0px;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.log-btn {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+
+
+/* form floating on top */
+
+.form-floating {
+  position: relative;
+}
+
+.form-floating label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 0.9rem;
+  opacity: 0.5;
+  transition: all 0.2s ease-out;
+  pointer-events: none;
+}
+
+.form-floating input,
+.form-floating textarea {
+  padding: 1.5rem 0.5rem 0.5rem;
+  font-size: 1rem;
+}
+
+.form-floating input:focus,
+.form-floating textarea:focus {
+  border-color: #ced4da;
+  box-shadow: none;
+}
+
+.form-floating input:focus~label,
+.form-floating textarea:focus~label,
+.form-floating input:not(:placeholder-shown)~label,
+.form-floating textarea:not(:placeholder-shown)~label {
+  transform: translate(0, -50%);
+  top: 0;
+  left: 0.5rem;
+  opacity: 1;
+  background-color: white;
+  padding: 0 0.25rem;
+  color: #B8B8B8;
+  font-weight: 400;
+  font-size: 11px;
+}
+
+.profile-btn {
+  width: 100%;
+  background: #EBEBEB;
+  font-weight: 500;
+  font-size: 16px;
+  color: #B8B8B8;
+  padding: 16px;
+  border-radius: 0px;
+}
+
+.verification-div {
+  padding: 5px;
+  margin-left: 0px;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1325px) {
+  .siderbar-button {
+    font-size: 8px;
+    font-weight: 700;
+  }
+
+  .box-container-responsive {
+    justify-content: center;
+    margin-right: 0px !important;
+  }
+
+  .lots-bar {
+    display: contents;
+  }
+
+  .div-accor-button {
+    font-size: 10px;
+  }
+}
+
 @media only screen and (min-width: 576px) and (max-width: 991px) {
   .main-container-resp {
     width: 100%;
@@ -280,6 +645,28 @@ body {
 
   .log-btn-mob-sty {
     margin-top: 0px;
+  }
+
+  .log-out-button {
+    margin-top: 0px !important;
+  }
+
+  .lots-bar {
+    display: contents;
+  }
+
+  .wrc-box {
+    display: grid !important;
+    justify-content: center !important;
+  }
+
+  .wrc-detail-img {
+    display: grid !important;
+    justify-content: center !important;
+  }
+
+  .brand-text {
+    margin-top: 14px;
   }
 }
 
@@ -367,6 +754,52 @@ body {
     font-weight: 500;
     font-size: 12px;
     color: #9F9F9F;
+  }
+
+  .log-out-button {
+    margin-top: 0px !important;
+  }
+
+  .tab-button {
+    width: 269px !important;
+  }
+
+  .your_assets_tab .tab-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    gap: 8px !important;
+
+    width: 539px !important;
+    height: 52px !important;
+    font-weight: 500;
+    font-size: 14px;
+
+    /* ODN Color/Neutral/100 */
+
+    background: #D1D1D1 !important;
+    border-radius: 0px !important;
+    /* Inside auto layout */
+    border: 2px solid #ffffff !important;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+  }
+
+  .lots-bar {
+    display: contents !important;
+  }
+
+  .wrc-detail-img {
+    display: grid !important;
+    justify-content: center !important;
+  }
+
+  .wrc-box {
+    display: grid !important;
+    justify-content: center !important;
   }
 }
 
