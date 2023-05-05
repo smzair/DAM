@@ -10,6 +10,8 @@
 	$file_manager_permissions = json_decode($user->file_manager_permissions,true);
 	$roledata = getUsersRole($user->id);
 	$user_role = $roledata != null ? $roledata->role_name : '-';
+	$service_is; // get from controller and based on service_is route will be deside on wrc click 
+	// dd($wrc_data);
 @endphp
 
 @if (count($wrc_data) > 0)
