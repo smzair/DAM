@@ -9,6 +9,7 @@ use App\Models\EditorLotModel;
 use App\Models\Lots;
 use App\Models\Skus;
 use App\Models\submissions;
+use App\Models\uploadraw;
 use App\Models\Wrc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -118,6 +119,7 @@ class User_Assets_Controller extends Controller
     return view('clients.ClientAssets.your_assets_files')->with('shoot_lots', $shoot_lots_data)->with('editor_lots', $editor_lots_data);
   }
   
+  // Shoot wrc list
   public function your_assets_shoot_wrcs($lot_id){
     $wrc_data = Wrc::leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->where('wrc.lot_id',$lot_id)->select(
       'wrc.id as wrc_id',
@@ -128,6 +130,8 @@ class User_Assets_Controller extends Controller
     return view('clients.ClientAssets.your_assets_files_wrcs')->with('wrc_data', $wrc_data)->with('service_is' , 'Shoot');
       
   }
+
+  // Editing wrc list
   public function your_assets_editing_wrcs($lot_id){
     
     $wrc_data = EditingWrc::leftJoin('editor_lots', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->where('editing_wrcs.lot_id',$lot_id)->select(
@@ -140,4 +144,88 @@ class User_Assets_Controller extends Controller
     return view('clients.ClientAssets.your_assets_files_wrcs')->with('wrc_data', $wrc_data)->with('service_is' , 'Editing');
 
   }
+
+  // Shoot sku list based on wrc id
+  public function your_assets_shoot_skus($wrc_id){
+    // Edited image skus and adapations
+    $wrc_data = Wrc::leftJoin('commercial', 'wrc.commercial_id', '=', 'commercial.id')->leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->where('wrc.id',$wrc_id)->select(
+      'wrc.id as wrc_id',
+      'wrc.wrc_id as wrc_number',
+      'wrc.lot_id',
+      'lots.lot_id as lot_number',
+      'wrc.commercial_id',
+      'commercial.adaptation_1',
+      'commercial.adaptation_2',
+      'commercial.adaptation_3',
+      'commercial.adaptation_4',
+      'commercial.adaptation_5',
+      'commercial.specfic_adaptation',
+    )->first()->toArray();
+
+    $adaptation_arr = array();
+
+    for($i = 1; $i <= 5 ; $i++){
+      $adaptation_key = 'adaptation_'.$i;
+      if($wrc_data[$adaptation_key] != 'NA' && $wrc_data[$adaptation_key] != null){
+        array_push($adaptation_arr ,$wrc_data[$adaptation_key] );
+      }else{
+        unset($wrc_data[$adaptation_key]);
+      }
+    }
+    $wrc_data['adaptation'] = $adaptation_arr;
+
+    // Raw skus List based on Wrc id.
+    $sku_info_query = Skus::leftJoin('wrc', 'wrc.id', '=', 'Sku.wrc_id')->where('sku.wrc_id', '=' , $wrc_id)->where('sku.status', '=' , '1')->select('Sku.id as sku_id', 'Sku.sku_code','Sku.status', 'sku.wrc_id', 'wrc.wrc_id as wrc_number' );
+    $skus_count = $sku_info_query->count();
+    $raw_skus_data = $sku_info_query->get()->toArray();
+
+    $raw_skus = array();
+    foreach ($raw_skus_data as $key => $row) {
+      $upload_raw_query = uploadraw::where('sku_id', $row['sku_id']);
+      $upload_raw_count = $upload_raw_query->count();
+      if($upload_raw_count > 0){
+        $row['uploadraw'] = $upload_raw_query->get()->toArray();
+        array_push($raw_skus, $row);
+      }
+    }
+    // dd($raw_skus , $wrc_data , $raw_skus_data);
+    return view('clients.ClientAssets.your_assets_files_skus')->with('wrc_data', $wrc_data)->with('raw_skus' , $raw_skus_data);
+  }
+
+  // Shoot sku list based on wrc id and adapdation
+  public function your_assets_shoot_adaptation_skus($id , $adaptation){
+    $wrc_id = base64_decode($id);
+    $adaptation = base64_decode($adaptation);
+    $sku_info_query = Skus::
+    leftJoin('wrc', 'wrc.id', '=', 'Sku.wrc_id')->
+    leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->
+    leftJoin('editor_submission', 'editor_submission.sku_id', '=', 'Sku.id')->
+    where('sku.wrc_id', '=' , $wrc_id)->where('sku.status', '=' , '1')->where('editor_submission.adaptation', '=' , "$adaptation")->where('editor_submission.qc', '=' , "1")->
+    select('Sku.id as sku_id', 'Sku.sku_code','Sku.status', 'sku.wrc_id', 'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number', 'editor_submission.id as submission_id', 'editor_submission.adaptation' , 'editor_submission.filename', DB::raw("COUNT(editor_submission.id) as file_count"))->groupBy('Sku.id');
+    $skus_count = $sku_info_query->count();
+    $raw_skus_data = $sku_info_query->get()->toArray();
+    // dd(count($raw_skus_data) ,$raw_skus_data);
+    return view('clients.ClientAssets.your_assets_shoot_adaptation_skus')->with('raw_skus' , $raw_skus_data);
+  }
+
+  public function your_assets_shoot_edited_images($sku_id){
+    $sku_id = base64_decode($sku_id);
+    $sku_info_query = Skus::
+    leftJoin('wrc', 'wrc.id', '=', 'Sku.wrc_id')->
+    leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->
+    leftJoin('editor_submission', 'editor_submission.sku_id', '=', 'Sku.id')->
+    where('sku.id', '=' , $sku_id)->where('sku.status', '=' , '1')->where('editor_submission.qc', '=' , "1")->
+    select('Sku.id as sku_id', 'Sku.sku_code','Sku.status', 'sku.wrc_id', 'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number', 'editor_submission.id as submission_id', 'editor_submission.adaptation' , 'editor_submission.filename' , 'editor_submission.created_at as created_at');
+    $skus_count = $sku_info_query->count();
+    $raw_skus_files = $sku_info_query->get()->toArray();
+    // dd($raw_skus_files);
+    return view('clients.ClientAssets.your_assets_shoot_skus_uploaded_files')->with('raw_skus_files' , $raw_skus_files)->with('service_is', 'edited');
+
+  }
+
+  public function your_assets_files_shoot_raw_images($sku_id){
+    $sku_id = base64_decode($sku_id);
+    dd($sku_id);
+  }
+    
 }

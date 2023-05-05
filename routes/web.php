@@ -653,6 +653,10 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/your-assets-Files', [User_Assets_Controller::class, 'your_assets_files'])->name('your_assets_files');
     Route::get('/your-assets-shoot-wrcs/{id}', [User_Assets_Controller::class, 'your_assets_shoot_wrcs'])->name('your_assets_shoot_wrcs');
     Route::get('/your-assets-editing-wrcs/{id}', [User_Assets_Controller::class, 'your_assets_editing_wrcs'])->name('your_assets_editing_wrcs');
+    Route::get('/your-assets-shoot-skus/{id}', [User_Assets_Controller::class, 'your_assets_shoot_skus'])->name('your_assets_shoot_skus');
+    Route::get('/your-assets-shoot-skus/{id}/{adaptation}', [User_Assets_Controller::class, 'your_assets_shoot_adaptation_skus'])->name('your_assets_shoot_adaptation_skus');
+    Route::get('/your-assets-shoot-edited_images/{sku_id}', [User_Assets_Controller::class, 'your_assets_shoot_edited_images'])->name('your_assets_shoot_edited_images');
+    Route::get('/your-assets-shoot-raw_images/{sku_id}', [User_Assets_Controller::class, 'your_assets_files_shoot_raw_images'])->name('your_assets_files_shoot_raw_images');
 
 });
 
