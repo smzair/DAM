@@ -24,7 +24,11 @@
 				<li class="breadcrumb-item"><span class="breadcrumb-deco" >{{$raw_skus_files[0]['lot_number']}}</span></li>
 				<li class="breadcrumb-item"><a class="breadcrumb-deco" href="{{route('your_assets_shoot_wrcs' , [$raw_skus_files[0]['lot_id']])}}">WRCs</a></li>
 				<li class="breadcrumb-item"><a class="breadcrumb-deco" href="{{route('your_assets_shoot_skus' , [$raw_skus_files[0]['wrc_id']])}}">{{$raw_skus_files[0]['wrc_number']}}</a></li>
+				
+				@if ($service_is == 'edited')
 				<li class="breadcrumb-item"><a class="breadcrumb-deco" href="{{route('your_assets_shoot_adaptation_skus' , [ base64_encode($raw_skus_files[0]['wrc_id']) , base64_encode($raw_skus_files[0]['adaptation'])])}}">{{$raw_skus_files[0]['adaptation']}}</a></li>
+				@endif
+				
 				<li class="breadcrumb-item active breadcrumb-deco" aria-current="page">{{$raw_skus_files[0]['sku_code']}}
 				</li>
 			</ol>
@@ -38,14 +42,20 @@
 <div class="row" style="margin-top: 12px;">
 
 	@foreach ($raw_skus_files as $row)
-
 		@php
-    $path=  "edited_img_directory/". date('Y', strtotime($row['created_at'])) . "/" . date('M', strtotime($row['created_at'])) . "/" . $row['lot_number'] . "/" . $row['wrc_number'] ;
-		// echo "<br>".$path;
+		if($service_is == 'edited'){
+			$path=  "edited_img_directory/". date('Y', strtotime($row['created_at'])) . "/" . date('M', strtotime($row['created_at'])) . "/" . $row['lot_number'] . "/" . $row['wrc_number']. "/" . $row['adaptation']. "/" .$row['sku_code']. "/" . $row['filename'] ;
+		}elseif ($service_is == 'raw') {
+			$path=  "raw_img_directory/". date('Y', strtotime($row['created_at'])) . "/" . date('M', strtotime($row['created_at'])) . "/" . $row['lot_number'] . "/" . $row['wrc_number']. "/" .$row['sku_code']. "/" . $row['filename'] ;
+		}
+		$img_src = 'IMG/group_10.png';
+		if(file_exists($path)){
+			$img_src = $path;
+		}
 		@endphp
 		<div class="col-sm-6 col-md-4 col-lg-3 mt-2">
 			<div class="card brand-img-m border-0 rounded-0">
-				<img class="card-img-top brand-img" src="{{ asset('IMG/group_10.png')}}" alt="Image">
+				<img class="card-img-top brand-img" src="{{ asset($img_src)}}" alt="Image">
 				<div class="card-body d-flex justify-content-between">
 					<p class="brand-img-name">{{$row['filename']}}</p>
 					<i class="bi bi-three-dots-vertical"></i>
@@ -58,8 +68,7 @@
 
 @else
 	<div style="margin-top: 40px">
-		Wrcs not found
+		<?php echo ucfirst($service_is)?> Image not found
 	</div>
-		
 @endif
 @endsection

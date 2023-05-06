@@ -5,6 +5,7 @@
 /vendor
 /public/editing_raw_img_uploads/
 /public/edited_img_uploads/
+/public/edited_img_directory/
 raw_img_directory
 AdminControlFile
 uploades

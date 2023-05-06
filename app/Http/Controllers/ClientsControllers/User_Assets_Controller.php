@@ -215,7 +215,17 @@ class User_Assets_Controller extends Controller
     leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->
     leftJoin('editor_submission', 'editor_submission.sku_id', '=', 'Sku.id')->
     where('sku.id', '=' , $sku_id)->where('sku.status', '=' , '1')->where('editor_submission.qc', '=' , "1")->
-    select('Sku.id as sku_id', 'Sku.sku_code','Sku.status', 'sku.wrc_id', 'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number', 'editor_submission.id as submission_id', 'editor_submission.adaptation' , 'editor_submission.filename' , 'editor_submission.created_at as created_at');
+    select(
+      'Sku.id as sku_id',
+      'Sku.sku_code',
+      'Sku.status',
+      'sku.wrc_id',
+      'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number',
+      'editor_submission.id as submission_id',
+      'editor_submission.adaptation' ,
+      'editor_submission.filename' ,
+      'editor_submission.created_at as created_at'
+    );
     $skus_count = $sku_info_query->count();
     $raw_skus_files = $sku_info_query->get()->toArray();
     // dd($raw_skus_files);
@@ -225,7 +235,70 @@ class User_Assets_Controller extends Controller
 
   public function your_assets_files_shoot_raw_images($sku_id){
     $sku_id = base64_decode($sku_id);
-    dd($sku_id);
+    $sku_info_query = Skus::
+    leftJoin('wrc', 'wrc.id', '=', 'Sku.wrc_id')->
+    leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->
+    leftJoin('uploadraw', 'uploadraw.sku_id', '=', 'Sku.id')->
+    where('sku.id', '=' , $sku_id)->where('sku.status', '=' , '1')->
+    select(
+      'Sku.id as sku_id',
+      'Sku.sku_code',
+      'Sku.status',
+      'sku.wrc_id',
+      'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number',
+      'uploadraw.filename' ,
+      'uploadraw.created_at as created_at'
+    );
+    $raw_skus_files = $sku_info_query->get()->toArray();
+    return view('clients.ClientAssets.your_assets_shoot_skus_uploaded_files')->with('raw_skus_files' , $raw_skus_files)->with('service_is', 'raw');
   }
+
+  // Editing Raw images.
+  public function your_assets_files_editing_uploaded_images($wrc_id){
+
+    $wrc_data = EditingWrc::
+    where('editing_wrcs.id',$wrc_id)->
+    leftJoin('editor_lots', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->select(
+      'editing_wrcs.id as wrc_id',
+      'editing_wrcs.wrc_number',
+      'editing_wrcs.lot_id',
+      'editor_lots.lot_number'
+    )->first()->toArray();
+
+
+    $wrc_raw_query = EditingWrc::
+    where('editing_wrcs.id',$wrc_id)->
+    leftJoin('editor_lots', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->
+    leftJoin('editing_raw_img_uploads', 'editing_wrcs.id', '=', 'editing_raw_img_uploads.wrc_id')->
+    select(
+      'editing_wrcs.id as wrc_id',
+      'editing_wrcs.wrc_number',
+      'editing_wrcs.lot_id',
+      'editor_lots.lot_number',
+      'editing_raw_img_uploads.id as upladed_img_id',
+      'editing_raw_img_uploads.filename',
+      'editing_raw_img_uploads.file_path',
+      'editing_raw_img_uploads.created_at'
+    );
+    $wrc_raw_images = $wrc_raw_query->get()->toArray();
+    
+    $wrc_edited_query = EditingWrc::where('editing_wrcs.id',$wrc_id)->
+    leftJoin('editor_lots', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->
+    leftJoin('editing_uploaded_images', 'editing_wrcs.id', '=', 'editing_uploaded_images.wrc_id')->
+    select(
+      'editing_wrcs.id as wrc_id',
+      'editing_wrcs.wrc_number',
+      'editing_wrcs.lot_id',
+      'editor_lots.lot_number',
+      'editing_uploaded_images.id as upladed_img_id',
+      'editing_uploaded_images.filename',
+      'editing_uploaded_images.file_path',
+      'editing_uploaded_images.created_at'
+    );
+    $wrc_edited_images = $wrc_edited_query->get()->toArray();
+    // dd($wrc_data ,$wrc_raw_images , $wrc_edited_images);
+    return view('clients.ClientAssets.your_assets_files_editing_uploaded_images')->with('wrc_data', $wrc_data)->with('wrc_raw_images', $wrc_raw_images)->with('wrc_edited_images', $wrc_edited_images);
+    
+  }  
     
 }

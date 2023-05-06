@@ -55,7 +55,7 @@
 	</div>
 @else
 	<div style="margin-top: 40px">
-		Wrcs not found
+		Sku codes not found
 	</div>
 @endif
 @endsection
