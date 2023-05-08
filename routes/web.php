@@ -27,6 +27,7 @@ use App\Http\Controllers\ClientsControllers\ClientDashboardControllerNew;
 use App\Http\Controllers\ClientsControllers\ClientProfileController;
 use App\Http\Controllers\ClientsControllers\ClientSettingsController;
 use App\Http\Controllers\ClientsControllers\User_Assets_Controller;
+use App\Http\Controllers\ClientsControllers\User_Management_Controller_New;
 use App\Http\Controllers\ClientUserManagementController;
 use App\Http\Controllers\ConsolidatedLotController;
 use App\Http\Controllers\CreativeQcController;
@@ -562,6 +563,14 @@ Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
     Route::post('Client-Notification-Update',[ClientNotificationController::class, 'update'])->name('UpdateClientNotification');
 });
 
+// route if Dam not inable for client 
+Route::get('/home-new', [ClientDashboardControllerNew::class, 'home_new'])->name('home_new');
+
+// Client User Management Routing
+Route::middleware(['auth', 'role:Client'])->group(function () {
+    Route::get('/client-user-list', [User_Management_Controller_New::class, 'Index'])->name('Client_Users_list');
+    Route::get('/client-user-add', [User_Management_Controller_New::class, 'create'])->name('add_Client_User_New');
+});
 
 // Client And Sub Client Accesable route
 Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {

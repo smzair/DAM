@@ -14,6 +14,8 @@
 	<link rel="stylesheet" href="{{ asset('ClientsPlugins/bootstrap-5.1.3-dist/css/bootstrap.min.css') }}">
 	<link rel="stylesheet" href="{{ asset('ClientsPlugins/fontawesome-free/css/all.min.css') }}">
 
+  <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}"> 
+
   <link rel="icon" href="{{ asset('IMG/ODN Logo.jpeg')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style.css')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
@@ -199,12 +201,14 @@
 								</button>
 							</h2>
 							<div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-								data-bs-parent="#accordionFlushExample">
+              data-bs-parent="#accordionFlushExample">
 								<div class="accordion-body">
-									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
-										style="width: 100%;">Active</button>
-									<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
-										style="width: 100%;">Completed</button>
+									<a href="{{route('Client_Users_list')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Manage user</a>
+									<a href="{{route('ClientProfile')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Your profile</a>
+										<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Settings</button>
 								</div>
 							</div>
 						</div>
@@ -231,5 +235,10 @@
 	<script type="text/javascript" src="{{ asset('ClientsPlugins\jquery-nice-select-1.1.0\js\jquery.nice-select.js') }}"></script>
 	@yield('js_links')
 	@yield('js_scripts')
+	<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+  </script>
 </body>
 </html>
