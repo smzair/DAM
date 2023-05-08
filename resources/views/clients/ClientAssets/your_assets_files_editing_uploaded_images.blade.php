@@ -55,8 +55,6 @@
 						<p style="font-weight: 500;font-size: 12px;color: #9F9F9F;">Total Raw images: {{count($wrc_raw_images)}}</p>
 					</div>
 
-					
-
 					@if (count($wrc_raw_images) > 0)
 						<div class="col-12">
 							<div class="row" style="margin-top: 10px;">
@@ -106,8 +104,8 @@
 										<div class="card brand-img-m border-0 rounded-0">
 											<img class="card-img-top brand-img" src="{{ asset($img_src)}}" alt="Image">
 											<div class="card-body d-flex justify-content-between">
-												{{-- <p class="brand-img-name">{{$row['filename']}}</p> --}}
-												<p class="brand-img-name">{{$path}}</p>
+												<p class="brand-img-name">{{$row['filename']}}</p>
+												{{-- <p class="brand-img-name">{{$path}}</p> --}}
 												<i class="bi bi-three-dots-vertical"></i>
 											</div>
 										</div>

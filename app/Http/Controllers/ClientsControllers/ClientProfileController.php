@@ -14,7 +14,8 @@ class ClientProfileController extends Controller
         
         $data = User::getClientData();
         // dd($data);
-        return view('clients.Client-Profile')->with('data',$data);
+        return view('clients.ClientUserManagement.clients-profile')->with('data',$data);
+        // return view('clients.Client-Profile')->with('data',$data);
     }
 
     public function UpdateClientProfile(Request $request){

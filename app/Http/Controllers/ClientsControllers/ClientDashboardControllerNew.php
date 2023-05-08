@@ -18,6 +18,11 @@ class ClientDashboardControllerNew extends Controller
 
   public static function index($lotStatus = 'all')
   {
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     $creative_lots = array();
     $shoot_lots =  array();
     $lots_catalog = array();
@@ -187,6 +192,11 @@ class ClientDashboardControllerNew extends Controller
   // clients Catlog time line detail
   public function clientsCatloglotTimeline(Request $request, $id)
   {
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     $LotTimelineData = LotsCatalog::LotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 
     $wrc_detail = $LotTimelineData['wrc_detail']; 
@@ -198,6 +208,11 @@ class ClientDashboardControllerNew extends Controller
   // clients Creative Lot Timeline
   public function clientsCreativelotTimelineNew(Request $request, $id)
   {
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     $LotTimelineData = CreatLots::LotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 
     $wrc_detail = $LotTimelineData['wrc_detail']; 
@@ -209,6 +224,11 @@ class ClientDashboardControllerNew extends Controller
   // clients editor lot time line detail
   public function clientsEditorLotTimelineNew(Request $request, $id)
   {
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     $LotTimelineData = EditorLotModel::clientsEditorLotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 
     $wrc_detail = $LotTimelineData['wrc_detail']; 
@@ -218,6 +238,11 @@ class ClientDashboardControllerNew extends Controller
   // clients editor lot time line detail
   public function clientsShootlotTimelineNew(Request $request, $id)
   {
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     $LotTimelineData = Lots::LotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 
     $wrc_detail = $LotTimelineData['wrc_detail']; 
@@ -225,6 +250,9 @@ class ClientDashboardControllerNew extends Controller
     return view('clients.Timeline.editorShootTimeline_New')->with('lot_detail', $lot_detail)->with('wrc_detail', $wrc_detail);
   }
 
+  public function home_new(){
+    return view('clients.ClientUserManagement.dam_not_enable');
+  }
 
 
 }

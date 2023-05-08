@@ -22,7 +22,7 @@ class User_Assets_Controller extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home');
+      return redirect()->route('home_new');
     }
 
     $parent_client_id = $user_id = $user_data->id;
@@ -121,6 +121,11 @@ class User_Assets_Controller extends Controller
   
   // Shoot wrc list
   public function your_assets_shoot_wrcs($lot_id){
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     $wrc_data = Wrc::leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->where('wrc.lot_id',$lot_id)->select(
       'wrc.id as wrc_id',
       'wrc.wrc_id as wrc_number',
@@ -133,6 +138,11 @@ class User_Assets_Controller extends Controller
 
   // Editing wrc list
   public function your_assets_editing_wrcs($lot_id){
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     
     $wrc_data = EditingWrc::leftJoin('editor_lots', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->where('editing_wrcs.lot_id',$lot_id)->select(
       'editing_wrcs.id as wrc_id',
@@ -147,6 +157,12 @@ class User_Assets_Controller extends Controller
 
   // Shoot sku list based on wrc id
   public function your_assets_shoot_skus($wrc_id){
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
+    $wrc_id = base64_decode($wrc_id);
     // Edited image skus and adapations
     $wrc_data = Wrc::leftJoin('commercial', 'wrc.commercial_id', '=', 'commercial.id')->leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->where('wrc.id',$wrc_id)->select(
       'wrc.id as wrc_id',
@@ -194,6 +210,11 @@ class User_Assets_Controller extends Controller
 
   // Shoot sku list based on wrc id and adapdation
   public function your_assets_shoot_adaptation_skus($id , $adaptation){
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     $wrc_id = base64_decode($id);
     $adaptation = base64_decode($adaptation);
     $sku_info_query = Skus::
@@ -209,6 +230,11 @@ class User_Assets_Controller extends Controller
   }
 
   public function your_assets_shoot_edited_images($sku_id){
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     $sku_id = base64_decode($sku_id);
     $sku_info_query = Skus::
     leftJoin('wrc', 'wrc.id', '=', 'Sku.wrc_id')->
@@ -234,6 +260,11 @@ class User_Assets_Controller extends Controller
   }
 
   public function your_assets_files_shoot_raw_images($sku_id){
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
     $sku_id = base64_decode($sku_id);
     $sku_info_query = Skus::
     leftJoin('wrc', 'wrc.id', '=', 'Sku.wrc_id')->
@@ -255,7 +286,12 @@ class User_Assets_Controller extends Controller
 
   // Editing Raw images.
   public function your_assets_files_editing_uploaded_images($wrc_id){
-
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return redirect()->route('home_new');
+    }
+    $wrc_id = base64_decode($wrc_id);
     $wrc_data = EditingWrc::
     where('editing_wrcs.id',$wrc_id)->
     leftJoin('editor_lots', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->select(
