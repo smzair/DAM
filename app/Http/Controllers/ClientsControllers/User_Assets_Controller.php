@@ -22,7 +22,8 @@ class User_Assets_Controller extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
+      // return redirect()->route('home_new');
     }
 
     $parent_client_id = $user_id = $user_data->id;
@@ -124,7 +125,7 @@ class User_Assets_Controller extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $wrc_data = Wrc::leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->where('wrc.lot_id',$lot_id)->select(
       'wrc.id as wrc_id',
@@ -141,7 +142,7 @@ class User_Assets_Controller extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     
     $wrc_data = EditingWrc::leftJoin('editor_lots', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->where('editing_wrcs.lot_id',$lot_id)->select(
@@ -160,7 +161,7 @@ class User_Assets_Controller extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $wrc_id = base64_decode($wrc_id);
     // Edited image skus and adapations
@@ -213,7 +214,7 @@ class User_Assets_Controller extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $wrc_id = base64_decode($id);
     $adaptation = base64_decode($adaptation);
@@ -233,7 +234,7 @@ class User_Assets_Controller extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $sku_id = base64_decode($sku_id);
     $sku_info_query = Skus::
@@ -263,7 +264,7 @@ class User_Assets_Controller extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $sku_id = base64_decode($sku_id);
     $sku_info_query = Skus::
@@ -289,7 +290,7 @@ class User_Assets_Controller extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $wrc_id = base64_decode($wrc_id);
     $wrc_data = EditingWrc::

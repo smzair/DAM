@@ -21,7 +21,7 @@ class ClientDashboardControllerNew extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $creative_lots = array();
     $shoot_lots =  array();
@@ -195,7 +195,7 @@ class ClientDashboardControllerNew extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $LotTimelineData = LotsCatalog::LotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 
@@ -211,7 +211,7 @@ class ClientDashboardControllerNew extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $LotTimelineData = CreatLots::LotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 
@@ -227,7 +227,7 @@ class ClientDashboardControllerNew extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $LotTimelineData = EditorLotModel::clientsEditorLotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 
@@ -241,7 +241,7 @@ class ClientDashboardControllerNew extends Controller
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
       request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
-      return redirect()->route('home_new');
+      return view('clients.ClientUserManagement.dam_not_enable');
     }
     $LotTimelineData = Lots::LotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 

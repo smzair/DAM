@@ -15,11 +15,12 @@
 	<link rel="stylesheet" href="{{ asset('ClientsPlugins/fontawesome-free/css/all.min.css') }}">
 
   <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}"> 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css">
 
   <link rel="icon" href="{{ asset('IMG/ODN Logo.jpeg')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style.css')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -233,12 +234,9 @@
 	<script src="{{ asset('ClientsPlugins/bootstrap-5.1.3-dist/js/bootstrap.bundle.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('ClientsPlugins\jquery\jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('ClientsPlugins\jquery-nice-select-1.1.0\js\jquery.nice-select.js') }}"></script>
+	<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script>
 	@yield('js_links')
-	@yield('js_scripts')
-	<script>
-    $(document).ready(function() {
-        $('.select2').select2();
-    });
-  </script>
+	<!-- Common Js -->
+	<script src="{{ asset('ClientsDist\js\common_js_new.js') }}"></script>@yield('js_scripts')
 </body>
 </html>

@@ -123,7 +123,10 @@
                                                                 <a href="javascript:;" class="btn pic-change-btn" id="picChangeBTN">Change Photo</a>
                                                                 <button class="btn pic-upload-btn mb-2 d-none" id="picUploadBTN">Upload Photo</button>
                                                                 <a href="javascript:;" class="btn pic-delete-btn" id="picDeleteBTN">Delete</a>
+                                                            </div>
+                                                            <div>
                                                                 <input class="file-upload-avtar" type="file" name="profileavtar" accept="image/*" id="avtarUpload"/>
+
                                                             </div>
                                                         </div>
                                                     </form>
