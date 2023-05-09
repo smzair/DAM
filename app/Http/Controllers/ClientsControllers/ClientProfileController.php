@@ -15,7 +15,7 @@ class ClientProfileController extends Controller
         $data = User::getClientData();
         // dd($data);
         return view('clients.ClientUserManagement.clients-profile')->with('data',$data);
-        // return view('clients.Client-Profile')->with('data',$data);
+        return view('clients.Client-Profile')->with('data',$data);
     }
 
     public function UpdateClientProfile(Request $request){
@@ -29,21 +29,21 @@ class ClientProfileController extends Controller
         $email = $request->clientEmail != null ? $request->clientEmail : '';
         $phone = $request->clientPhone != null ? $request->clientPhone : '';
 
-        $email_count = User::where('email' , '=' , $email)->where('id' , '<>' , $user_id)->
+        $email_count = User::where('email' , '=' , "$email")->where('id' , '<>' , $user_id)->
         count();
-        // dd($email_count);
         $update_users = User::find($user_id);
         if($phone != $update_users->phone){
             $update_users->phone_verified = 0;
         }
-        if($email != $update_users->email){
+        // dd($request->all(), $email_count);
+        if($email != $update_users->email ){
             $update_users->email_verified = 0;
             $update_users->email_verified_at = NULL;
         }
         $update_users->name = $name;
         $update_users->last_name = $last_name;
         $update_users->client_id = $client_id;
-        if($email_count == 0){
+        if($email_count == 0 && $email != '' && $email != null){
             $update_users->email = $email;
         }
         $update_users->phone = $phone;

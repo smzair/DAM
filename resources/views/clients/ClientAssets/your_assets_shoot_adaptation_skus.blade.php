@@ -21,7 +21,7 @@
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><span class="breadcrumb-deco" >{{$raw_skus[0]['lot_number']}}</span></li>
 					<li class="breadcrumb-item"><a class="breadcrumb-deco" href="{{route('your_assets_shoot_wrcs' , [$raw_skus[0]['lot_id']])}}">WRCs</a></li>
-					<li class="breadcrumb-item"><a class="breadcrumb-deco" href="{{route('your_assets_shoot_skus' , [$raw_skus[0]['wrc_id']])}}">{{$raw_skus[0]['wrc_number']}}</a></li>
+					<li class="breadcrumb-item"><a class="breadcrumb-deco" href="{{route('your_assets_shoot_skus' , [base64_encode($raw_skus[0]['wrc_id'])])}}">{{$raw_skus[0]['wrc_number']}}</a></li>
 					<li class="breadcrumb-item active breadcrumb-deco" aria-current="page">{{$raw_skus[0]['adaptation']}}</li>
 				</ol>
 			</nav>

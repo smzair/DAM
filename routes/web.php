@@ -570,6 +570,9 @@ Route::get('/home-new', [ClientDashboardControllerNew::class, 'home_new'])->name
 Route::middleware(['auth', 'role:Client'])->group(function () {
     Route::get('/client-user-list', [User_Management_Controller_New::class, 'Index'])->name('Client_Users_list');
     Route::get('/client-user-add', [User_Management_Controller_New::class, 'create'])->name('add_Client_User_New');
+    Route::post('/save-client-New-users', [User_Management_Controller_New::class, 'saveUserClient']);
+    Route::post('/client-user-list', [User_Management_Controller_New::class, 'sub_users_access_permission_new'])->name('sub_users_access_permission_new'); // Give side bar mennu to sub users
+
 });
 
 // Client And Sub Client Accesable route
