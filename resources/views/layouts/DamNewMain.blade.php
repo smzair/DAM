@@ -17,10 +17,14 @@
   <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}"> 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css">
+	@yield('css_links')
 
   <link rel="icon" href="{{ asset('IMG/ODN Logo.jpeg')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style.css')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
+	
+	@yield('other_css')
+	
 </head>
 
 <body>
@@ -208,8 +212,8 @@
 										style="width: 100%;">Manage user</a>
 									<a href="{{route('ClientProfile')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
 										style="width: 100%;">Your profile</a>
-										<button type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
-										style="width: 100%;">Settings</button>
+										<a href="{{route('Client_Setting_new')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+										style="width: 100%;">Settings</a>
 								</div>
 							</div>
 						</div>

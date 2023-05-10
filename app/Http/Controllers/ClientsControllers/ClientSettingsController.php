@@ -16,6 +16,12 @@ class ClientSettingsController extends Controller
         return view('clients.Client-settings')->with('data',$data);
     }
 
+    public function Client_Setting_new(){
+        $data = User::getClientData();
+        // dd($data);
+        return view('clients.ClientUserManagement.client-settings')->with('data',$data);
+    }
+
     public function ChangePassword(Request $request){
         $oldPswdInput = trim($request->oldPswdInput);
         $newPswdInput = trim($request->newPswdInput);
