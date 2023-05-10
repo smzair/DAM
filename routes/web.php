@@ -671,6 +671,9 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/your-assets-shoot-raw_images/{sku_id}', [User_Assets_Controller::class, 'your_assets_files_shoot_raw_images'])->name('your_assets_files_shoot_raw_images');
     Route::get('/your-assets-editing-wrcs-images/{wrc_id}', [User_Assets_Controller::class, 'your_assets_files_editing_uploaded_images'])->name('your_assets_files_editing_uploaded_images');
 
+    // Client Settings Routes
+    Route::get('/Client-Settings-New', [ClientSettingsController::class, 'Client_Setting_new'])->name('Client_Setting_new'); 
+    // Route::post('/Client-Settings', [ClientSettingsController::class, 'ChangePassword'])->name('ChangePassword');
 });
 
 // route for global search in file manager system
