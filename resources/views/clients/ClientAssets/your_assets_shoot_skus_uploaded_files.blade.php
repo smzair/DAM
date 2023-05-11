@@ -1,6 +1,6 @@
 @extends('layouts.DamNewMain')
 @section('title')
-  Your Assets - WRCs
+  Your Assets - <?php echo ucfirst($service_is)?> Image 
 @endsection
 
 @section('main_content')
