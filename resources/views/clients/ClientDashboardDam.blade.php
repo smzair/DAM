@@ -43,7 +43,7 @@ $lot_status_is = $lot_status_val = "";
 	<div class="col-lg-12 d-flex">
 		<ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
 			{{-----lot status Shoot start---}}
-			@if ($user_role == 'Client' || $your_assets_permissions['shoot'])
+			@if (count($shoot_lots) > 0 &&  ($user_role == 'Client' || $your_assets_permissions['shoot']))
 			<li class="nav-item" role="presentation">
 				<button class="nav-link active btn-lg tab-button" id="pills-home-tab" data-bs-toggle="pill"
 					data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
@@ -57,7 +57,7 @@ $lot_status_is = $lot_status_val = "";
 			@endif
 
 			{{-----lot status Creative start---}}
-			@if ($user_role == 'Client' || $your_assets_permissions['Creative'])
+			@if (count($creative_lots) > 0 &&  ($user_role == 'Client' || $your_assets_permissions['Creative']))
 			<li class="nav-item" role="presentation">
 				<button class="nav-link btn-lg tab-button" id="pills-profile-tab" data-bs-toggle="pill"
 					data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
@@ -72,7 +72,7 @@ $lot_status_is = $lot_status_val = "";
 			@endif
 
 			{{-----lot status Cataloging start---}}
-			@if ($user_role == 'Client' || $your_assets_permissions['Cataloging'])
+			@if ( count($lots_catalog) > 0 &&  ( $user_role == 'Client' || $your_assets_permissions['Cataloging']))
 			<li class="nav-item" role="presentation">
 				<button class="nav-link btn-lg tab-button" id="pills-contact-tab" data-bs-toggle="pill"
 					data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
@@ -87,7 +87,7 @@ $lot_status_is = $lot_status_val = "";
 			@endif
 
 			{{-----lot status editor start---}}
-			@if ($user_role == 'Client' || $your_assets_permissions['Editing'])
+			@if ( count($editor_lots) > 0 &&  ( $user_role == 'Client' || $your_assets_permissions['Editing']))
 			<li class="nav-item" role="presentation">
 				<button class="nav-link btn-lg tab-button" id="pills-editing-tab" data-bs-toggle="pill"
 					data-bs-target="#pills-editing" type="button" role="tab" aria-controls="pills-editing"
@@ -105,9 +105,7 @@ $lot_status_is = $lot_status_val = "";
 	</div>
 </div>
 <div class="row" style="margin-top: 40px;">
-	<div class="col-12">
-		<p class="totallotF">Total Lots: {{ count($shoot_lots) + count($creative_lots) + count($lots_catalog) + count($editor_lots) }}</p>
-	</div>
+	
 </div>
 
 <div class="row">
@@ -118,6 +116,9 @@ $lot_status_is = $lot_status_val = "";
 		<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
 			tabindex="0">
 			<div class="row box-container-responsive">
+				<div class="col-lg-12">
+					<p class="totallotF">Total Lots: {{ count($shoot_lots) }}</p>
+				</div>
 				@foreach ($shoot_lots as $key => $val)
 				@php
 					$overall_progress = $val['overall_progress'];
@@ -164,10 +165,13 @@ $lot_status_is = $lot_status_val = "";
 		@endif
 
 		{{-----lot status Creative start---}}
-		@if ($user_role == 'Client' || $your_assets_permissions['Creative'])
+		@if ($user_role == 'Client' || $your_assets_permissions['Creative'])		
 		<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
 			tabindex="0">
 			<div class="row box-container-responsive">
+				<div class="col-lg-11">
+					<p class="totallotF">Total Lots: {{ count($creative_lots) }}</p>
+				</div>
 
 				@foreach ($creative_lots as $key => $val)
 				@php
@@ -219,6 +223,9 @@ $lot_status_is = $lot_status_val = "";
 			tabindex="0">
 			<div class="row box-container-responsive">
 
+				<div class="col-lg-11">
+					<p class="totallotF">Total Lots: {{ count($lots_catalog) }}</p>
+				</div>
 				@foreach ($lots_catalog as $key => $val)
 				@php
 					$overall_progress = $val['overall_progress'];
@@ -268,6 +275,9 @@ $lot_status_is = $lot_status_val = "";
 		<div class="tab-pane fade" id="pills-editing" role="tabpanel" aria-labelledby="pills-editing-tab"
 			tabindex="0">
 			<div class="row box-container-responsive">
+				<div class="col-12">
+					<p class="totallotF">Total Lots: {{ count($editor_lots) }}</p>
+				</div>
 				@foreach ($editor_lots as $key => $val)
 				@php
 						$overall_progress = $val['overall_progress'];

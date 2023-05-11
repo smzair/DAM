@@ -565,6 +565,14 @@ Route::middleware(['auth', 'role:Super Admin,Admin'])->group(function () {
 
 // route if Dam not inable for client 
 Route::get('/home-new', [ClientDashboardControllerNew::class, 'home_new'])->name('home_new');
+Route::get('/download-shoot-lot-raw/{id}', [ImageDownloadController::class, 'download_Shoot_Lot_raw'])->name('download_Shoot_Lot_raw'); //shoot-lot-raw Image download
+
+Route::get('/download-shoot-lot-Edited-image/{id}', [ImageDownloadController::class, 'download_Shoot_Lot_edited'])->name('download_Shoot_Lot_edited'); //shoot-lot-Edited Image download
+
+Route::get('/download-Editing-lot-raw/{id}', [ImageDownloadController::class, 'download_Editing_Lot_raw'])->name('download_Editing_Lot_raw'); //shoot-lot-raw Image download
+
+Route::get('/download-Editing-lot-edited/{id}', [ImageDownloadController::class, 'download_Editing_Lot_edited'])->name('download_Editing_Lot_edited'); //shoot-lot-raw Image download
+
 
 // Client User Management Routing
 Route::middleware(['auth', 'role:Client'])->group(function () {

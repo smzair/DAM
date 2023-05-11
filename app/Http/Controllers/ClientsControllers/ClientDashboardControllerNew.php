@@ -9,6 +9,8 @@ use App\Models\EditorLotModel;
 use App\Models\editorSubmission;
 use App\Models\Lots;
 use App\Models\LotsCatalog;
+use App\Models\submissions;
+use App\Models\Wrc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -132,18 +134,59 @@ class ClientDashboardControllerNew extends Controller
       // dd($editor_lots);
 
       /* response data to get shoot lot information with status start*/
-      $shoot_lots = Lots::orderBy('lots.id', 'DESC')
+      $shoot_lots_query = Lots::orderBy('lots.id', 'DESC')
         ->select('lots.id as lot_id', 'lots.lot_id as lot_number', 'lots.created_at')
         ->whereIn('lots.brand_id', $brand_arr)
         ->groupBy('lots.id');
       if ($role_name == 'Sub Client') {
-        $shoot_lots = $shoot_lots->where('lots.user_id', $parent_client_id);
+        $shoot_lots_query = $shoot_lots_query->where('lots.user_id', $parent_client_id);
       }
       if ($role_name == 'Client') {
-        $shoot_lots = $shoot_lots->where('lots.user_id', $client_id);
+        $shoot_lots_query = $shoot_lots_query->where('lots.user_id', $client_id);
+      }
+      $shoot_lots_array = $shoot_lots_query->get()->toArray();
+
+      $shoot_lots = array();
+
+      foreach ($shoot_lots_array as $key => $val) {
+        $lot_id = $val['lot_id'];
+        $wrc_data = Wrc::where('lot_id',$lot_id)->select(
+          'wrc.id as wrc_id',
+          'wrc.wrc_id as wrc_number',
+          DB::raw("GROUP_CONCAT(wrc.id) as wrc_ids"),
+          DB::raw("COUNT(wrc.id) as wrc_counts"),
+        )->groupby('wrc.lot_id')->get()->toArray();
+
+        $is_wrc_created = false;
+        $wrc_row = array();
+        $wrc_id_arr = array();
+
+        if(count($wrc_data) > 0){
+          $is_wrc_created = true;
+          $wrc_row = $wrc_data[0];
+          $wrc_id_arr = explode(',', $wrc_row['wrc_ids']);
+          $wrc_counts = $wrc_row['wrc_counts'];          
+          $lot_submission_query = submissions::whereIn('submission.wrc_id', $wrc_id_arr)->select('id as submission_id', 'submission.submission_date');
+          $lot_submission_count = $lot_submission_query->count();
+        }
+
+        $array_push = false;
+        if($lotStatus != 'all' && $is_wrc_created){   
+          if ($lotStatus == 'completed' && $wrc_counts != 0 && $wrc_counts == $lot_submission_count) {
+            $array_push = true;
+          }else if(($lotStatus == 'active' &&  $wrc_counts != $lot_submission_count) ){
+            $array_push = true;            
+          }   
+        }else if($lotStatus == 'all'){
+          $array_push = true;
+        }
+        if($array_push){
+          array_push($shoot_lots , $val);
+        }
       }
 
-      $shoot_lots = $shoot_lots->get()->toArray();
+      // dd($shoot_lots_array , $shoot_lots);
+
       $shoot_lot_statusArr = shoot_lot_statusArr();
 
       foreach ($shoot_lots as $key => $val) {
@@ -151,15 +194,6 @@ class ClientDashboardControllerNew extends Controller
         $lot_detail = $LotTimelineData['lot_detail']; 
         $wrc_detail = $LotTimelineData['wrc_detail'];
         $shoot_lots[$key] = $lot_detail[0];
-        if($lotStatus == 'active'){
-          if ($shoot_lots[$key]['lot_status'] == $shoot_lot_statusArr[4]) {
-            unset($shoot_lots[$key]);
-          }
-        }elseif($lotStatus == 'completed'){
-          if ($shoot_lots[$key]['lot_status'] != $shoot_lot_statusArr[4]) {
-            unset($shoot_lots[$key]);
-          }
-        }
       }
       /* response data to get shoot lot information with status end*/
     } else {

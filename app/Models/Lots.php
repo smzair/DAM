@@ -117,6 +117,8 @@ class Lots extends Model {
                 'wrc.created_at as wrc_created_at',
             )->get()->toArray();
             $tot_sku_count  = 0;
+            $submited_wrc = 0;
+            $wrc_id_arr = array();
             foreach($wrc_info as $key => $val){
                 $sku_info_query = Skus::where('wrc_id', $val['wrc_id'])->where('status', 1);
                 $sku_count = $sku_info_query->count();
@@ -154,17 +156,37 @@ class Lots extends Model {
                         
                         $wrc_info[$key]['qc_status'] =  'Done';
                         $wrc_info[$key]['wrc_qc_qty'] =  count($editor_qc_info);
-
-                        $editor_submission_info = editorSubmission::whereIn('sku_id', $sku_info)->where('qc', '2')->orderByDesc('updated_at')->get()->toArray();
                         
-                        if(count($editor_submission_info) > 0 && count($editor_submission_info) == count($editor_qc_info) ){
-                            $wrc_info[$key]['submission_status'] =  'Done';
+                        $lot_submission_query = submissions::where('submission.wrc_id', '=', $val['wrc_id'])->select('id as submission_id', 'submission.submission_date');
+                        $lot_submission_count = $lot_submission_query->count();
+                        if($lot_submission_count > 0){
+                            array_push($wrc_id_arr , $val['wrc_id']);
+                            $submited_wrc += 1;
 
+                            $submission_data = $lot_submission_query->get()->toArray();
+                            
+                            $wrc_info[$key]['submission_status'] =  'Done';
+                            $wrc_info[$key]['submission_date'] =  $submission_data[0]['submission_date'];
+
+                        }
+
+                        if($submited_wrc == count($wrc_info)){
+                            $lot_submission_data= submissions::whereIn('submission.wrc_id', $wrc_id_arr)->select('id as submission_id', 'submission.submission_date')->orderByDesc('submission.submission_date')->get()->toArray();
                             $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[4];
                             $lot_detail[0]['overall_progress']  = 100;
                             $lot_detail[0]['wrc_submission']  = "20";
-                            $lot_detail[0]['submission_date'] = $editor_submission_info[0]['updated_at'];
+                            $lot_detail[0]['submission_date'] = $lot_submission_data[0]['submission_date'];
+
                         }
+                        
+                        // $editor_submission_info = editorSubmission::whereIn('sku_id', $sku_info)->where('qc', '2')->orderByDesc('updated_at')->get()->toArray();
+                        // if(count($editor_submission_info) > 0 && count($editor_submission_info) == count($editor_qc_info) ){
+                        //     $wrc_info[$key]['submission_status'] =  'Done';
+                        //     $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[4];
+                        //     $lot_detail[0]['overall_progress']  = 100;
+                        //     $lot_detail[0]['wrc_submission']  = "20";
+                        //     $lot_detail[0]['submission_date'] = $editor_submission_info[0]['updated_at'];
+                        // }
                     }
                 }
             }
