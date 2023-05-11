@@ -27,108 +27,117 @@
 				</ol>
 			</nav>
 		</div>
-		<div class="col-lg-12 d-flex" style="margin-top:40px">
-			<ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
-				<li class="nav-item" role="presentation">
-					<button class="nav-link active btn-lg editedandraw-img-btn" id="pills-home-tab" data-bs-toggle="pill"
-						data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-						aria-selected="true">
-						Edited Images
-					</button>
-				</li>
-				<li class="nav-item" role="presentation">
-					<button class="nav-link btn-lg editedandraw-img-btn" id="pills-profile-tab" data-bs-toggle="pill"
-						data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-						aria-selected="false">
-						Raw images
-					</button>
-				</li>
-			</ul>
-		</div>
-		
-		<div class="row">
-			<div class="tab-content" id="pills-tabContent">
-				{{-- Edited images --}}
-				<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
-					tabindex="0">
-					<div class="col-12" style="margin-top: 40px;">
-						<p style="font-weight: 500;font-size: 12px;color: #9F9F9F;">Total Adaptations: {{count($wrc_data['adaptation'])}}</p>
-					</div>
-
+		@if (count($wrc_data['adaptation']) > 0 || count($raw_skus) > 0)
+			<div class="col-lg-12 d-flex" style="margin-top:40px">
+				<ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
+					{{-- Edited Images --}}
 					@if (count($wrc_data['adaptation']) > 0)
-						<div class="col-12">
-							<div class="row" style="margin-top: 10px;">
-								@foreach ($wrc_data['adaptation'] as $adaptation)
-									<div class="col-lg-4 col-md-6 mt-2">
-										<div class="row brand-div2">
-											<div class="col-2 mt-3">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-													xmlns="http://www.w3.org/2000/svg">
-													<rect width="24" height="24" fill="#9F9F9F" />
-													<line x1="3.95353" y1="3.24606" x2="20.7535" y2="20.0461" stroke="#D1D1D1" />
-													<line x1="3.24642" y1="20.0459" x2="20.0464" y2="3.24586" stroke="#D1D1D1" />
-												</svg>
-											</div>
-											<div class="col-8 mt-2">
-												<a style="text-decoration: none;" href="{{route('your_assets_shoot_adaptation_skus' , [ base64_encode($wrc_data['wrc_id']) , base64_encode($adaptation)])}}">
-													<p class="brand">{{$adaptation}}</p>
-												</a>
-											</div>
-											<div class="col-2 mt-3">
-												<i class="bi bi-three-dots-vertical"></i>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active btn-lg editedandraw-img-btn" id="pills-home-tab" data-bs-toggle="pill"
+								data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+								aria-selected="true">
+								Edited Images
+							</button>
+						</li>
+					@endif
+
+					{{-- Raw images --}}
+					@if (count($raw_skus) > 0)
+						<li class="nav-item" role="presentation">
+							<button class="nav-link btn-lg editedandraw-img-btn" id="pills-profile-tab" data-bs-toggle="pill"
+								data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+								aria-selected="false">
+								Raw images
+							</button>
+						</li>
+					@endif
+
+				</ul>
+			</div>
+			
+			<div class="row">
+				<div class="tab-content" id="pills-tabContent">
+					{{-- Edited images --}}
+					@if (count($wrc_data['adaptation']) > 0)
+
+						<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
+							tabindex="0">
+							<div class="col-12" style="margin-top: 40px;">
+								<p style="font-weight: 500;font-size: 12px;color: #9F9F9F;">Total Adaptations: {{count($wrc_data['adaptation'])}}</p>
+							</div>
+
+							<div class="col-12">
+								<div class="row" style="margin-top: 10px;">
+									@foreach ($wrc_data['adaptation'] as $adaptation)
+										<div class="col-lg-4 col-md-6 mt-2">
+											<div class="row brand-div2">
+												<div class="col-2 mt-3">
+													<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+														xmlns="http://www.w3.org/2000/svg">
+														<rect width="24" height="24" fill="#9F9F9F" />
+														<line x1="3.95353" y1="3.24606" x2="20.7535" y2="20.0461" stroke="#D1D1D1" />
+														<line x1="3.24642" y1="20.0459" x2="20.0464" y2="3.24586" stroke="#D1D1D1" />
+													</svg>
+												</div>
+												<div class="col-8 mt-2">
+													<a style="text-decoration: none;" href="{{route('your_assets_shoot_adaptation_skus' , [ base64_encode($wrc_data['wrc_id']) , base64_encode($adaptation)])}}">
+														<p class="brand">{{$adaptation}}</p>
+													</a>
+												</div>
+												<div class="col-2 mt-3">
+													<i class="bi bi-three-dots-vertical"></i>
+												</div>
 											</div>
 										</div>
-									</div>
-								@endforeach
+									@endforeach
+								</div>
 							</div>
 						</div>
-					@else
-							<p>Adaptations Not found</p>
 					@endif
-				</div>
 
-				{{-- Raw images --}}
-				<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
-					tabindex="0">
-					<div class="col-12" style="margin-top: 40px;">
-						<p style="font-weight: 500;font-size: 12px;color: #9F9F9F;">Total Skus : {{count($raw_skus)}} </p>
-					</div>
-					<div class="col-12">
-						@if (count($raw_skus) > 0)
-							<div class="row" style="margin-top: 10px;">	
-								@foreach ($raw_skus as $row)
-									<div class="col-lg-4 col-md-6 mt-2">
-										<div class="row brand-div2">
-											<div class="col-2 mt-3">
-												<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-													xmlns="http://www.w3.org/2000/svg">
-													<rect width="24" height="24" fill="#9F9F9F" />
-													<line x1="3.95353" y1="3.24606" x2="20.7535" y2="20.0461" stroke="#D1D1D1" />
-													<line x1="3.24642" y1="20.0459" x2="20.0464" y2="3.24586" stroke="#D1D1D1" />
-												</svg>
-											</div>
-											<div class="col-8 mt-2">
-												<a style="text-decoration: none;" href="{{route('your_assets_files_shoot_raw_images' , [base64_encode($row['sku_id'])] )}}">
-													<p class="brand">{{$row['sku_code']}}</p>
-												</a>
-											</div>
-											<div class="col-2 mt-3">
-												<i class="bi bi-three-dots-vertical"></i>
+					{{-- Raw images --}}
+					@if (count($raw_skus) > 0)
+						<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
+							tabindex="0">
+							<div class="col-12" style="margin-top: 40px;">
+								<p style="font-weight: 500;font-size: 12px;color: #9F9F9F;">Total Skus : {{count($raw_skus)}} </p>
+							</div>
+							<div class="col-12">
+								<div class="row" style="margin-top: 10px;">	
+									@foreach ($raw_skus as $row)
+										<div class="col-lg-4 col-md-6 mt-2">
+											<div class="row brand-div2">
+												<div class="col-2 mt-3">
+													<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+														xmlns="http://www.w3.org/2000/svg">
+														<rect width="24" height="24" fill="#9F9F9F" />
+														<line x1="3.95353" y1="3.24606" x2="20.7535" y2="20.0461" stroke="#D1D1D1" />
+														<line x1="3.24642" y1="20.0459" x2="20.0464" y2="3.24586" stroke="#D1D1D1" />
+													</svg>
+												</div>
+												<div class="col-8 mt-2">
+													<a style="text-decoration: none;" href="{{route('your_assets_files_shoot_raw_images' , [base64_encode($row['sku_id'])] )}}">
+														<p class="brand">{{$row['sku_code']}}</p>
+													</a>
+												</div>
+												<div class="col-2 mt-3">
+													<i class="bi bi-three-dots-vertical"></i>
+												</div>
 											</div>
 										</div>
-									</div>
-								@endforeach					
+									@endforeach					
+								</div>
 							</div>
-						@else
-							<p>Skus not found</p>
-						@endif
-					</div>
+						</div>
+					@endif
 				</div>
 			</div>
-		</div>
+		@else
+			<div style="margin-top: 40px;">Wrcs Data not found</div>
+		@endif
 	</div>
 	
-	<div class="col-lg-3" style="margin-top: 24px;">
+	<div class="col-lg-3 d-none" style="margin-top: 24px;">
 
 		<div class="row">
 			<div class="col-12">

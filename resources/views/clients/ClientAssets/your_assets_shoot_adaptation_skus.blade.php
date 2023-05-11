@@ -1,6 +1,6 @@
 @extends('layouts.DamNewMain')
 @section('title')
-  Your Assets - WRCs
+  Your Assets - Adapation Sku's
 @endsection
 
 @section('main_content')
