@@ -108,7 +108,10 @@
 				</tr>
 			</thead>
 			<tbody>
-				@if ($lot_detail[0]['lot_status'] != 'Inward')
+				@php
+    			$creative_and_cataloging_lot_statusArr = creative_and_cataloging_lot_statusArr();
+				@endphp
+				@if ($lot_detail[0]['lot_status'] != $creative_and_cataloging_lot_statusArr[0])
 					@foreach ($wrc_detail as $wrc_index => $wrc_row)
 						<tr>
 							<td class="table-column" style="position: relative;">
@@ -195,8 +198,6 @@
 	</div>
 	<div class="col-12 d-flex justify-content-between last-btn-div">
 		<div class="d-flex last-button-mar">
-			<button type="button" class="btn border btn-lg last-button">Download images</button>&nbsp;&nbsp;&nbsp;
-			<button type="button" class="btn border btn-lg last-button">Download raw</button>
 		</div>
 		<div class="download-invoice">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

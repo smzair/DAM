@@ -89,7 +89,7 @@
 							<p class="progress-bottom-heading">{{isset($lot_detail[0]['qc_done_at']) && $lot_detail[0]['qc_done_at'] != null  && $overall_progress > '60' ? dateFormet_dmy($lot_detail[0]['qc_done_at']) : "-"}}</p>
 						</div>
 						<div class="progress-label progress-label-5">
-							<p class="progress-bottom-heading">{{isset($lot_detail[0]['submission_date']) && $lot_detail[0]['submission_date'] != null  && $overall_progress == '80' ? dateFormet_dmy($lot_detail[0]['submission_date']) : "-"}}</p>
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['submission_date']) && $lot_detail[0]['submission_date'] != null  && $overall_progress > '80' ? dateFormet_dmy($lot_detail[0]['submission_date']) : "-"}}</p>
 						</div>
 					</div>
 				</div>
@@ -156,8 +156,8 @@
 	</div>
 	<div class="col-12 d-flex justify-content-between last-btn-div">
 		<div class="d-flex last-button-mar">
-			<button type="button" class="btn border btn-lg last-button">Download images</button>&nbsp;&nbsp;&nbsp;
-			<button type="button" class="btn border btn-lg last-button">Download raw</button>
+			<a href="{{route('download_Shoot_Lot_edited', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn border btn-lg last-button">Download images</a>&nbsp;&nbsp;&nbsp;
+			<a href="{{route('download_Shoot_Lot_raw', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn border btn-lg last-button">Download raw</a>&nbsp;&nbsp;&nbsp;
 		</div>
 		<div class="download-invoice">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
