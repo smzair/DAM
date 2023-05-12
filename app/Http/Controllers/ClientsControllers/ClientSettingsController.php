@@ -68,6 +68,6 @@ class ClientSettingsController extends Controller
         }else{
             request()->session()->flash('false', 'Password should be at least 8 characters in length and should include at least one upper case letter, one lower case letter,  one number, and one special character.');
         }
-        return redirect()->route('ClientSetting');
+        return redirect()->route('Client_Setting_new');
     }
 }

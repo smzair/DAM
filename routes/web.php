@@ -657,9 +657,6 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::post('/Client-Settings', [ClientSettingsController::class, 'ChangePassword'])->name('ChangePassword');
     Route::post('/verify-oldpass', [ClientSettingsController::class, 'verifyOldPass'])->name('verifyOldPass');
 
-    // Ajax Route
-    Route::post('/send-otp', [ClientCommonController::class, 'sendOtp'])->name('sendOtp'); 
-    Route::post('/verify-otp', [ClientCommonController::class, 'verifyOtp'])->name('verifyOtp'); 
 
     Route::get('/allnotification', [ClientNotificationController::class, 'allnotification'])->name('allnotification'); 
     Route::get('/Notification-Detail/{id}', [ClientNotificationController::class, 'ClientNotificatioDetail'])->name('ClientNotificatioDetail'); 
@@ -681,7 +678,10 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
 
     // Client Settings Routes
     Route::get('/Client-Settings-New', [ClientSettingsController::class, 'Client_Setting_new'])->name('Client_Setting_new'); 
-    // Route::post('/Client-Settings', [ClientSettingsController::class, 'ChangePassword'])->name('ChangePassword');
+    // Ajax Route
+    Route::post('/send-otp', [ClientCommonController::class, 'sendOtp'])->name('sendOtp'); 
+    Route::post('/verify-otp', [ClientCommonController::class, 'verifyOtp'])->name('verifyOtp'); 
+    
 });
 
 // route for global search in file manager system
