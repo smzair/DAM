@@ -640,12 +640,21 @@ body {
   border: 1px solid #ccc;
   padding: 10px;
   z-index: 1;
+  min-width: 50%;
+  width: 80%;
+  left: 40%;
 }
 
 .myPopover a {
   display: block;
   margin-bottom: 5px;
   text-decoration: none;
+  color: #9F9F9F;
+  font-size: initial;
+}
+
+.myPopover a:hover{
+  color: #0F0F0F;
 }
 
 /* form floating on top */

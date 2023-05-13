@@ -573,6 +573,15 @@ Route::get('/download-Editing-lot-raw/{id}', [ImageDownloadController::class, 'd
 
 Route::get('/download-Editing-lot-edited/{id}', [ImageDownloadController::class, 'download_Editing_Lot_edited'])->name('download_Editing_Lot_edited'); //shoot-lot-raw Image download
 
+Route::get('/Shoot-lot-Edited-wrc-Images/{wrc_id}', [ImageDownloadController::class, 'download_Shoot_lot_Edited_wrc'])->name('download_Shoot_lot_Edited_wrc'); //shoot-lot-Edited Image download Wrc wisw
+
+Route::get('/Editing-lot-Edited-wrc-Images/{wrc_id}', [ImageDownloadController::class, 'download_Editing_lot_Edited_wrc'])->name('download_Editing_lot_Edited_wrc'); //Editing-lot-Edited Image download not done
+
+Route::get('/Shoot-lot-Edited-adaptation-Images/{wrc_id}/{adaptation}/{sku_id?}', [ImageDownloadController::class, 'download_Shoot_lot_Edited_adaptation'])->name('download_Shoot_lot_Edited_adaptation'); //shoot-lot-Edited Image download Wrc and adaptation wise
+
+Route::get('/Shoot-lot-raw-sku-Images/{wrc_id}/{sku_id?}', [ImageDownloadController::class, 'download_Shoot_lot_raw_sku'])->name('download_Shoot_lot_raw_sku'); //shoot-lot-Edited Image download Wrc and adaptation wise
+
+
 
 // Client User Management Routing
 Route::middleware(['auth', 'role:Client'])->group(function () {

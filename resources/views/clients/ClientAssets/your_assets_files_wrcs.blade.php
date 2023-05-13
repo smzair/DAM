@@ -14,8 +14,10 @@
 	// dd($wrc_data);
 if($service_is == 'Shoot'){
 	$route_is = 'your_assets_shoot_skus';
+	$download_route_is = 'download_Shoot_lot_Edited_wrc';
 }else{
 	$route_is = 'your_assets_files_editing_uploaded_images';
+	$download_route_is = 'download_Editing_lot_Edited_wrc';
 }
 
 @endphp
@@ -107,7 +109,16 @@ if($service_is == 'Shoot'){
 										<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
 									</svg> <span>{{$row['wrc_number']}}</span>                     
 								</a>
-								<a href="#" class=" test" role="button"> <i class="bi bi-three-dots-vertical" style="font-size:20px"></i></a>
+								<button class="test myButton" role="button"> <i class="bi bi-three-dots-vertical" style="font-size:20px"></i></button>
+								<div class="myPopover" style="display: none;">
+									@php
+											
+									@endphp
+									<a href="{{route($download_route_is , [ base64_encode($row['wrc_id']) ] )}}">Download</a>
+									<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >link</a>
+									<p class="d-none" id="url_{{$key}}">{{route($download_route_is , [ base64_encode($row['wrc_id']) ] )}}</p>
+									<a href="#">Favorite</a>
+								</div>
 							</h5>
 						</div>
 						<div id="collapseOne{{$key}}" class="collapse show" aria-labelledby="headingOne{{$key}}" data-parent="#">

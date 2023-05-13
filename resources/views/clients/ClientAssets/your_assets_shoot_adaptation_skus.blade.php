@@ -31,9 +31,9 @@
 		</div>
 	</div>
 	<div class="row" style="margin-top: 12px;">
-		@foreach ($raw_skus as $row)
+		@foreach ($raw_skus as $key => $row)
 			<div class="col-lg-3 col-md-6 mt-2">
-				<div class="row brand-div">
+				<div class="row brand-div" style="position: relative">
 					<div class="col-2 mt-3">
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect width="24" height="24" fill="#9F9F9F" />
@@ -47,7 +47,19 @@
 						</a>
 					</div>
 					<div class="col-2 mt-3">
-						<i class="bi bi-three-dots-vertical"></i>
+						<i class="bi bi-three-dots-vertical test myButton" style="font-size:20px" role="button"></i>
+							<div class="myPopover" style="display: none;">
+								@php
+										$download_route_is = "download_Shoot_lot_Edited_adaptation";
+								@endphp
+								<a href="{{route($download_route_is , [ 'wrc_id' => base64_encode($raw_skus[0]['wrc_id']) , 'adaptation' => base64_encode($raw_skus[0]['adaptation']) , 'sku_id' => base64_encode($row['sku_code']) ] )}}">Download</a>
+								
+								<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC adaptation Image' , 'Shoot WRC')" >link</a>
+								<p class="d-none" id="url_{{$key}}">
+									{{route($download_route_is , [ 'wrc_id' => base64_encode($raw_skus[0]['wrc_id']) , 'adaptation' => base64_encode($raw_skus[0]['adaptation']) , 'sku_id' => base64_encode($row['sku_code']) ] )}}
+								</p>
+								<a href="#">Favorite</a>
+							</div>
 					</div>
 				</div>
 			</div>
