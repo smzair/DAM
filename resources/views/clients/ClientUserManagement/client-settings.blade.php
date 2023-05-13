@@ -427,7 +427,7 @@ textarea,
                                   </div>
                               </form>
                           </div>
-                          <div class="custom-verification-success-msg emailverify-success-msg d-none" id="emailverify-success-msg-id">
+                          <div class="custom-verification-success-msg emailverify-success-msg" id="emailverify-success-msg-id" style="display: none">
                               <div class="success-checkmark">
                                   <div class="check-icon">
                                     <span class="icon-line line-tip"></span>
@@ -477,7 +477,7 @@ textarea,
                             
                             </div>
                         </div>
-                        <div class="custom-verification-success-msg phoneverify-success-msg d-none" id="phoneverify-success-msg-id">
+                        <div class="custom-verification-success-msg phoneverify-success-msg" id="phoneverify-success-msg-id" style="display: none">
                             <div class="success-checkmark">
                                 <div class="check-icon">
                                   <span class="icon-line line-tip"></span>
@@ -642,6 +642,9 @@ textarea,
           if (res.status) {
             $("#" + d_none).css('display', 'none');
             $("#" + display_block).css('display', 'block');
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
           } else {
             $(".otpError").text(res.massage)
             $(".otpError").removeClass('d-none')
@@ -650,7 +653,7 @@ textarea,
       });
       setTimeout(() => {
         $(".otpError").addClass('d-none')
-      }, 2000);
+      }, 3500);
     }
   </script>
 
