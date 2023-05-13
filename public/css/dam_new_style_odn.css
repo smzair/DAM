@@ -1,5 +1,74 @@
 body {
   font-family: 'Poppins', sans-serif;
+ background: #0F0F0F !important;
+}
+
+/*svg color changes sidebar*/
+
+.svg-circle {
+  transition: fill 0.3s ease;
+}
+
+.svg-circle.clicked {
+  fill: #0F0F0F;
+}
+
+/*svg color changes sidebar end*/
+
+.services-modal{
+    background: #1A1A1A;
+}
+
+.sidebar-position{
+    position:fixed;
+}
+ .box-container-responsive{
+    /*margin-left: -3px;*/
+ }
+
+.nav-date{
+   color: #FFFFFF;
+}
+
+.log-btn {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.btn-secondary{
+    background: #1A1A1A;
+    color: #FFFFFF;
+     padding: 16px;
+}
+
+/*div[role="progressbar"] {*/
+/*   --fg: #FFF866 !important;*/
+/*   color: #FFF866 !important;*/
+/*}*/
+
+.lot-date{
+    color: #808080;
+}
+
+.current-status{
+    color: #9F9F9F;
+}
+
+.status{
+    color: #FFFFFF;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+   color: #0F0F0F;
+   background: #FFF866 !important;
+   box-shadow: 0px 0px 40px rgba(255, 248, 102, 0.2);
+}
+
+
+.accordion-button:not(.collapsed) {
+    color: #0F0F0F;
+   background: #FFF866;
 }
 
 .under-content-div {
@@ -12,7 +81,7 @@ body {
 
   /* ODN Color/Neutral/50 */
 
-  background: #EBEBEB;
+  background: #1A1A1A;
 
   /* Inside auto layout */
 
@@ -38,18 +107,19 @@ body {
   align-items: center;
   padding: 16px;
   gap: 8px !important;
+  color: #808080;
 
-  width: 270px !important;
+  width: 251px !important;
   height: 52px !important;
   font-weight: 500;
   font-size: 14px;
 
   /* ODN Color/Neutral/100 */
 
-  background: #D1D1D1 !important;
+ background: #1A1A1A !important;
   border-radius: 0px !important;
   /* Inside auto layout */
-  border: 2px solid #ffffff !important;
+  /*border: 0px solid #ffffff;*/
   flex: none;
   order: 0;
   flex-grow: 1;
@@ -62,32 +132,34 @@ body {
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-  color: #9F9F9F;
-  background-color: #D1D1D1 !important;
+ color: #FFFFFF;
+ background: #1A1A1A;
 }
 
 .lotnoF {
   font-weight: 600;
   font-size: 16px;
-  color: #9F9F9F;
+  color: #FFFFFF;
+  font-family: 'Poppins';
+  margin-top: -12px;
 }
 
 .headingF {
   font-weight: 500;
   font-size: 28px;
-  color: #9F9F9F;
+  color: #FFFFFF;
 }
 
 .underheadingF {
   font-weight: 400;
   font-size: 16px;
-  color: #9F9F9F;
+  color: #808080;
 }
 
 .totallotF {
   font-weight: 500;
   font-size: 12px;
-  color: #9F9F9F;
+  color: #FFFFFF;
 }
 
 .viewport {
@@ -95,14 +167,15 @@ body {
 }
 
 .accordion-body {
-  background: #EBEBEB;
+ background: #1A1A1A;
 }
 
 .under-button {
-  background: #EBEBEB;
-  color: #B8B8B8;
+  background: #1A1A1A;
+  color: #808080;
   font-weight: 400;
   font-size: 16px;
+  text-align:left;
 }
 
 .under-content-div .lotnoF{
@@ -141,7 +214,7 @@ body {
 
 .back-btn {
   color: #9F9F9F;
-  background: #FFFFFF;
+  background: #0F0F0F !important;
   margin-top: 24px;
   /* margin-left: 19px; */
   font-weight: 500;
@@ -151,7 +224,7 @@ body {
 .lot-no-sty {
   font-weight: 400;
   font-size: 22px;
-  color: #9F9F9F;
+  color: #FFFFFF;
   /* margin-left: 24px; */
   margin-top: 40px;
 }
@@ -190,7 +263,7 @@ body {
 .table-column {
   font-weight: 400;
   font-size: 16px;
-  color: #9F9F9F;
+  color: #FFFFFF;
 }
 
 .table-img {
@@ -199,16 +272,21 @@ body {
 }
 
 .table-invoice {
-  background: #EBEBEB !important;
   width: 85px;
   height: 27px;
 }
 
-.last-button {
-  font-weight: 500;
-  font-size: 16px;
-  color: #9F9F9F;
-  /* padding: 14px 33px 14px 33px; */
+.log-out-button{
+    font-weight: 500;
+    font-size: 14px;
+    text-align: left;
+    color: #FFFFFF !important;
+    margin-top: 280px;
+    border-radius: 0px;
+    padding: 16px 32px;
+    gap: 8px;
+    background: #F13B3B;
+    width: 100% !important;
 }
 
 .last-button-mar {
@@ -216,6 +294,7 @@ body {
   margin-top: 40px;
   /* width: 100%; */
 }
+
 
 .download-invoice {
   font-weight: 500;
@@ -227,7 +306,7 @@ body {
 }
 
 .progress-box {
-  background-color: #EBEBEB;
+  background: #1A1A1A;
   padding: 7px;
   border-radius: 0px;
 }
@@ -243,27 +322,27 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  background-color: #1abc9c;
+ background: #FFF866;
 }
 
 .progress-bar-2 {
   left: 20%;
-  background-color: #3498db;
+  background: #FFF866;
 }
 
 .progress-bar-3 {
   left: 40%;
-  background-color: #9b59b6;
+  background: #FFF866;
 }
 
 .progress-bar-4 {
   left: 60%;
-  background-color: #f1c40f;
+  background: #FFF866;
 }
 
 .progress-bar-5 {
   left: 80%;
-  background-color: #e74c3c;
+  background: #FFF866;
 }
 
 .progress-labels {
@@ -285,18 +364,18 @@ body {
 .progress-upper-heading {
   font-weight: 400;
   font-size: 14px;
-  color: #9F9F9F;
+  color: #FFFFFF;
 }
 
 .progress-bottom-heading {
   font-weight: 500;
   font-size: 11px;
-  color: #9F9F9F;
+  color: #808080;
 }
 
 .log-btn-mob-sty {
   width: 100%;
-  background: #D1D1D1;
+ background: #F13B3B;
   height: 60px;
   margin-top: 430px;
 }
@@ -469,7 +548,7 @@ body {
 }
 
 .back-btn {
-  color: #9F9F9F;
+  color: #FFFFFF;
   background: #FFFFFF;
   margin-top: 24px;
   /* margin-left: 19px; */
@@ -542,10 +621,10 @@ body {
   font-size: 14px;
   text-align: left;
   color: #808080;
-  /* margin-top: 400px; */
+   margin-top: 280px; 
   border-radius: 0px;
   align-self: flex-end;
-  margin-top: auto;
+  
 }
 
 .log-btn {
@@ -554,7 +633,20 @@ body {
   height: 100vh;
 }
 
+.myPopover {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1;
+}
 
+.myPopover a {
+  display: block;
+  margin-bottom: 5px;
+  text-decoration: none;
+}
 
 /* form floating on top */
 
@@ -637,8 +729,12 @@ body {
 @media only screen and (min-width: 576px) and (max-width: 991px) {
   .main-container-resp {
     width: 100%;
+    margin-top: 536px;
   }
-
+  .sidebar-position{
+    position:absolute !important;
+}
+  
   .box-container-responsive {
     justify-content: center;
   }
@@ -676,6 +772,10 @@ body {
   .box-container-responsive {
     justify-content: center;
   }
+  
+  .sidebar-position{
+    position:absolute !important;
+  }
 
   .log-btn-mob-sty {
     margin-top: 0px;
@@ -683,6 +783,7 @@ body {
 
   .main-container-resp {
     width: 100%;
+    margin-top: 536px;
   }
 
   .last-button-mar {
@@ -718,7 +819,7 @@ body {
     font-weight: 400;
     font-size: 9px;
     letter-spacing: 0.25px;
-    color: #9F9F9F;
+   color: #808080;
     margin-top: 12px;
   }
 
@@ -735,7 +836,7 @@ body {
     font-weight: 500;
     font-size: 10px;
     line-height: 20px;
-    color: #9F9F9F;
+    color: #808080;
   }
 
   .table-column {
@@ -753,7 +854,7 @@ body {
   .last-button {
     font-weight: 500;
     font-size: 12px;
-    color: #9F9F9F;
+  
   }
 
   .log-out-button {
@@ -762,6 +863,7 @@ body {
 
   .tab-button {
     width: 269px !important;
+    background: #1A1A1A;
   }
 
   .your_assets_tab .tab-button{
