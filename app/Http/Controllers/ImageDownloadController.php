@@ -150,6 +150,161 @@ class ImageDownloadController extends Controller
     }
   }
 
+  //Shoot lot Edited Image zip Download based on wrc id
+  public function download_Shoot_lot_Edited_wrc($wrc_id)
+  {
+    $wrc_id = base64_decode($wrc_id); // lot id
+    $lot_data_arr = Lots::leftJoin('wrc','wrc.lot_id', '=' , 'lots.id')->whereNotNull('lots.id')->
+    where('wrc.id', '=', $wrc_id)->get(['lots.lot_id', 'lots.created_at' , 'wrc.wrc_id as wrc_number'])->toArray();
+
+    if(count($lot_data_arr) > 0){
+      $lot_data = $lot_data_arr[0];
+      $lot_no = $lot_data['lot_id'];
+      $lot_created_at = $lot_data['created_at'];
+      $wrc_number = $lot_data['wrc_number'];
+      
+      $fileName = $wrc_number . ".zip";
+      $path =  "edited_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number;
+      
+      $zip = new ZipArchive;
+      if ($zip->open($fileName, ZipArchive::CREATE) === TRUE) {
+        if (file_exists($path)) {
+          $this->addContent($zip, $path);
+          $zip->close();
+  
+          $all_data_in_arr = array(
+            'fileName' => $fileName,
+            'path' => $path,
+          );
+          $data_array = array(
+            'log_name' => 'File Manger - Shoot Edited Images Download',
+            'description' => 'Shoot Lot Edited Images Download for wrc ' . $wrc_number,
+            'event' => 'Shoot Lot Edited Images Download',
+            'subject_type' => 'App\Models\Lots',
+            'subject_id' => '0',
+            'properties' => [$all_data_in_arr],
+          );
+          ClientActivityLog::saveClient_activity_logs($data_array);
+          return response()->download($fileName)->deleteFileAfterSend(true);
+        } else {
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }
+      }else{
+        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+      }
+    }else{
+      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, Invailid Wrc id');
+    }
+  }
+
+  //Shoot lot Edited Image zip Download based on wrc id and adaptation
+  public function download_Shoot_lot_Edited_adaptation ($wrc_id , $adaptation , $sku_id = '')
+  {
+    $wrc_id = base64_decode($wrc_id); 
+    $adaptation = base64_decode($adaptation);
+
+    $lot_data_arr = Lots::leftJoin('wrc','wrc.lot_id', '=' , 'lots.id')->whereNotNull('lots.id')->
+    where('wrc.id', '=', $wrc_id)->get(['lots.lot_id', 'lots.created_at' , 'wrc.wrc_id as wrc_number'])->toArray();
+
+    if(count($lot_data_arr) > 0){
+      $lot_data = $lot_data_arr[0];
+      $lot_no = $lot_data['lot_id'];
+      $lot_created_at = $lot_data['created_at'];
+      $wrc_number = $lot_data['wrc_number'];
+      
+      $fileName = $wrc_number."-".$adaptation . ".zip";
+      $path =  "edited_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number."/" . $adaptation;
+
+      if($sku_id != ""){
+        $sku_id = base64_decode($sku_id);
+        $path = $path."/" . $sku_id;
+        $fileName = $wrc_number."-".$sku_id . ".zip";
+      }
+      // dd($fileName , $path  , $adaptation);
+      
+      $zip = new ZipArchive;
+      if ($zip->open($fileName, ZipArchive::CREATE) === TRUE) {
+        if (file_exists($path)) {
+          $this->addContent($zip, $path);
+          $zip->close();
+  
+          $all_data_in_arr = array(
+            'fileName' => $fileName,
+            'path' => $path,
+          );
+          $data_array = array(
+            'log_name' => 'File Manger - Shoot Edited Images Download',
+            'description' => 'Shoot Lot Edited Images Download for lot_no ' . $lot_no,
+            'event' => 'Shoot Lot Edited Images Download',
+            'subject_type' => 'App\Models\Lots',
+            'subject_id' => '0',
+            'properties' => [$all_data_in_arr],
+          );
+          ClientActivityLog::saveClient_activity_logs($data_array);
+          return response()->download($fileName)->deleteFileAfterSend(true);
+        } else {
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }
+      }else{
+        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+      }
+    }else{
+      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, Invailid Wrc id');
+    }
+  }
+
+  //Shoot lot Edited Image zip Download based on wrc id and sku code
+  public function download_Shoot_lot_raw_sku ($wrc_id , $sku_id = '')
+  {
+    $wrc_id = base64_decode($wrc_id); 
+    $lot_data_arr = Lots::leftJoin('wrc','wrc.lot_id', '=' , 'lots.id')->whereNotNull('lots.id')->
+    where('wrc.id', '=', $wrc_id)->get(['lots.lot_id', 'lots.created_at' , 'wrc.wrc_id as wrc_number'])->toArray();
+
+    if(count($lot_data_arr) > 0){
+      $lot_data = $lot_data_arr[0];
+      $lot_no = $lot_data['lot_id'];
+      $lot_created_at = $lot_data['created_at'];
+      $wrc_number = $lot_data['wrc_number'];
+      
+      $fileName = "Raw-".$wrc_number.".zip";
+      $path =  "raw_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number;
+      
+      if($sku_id != ""){
+        $sku_id = base64_decode($sku_id);
+        $path = $path."/".$sku_id;
+        $fileName = "Raw-".$wrc_number."-".$sku_id.".zip";
+      }
+      $zip = new ZipArchive;
+      if ($zip->open($fileName, ZipArchive::CREATE) === TRUE) {
+        if (file_exists($path)) {
+          $this->addContent($zip, $path);
+          $zip->close();
+  
+          $all_data_in_arr = array(
+            'fileName' => $fileName,
+            'path' => $path,
+          );
+          $data_array = array(
+            'log_name' => 'File Manger - Shoot Edited Images Download',
+            'description' => 'Shoot Lot Edited Images Download for lot_no ' . $lot_no,
+            'event' => 'Shoot Lot Edited Images Download',
+            'subject_type' => 'App\Models\Lots',
+            'subject_id' => '0',
+            'properties' => [$all_data_in_arr],
+          );
+          ClientActivityLog::saveClient_activity_logs($data_array);
+          return response()->download($fileName)->deleteFileAfterSend(true);
+        } else {
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }
+      }else{
+        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+      }
+    }else{
+      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, Invailid Wrc id');
+    }
+  }
+
   //Editing lot Raw Image zip Download
   public function download_Editing_Lot_raw($lot_id)
   {

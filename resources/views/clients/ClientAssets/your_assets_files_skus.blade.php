@@ -68,9 +68,9 @@
 
 							<div class="col-12">
 								<div class="row" style="margin-top: 10px;">
-									@foreach ($wrc_data['adaptation'] as $adaptation)
+									@foreach ($wrc_data['adaptation'] as $key => $adaptation)
 										<div class="col-lg-4 col-md-6 mt-2">
-											<div class="row brand-div2">
+											<div class="row brand-div2" style="position: relative">
 												<div class="col-2 mt-3">
 													<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
 														xmlns="http://www.w3.org/2000/svg">
@@ -85,7 +85,16 @@
 													</a>
 												</div>
 												<div class="col-2 mt-3">
-													<i class="bi bi-three-dots-vertical"></i>
+													<i class="bi bi-three-dots-vertical test myButton" style="font-size:20px" role="button"></i>
+														<div class="myPopover" style="display: none;">
+															@php
+																	$download_route_is = "download_Shoot_lot_Edited_adaptation";
+															@endphp
+															<a href="{{route($download_route_is , [ 'wrc_id' => base64_encode($wrc_data['wrc_id']) , 'adaptation' => base64_encode($adaptation) ] )}}">Download</a>
+															<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC adaptation Image' , 'Shoot WRC')" >link</a>
+															<p class="d-none" id="url_{{$key}}">{{route($download_route_is , [ 'wrc_id' => base64_encode($wrc_data['wrc_id']) , 'adaptation' => base64_encode($adaptation) ] )}}</p>
+															<a href="#">Favorite</a>
+														</div>
 												</div>
 											</div>
 										</div>
@@ -96,6 +105,9 @@
 					@endif
 
 					{{-- Raw images --}}
+					@php
+						// dd($raw_skus);
+					@endphp
 					@if (count($raw_skus) > 0)
 						<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
 							tabindex="0">
@@ -104,9 +116,9 @@
 							</div>
 							<div class="col-12">
 								<div class="row" style="margin-top: 10px;">	
-									@foreach ($raw_skus as $row)
+									@foreach ($raw_skus as $key => $row)
 										<div class="col-lg-4 col-md-6 mt-2">
-											<div class="row brand-div2">
+											<div class="row brand-div2" style="position: relative;">
 												<div class="col-2 mt-3">
 													<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
 														xmlns="http://www.w3.org/2000/svg">
@@ -121,7 +133,16 @@
 													</a>
 												</div>
 												<div class="col-2 mt-3">
-													<i class="bi bi-three-dots-vertical"></i>
+													<i class="bi bi-three-dots-vertical test myButton" style="font-size:20px" role="button"></i>
+														<div class="myPopover" style="display: none;">
+															@php
+																	$download_route_is = "download_Shoot_lot_raw_sku";
+															@endphp
+															<a href="{{route($download_route_is , [ 'wrc_id' => base64_encode($row['wrc_id']) , 'sku_id' => base64_encode($row['sku_code']) ] )}}">Download</a>
+															<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key.$row['wrc_id']}}' , 'Shoot Lot WRC Sku Image' , 'Shoot WRC')" >link</a>
+															<p class="d-none" id="url_{{$key.$row['wrc_id']}}">{{route($download_route_is , [ 'wrc_id' => base64_encode($row['wrc_id']) , 'sku_id' => base64_encode($row['sku_code'])] )}}</p>
+															<a href="#">Favorite</a>
+														</div>
 												</div>
 											</div>
 										</div>
@@ -196,7 +217,7 @@
 			<div class="col-12">
 				<div class="row">
 					<div class="col-12" style="margin-top: 16px;">
-						<img src="Group 10 (1).png" alt="" class="img-fluid" style="background: #EBEBEB;padding:19px;">
+						<img src="{{asset('IMG/group_10.png')}}" alt="" class="img-fluid" style="background: #EBEBEB;padding:19px;">
 					</div>
 				</div>
 			</div>
