@@ -109,7 +109,7 @@ if($service_is == 'Shoot'){
 										<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
 									</svg> <span>{{$row['wrc_number']}}</span>                     
 								</a>
-								<button class="test myButton" role="button"> <i class="bi bi-three-dots-vertical" style="font-size:20px"></i></button>
+								<span class="test btn myButton" role="button" style="float: right"> <i class="bi bi-three-dots-vertical" style="font-size:20px"></i></span>
 								<div class="myPopover" style="display: none;">
 									@php
 											

@@ -4,6 +4,11 @@
 @endsection
 
 @section('main_content')
+<style>
+	.myPopover{
+		top: 60%;
+	}
+</style>
 @php
 	$user = Auth::user();
 	$your_assets_permissions = json_decode($user->your_assets_permissions,true);
@@ -41,7 +46,7 @@
 
 <div class="row" style="margin-top: 12px;">
 
-	@foreach ($raw_skus_files as $row)
+	@foreach ($raw_skus_files as $key => $row)
 		@php
 		if($service_is == 'edited'){
 			$path=  "edited_img_directory/". date('Y', strtotime($row['created_at'])) . "/" . date('M', strtotime($row['created_at'])) . "/" . $row['lot_number'] . "/" . $row['wrc_number']. "/" . $row['adaptation']. "/" .$row['sku_code']. "/" . $row['filename'] ;
@@ -53,12 +58,17 @@
 			$img_src = $path;
 		}
 		@endphp
-		<div class="col-sm-6 col-md-4 col-lg-3 mt-2">
-			<div class="card brand-img-m border-0 rounded-0">
+		<div class="col-sm-6 col-md-4 col-lg-3 mt-2" >
+			<div class="card brand-img-m border-0 rounded-0" >
 				<img class="card-img-top brand-img" src="{{ asset($img_src)}}" alt="Image">
-				<div class="card-body d-flex justify-content-between">
+				<div class="card-body d-flex justify-content-between" style="position: relative">
 					<p class="brand-img-name">{{$row['filename']}}</p>
-					<i class="bi bi-three-dots-vertical"></i>
+					<i class="bi bi-three-dots-vertical myButton" style="cursor: pointer;"></i>
+					<div class="myPopover" style="display: none; top 20%;">
+						<a href="{{ asset($img_src)}}" download="{{$row['filename']}}">Download</a>
+						<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >link</a>
+						<p class="d-none" id="url_{{$key}}">{{ asset($img_src)}}</p>
+					</div>
 				</div>
 			</div>
 		</div>		

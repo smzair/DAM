@@ -81,8 +81,8 @@
 						<div class="col-12">
 							<p class="totallotF">Total Lots: {{count($shoot_lots)}}</p>
 						</div>
-						@foreach ($shoot_lots as $row)
-							<div class="col-lg-3 col-md-6 box border-0" style="background: #EBEBEB;">
+						@foreach ($shoot_lots as $key => $row)
+							<div class="col-lg-3 col-md-6 box border-0" style="background: #EBEBEB; position: relative;">
 								<div class="row">
 									<div class="under-content-div">
 										<div class="col-12">
@@ -91,11 +91,19 @@
 										<div class="col-12 d-flex">
 											<h3 class="lotnoF">
 												<span>Lot no: {{$row['lot_number']}}
-												<button type="button" class="btn btn-light border-0 rounded-circle "
-													style="background: #EBEBEB;">
-													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F;">
+												<span type="button" class="btn border-0 rounded-circle myButton">
+													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F;line-height: 2.5;">
 													</i>
-												</button>
+												</span>
+												<div class="myPopover" style="display: none;">
+													@php
+															$download_route_is = "download_Shoot_Lot_edited";
+													@endphp
+													<a href="{{route($download_route_is , [ 'id' =>  $row['lot_id'] ] )}}">Download</a>
+													<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >link</a>
+													<p class="d-none" id="url_{{$key}}">{{route($download_route_is , [ 'id' =>  $row['lot_id'] ] )}}</p>
+													<a href="#">Favorite</a>
+												</div>
 											</h3>
 										</div>
 										<div class="col-12">
@@ -134,8 +142,8 @@
 						<div class="col-12">
 							<p class="totallotF">Total Lots: {{count($editor_lots)}}</p>
 						</div>
-						@foreach ($editor_lots as $row)
-							<div class="col-lg-3 col-md-6 box border-0" style="background: #EBEBEB;">
+						@foreach ($editor_lots as $key => $row)
+							<div class="col-lg-3 col-md-6 box border-0" style="background: #EBEBEB; position: relative;">
 								<div class="row">
 									<div class="under-content-div">
 										<div class="col-12">
@@ -143,12 +151,20 @@
 										</div>
 										<div class="col-12 d-flex">
 											<h3 class="lotnoF">
-												<span>Lot no : {{$row['lot_number']}}
-												<button type="button" class="btn btn-light border-0 rounded-circle "
-													style="background: #EBEBEB;">
-													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F;">
+												<span>Lot no: {{$row['lot_number']}}
+												<span type="button" class="btn border-0 rounded-circle myButton">
+													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F; line-height: 2.5;">
 													</i>
-												</button>
+												</span>
+												<div class="myPopover" style="display: none;">
+													@php
+															$download_route_is = "download_Editing_Lot_edited";
+													@endphp
+													<a href="{{route($download_route_is , [ 'id' =>  base64_encode($row['lot_id'])  ] )}}">Download</a>
+													<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key.$row['lot_id']}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >link</a>
+													<p class="d-none" id="url_{{$key.$row['lot_id']}}">{{route($download_route_is , [ 'id' =>  base64_encode($row['lot_id']) ] )}}</p>
+													<a href="#">Favorite</a>
+												</div>
 											</h3>
 										</div>
 										<div class="col-12">
