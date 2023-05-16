@@ -22,6 +22,12 @@
   <link rel="icon" href="{{ asset('IMG/ODN Logo.jpeg')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style.css')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
+	<style>
+		.accordion-item .accordion-body   .active{
+			background: #FFF866;
+			color: #333333;
+		}
+	</style>
 </head>
 
 <body>
@@ -37,6 +43,11 @@
 					$search_query = $other_data['search_query'];
 				}
 			}
+
+			$get_active_url_data = get_active_url_data();
+			$active_tab = $get_active_url_data['active_tab'];
+			$active_link = $get_active_url_data['active_link'];
+
     ?>
 		<!-- Top navigation bar -->
 		<div class="top-section">
@@ -150,10 +161,14 @@
 			<div class="row viewport">
 				<div class="col-lg-2 border border-dark border-end-0 sidebar-position">
 					<div class="accordion accordion-flush" id="accordionFlushExample">
+						@php
+							// pre($get_active_url_data);
+						@endphp
+						{{-- 1st tab --}}
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="flush-headingOne">
-								<button class="mySvg clickable accordion-button collapsed siderbar-button" type="button" data-bs-toggle="collapse"
-									data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+								<button class="mySvg clickable accordion-button siderbar-button {{$active_tab == 1 ? '' : 'collapsed'}}" type="button" data-bs-toggle="collapse"
+									data-bs-target="#flush-collapseOne" aria-expanded="{{$active_tab == 1 ? 'true' : 'flase'}}" aria-controls="flush-collapseOne">
 									<svg class=" mySvg clickable"  width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path class="shape"  d="M9.839 19.5001C9.666 19.3581 9.466 19.2381 9.323 19.0701C7.482 16.9181 5.647 14.7601 3.815 12.6011C2.903 11.5261 2.427 10.2631 2.344 8.87207C2.149 5.57307 3.502 3.06907 6.352 1.41207C7.656 0.654069 9.103 0.409069 10.608 0.528069C12.242 0.657069 13.695 1.23507 14.938 2.30607C16.42 3.58307 17.311 5.19607 17.594 7.13407C17.8 8.55007 17.612 9.91807 17.035 11.2291C16.778 11.8111 16.408 12.3201 15.997 12.8021C14.193 14.9211 12.39 17.0401 10.58 19.1541C10.461 19.2931 10.285 19.3851 10.136 19.4991H9.839V19.5001ZM9.992 17.8161C10.023 17.7751 10.037 17.7541 10.053 17.7351C11.728 15.7661 13.41 13.8031 15.073 11.8241C15.364 11.4781 15.63 11.0891 15.814 10.6781C16.495 9.15807 16.525 7.59607 15.958 6.03807C14.741 2.70007 11.28 1.09107 8.008 2.14207C5.401 2.97907 3.656 5.40607 3.637 8.14607C3.628 9.44807 3.933 10.6651 4.786 11.6851C6.068 13.2171 7.368 14.7331 8.662 16.2551C9.098 16.7681 9.535 17.2801 9.992 17.8161Z" fill="white"/>
 										<path class="shape"  d="M9.99001 11.8831C7.95001 11.8881 6.27701 10.2171 6.27101 8.16809C6.26501 6.12409 7.92201 4.45609 9.97601 4.43909C12.015 4.42209 13.705 6.11009 13.704 8.16409C13.702 10.2121 12.038 11.8791 9.99101 11.8831H9.99001ZM12.377 8.15809C12.374 6.83509 11.296 5.76409 9.97501 5.77009C8.66201 5.77609 7.59601 6.85109 7.60001 8.16509C7.60301 9.48909 8.68101 10.5621 10.001 10.5541C11.314 10.5461 12.381 9.47109 12.377 8.15809Z" fill="white"/>
@@ -161,42 +176,46 @@
 									TRACK LOTS
 								</button>
 							</h2>
-							<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+							<div id="flush-collapseOne" class="accordion-collapse collapse {{$active_tab == 1 ? 'show' : ''}}" aria-labelledby="flush-headingOne"
 								data-bs-parent="#accordionFlushExample">
 								<div class="accordion-body">
-									<a href="{{route('TrackLots', ['lotStatus' => 'active'])}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+									<a href="{{route('TrackLots', ['lotStatus' => 'active'])}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'active_lot' ? 'active' : ''}}"
 										style="width: 100%;">Active</a>
-									<a href="{{route('TrackLots', ['lotStatus' => 'completed'])}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+									<a href="{{route('TrackLots', ['lotStatus' => 'completed'])}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'completed_lot' ? 'active' : ''}}"
 										style="width: 100%;">Completed</a>
 								</div>
 							</div>
 						</div>
+
+						{{-- 2nd tab --}}
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="flush-headingTwo">
-								<button class="mySvg clickable accordion-button collapsed siderbar-button" type="button" data-bs-toggle="collapse"
-									data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+								<button class="mySvg clickable accordion-button siderbar-button {{$active_tab == 2 ? '' : 'collapsed'}}" type="button" data-bs-toggle="collapse"
+									data-bs-target="#flush-collapseTwo" aria-expanded="{{$active_tab == 2 ? 'true' : 'flase'}}" aria-controls="flush-collapseTwo">
 									<svg class=" mySvg clickable" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<path class="shape" d="M0.499993 3.59692C0.603993 3.23192 0.783993 2.91692 1.14799 2.76492C1.32599 2.69092 1.52799 2.63892 1.71899 2.63692C3.18499 2.62692 4.65099 2.63092 6.11699 2.63092C6.57699 2.63092 6.93799 2.81992 7.20399 3.19692C7.56399 3.70692 7.93199 4.21092 8.28999 4.72292C8.36199 4.82592 8.43999 4.86092 8.56299 4.86092C10.79 4.85692 13.017 4.85892 15.243 4.85792C15.74 4.85792 16.144 5.03992 16.37 5.49492C16.457 5.66992 16.491 5.88592 16.495 6.08392C16.509 6.83792 16.501 7.59292 16.501 8.34792C16.501 8.41492 16.501 8.48292 16.501 8.57192C16.575 8.57692 16.64 8.58392 16.705 8.58392C17.163 8.58992 17.622 8.57192 18.077 8.60392C19.166 8.67992 19.82 9.79092 19.34 10.7679C18.316 12.8519 17.273 14.9269 16.238 17.0059C16.115 17.2529 15.92 17.3689 15.643 17.3679C11.016 17.3659 6.38899 17.3679 1.76299 17.3659C1.13799 17.3659 0.724993 17.0569 0.532993 16.4649C0.525993 16.4429 0.510993 16.4229 0.498993 16.4019C0.498993 12.1329 0.498993 7.86492 0.498993 3.59592L0.499993 3.59692ZM1.93599 16.2469C1.99099 16.2509 2.01499 16.2539 2.03999 16.2539C6.43899 16.2539 10.837 16.2539 15.236 16.2579C15.353 16.2579 15.395 16.2059 15.439 16.1169C15.847 15.2919 16.258 14.4679 16.668 13.6439C17.216 12.5439 17.765 11.4439 18.311 10.3429C18.475 10.0129 18.333 9.75692 17.965 9.70892C17.91 9.70192 17.854 9.69892 17.799 9.69892C13.679 9.69892 9.55899 9.69892 5.43899 9.69592C5.13199 9.69592 4.93599 9.80992 4.80299 10.0989C4.05899 11.7149 3.29999 13.3239 2.54699 14.9349C2.34599 15.3649 2.14699 15.7949 1.93599 16.2469ZM1.62599 3.74492V14.2639C1.67499 14.1659 1.70299 14.1129 1.72799 14.0579C2.42099 12.5749 3.11099 11.0909 3.81099 9.61092C3.90199 9.41792 4.01999 9.22892 4.16399 9.07292C4.50799 8.69792 4.96199 8.58292 5.45799 8.58392C8.68099 8.58592 11.904 8.58492 15.127 8.58492C15.21 8.58492 15.293 8.58492 15.372 8.58492V5.97192H15.136C12.934 5.97192 10.731 5.96892 8.52899 5.97392C8.04299 5.97492 7.67399 5.78992 7.39799 5.38992C7.05399 4.89192 6.69199 4.40492 6.34499 3.90792C6.26199 3.78992 6.17399 3.73992 6.02599 3.74092C4.62799 3.74692 3.22999 3.74492 1.83199 3.74492H1.62599Z" fill="white"/>
 									</svg>&nbsp;&nbsp;
 									YOUR ASSETS
 								</button>
 							</h2>
-							<div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+							<div id="flush-collapseTwo" class="accordion-collapse collapse {{$active_tab == 2 ? 'show' : ''}}" aria-labelledby="flush-headingTwo"
               data-bs-parent="#accordionFlushExample">
 								<div class="accordion-body">
-									<a href="{{route('your_assets_files')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+									<a href="{{route('your_assets_files')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'your_assets_files' ? 'active' : ''}}"
 										style="width: 100%;">File</a>
-									<a href="#" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+									<a href="javascript:void(0)" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
 										style="width: 100%;">Links</a>
-									<a href="#" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+									<a href="javascript:void(0)" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
 										style="width: 100%;">Favorites</a>
 								</div>
 							</div>
 						</div>
+
+						{{-- 3rd tab --}}
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="flush-headingThree">
-								<button class="mySvg clickable accordion-button collapsed siderbar-button" type="button" data-bs-toggle="collapse"
-									data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+								<button class="mySvg clickable accordion-button siderbar-button {{$active_tab == 3 ? '' : 'collapsed'}}" type="button" data-bs-toggle="collapse"
+									data-bs-target="#flush-collapseThree" aria-expanded="{{$active_tab == 3 ? "true" : "flase"}}" aria-controls="flush-collapseThree">
 									<svg class=" mySvg clickable" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path class="shape" d="M14.67 19.4999C14.325 19.3639 14.187 19.1099 14.212 18.7429C14.229 18.4909 14.22 18.2359 14.212 17.9829C14.21 17.9309 14.164 17.8469 14.122 17.8359C13.59 17.6909 13.138 17.4139 12.758 17.0149C12.439 17.1969 12.132 17.3819 11.816 17.5499C11.577 17.6769 11.299 17.6169 11.12 17.4259C10.944 17.2379 10.901 16.9639 11.039 16.7409C11.101 16.6409 11.2 16.5529 11.3 16.4889C11.539 16.3359 11.788 16.1979 12.036 16.0599C12.122 16.0119 12.163 15.9689 12.132 15.8579C12 15.3829 12 14.9049 12.133 14.4299C12.161 14.3299 12.13 14.2849 12.048 14.2389C11.794 14.0979 11.543 13.9519 11.293 13.8049C10.971 13.6149 10.868 13.2609 11.044 12.9649C11.214 12.6789 11.568 12.5989 11.886 12.7779C12.176 12.9409 12.463 13.1089 12.758 13.2789C13.161 12.8529 13.641 12.5749 14.218 12.4359C14.218 12.0729 14.211 11.7149 14.22 11.3569C14.227 11.0649 14.431 10.8489 14.722 10.8009C14.98 10.7579 15.25 10.9039 15.348 11.1579C15.387 11.2589 15.399 11.3739 15.401 11.4839C15.408 11.7979 15.403 12.1129 15.403 12.4369C15.973 12.5759 16.454 12.8499 16.854 13.2809C17.162 13.1029 17.459 12.9289 17.759 12.7589C17.98 12.6339 18.201 12.6469 18.405 12.7919C18.606 12.9339 18.678 13.1379 18.639 13.3779C18.609 13.5679 18.497 13.7019 18.333 13.7969C18.04 13.9669 17.748 14.1379 17.451 14.3109C17.604 14.8439 17.614 15.3679 17.479 15.8949C17.468 15.9359 17.516 16.0169 17.558 16.0429C17.805 16.1949 18.06 16.3349 18.31 16.4829C18.638 16.6769 18.744 17.0209 18.571 17.3189C18.396 17.6199 18.051 17.6979 17.717 17.5089C17.433 17.3479 17.15 17.1829 16.856 17.0139C16.524 17.3589 16.141 17.6219 15.687 17.7729C15.402 17.8679 15.403 17.8699 15.403 18.1699C15.403 18.3489 15.392 18.5299 15.405 18.7079C15.432 19.0719 15.308 19.3449 14.967 19.5019H14.67V19.4999ZM14.812 16.7189C15.69 16.7189 16.386 16.0219 16.385 15.1429C16.384 14.2699 15.679 13.5629 14.809 13.5619C13.941 13.5619 13.227 14.2709 13.223 15.1369C13.22 16.0189 13.922 16.7179 14.812 16.7179V16.7189Z" fill="white"/>
 										<path class="shape" d="M2.53799 15.9379C2.62699 15.9379 2.69899 15.9379 2.77199 15.9379C4.91799 15.9379 7.06299 15.9379 9.20899 15.9379C9.58999 15.9379 9.85099 16.1819 9.85199 16.5289C9.85199 16.8409 9.61799 17.0969 9.30499 17.1219C9.24999 17.1259 9.19399 17.1239 9.13799 17.1239C6.78199 17.1239 4.42599 17.1239 2.07 17.1239C1.564 17.1239 1.34599 16.9079 1.34599 16.4039C1.34599 15.5379 1.34499 14.6729 1.34599 13.8069C1.34899 11.9179 2.63399 10.3819 4.49299 10.0499C4.66899 10.0189 4.84899 10.0029 5.02799 10.0019C7.28499 9.99789 9.54199 9.99889 11.799 9.99889C12.148 9.99889 12.401 10.2249 12.429 10.5509C12.454 10.8349 12.244 11.1129 11.953 11.1719C11.875 11.1879 11.793 11.1849 11.713 11.1849C9.51799 11.1849 7.32299 11.1829 5.12799 11.1859C3.88699 11.1879 2.86099 12.0139 2.59199 13.2219C2.56499 13.3419 2.54099 13.4659 2.53999 13.5879C2.53499 14.3609 2.53799 15.1329 2.53799 15.9349V15.9379Z" fill="white"/>
@@ -205,18 +224,22 @@
 									ADMIN PANEL
 								</button>
 							</h2>
-							<div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+							<div id="flush-collapseThree" class="accordion-collapse collapse {{$active_tab == 3 ? 'show' : ''}}" aria-labelledby="flush-headingThree"
               data-bs-parent="#accordionFlushExample">
 								<div class="accordion-body">
-									<a href="{{route('Client_Users_list')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+									<a href="{{route('Client_Users_list')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'manage_user' ? 'active' : ''}}"
 										style="width: 100%;">Manage user</a>
-									<a href="{{route('ClientProfile')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+
+									<a href="{{route('ClientProfile')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'ClientProfile' ? 'active' : ''}}"
 										style="width: 100%;">Your profile</a>
-										<a href="{{route('Client_Setting_new')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+
+										<a href="{{route('Client_Setting_new')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'Client_Setting_new' ? 'active' : ''}}"
 										style="width: 100%;">Settings</a>
 								</div>
 							</div>
 						</div>
+
+						{{-- Logout btn --}}
 						<div class="col log-btn">
 							<button type="button" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"  class="btn border-0 btn-lg log-out-button">
 							    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -227,6 +250,7 @@
 								@csrf
 							</form>
 						</div>
+
 					</div>
 				</div>
 				<!-- Sidebar End -->
