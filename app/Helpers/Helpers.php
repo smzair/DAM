@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\CatalogMarketplaceCredentials;
 use App\Models\Marketplace;
 use App\Models\NotificationModel\ClientNotification;
+use Illuminate\Support\Facades\Route;
 
 if (!function_exists('s3object')) {
 
@@ -913,3 +914,71 @@ if(!function_exists('shoot_lot_statusArr')){
     }
 }
 
+// track_lots_routes Array
+if(!function_exists('track_lots_routes')){
+    function track_lots_routes(){
+        $track_lots_routes = ['TrackLots', 'clientsShootlotTimelineNew', 'clientsCreativelotTimelineNew', 'clientsCatloglotTimelineNew', 'clientsEditorLotTimelineNew'];
+        return $track_lots_routes;        
+    }
+}
+
+// your_assets_routes Array
+if(!function_exists('your_assets_routes')){
+    function your_assets_routes(){
+        $your_assets_routes = [ 'your_assets_files',  'your_assets_shoot_wrcs', 'your_assets_shoot_skus', 'your_assets_shoot_adaptation_skus', 'your_assets_shoot_edited_images', 'your_assets_files_shoot_raw_images', 'your_assets_editing_wrcs', 'your_assets_files_editing_uploaded_images'];
+        return $your_assets_routes;        
+    }
+}
+
+// admin_control_routes Array
+if(!function_exists('admin_control_routes')){
+    function admin_control_routes(){
+        $admin_control_routes = [ 'Client_Users_list',  'add_Client_User_New', 'ClientProfile', 'Client_Setting_new'];
+        return $admin_control_routes;        
+    }
+}
+
+
+if(!function_exists('get_active_url_data')){
+    function get_active_url_data(){
+        $track_lots_routes = track_lots_routes();
+        $your_assets_routes = your_assets_routes();
+        $admin_control_routes = admin_control_routes();
+        $active_tab = 0;
+        $active_link = "";
+		$routeName = Route::currentRouteName();
+        $currentUrl = url()->current();
+        
+
+        if (in_array($routeName, $track_lots_routes)) {
+            $active_tab = 1;
+            $url_arr = explode('/',$currentUrl);
+            $url_is = $url_arr[count($url_arr)-1];
+            if($url_is == 'active'){
+                $active_link = "active_lot";
+            }else if($url_is == 'completed'){
+                $active_link = "completed_lot";
+            }
+        }else if (in_array($routeName, $your_assets_routes)) {
+            $active_tab = 2;
+            $active_link = "your_assets_files";
+            if($routeName == 'your_assets_files'){
+                $active_link = "your_assets_files";
+            }
+        }else if (in_array($routeName, $admin_control_routes)) {
+            $active_tab = 3;
+            $active_link = $routeName;
+            if($routeName == 'Client_Users_list' || $routeName == "add_Client_User_New"){
+                $active_link = "manage_user";
+            }
+        }
+
+        $get_active_url_data = array(
+            'active_tab' => $active_tab,
+            'routeName' => $routeName,
+            'currentUrl' => $currentUrl,
+            'active_link' => $active_link
+        );
+        return $get_active_url_data;        
+    }
+}
