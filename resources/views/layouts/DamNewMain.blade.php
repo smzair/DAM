@@ -304,6 +304,70 @@
 	}
 </script>
 
+	{{-- Setting data and time in side bar --}}
+	<script>
+		const set_date_time = (key) => {
+			const lot_number = $("#lot_number"+key).html()
+			const lot_date = $("#lot_date"+key).html()
+			const lot_time = $("#lot_time"+key).html()
+			$("#lot_time").html(lot_time)
+			$("#lot_date").html(lot_date)
+			$("#lot_number").html(lot_number)
+		}
+	</script>
+
+	{{-- Editing details --}}
+	<script>
+		const editing_lots_details = async (id ,service = 'lot' , img_type = 'Raw' ) => {
+			$("#file_size").html('')
+			await $.ajax({
+				url: "{{ url('editing-file-size') }}",
+				type: "POST",
+				dataType: 'json',
+				data: {
+					id,
+					service,
+					img_type,
+					_token: '{{ csrf_token() }}'
+				},
+				success: function(res) {
+					console.log('res', res)
+					let ReadableSize = "File not Found!"
+					if(res.is_file_get){
+						ReadableSize = res.ReadableSize
+					}
+					$("#file_size").html(ReadableSize)
+				}
+			});
+		}
+	</script>
+
+	{{-- Shoot details --}}
+	<script>
+		const lots_details = async (id ,service = 'lot' , img_type = 'Raw' ) => {
+			$("#file_size").html('')
+			await $.ajax({
+				url: "{{ url('shoot-file-size') }}",
+				type: "POST",
+				dataType: 'json',
+				data: {
+					id,
+					service,
+					img_type,
+					_token: '{{ csrf_token() }}'
+				},
+				success: function(res) {
+					console.log('res', res)
+					let ReadableSize = "File not Found!"
+					if(res.is_file_get){
+						ReadableSize = res.ReadableSize
+					}
+					$("#file_size").html(ReadableSize)
+				}
+			});
+		}
+	</script>
+
 @yield('js_scripts')
 </body>
 </html>

@@ -11,7 +11,7 @@
 	$roledata = getUsersRole($user->id);
 	$user_role = $roledata != null ? $roledata->role_name : '-';
 	$service_is; // get from controller and based on service_is route will be deside on wrc click 
-	// dd($wrc_data);
+	// dd($wrc_data , $service_is);
 if($service_is == 'Shoot'){
 	$route_is = 'your_assets_shoot_skus';
 	$download_route_is = 'download_Shoot_lot_Edited_wrc';
@@ -107,17 +107,26 @@ if($service_is == 'Shoot'){
 										<rect width="20" height="20" fill="#9F9F9F" />
 										<line x1="3.35355" y1="2.64645" x2="17.3536" y2="16.6464" stroke="#D1D1D1" />
 										<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
-									</svg> <span>{{$row['wrc_number']}}</span>                     
+									</svg> <span id="lot_number{{$row['wrc_id'].$key}}">{{$row['wrc_number']}}</span>                 
 								</a>
 								<span class="test btn myButton" role="button" style="float: right"> <i class="bi bi-three-dots-vertical" style="font-size:20px"></i></span>
 								<div class="myPopover" style="display: none;">
 									@php
-											
+											// dd($row);
+											$wrc_id_is = base64_encode($row['wrc_id']);
 									@endphp
 									<a href="{{route($download_route_is , [ base64_encode($row['wrc_id']) ] )}}">Download</a>
 									
-									{{-- <a   href="{{route($route_is , [ base64_encode($row['wrc_id'])])}}" >View Details</a> --}}
-									<a href="javascript:void(0)" onclick="toggleSidebar()">View Details</a>
+									@if ($service_is == 'Shoot')
+										<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">View Details</a>
+									@else
+									<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$key}}); editing_lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">View Details</a>
+									@endif
+
+									<div class="d-none">
+										<span id="lot_date{{$row['wrc_id'].$key}}">{{dateFormet_dmy($row['wrc_created_at'])}}</span>
+										<span id="lot_time{{$row['wrc_id'].$key}}">{{date('h:i A', strtotime($row['wrc_created_at']))}}</span>
+									</div>
 
 									<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >Share</a>
 									<p class="d-none" id="url_{{$key}}">{{route($download_route_is , [ base64_encode($row['wrc_id']) ] )}}</p>
@@ -220,7 +229,7 @@ if($service_is == 'Shoot'){
 	<div class="sidebar">
 		<div class="row">
 			<div class="col-12 d-flex justify-content-between ps-4">
-				<p class="mt-3 side-lot">DEMO1TWSR9-A</p>
+				<p class="mt-3 side-lot" id="lot_number"></p>
 				<button onclick="toggleSidebar()" type="button" class="btn border-0 close-button">
 					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path
@@ -252,7 +261,7 @@ if($service_is == 'Shoot'){
 									<line x1="1.94437" y1="1.23727" x2="12.6353" y2="11.9282" stroke="#D1D1D1" />
 									<line x1="1.23727" y1="11.9282" x2="11.9282" y2="1.23728" stroke="#D1D1D1" />
 								</svg>
-								16-04-23
+								<span id="lot_date"></span>
 							</p>
 							<p class="side-text2 ">
 								<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -260,13 +269,14 @@ if($service_is == 'Shoot'){
 									<line x1="1.94437" y1="1.23727" x2="12.6353" y2="11.9282" stroke="#D1D1D1" />
 									<line x1="1.23727" y1="11.9282" x2="11.9282" y2="1.23728" stroke="#D1D1D1" />
 								</svg>
-								19:52
+								<span id="lot_time"></span>
+
 							</p>
 						</div>
 					</div>
 					<div class="col-12 ps-4">
 						<p class="side-text">SIZE</p>
-						<P class="side-text2">4.20 GB</P>
+						<P class="side-text2" id="file_size"></P>
 					</div>
 					<div class="col-12 ps-4">
 						<p class="side-text">TAGS</p>

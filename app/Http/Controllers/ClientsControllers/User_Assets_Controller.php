@@ -131,6 +131,7 @@ class User_Assets_Controller extends Controller
       'wrc.id as wrc_id',
       'wrc.wrc_id as wrc_number',
       'wrc.lot_id',
+      'wrc.created_at as wrc_created_at',
       'lots.lot_id as lot_number',
     )->get()->toArray();
     return view('clients.ClientAssets.your_assets_files_wrcs')->with('wrc_data', $wrc_data)->with('service_is' , 'Shoot');
@@ -149,6 +150,7 @@ class User_Assets_Controller extends Controller
       'editing_wrcs.id as wrc_id',
       'editing_wrcs.wrc_number',
       'editing_wrcs.lot_id',
+      'editing_wrcs.created_at as wrc_created_at',
       'editor_lots.lot_number',
     )->get()->toArray();   
     

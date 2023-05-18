@@ -26,6 +26,7 @@ use App\Http\Controllers\ClientsControllers\ClientDashboardController;
 use App\Http\Controllers\ClientsControllers\ClientDashboardControllerNew;
 use App\Http\Controllers\ClientsControllers\ClientProfileController;
 use App\Http\Controllers\ClientsControllers\ClientSettingsController;
+use App\Http\Controllers\ClientsControllers\Files_controller;
 use App\Http\Controllers\ClientsControllers\User_Assets_Controller;
 use App\Http\Controllers\ClientsControllers\User_Management_Controller_New;
 use App\Http\Controllers\ClientUserManagementController;
@@ -581,6 +582,8 @@ Route::get('/Shoot-lot-Edited-adaptation-Images/{wrc_id}/{adaptation}/{sku_id?}'
 
 Route::get('/Shoot-lot-raw-sku-Images/{wrc_id}/{sku_id?}', [ImageDownloadController::class, 'download_Shoot_lot_raw_sku'])->name('download_Shoot_lot_raw_sku'); //shoot-lot-Edited Image download Wrc and adaptation wise
 
+Route::POST('/editing-file-size', [Files_controller::class, 'Editing_file_size']); 
+Route::POST('/shoot-file-size', [Files_controller::class, 'Shoot_file_size']); 
 
 
 // Client User Management Routing
