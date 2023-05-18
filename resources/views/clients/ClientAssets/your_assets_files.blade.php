@@ -100,9 +100,12 @@
 															$download_route_is = "download_Shoot_Lot_edited";
 													@endphp
 													<a href="{{route($download_route_is , [ 'id' =>  $row['lot_id'] ] )}}">Download</a>
-													<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >link</a>
+													<a href="{{route('your_assets_shoot_wrcs' , [$row['lot_id']])}}">View details </a>
+
+													<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >Share</a>
 													<p class="d-none" id="url_{{$key}}">{{route($download_route_is , [ 'id' =>  $row['lot_id'] ] )}}</p>
-													<a href="#">Favorite</a>
+													<a href="javascript:void(0)">Favorite</a>
+													<a href="javascript:void(0)">Add Tag</a>
 												</div>
 											</h3>
 										</div>
@@ -161,9 +164,14 @@
 															$download_route_is = "download_Editing_Lot_edited";
 													@endphp
 													<a href="{{route($download_route_is , [ 'id' =>  base64_encode($row['lot_id'])  ] )}}">Download</a>
-													<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key.$row['lot_id']}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >link</a>
+
+													<a role="button" class="btn border rounded-0 view-img " href="{{route('your_assets_editing_wrcs' , [$row['lot_id']])}}">View Details</a>
+													
+													<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key.$row['lot_id']}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >Share</a>
 													<p class="d-none" id="url_{{$key.$row['lot_id']}}">{{route($download_route_is , [ 'id' =>  base64_encode($row['lot_id']) ] )}}</p>
-													<a href="#">Favorite</a>
+													
+													<a href="javascript:void(0)">Favorite</a>
+													<a href="javascript:void(0)">Add Tag</a>
 												</div>
 											</h3>
 										</div>

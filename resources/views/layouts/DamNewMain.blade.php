@@ -20,12 +20,15 @@
 	@yield('css_links')
 
   <link rel="icon" href="{{ asset('IMG/ODN Logo.jpeg')}}">
-	<link rel="stylesheet" href="{{ asset('css/dam_new_style.css')}}">
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
 	<style>
 		.accordion-item .accordion-body   .active{
-			background: #FFF866;
-			color: #333333;
+			color: #FFF866;
+    	background: #0F0F0F;
+		}
+		.viewport{
+			margin-top: 60px;
+			height: calc(100vh - 60px);
 		}
 	</style>
 </head>
@@ -49,114 +52,72 @@
 			$active_link = $get_active_url_data['active_link'];
 
     ?>
-		<!-- Top navigation bar -->
-		<div class="top-section">
-			<div class="top_navbar">
-				<div class="hamburger w-100">
-					<div class="row">
-						<div class="col-sm-1 d-flex flex-row align-item-center justify-content-space-around">
-							<a style="text-decoration: none;color:#f4fbff; :hover {color: #f4fbff} " href="{{route('home')}}">
-								<h2 class="p-0 m-0">
-								    <svg width="73" height="24" viewBox="0 0 73 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M0 12.0006C0 5.12916 5.29653 0 12.5027 0C19.6426 0 24.9391 5.09545 24.9391 12.0006C24.9391 18.9057 19.6438 24 12.5027 24C5.29653 24 0 18.872 0 12.0006ZM21.5859 12.0006C21.5859 6.80517 17.6981 2.98358 12.5027 2.98358C7.23987 2.98358 3.35203 6.80517 3.35203 12.0006C3.35203 17.196 7.23987 21.0129 12.5027 21.0129C17.6981 21.0129 21.5871 17.196 21.5871 12.0006H21.5859Z" fill="#FFF866"/>
-										<path d="M27.3857 0.268555H37.2779C44.8188 0.268555 49.9468 5.03392 49.9468 12.0006C49.9468 18.9674 44.8153 23.7316 37.2779 23.7316H27.3857V0.268555ZM37.0734 20.8154C42.872 20.8154 46.5925 17.2623 46.5925 12.0006C46.5925 6.73899 42.8732 3.18472 37.0734 3.18472H30.7378V20.8154H37.0734Z" fill="#FFF866"/>
-										<path d="M72.5696 0.268555V23.7316H69.822L55.7432 6.23456V23.7316H52.3877V0.268555H55.1365L69.2176 17.7656V0.268555H72.5696Z" fill="#FFF866"/>
-										</svg>
-									</h2>
-							</a>
-						</div>
-						<div class="col-sm-2 d-flex flex-row align-item-center justify-content-space-around">
-							<p class="p-0 m-0 nav-date"><?php echo date('l, d M Y') ?></p>
-						</div>
-						<div class="col-sm-6">
-							<form action="{{route('gloableSearch')}}" method="post">
-								@csrf
-								<div class="input-group">
-									<input type="text" name="search_query" value="{{$search_query}}" class="form-control" placeholder="Search...">
-									<div class="input-group-append">
-										<button class="btn btn-outline-secondary" type="submit">
-											<i class="fa fa-search"></i>
-										</button>
-									</div>
-								</div>
-							</form>
-						</div>
-						<div class="col-sm-3 d-flex" style="justify-content:space-around;">
-							<div class="notification-bell">
-								<span class="bell-drop">
-									<i class="fa fa-bell"></i><span class="notify-count">{{$tot_notification}}</span>
-								</span>
-							</div>
-							<div class="user-details" style=" display: flex;align-items: center;">
-								<strong>{{ ucwords($user_data->name) }}</strong>
-								<div class="user-image" style="float: right;padding-left: 30px;">
-									<img src="{{ asset('IMG/ODN Logo.jpeg')}}" style="max-width: 40px; height: auto;border-radius: 50%;" alt="user">
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Top navigation bar END -->
-
-		<!--Left side Bar -->
-		<!-- <div class="sidebar">
-			<ul>
-				<li>
-					<a href="#" class="active">
-						<span class="icon"><i class="fas fa-home"></i></span>
-						<span class="item">Home</span>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="icon"><i class="fas fa-desktop"></i></span>
-						<span class="item">My Dashboard</span>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="icon"><i class="fas fa-user-friends"></i></span>
-						<span class="item">People</span>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-						<span class="item">Perfomance</span>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="icon"><i class="fas fa-database"></i></span>
-						<span class="item">Development</span>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="icon"><i class="fas fa-chart-line"></i></span>
-						<span class="item">Reports</span>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="icon"><i class="fas fa-user-shield"></i></span>
-						<span class="item">Admin</span>
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="icon"><i class="fas fa-cog"></i></span>
-						<span class="item">Settings</span>
-					</a>
-				</li>
-			</ul>
-		</div> -->
-		<!--Left side Bar END -->
 
 		<!-- ODN given code -->
 		<div class="container-fluid">
+			<!-- Top navigation bar -->
+			<div class="row">
+				<nav class="navbar navbar-expand-md fixed-top">
+					{{-- logo --}}
+					<a class="navbar-brand mt-1 ms-3" href="{{route('home')}}">
+						<svg width="73" height="24" viewBox="0 0 73 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M0 12.0006C0 5.12916 5.29653 0 12.5027 0C19.6426 0 24.9391 5.09545 24.9391 12.0006C24.9391 18.9057 19.6438 24 12.5027 24C5.29653 24 0 18.872 0 12.0006ZM21.5859 12.0006C21.5859 6.80517 17.6981 2.98358 12.5027 2.98358C7.23987 2.98358 3.35203 6.80517 3.35203 12.0006C3.35203 17.196 7.23987 21.0129 12.5027 21.0129C17.6981 21.0129 21.5871 17.196 21.5871 12.0006H21.5859Z" fill="#FFF866"/>
+							<path d="M27.3857 0.268311H37.2779C44.8188 0.268311 49.9468 5.03367 49.9468 12.0004C49.9468 18.9671 44.8153 23.7313 37.2779 23.7313H27.3857V0.268311ZM37.0734 20.8152C42.872 20.8152 46.5925 17.2621 46.5925 12.0004C46.5925 6.73874 42.8732 3.18448 37.0734 3.18448H30.7378V20.8152H37.0734Z" fill="#FFF866"/>
+							<path d="M72.5696 0.268311V23.7313H69.822L55.7432 6.23431V23.7313H52.3877V0.268311H55.1365L69.2176 17.7653V0.268311H72.5696Z" fill="#FFF866"/>
+							</svg>        
+					</a>
+					{{-- navbarCollapse btn --}}
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
+						<span class="navbar-toggler-icon">
+							<svg viewBox="0 0 100 80" width="30" height="30">
+								<rect width="100" height="20"></rect>
+								<rect y="30" width="100" height="20"></rect>
+								<rect y="60" width="100" height="20"></rect>
+							</svg>
+						</span>
+					</button>
+
+					<div class="collapse navbar-collapse" id="navbarCollapse">
+
+						{{-- <form action="{{route('gloableSearch')}}" method="post">
+						@csrf --}}
+						<div class="input-group ms-auto  nav-searchbar">
+								<input type="text" class="form-control rounded-0" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" style="background: #1A1A1A;" name="search_query" value="{{$search_query}}">
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary border border-left-0 rounded-0" type="submit" style="background: #1A1A1A;">
+										<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M15.2362 14.6666L13.9028 13.3333M8.23616 13.9999C9.06787 13.9999 9.89143 13.8361 10.6598 13.5178C11.4282 13.1995 12.1264 12.733 12.7145 12.1449C13.3026 11.5568 13.7691 10.8586 14.0874 10.0902C14.4057 9.32185 14.5695 8.49829 14.5695 7.66658C14.5695 6.83488 14.4057 6.01132 14.0874 5.24292C13.7691 4.47453 13.3026 3.77635 12.7145 3.18824C12.1264 2.60014 11.4282 2.13363 10.6598 1.81535C9.89143 1.49707 9.06787 1.33325 8.23616 1.33325C6.55646 1.33325 4.94555 2.00051 3.75782 3.18824C2.57009 4.37597 1.90283 5.98688 1.90283 7.66658C1.90283 9.34629 2.57009 10.9572 3.75782 12.1449C4.94555 13.3327 6.55646 13.9999 8.23616 13.9999Z" stroke="#D1D1D1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+											</svg>              
+									</button>
+								</div>
+							</div>
+						{{-- </form> --}}
+
+						<ul class="navbar-nav ms-auto me-3">
+							{{-- notification bell --}}
+							<li class="nav-item mt-1" style="padding-right: 56px; margin-top: 12px"> 
+								<svg width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="18.5696" cy="18" r="18" fill="#1A1A1A"/>
+									<path d="M18.5695 13.3667V16.1417M18.5862 9.66675C15.5195 9.66675 13.0362 12.1501 13.0362 15.2167V16.9667C13.0362 17.5334 12.8028 18.3834 12.5112 18.8667L11.4528 20.6334C10.8028 21.7251 11.2528 22.9417 12.4528 23.3417C16.4372 24.6667 20.7434 24.6667 24.7278 23.3417C24.9907 23.254 25.2306 23.1084 25.4296 22.9155C25.6287 22.7227 25.7819 22.4876 25.8779 22.2276C25.9739 21.9676 26.0102 21.6894 25.9843 21.4134C25.9583 21.1375 25.8707 20.8709 25.7278 20.6334L24.6695 18.8667C24.3778 18.3834 24.1445 17.5251 24.1445 16.9667V15.2167C24.1362 12.1667 21.6362 9.66675 18.5862 9.66675Z" stroke="#D1D1D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+									<path d="M21.3447 24.25C21.3447 25.775 20.0947 27.025 18.5697 27.025C17.8113 27.025 17.1113 26.7083 16.6113 26.2083C16.1113 25.7083 15.7947 25.0083 15.7947 24.25" fill="#D1D1D1"/>
+									</svg><span class="notify-count">{{$tot_notification}}</span>
+							</li>
+							{{-- user name --}}
+							<li class="nav-item">
+								<a class="nav-link" href="#" style="color: #D1D1D1;font-weight: 500;font-size: 14px;margin-top: 5px">{{ ucwords($user_data->name) }}</a>
+							</li>
+							{{-- user profile image --}}
+							<li class="nav-item">
+								<svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="23" cy="23" r="23" fill="#808080"/>
+									</svg>            
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+			<!-- Top navigation bar END -->
+			
 			<!-- Sidebar start -->
 			<div class="row viewport">
 				<div class="col-lg-2 border border-dark border-end-0 sidebar-position">
@@ -270,6 +231,7 @@
 	@yield('js_links')
 	<!-- Common Js -->
 	<script src="{{ asset('ClientsDist\js\common_js_new.js') }}"></script>
+	{{-- Svg script --}}
 		<script>
       var svgs = document.querySelectorAll(".mySvg");
 
@@ -289,7 +251,7 @@
         });
       });
     </script>
-
+	{{-- myPopover script --}}
 	<script>
 		var buttons = document.getElementsByClassName("myButton");
 		var popovers = document.getElementsByClassName("myPopover");
@@ -333,6 +295,13 @@
 		});
 		alert("Download Url copied to clipboard!");
   }
+</script>
+{{-- right sidebar toggle script --}}
+<script>
+	function toggleSidebar() {
+		var sidebar = document.querySelector('.sidebar');
+		sidebar.classList.toggle('open');
+	}
 </script>
 
 @yield('js_scripts')

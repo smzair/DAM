@@ -380,6 +380,42 @@ body {
   margin-top: 430px;
 }
 
+.navbar{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #0F0F0F;
+}
+.nav-searchbar{
+      width:33%;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -290px; /* initially hide the sidebar */
+  width: 270px;
+  height: 100%;
+  background: #1A1A1A;
+  transition: right 0.3s ease;
+  overflow-y: auto; /* enable vertical scrolling */
+  z-index: 9999;
+}
+
+.sidebar.open {
+  right: 8px; /* slide in the sidebar when open class is added */
+}
+
+.close-button {
+    position: absolute;
+    top: 6px;
+    left: 213px;
+    cursor: pointer;
+    background:none !important;
+    border-radius: 2px;
+}
+
 /* your assets click lot style */
 
 .side-lot {
