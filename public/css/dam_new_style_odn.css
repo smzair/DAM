@@ -572,6 +572,8 @@ body {
   font-weight: 400;
   font-size: 16px;
   color: #9F9F9F;
+  overflow-wrap: anywhere;
+  margin-top: -19px;
 }
 
 
@@ -677,8 +679,8 @@ body {
   padding: 10px;
   z-index: 1;
   min-width: 50%;
-  width: 80%;
-  left: 40%;
+  width: 60%;
+  left: 50%;
 }
 
 .myPopover a {
