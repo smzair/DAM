@@ -133,16 +133,16 @@ $lot_status_is = $lot_status_val = "";
 								</h3>
 							</div>
 							<div class="col-12">
-								<p style="font-weight: 400;font-size: 13px;">
+								<p class="lot-date" style="font-weight: 400;font-size: 13px;">
 									Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
 								</p>
 							</div>
 							<div class="col-12 d-flex justify-content-between">
 								<div>
-									<p style="font-weight: 400;font-size: 13px;">
+									<p class="current-status" style="font-weight: 400;font-size: 13px;">
 										Current status :
 									</p>
-									<p
+									<p class="status"
 										style="font-weight: 400;font-size: 15px;margin-top: -8px; font-family: 'Poppins', sans-serif;">
 										{{$val['lot_status']}}
 									</p>
@@ -187,16 +187,16 @@ $lot_status_is = $lot_status_val = "";
 									</h3>
 								</div>
 								<div class="col-12">
-									<p style="font-weight: 400;font-size: 13px;">
+									<p class="lot-date" style="font-weight: 400;font-size: 13px;">
 										Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
 									</p>
 								</div>
 								<div class="col-12 d-flex justify-content-between">
 									<div>
-										<p style="font-weight: 400;font-size: 13px;">
+										<p class="current-status" style="font-weight: 400;font-size: 13px;">
 											Current status:
 										</p>
-										<p
+										<p class="status"
 											style="font-weight: 400;font-size: 15px;margin-top: -8px; font-family: 'Poppins', sans-serif;">
 											{{$val['lot_status']}}
 										</p>
@@ -240,16 +240,16 @@ $lot_status_is = $lot_status_val = "";
 								</h3>
 							</div>
 							<div class="col-12">
-								<p style="font-weight: 400;font-size: 13px;">
+								<p class="lot-date" style="font-weight: 400;font-size: 13px;">
 									Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
 								</p>
 							</div>
 							<div class="col-12 d-flex justify-content-between">
 								<div>
-									<p style="font-weight: 400;font-size: 13px;">
+									<p class="current-status" style="font-weight: 400;font-size: 13px;">
 										Current status:
 									</p>
-									<p
+									<p class="status"
 										style="font-weight: 400;font-size: 15px;margin-top: -8px; font-family: 'Poppins', sans-serif;">
 										{{$val['lot_status']}}
 									</p>
@@ -292,16 +292,16 @@ $lot_status_is = $lot_status_val = "";
 								</h3>
 							</div>
 							<div class="col-12">
-								<p style="font-weight: 400;font-size: 13px;">
+								<p class="lot-date" style="font-weight: 400;font-size: 13px;">
 									Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
 								</p>
 							</div>
 							<div class="col-12 d-flex justify-content-between">
 								<div>
-									<p style="font-weight: 400;font-size: 13px;">
+									<p class="current-status" style="font-weight: 400;font-size: 13px;">
 										Current status:
 									</p>
-									<p
+									<p class="status"
 										style="font-weight: 400;font-size: 15px;margin-top: -8px; font-family: 'Poppins', sans-serif;">
 										{{$val['lot_status']}}
 									</p>
