@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ClientsControllers;
 use App\Http\Controllers\Controller;
 use App\Models\EditingWrc;
 use App\Models\Lots;
+use App\Models\Skus;
 use Illuminate\Http\Request;
 use ZipArchive;
 
@@ -161,7 +162,52 @@ public function Shoot_file_size(Request $request)
 		$fileName = $wrc_number . ".zip";
 		$path =  "edited_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number;
 	}
-	// dd( $fileName , $path , $request->all());
+	else if($service == 'adaptation'){
+		$wrc_id = base64_decode($id); 
+    $adaptation = base64_decode($img_type);
+
+		$lot_data_arr = Lots::leftJoin('wrc','wrc.lot_id', '=' , 'lots.id')->whereNotNull('lots.id')->
+    where('wrc.id', '=', $wrc_id)->get(['lots.lot_id', 'lots.created_at' , 'wrc.wrc_id as wrc_number'])->toArray();
+
+		$lot_data = $lot_data_arr[0];
+		$lot_no = $lot_data['lot_id'];
+		$lot_created_at = $lot_data['created_at'];
+		$wrc_number = $lot_data['wrc_number'];
+		
+		$fileName = $wrc_number."-".$adaptation . ".zip";
+		$path =  "edited_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number."/" . $adaptation;
+	}
+	else if($service == 'sku'){
+		$sku_id = base64_decode($id); 
+    $adaptation = base64_decode($img_type);
+
+		$Skus_data_arr = Skus::where('id','=', $sku_id)->get(['sku.wrc_id' , 'sku.sku_code'])->toArray();
+
+		if(count($Skus_data_arr) > 0){
+			$Skus_data = $Skus_data_arr[0];
+			$wrc_id = $Skus_data['wrc_id'];
+			$sku_code = $Skus_data['sku_code'];
+
+			$lot_data_arr = Lots::leftJoin('wrc','wrc.lot_id', '=' , 'lots.id')->whereNotNull('lots.id')->
+				where('wrc.id', '=', $wrc_id)->get(['lots.lot_id', 'lots.created_at' , 'wrc.wrc_id as wrc_number'])->toArray();
+				$lot_data = $lot_data_arr[0];
+				$lot_no = $lot_data['lot_id'];
+				$wrc_number = $lot_data['wrc_number'];
+				$lot_created_at = $lot_data['created_at'];
+
+				$fileName = $wrc_number."-".$sku_code . ".zip";
+
+				
+				if( $img_type == 'Raw'){
+					$path =  "edited_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number."/" . $sku_code;
+				}else{
+					$path =  "edited_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number."/" . $adaptation."/" . $sku_code;
+				}
+				$fileName = $wrc_number."-".$sku_code . ".zip";
+		}
+	}
+
+	// dd( $fileName , $path , $request->all(), $img_type);
 
 	// dd($request->all());
 
