@@ -171,6 +171,7 @@ class User_Assets_Controller extends Controller
       'wrc.id as wrc_id',
       'wrc.wrc_id as wrc_number',
       'wrc.lot_id',
+      'wrc.created_at as wrc_created_at',
       'lots.lot_id as lot_number',
       'wrc.commercial_id',
       'commercial.adaptation_1',
@@ -194,7 +195,7 @@ class User_Assets_Controller extends Controller
     $wrc_data['adaptation'] = $adaptation_arr;
 
     // Raw skus List based on Wrc id.
-    $sku_info_query = Skus::leftJoin('wrc', 'wrc.id', '=', 'sku.wrc_id')->where('sku.wrc_id', '=' , $wrc_id)->where('sku.status', '=' , '1')->select('sku.id as sku_id', 'sku.sku_code','sku.status', 'sku.wrc_id', 'wrc.wrc_id as wrc_number' );
+    $sku_info_query = Skus::leftJoin('wrc', 'wrc.id', '=', 'sku.wrc_id')->where('sku.wrc_id', '=' , $wrc_id)->where('sku.status', '=' , '1')->select('sku.id as sku_id', 'sku.sku_code','sku.status', 'sku.wrc_id', 'wrc.wrc_id as wrc_number' , 'sku.created_at as sku_created_at' );
     $skus_count = $sku_info_query->count();
     $raw_skus_data = $sku_info_query->get()->toArray();
 
@@ -225,7 +226,7 @@ class User_Assets_Controller extends Controller
     leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->
     leftJoin('editor_submission', 'editor_submission.sku_id', '=', 'sku.id')->
     where('sku.wrc_id', '=' , $wrc_id)->where('sku.status', '=' , '1')->where('editor_submission.adaptation', '=' , "$adaptation")->where('editor_submission.qc', '=' , "1")->
-    select('sku.id as sku_id', 'sku.sku_code','sku.status', 'sku.wrc_id', 'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number', 'editor_submission.id as submission_id', 'editor_submission.adaptation' , 'editor_submission.filename', DB::raw("COUNT(editor_submission.id) as file_count"))->groupBy('sku.id');
+    select('sku.id as sku_id', 'sku.sku_code','sku.status', 'sku.wrc_id', 'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number', 'editor_submission.id as submission_id', 'editor_submission.adaptation' , 'editor_submission.filename', DB::raw("COUNT(editor_submission.id) as file_count"), 'sku.created_at as sku_created_at' )->groupBy('sku.id');
     $skus_count = $sku_info_query->count();
     $raw_skus_data = $sku_info_query->get()->toArray();
     // dd(count($raw_skus_data) ,$raw_skus_data);
@@ -249,6 +250,7 @@ class User_Assets_Controller extends Controller
       'sku.sku_code',
       'sku.status',
       'sku.wrc_id',
+      'sku.created_at as sku_created_at',
       'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number',
       'editor_submission.id as submission_id',
       'editor_submission.adaptation' ,
@@ -279,6 +281,7 @@ class User_Assets_Controller extends Controller
       'sku.sku_code',
       'sku.status',
       'sku.wrc_id',
+      'sku.created_at as sku_created_at',
       'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number',
       'uploadraw.filename' ,
       'uploadraw.created_at as created_at'

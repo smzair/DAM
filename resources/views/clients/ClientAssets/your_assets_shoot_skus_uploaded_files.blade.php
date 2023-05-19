@@ -54,21 +54,30 @@
 			$path=  "raw_img_directory/". date('Y', strtotime($row['created_at'])) . "/" . date('M', strtotime($row['created_at'])) . "/" . $row['lot_number'] . "/" . $row['wrc_number']. "/" .$row['sku_code']. "/" . $row['filename'] ;
 		}
 		$img_src = 'IMG/group_10.png';
+		$zipFileSize = "File Not Found!!";
 		if(file_exists($path)){
 			$img_src = $path;
+			$zipFileSize = filesize($path);
+			$zipFileSize = formatBytes($zipFileSize);
+
 		}
 		@endphp
 		<div class="col-sm-6 col-md-4 col-lg-3 mt-2" >
 			<div class="card brand-img-m border-0 rounded-0" >
 				<img class="card-img-top brand-img" src="{{ asset($img_src)}}" alt="Image">
 				<div class="card-body d-flex justify-content-between" style="position: relative">
-					<p class="brand-img-name">{{$row['filename']}}</p>
+					<p class="brand-img-name" id="lot_number{{$row['sku_id'].$key}}">{{$row['filename']}}</p>
 					<i class="bi bi-three-dots-vertical myButton" style="cursor: pointer;"></i>
 					<div class="myPopover" style="display: none; top 20%;">
 
 						<a href="{{ asset($img_src)}}" download="{{$row['filename']}}">Download</a>
 
-						<a href="javascript:void(0)" onclick="toggleSidebar()">View Details</a>
+						<a href="javascript:void(0)" onclick="toggleSidebar(); set_date({{$row['sku_id'].$key}});">View Details</a>
+						<div class="d-none">
+							<span id="lot_date{{$row['sku_id'].$key}}">{{dateFormet_dmy($row['sku_created_at'])}}</span>
+							<span id="lot_time{{$row['sku_id'].$key}}">{{date('h:i A', strtotime($row['sku_created_at']))}}</span>
+							<span id="file_size{{$row['sku_id'].$key}}">{{ $zipFileSize }}</span>
+						</div>
 
 						<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >Share</a>
 						<p class="d-none" id="url_{{$key}}">{{ asset($img_src)}}</p>
@@ -84,7 +93,7 @@
 <div class="sidebar">
 	<div class="row">
 		<div class="col-12 d-flex justify-content-between ps-4">
-			<p class="mt-3 side-lot">DEMO1TWSR9-A</p>
+			<p class="mt-3 side-lot" id="lot_number"></p>
 			<button onclick="toggleSidebar()" type="button" class="btn border-0 close-button">
 				<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path
@@ -105,7 +114,7 @@
 		<div class="col-12">
 			<div class="row">
 				<div class="col-12 ps-4" style="margin-top: 24px;">
-					<p class="heading-details">File details</p>
+					<p class="heading-details">Folder details</p>
 				</div>
 				<div class="col-9 ps-4">
 					<p class="side-text ">DATE & TIME</p>
@@ -116,7 +125,7 @@
 								<line x1="1.94437" y1="1.23727" x2="12.6353" y2="11.9282" stroke="#D1D1D1" />
 								<line x1="1.23727" y1="11.9282" x2="11.9282" y2="1.23728" stroke="#D1D1D1" />
 							</svg>
-							16-04-23
+							<span id="lot_date"></span>
 						</p>
 						<p class="side-text2 ">
 							<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,13 +133,14 @@
 								<line x1="1.94437" y1="1.23727" x2="12.6353" y2="11.9282" stroke="#D1D1D1" />
 								<line x1="1.23727" y1="11.9282" x2="11.9282" y2="1.23728" stroke="#D1D1D1" />
 							</svg>
-							19:52
+							<span id="lot_time"></span>
+
 						</p>
 					</div>
 				</div>
 				<div class="col-12 ps-4">
 					<p class="side-text">SIZE</p>
-					<P class="side-text2">4.20 GB</P>
+					<P class="side-text2" id="file_size"></P>
 				</div>
 				<div class="col-12 ps-4">
 					<p class="side-text">TAGS</p>
@@ -178,4 +188,21 @@
 		<?php echo ucfirst($service_is)?> Image not found
 	</div>
 @endif
+@endsection
+
+@section('js_scripts')
+	{{-- Setting data and time in side bar --}}
+	<script>
+		const set_date = (key) => {
+			console.log('key', key)
+			const lot_number = $("#lot_number"+key).html()
+			const lot_date = $("#lot_date"+key).html()
+			const lot_time = $("#lot_time"+key).html()
+			const file_size = $("#file_size"+key).html()
+			$("#lot_time").html(lot_time)
+			$("#lot_date").html(lot_date)
+			$("#lot_number").html(lot_number)
+			$("#file_size").html(file_size)
+		}
+	</script>
 @endsection

@@ -10,7 +10,7 @@
 	$file_manager_permissions = json_decode($user->file_manager_permissions,true);
 	$roledata = getUsersRole($user->id);
 	$user_role = $roledata != null ? $roledata->role_name : '-';
-	
+	// dd($wrc_data);
 @endphp
 
 @if (count($wrc_data) > 0)
@@ -81,17 +81,25 @@
 												</div>
 												<div class="col-8 mt-2">
 													<a style="text-decoration: none;" href="{{route('your_assets_shoot_adaptation_skus' , [ base64_encode($wrc_data['wrc_id']) , base64_encode($adaptation)])}}">
-														<p class="brand">{{$adaptation}}</p>
+														<p class="brand" id="lot_number{{$wrc_data['wrc_id'].$key}}">{{$adaptation}}</p>
 													</a>
 												</div>
 												<div class="col-2 mt-3">
 													<i class="bi bi-three-dots-vertical test myButton" style="font-size:20px" role="button"></i>
 														<div class="myPopover" style="display: none;">
 															@php
-																	$download_route_is = "download_Shoot_lot_Edited_adaptation";
-															@endphp
+																$download_route_is = "download_Shoot_lot_Edited_adaptation";
+															$wrc_id_is = base64_encode($wrc_data['wrc_id']);
+															$adaptation_is = base64_encode($adaptation);
+													@endphp
 															<a href="{{route($download_route_is , [ 'wrc_id' => base64_encode($wrc_data['wrc_id']) , 'adaptation' => base64_encode($adaptation) ] )}}">Download</a>
-															<a href="javascript:void(0)" onclick="toggleSidebar()">View Details</a>
+
+															<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$wrc_data['wrc_id'].$key}}); lots_details('{{ $wrc_id_is  }}' , 'adaptation' , '{{$adaptation_is}}' ) ">View Details</a>
+
+															<div class="d-none">
+																<span id="lot_date{{$wrc_data['wrc_id'].$key}}">{{dateFormet_dmy($wrc_data['wrc_created_at'])}}</span>
+																<span id="lot_time{{$wrc_data['wrc_id'].$key}}">{{date('h:i A', strtotime($wrc_data['wrc_created_at']))}}</span>
+															</div>
 															
 															<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key}}' , 'Shoot Lot WRC adaptation Image' , 'Shoot WRC')" >Share</a>
 															<p class="d-none" id="url_{{$key}}">{{route($download_route_is , [ 'wrc_id' => base64_encode($wrc_data['wrc_id']) , 'adaptation' => base64_encode($adaptation) ] )}}</p>
@@ -133,7 +141,7 @@
 												</div>
 												<div class="col-8 mt-2">
 													<a style="text-decoration: none;" href="{{route('your_assets_files_shoot_raw_images' , [base64_encode($row['sku_id'])] )}}">
-														<p class="brand">{{$row['sku_code']}}</p>
+														<p class="brand" id="lot_number{{$row['sku_id'].$key}}">{{$row['sku_code']}}</p>
 													</a>
 												</div>
 												<div class="col-2 mt-3">
@@ -141,10 +149,17 @@
 														<div class="myPopover" style="display: none;">
 															@php
 																	$download_route_is = "download_Shoot_lot_raw_sku";
+																	$sku_id_is = base64_encode($row['sku_id']);
 															@endphp
 															<a href="{{route($download_route_is , [ 'wrc_id' => base64_encode($row['wrc_id']) , 'sku_id' => base64_encode($row['sku_code']) ] )}}">Download</a>
 															
-															<a href="javascript:void(0)" onclick="toggleSidebar()">View Details</a>
+															<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['sku_id'].$key}}); lots_details('{{ $sku_id_is  }}' , 'sku' , 'Raw') ">View Details</a>
+
+															<div class="d-none">
+																<span id="lot_date{{$row['sku_id'].$key}}">{{dateFormet_dmy($row['sku_created_at'])}}</span>
+																<span id="lot_time{{$row['sku_id'].$key}}">{{date('h:i A', strtotime($row['sku_created_at']))}}</span>
+															</div>
+
 
 															<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$key.$row['wrc_id']}}' , 'Shoot Lot WRC Sku Image' , 'Shoot WRC')" >Share</a>
 															<p class="d-none" id="url_{{$key.$row['wrc_id']}}">{{route($download_route_is , [ 'wrc_id' => base64_encode($row['wrc_id']) , 'sku_id' => base64_encode($row['sku_code'])] )}}</p>
@@ -166,146 +181,13 @@
 			<div style="margin-top: 40px;">Wrcs Data not found</div>
 		@endif
 	</div>
-	
-	<div class="col-lg-3 d-none" style="margin-top: 24px;">
-
-		<div class="row">
-			<div class="col-12">
-				<p>Actions</p>
-			</div>
-
-			<div class="col-7 d-flex justify-content-between">
-				<button class="btn">
-					<svg class="" width="40" height="40" viewBox="0 0 40 40" fill="none"
-						xmlns="http://www.w3.org/2000/svg">
-						<rect width="40" height="40" fill="#9F9F9F" />
-						<line x1="4.89896" y1="4.19235" x2="35.4444" y2="34.7378" stroke="#D1D1D1" />
-						<line x1="4.19186" y1="34.7382" x2="34.7373" y2="4.19279" stroke="#D1D1D1" />
-					</svg>
-				</button>
-
-				<button class="btn">
-					<svg class="" width="40" height="40" viewBox="0 0 40 40" fill="none"
-						xmlns="http://www.w3.org/2000/svg">
-						<rect width="40" height="40" fill="#9F9F9F" />
-						<line x1="4.89896" y1="4.19235" x2="35.4444" y2="34.7378" stroke="#D1D1D1" />
-						<line x1="4.19186" y1="34.7382" x2="34.7373" y2="4.19279" stroke="#D1D1D1" />
-					</svg>
-				</button>
-				<button class="btn">
-					<svg class="" width="40" height="40" viewBox="0 0 40 40" fill="none"
-						xmlns="http://www.w3.org/2000/svg">
-						<rect width="40" height="40" fill="#9F9F9F" />
-						<line x1="4.89896" y1="4.19235" x2="35.4444" y2="34.7378" stroke="#D1D1D1" />
-						<line x1="4.19186" y1="34.7382" x2="34.7373" y2="4.19279" stroke="#D1D1D1" />
-					</svg>
-				</button>
-				<button class="btn">
-					<svg class="" width="40" height="40" viewBox="0 0 40 40" fill="none"
-						xmlns="http://www.w3.org/2000/svg">
-						<rect width="40" height="40" fill="#9F9F9F" />
-						<line x1="4.89896" y1="4.19235" x2="35.4444" y2="34.7378" stroke="#D1D1D1" />
-						<line x1="4.19186" y1="34.7382" x2="34.7373" y2="4.19279" stroke="#D1D1D1" />
-					</svg>
-				</button>
-			</div>
-			<hr class="mt-4">
-
-			<div class="col-12 d-flex justify-content-between">
-				<p class="mt-3 side-lot">Ajio</p>
-				<button type="button" class="btn btn-light border-0 rounded-circle"
-					style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; background: #FFFFFF;">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path
-							d="M9.17 14.83L14.83 9.17M14.83 14.83L9.17 9.17M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-							stroke="#9F9F9F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-					</svg>
-				</button>
-			</div>
-
-			<div class="col-12">
-				<div class="row">
-					<div class="col-12" style="margin-top: 16px;">
-						<img src="{{asset('IMG/group_10.png')}}" alt="" class="img-fluid" style="background: #EBEBEB;padding:19px;">
-					</div>
-				</div>
-			</div>
-
-			<div class="col-12">
-				<div class="row">
-					<div class="col-12" style="margin-top: 24px;">
-						<p class="heading-details">Folder details</p>
-					</div>
-					<div class="col-9">
-						<p class="side-text">DATE & TIME</p>
-						<div class="d-flex justify-content-between">
-							<p class="side-text2">
-								<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect width="14" height="14" fill="#9F9F9F" />
-									<line x1="1.94437" y1="1.23727" x2="12.6353" y2="11.9282" stroke="#D1D1D1" />
-									<line x1="1.23727" y1="11.9282" x2="11.9282" y2="1.23728" stroke="#D1D1D1" />
-								</svg>
-								16-04-23
-							</p>
-							<p class="side-text2">
-								<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect width="14" height="14" fill="#9F9F9F" />
-									<line x1="1.94437" y1="1.23727" x2="12.6353" y2="11.9282" stroke="#D1D1D1" />
-									<line x1="1.23727" y1="11.9282" x2="11.9282" y2="1.23728" stroke="#D1D1D1" />
-								</svg>
-								19:52
-							</p>
-						</div>
-					</div>
-					<div class="col-12">
-						<p class="side-text">SIZE</p>
-						<P class="side-text2">4.20 GB</P>
-					</div>
-					<div class="col-12">
-						<p class="side-text">TAGS</p>
-						<P class="side-text2">Black Tees, Ajio code</P>
-					</div>
-
-					<div class="col-12 d-grid gap-2">
-						<button class="btn border rounded-0 add-more-tag-btn" type="button">
-							+ Add more tags
-						</button>
-					</div>
-					<div class="col-12 mt-3">
-						<button class="remove-tag border-0" style="background: #FFFFFF;">- Remove tags</button>
-					</div>
-					<hr class="mt-4">
-				</div>
-			</div>
-			<div class="col-12">
-				<div class="row">
-
-					<div class="col-12" style="margin-top: 24px;">
-						<p class="heading-details">Share</p>
-					</div>
-
-					<div class="col-12 d-grid gap-2 my-2">
-						<button class="btn border rounded-0 side-text2" type="button">
-							<svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<rect x="0.5" width="14" height="14" fill="#9F9F9F" />
-								<line x1="2.44437" y1="1.23727" x2="13.1353" y2="11.9282" stroke="#D1D1D1" />
-								<line x1="1.73727" y1="11.9287" x2="12.4282" y2="1.23776" stroke="#D1D1D1" />
-							</svg>
-							Create link
-						</button>
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 <!-- sidebar popup start -->
 <div class="sidebar">
 	<div class="row">
 		<div class="col-12 d-flex justify-content-between ps-4">
-			<p class="mt-3 side-lot">DEMO1TWSR9-A</p>
+			<p class="mt-3 side-lot" id="lot_number"></p>
 			<button onclick="toggleSidebar()" type="button" class="btn border-0 close-button">
 				<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path
@@ -337,7 +219,7 @@
 								<line x1="1.94437" y1="1.23727" x2="12.6353" y2="11.9282" stroke="#D1D1D1" />
 								<line x1="1.23727" y1="11.9282" x2="11.9282" y2="1.23728" stroke="#D1D1D1" />
 							</svg>
-							16-04-23
+							<span id="lot_date"></span>
 						</p>
 						<p class="side-text2 ">
 							<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -345,13 +227,14 @@
 								<line x1="1.94437" y1="1.23727" x2="12.6353" y2="11.9282" stroke="#D1D1D1" />
 								<line x1="1.23727" y1="11.9282" x2="11.9282" y2="1.23728" stroke="#D1D1D1" />
 							</svg>
-							19:52
+							<span id="lot_time"></span>
+
 						</p>
 					</div>
 				</div>
 				<div class="col-12 ps-4">
 					<p class="side-text">SIZE</p>
-					<P class="side-text2">4.20 GB</P>
+					<P class="side-text2" id="file_size"></P>
 				</div>
 				<div class="col-12 ps-4">
 					<p class="side-text">TAGS</p>
