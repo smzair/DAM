@@ -300,7 +300,11 @@ class User_Assets_Controller extends Controller
     for($i = 1; $i <= 5 ; $i++){
       $adaptation_key = 'adaptation_'.$i;
       if($wrc_data[$adaptation_key] != 'NA' && $wrc_data[$adaptation_key] != null){
-        array_push($adaptation_arr ,$wrc_data[$adaptation_key] );
+        $wrc_adaptation_arr = array(
+          'adaptation' => $wrc_data[$adaptation_key], 
+          'file_path' => "" 
+        );
+        array_push($adaptation_arr , $wrc_adaptation_arr);
       }else{
         unset($wrc_data[$adaptation_key]);
       }
@@ -312,15 +316,68 @@ class User_Assets_Controller extends Controller
     $skus_count = $sku_info_query->count();
     $raw_skus_data = $sku_info_query->get()->toArray();
 
+    $skus_sku_id_arr = array_column($raw_skus_data , 'sku_id');
+    $skus_sku_code_arr = array_column($raw_skus_data , 'sku_code');
+
+    $lot_data_arr = Lots::leftJoin('wrc','wrc.lot_id', '=' , 'lots.id')->whereNotNull('lots.id')->
+      where('wrc.id', '=', $wrc_id)->get(['lots.lot_id', 'lots.created_at' , 'wrc.wrc_id as wrc_number'])->toArray();
+    $lot_data = $lot_data_arr[0];
+    $lot_no = $lot_data['lot_id'];
+    $wrc_number = $lot_data['wrc_number'];
+
+    foreach ($wrc_data['adaptation'] as $adaptation_key => $adaptation_arr) {
+      $adaptation = $adaptation_arr['adaptation'];
+      $editor_Submission_data = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->where('adaptation','=',$adaptation)->get()->toArray();
+      $file_path = "";
+
+      foreach ($editor_Submission_data as $key_is => $item) {
+        if($file_path != ""){
+          break;
+        }            
+        $adaptation = $item['adaptation'];
+        $sku_id = $item['sku_id'];
+        $sku_code = $skus_sku_code_arr[array_search($sku_id ,$skus_sku_id_arr)];
+
+        $path=  "edited_img_directory/". date('Y', strtotime($item['created_at'])) . "/" . date('M', strtotime($item['created_at'])) . "/" . $lot_no."/" . $wrc_number."/" . $adaptation. "/" .$sku_code. "/" . $item['filename'];
+        if(file_exists($path)){
+          $file_path = $path;
+        }
+      }
+      $wrc_data['adaptation'][$adaptation_key]['file_path']= $file_path;
+    }
+    
     $raw_skus = array();
     foreach ($raw_skus_data as $key => $row) {
+      $sku_id = $row['sku_id'];
+      $sku_code = $row['sku_code'];
+      $wrc_id = $row['wrc_id'];
+
       $upload_raw_query = uploadraw::where('sku_id', $row['sku_id']);
       $upload_raw_count = $upload_raw_query->count();
+      $upload_raw_data = $upload_raw_query->get()->toArray();
+      $file_path = "";
+
       if($upload_raw_count > 0){
-        $row['uploadraw'] = $upload_raw_query->get()->toArray();
+        foreach ($upload_raw_data as $key_is => $item) {
+          $created_at = $item['created_at'];
+          $filename = $item['filename'];
+          if($file_path != ""){
+            break;
+          }
+          $path =  "raw_img_directory/" . date('Y', strtotime($created_at)) . "/" . date('M', strtotime($created_at)) . "/" . $lot_no."/" . $wrc_number."/" . $sku_code."/" . $filename;
+
+          // dd($row , $lot_data , $upload_raw_data);
+          if(file_exists($path)){
+            $file_path = $path;
+          }
+        }
+        // $row['uploadraw'] = $upload_raw_query->get()->toArray();
         array_push($raw_skus, $row);
       }
+      $raw_skus_data[$key]['file_path'] = $file_path;
+      $raw_skus_data[$key]['uploadraw'] = $upload_raw_data;
     }
+    // dd($wrc_data);
     // dd($raw_skus , $wrc_data , $raw_skus_data);
     return view('clients.ClientAssets.your_assets_files_skus')->with('wrc_data', $wrc_data)->with('raw_skus' , $raw_skus_data);
   }
@@ -342,6 +399,30 @@ class User_Assets_Controller extends Controller
     select('sku.id as sku_id', 'sku.sku_code','sku.status', 'sku.wrc_id', 'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number', 'editor_submission.id as submission_id', 'editor_submission.adaptation' , 'editor_submission.filename', DB::raw("COUNT(editor_submission.id) as file_count"), 'sku.created_at as sku_created_at' )->groupBy('sku.id');
     $skus_count = $sku_info_query->count();
     $raw_skus_data = $sku_info_query->get()->toArray();
+    
+    $file_path = "";
+    foreach ($raw_skus_data as $key => $row) {
+      $sku_id = $row['sku_id'];
+      $adaptation = $row['adaptation'];
+      $sku_code = $row['sku_code'];
+      $lot_number = $row['lot_number'];
+      $wrc_number = $row['wrc_number'];
+
+      $editor_Submission_data = editorSubmission::where('sku_id' , $sku_id)->where('qc','=','1')->where('adaptation','=',$adaptation)->get()->toArray();
+      $file_path = "";
+      
+      foreach ($editor_Submission_data as $key_is => $item) {
+        if($file_path != ""){
+          break;
+        }            
+        $path=  "edited_img_directory/". date('Y', strtotime($item['created_at'])) . "/" . date('M', strtotime($item['created_at'])) . "/" . $lot_number."/" . $wrc_number."/" . $adaptation. "/" .$sku_code. "/" . $item['filename'];
+        if(file_exists($path)){
+          $file_path = $path;
+        }
+      }
+      $raw_skus_data[$key]['file_path'] = $file_path;
+    }
+
     // dd(count($raw_skus_data) ,$raw_skus_data);
     return view('clients.ClientAssets.your_assets_shoot_adaptation_skus')->with('raw_skus' , $raw_skus_data);
   }

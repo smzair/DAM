@@ -199,7 +199,7 @@ public function Shoot_file_size(Request $request)
 
 				
 				if( $img_type == 'Raw'){
-					$path =  "edited_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number."/" . $sku_code;
+					$path =  "raw_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number."/" . $sku_code;
 				}else{
 					$path =  "edited_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number."/" . $adaptation."/" . $sku_code;
 				}
