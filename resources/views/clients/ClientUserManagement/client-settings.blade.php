@@ -39,9 +39,6 @@ Clients - Settings
     z-index: -1;
 }
 
-.modal-close{
-
-}
 
 .profile-icon {
     position: absolute;
@@ -100,7 +97,6 @@ Clients - Settings
 }
 
 
-input[type="text"], 
 input[type="email"], 
 input[type="password"], 
 input[type="number"],
@@ -283,6 +279,10 @@ textarea,
 
 .pswd-eye-icon.eye-active img.eye-icon.show-eye {
     display: inline-block;
+}
+
+.btn-success{
+  padding: 16px;
 }
     
   </style>
@@ -514,7 +514,7 @@ textarea,
           <div class="row">
             <div class="col-sm-12 mb-3 permition_section mt-2" id="your_assets_row" >
               <div  id="your_assets_section">
-                <label for="your_assets">New password</label>  
+                <label for="your_assets">New Password</label>  
               </div>
               <div class="form-group password-form-group" id="your_assets_services">
                 <div class="group-inner">
@@ -531,7 +531,7 @@ textarea,
             <div class="col-sm-12 mb-3 permition_section mt-2" id="file_manager_row">
               <div  id="">
                 {{-- <input type="checkbox" name="file_manager" id="file_manager" checked> --}}
-                <label for="file_manager">File Manager</label>  
+                <label for="file_manager">Confirm Password</label>  
               </div>
               <div class="form-group password-form-group mb-0">
                 <div class="group-inner">
@@ -551,7 +551,7 @@ textarea,
         <div class="modal-footer">
           <input type="hidden" name="user_id" id="user_id" value="">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="submit" class="btn btn-success">Update</button>
         </div>
       </div>
     </form>

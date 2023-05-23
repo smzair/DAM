@@ -4,8 +4,10 @@ namespace App\Http\Controllers\ClientsControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\EditingSubmission;
+use App\Models\EditingUploadedImages;
 use App\Models\EditingWrc;
 use App\Models\EditorLotModel;
+use App\Models\editorSubmission;
 use App\Models\Lots;
 use App\Models\Skus;
 use App\Models\submissions;
@@ -44,16 +46,19 @@ class User_Assets_Controller extends Controller
       select(
         'lots.id as lot_id',
         'lots.lot_id as lot_number',
+        'lots.s_type as s_type',
         'lots.created_at as lot_created_at',
         'wrc.id as wrc_id',
         'wrc.wrc_id as wrc_number',
         DB::raw("GROUP_CONCAT(wrc.id) as wrc_ids"),
+        DB::raw("GROUP_CONCAT(wrc.wrc_id) as wrc_numbers"),
         DB::raw("COUNT(wrc.id) as wrc_counts"),
       )->groupby('lots.id');
     $shoot_lots = $lots_query_cataloging->where('lots.user_id', $parent_client_id);
     $shoot_lots = $lots_query_cataloging->get()->toArray();
 
     $shoot_lots_data = array();
+    $skus_sku_id_arr = $skus_sku_code_arr = array();
     foreach ($shoot_lots as $key => $row) {
       $wrc_id_arr = explode(',', $row['wrc_ids']);
       $wrc_counts = $row['wrc_counts'];
@@ -63,21 +68,54 @@ class User_Assets_Controller extends Controller
       if ($wrc_counts == $lot_submission_count) {
         $submission_array = $lot_submission_query->orderby('submission.created_at', 'DESC')->get()->toArray();
 
-        $sku_info_query = Skus::whereIn('sku.wrc_id', $wrc_id_arr)->select('id as sku_id', 'sku_code', 'status');
+        $sku_info_query = Skus::whereIn('sku.wrc_id', $wrc_id_arr)->where('status', 1)->select('id as sku_id', 'sku_code', 'status');
         $skus_count = $sku_info_query->count();
         $skus_array = $sku_info_query->get()->toArray();
+
+        $file_path = "";
+        if($skus_count > 0){
+          $lot_number = $row['lot_number'];
+          $wrc_number = $row['wrc_number'];
+          $skus_sku_id_arr = array_column($skus_array , 'sku_id');
+          $skus_sku_code_arr = array_column($skus_array , 'sku_code');
+          $editor_Submission_data = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->get()->toArray();
+
+          $upload_raw = uploadraw::whereIn('sku_id', $skus_sku_id_arr)->count();
+
+          foreach ($editor_Submission_data as $key_is => $item) {
+            if($file_path != ""){
+              break;
+            }            
+            $adaptation = $item['adaptation'];
+            $sku_id = $item['sku_id'];
+            $sku_code = $skus_sku_code_arr[array_search($sku_id ,$skus_sku_id_arr)];
+
+			      $path=  "edited_img_directory/". date('Y', strtotime($item['created_at'])) . "/" . date('M', strtotime($item['created_at'])) . "/" . $lot_number."/" . $wrc_number."/" . $adaptation. "/" .$sku_code. "/" . $item['filename'];
+            if(file_exists($path)){
+              $file_path = $path;
+            }
+          }
+        }
 
         array_push($shoot_lots_data, array(
           'lot_id' => $row['lot_id'],
           'lot_number' => $row['lot_number'],
           'lot_created_at' => $row['lot_created_at'],
           'inward_qty' => $skus_count,
+          'skus_count' => $skus_count,
+          'file_path' => $file_path,
+          'raw_images' => $upload_raw,
+          'edited_images' => count($editor_Submission_data),
+          's_type' => $row['s_type'],
+          'wrc_numbers' => $row['wrc_numbers'],
           'skus' => $skus_array,
           'submission_date' => $submission_array[0]['submission_date'],
           'submissions' => $submission_array
         ));
       }
     }
+
+    // dd($shoot_lots_data);
 
     /** Editing lots **/
     $lots_query_cataloging = EditorLotModel::leftJoin('editing_wrcs', 'editing_wrcs.lot_id', '=', 'editor_lots.id')
@@ -88,6 +126,7 @@ class User_Assets_Controller extends Controller
         'editor_lots.created_at as lot_created_at',
         'editing_wrcs.id as wrc_id',
         'editing_wrcs.wrc_number',
+        'editing_wrcs.uploaded_img_file_path',
         DB::raw("GROUP_CONCAT(editing_wrcs.id) as wrc_ids"),
         DB::raw("SUM(editing_wrcs.imgQty) as tot_imgqty"),
         DB::raw("SUM(editing_wrcs.uploaded_img_qty) as tot_uploaded_img_qty"),
@@ -101,11 +140,29 @@ class User_Assets_Controller extends Controller
     foreach ($editor_lots as $key => $row) {
       $wrc_id_arr = explode(',', $row['wrc_ids']);
       $wrc_counts = $row['wrc_counts'];
+      $uploaded_img_file_path = $row['uploaded_img_file_path'];
       $lot_submission_query = EditingSubmission::whereIn('editing_submissions.wrc_id', $wrc_id_arr)->select('id as submission_id', 'editing_submissions.submission_date');
       $lot_submission_count = $lot_submission_query->count();
 
       if ($wrc_counts == $lot_submission_count) {
         $submission_array = $lot_submission_query->orderby('editing_submissions.created_at', 'DESC')->get()->toArray();
+
+        $editing_uploaded_images = EditingUploadedImages::whereIn('editing_uploaded_images.wrc_id', $wrc_id_arr)->get()->toArray();
+        $file_path = "";
+
+        foreach ($editing_uploaded_images as $key_is => $item) {
+          if($file_path != ""){
+            break;
+          }
+          $path= $item['file_path']. $item['filename'];
+          $path1 = $uploaded_img_file_path. $item['filename'];
+          if(file_exists($path)){
+            $file_path = $path;
+          }else if(file_exists($path1)){
+            $file_path = $path1;
+          }
+        }
+
         array_push($editor_lots_data, array(
           'lot_id' => $row['lot_id'],
           'lot_number' => $row['lot_number'],
@@ -113,10 +170,13 @@ class User_Assets_Controller extends Controller
           'inward_qty' => $row['tot_uploaded_img_qty'],
           'tot_imgqty' => $row['tot_imgqty'],
           'submission_date' => $submission_array[0]['submission_date'],
+          'file_path' => $file_path,
           'submissions' => $submission_array
         ));
       }
     }
+    // dd($editor_lots_data,$shoot_lots_data , $shoot_lots);
+
     return view('clients.ClientAssets.your_assets_files')->with('shoot_lots', $shoot_lots_data)->with('editor_lots', $editor_lots_data);
   }
   
@@ -134,6 +194,37 @@ class User_Assets_Controller extends Controller
       'wrc.created_at as wrc_created_at',
       'lots.lot_id as lot_number',
     )->get()->toArray();
+
+    foreach ($wrc_data as $key => $value) {
+      $lot_number = $value['lot_number'];
+      $sku_info_query = Skus::where('wrc_id', $value['wrc_id'])->where('status', 1)->select('id as sku_id', 'sku_code', 'status');
+      $skus_count = $sku_info_query->count();
+      $skus_array = $sku_info_query->get()->toArray();
+      $file_path = "";
+      if($skus_count > 0){
+        $lot_number = $value['lot_number'];
+        $wrc_number = $value['wrc_number'];
+        $skus_sku_id_arr = array_column($skus_array , 'sku_id');
+        $skus_sku_code_arr = array_column($skus_array , 'sku_code');
+        $editor_Submission_data = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->get()->toArray();
+
+        foreach ($editor_Submission_data as $key_is => $item) {
+          if($file_path != ""){
+            break;
+          }            
+          $adaptation = $item['adaptation'];
+          $sku_id = $item['sku_id'];
+          $sku_code = $skus_sku_code_arr[array_search($sku_id ,$skus_sku_id_arr)];
+
+          $path=  "edited_img_directory/". date('Y', strtotime($item['created_at'])) . "/" . date('M', strtotime($item['created_at'])) . "/" . $lot_number."/" . $wrc_number."/" . $adaptation. "/" .$sku_code. "/" . $item['filename'];
+          if(file_exists($path)){
+            $file_path = $path;
+          }
+        }
+      }
+      $wrc_data[$key]['file_path'] = $file_path;
+    }
+    // dd($wrc_data);
     return view('clients.ClientAssets.your_assets_files_wrcs')->with('wrc_data', $wrc_data)->with('service_is' , 'Shoot');
       
   }
@@ -150,10 +241,32 @@ class User_Assets_Controller extends Controller
       'editing_wrcs.id as wrc_id',
       'editing_wrcs.wrc_number',
       'editing_wrcs.lot_id',
+      'editing_wrcs.uploaded_img_file_path',
       'editing_wrcs.created_at as wrc_created_at',
       'editor_lots.lot_number',
-    )->get()->toArray();   
+    )->get()->toArray();  
     
+    foreach ($wrc_data as $key => $row) {
+      $uploaded_img_file_path = $row['uploaded_img_file_path'];
+      $wrc_id_arr = explode(',', $row['wrc_id']);
+      $editing_uploaded_images = EditingUploadedImages::whereIn('editing_uploaded_images.wrc_id', $wrc_id_arr)->get()->toArray();
+        $file_path = "";
+
+      foreach ($editing_uploaded_images as $key_is => $item) {
+        if($file_path != ""){
+          break;
+        }
+        $path= $item['file_path']. $item['filename'];
+        $path1 = $uploaded_img_file_path. $item['filename'];
+        if(file_exists($path)){
+          $file_path = $path;
+        }else if(file_exists($path1)){
+          $file_path = $path1;
+        }
+      }
+      $wrc_data[$key]['file_path'] = $file_path;
+    }
+    // dd($wrc_data);
     return view('clients.ClientAssets.your_assets_files_wrcs')->with('wrc_data', $wrc_data)->with('service_is' , 'Editing');
 
   }
