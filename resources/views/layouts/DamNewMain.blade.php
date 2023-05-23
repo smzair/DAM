@@ -38,7 +38,17 @@
     .replacement-svg {
       display: none;
      }
+     
+       #searchBar::placeholder {
+            color: #D1D1D1; /* Default placeholder color */
+        }
+        
+        #searchBar.inactive::placeholder {
+            color: #D1D1D1; /* Inactive placeholder color */
+        }
 	</style>
+
+	@yield('other_css')
 </head>
 
 <body>
@@ -87,19 +97,19 @@
 
 					<div class="collapse navbar-collapse" id="navbarCollapse">
 
-						{{-- <form action="{{route('gloableSearch')}}" method="post">
-						@csrf --}}
-						<div class="input-group ms-auto  nav-searchbar">
-								<input type="text" class="form-control rounded-0" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" style="background: #1A1A1A;" name="search_query" value="{{$search_query}}">
+					 <form action="{{route('gloableSearch')}}" method="post" class="ms-4" style="width:50%;">
+						@csrf
+						<div class="input-group ms-auto  nav-searchbar" style="width:59%;">
+								<input type="text" id="searchBar" class="form-control rounded-0" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" style="background: #1A1A1A;border: 1px solid #D1D1D1;" name="search_query" value="{{$search_query}}">
 								<div class="input-group-append">
-									<button class="btn btn-outline-secondary border border-left-0 rounded-0" type="submit" style="background: #1A1A1A;">
+									<button class="btn btn-outline-secondary border border-start-0 rounded-0" type="submit" style="background: #1A1A1A;border: 1px solid #D1D1D1;">
 										<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M15.2362 14.6666L13.9028 13.3333M8.23616 13.9999C9.06787 13.9999 9.89143 13.8361 10.6598 13.5178C11.4282 13.1995 12.1264 12.733 12.7145 12.1449C13.3026 11.5568 13.7691 10.8586 14.0874 10.0902C14.4057 9.32185 14.5695 8.49829 14.5695 7.66658C14.5695 6.83488 14.4057 6.01132 14.0874 5.24292C13.7691 4.47453 13.3026 3.77635 12.7145 3.18824C12.1264 2.60014 11.4282 2.13363 10.6598 1.81535C9.89143 1.49707 9.06787 1.33325 8.23616 1.33325C6.55646 1.33325 4.94555 2.00051 3.75782 3.18824C2.57009 4.37597 1.90283 5.98688 1.90283 7.66658C1.90283 9.34629 2.57009 10.9572 3.75782 12.1449C4.94555 13.3327 6.55646 13.9999 8.23616 13.9999Z" stroke="#D1D1D1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 											</svg>              
 									</button>
 								</div>
 							</div>
-						{{-- </form> --}}
+					 </form> 
 
 						<ul class="navbar-nav ms-auto me-3">
 							{{-- notification bell --}}
@@ -324,13 +334,27 @@
 
 	{{-- Setting data and time in side bar --}}
 	<script>
-		const set_date_time = (key) => {
+		const set_date_time = (key , service = 'other') => {
 			const lot_number = $("#lot_number"+key).html()
 			const lot_date = $("#lot_date"+key).html()
 			const lot_time = $("#lot_time"+key).html()
 			$("#lot_time").html(lot_time)
 			$("#lot_date").html(lot_date)
 			$("#lot_number").html(lot_number)
+
+			const image_src = $("#image_src"+key).html()
+			$("#image_src").attr("src", image_src);
+
+			if(service == 'shoot'){
+				$("#s_type").html($("#s_type"+key).html())
+				$("#skus_count").html($("#skus_count"+key).html())
+				$("#raw_images").html($("#raw_images"+key).html())
+				$("#edited_images").html($("#edited_images"+key).html())
+				$("#wrc_numbers").html($("#wrc_numbers"+key).html())
+				$("#shoot_files_details").removeClass('d-none')
+			}else{
+				$("#shoot_files_details").addClass('d-none')
+			}
 		}
 	</script>
 
@@ -384,6 +408,21 @@
 				}
 			});
 		}
+	</script>
+	
+	<!--searchbar placeholder color script-->
+	<script>
+		const searchBar = document.getElementById('searchBar');
+
+		searchBar.addEventListener('focus', function() {
+			searchBar.classList.remove('inactive');
+		});
+
+		searchBar.addEventListener('blur', function() {
+			if (searchBar.value === '') {
+				searchBar.classList.add('inactive');
+			}
+		});
 	</script>
 
 @yield('js_scripts')
