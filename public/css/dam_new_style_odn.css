@@ -714,6 +714,9 @@ button.btn.border.rounded-0.user-btn:hover {
     height: 20px;
 }
 
+.verfication-modal-body{
+    background: #0F0F0F;
+}
 .back-btn {
   color: #FFFFFF;
   background: #FFFFFF;
