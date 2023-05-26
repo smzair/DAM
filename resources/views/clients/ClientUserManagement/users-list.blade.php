@@ -16,13 +16,15 @@ Clients - User list
 @endphp
   <div class="row" style="margin-top:24px ;">
     <div class="col-12 d-flex justify-content-between">
-      <h4 class="headingF">
+      <h4 class="headingF ps-2">
         Manage user
       </h4>
-      <a href="{{route('add_Client_User_New')}}" type="button" class="btn border user-btn" style="height: auto;">+ Add new user</a>
+      <div class="text-center mt-4">
+        <a href="{{route('add_Client_User_New')}}" type="button" class="btn rounded-0 border btn-lg create-user-btn">+ Add user</a>
+      </div>
     </div>
     <div class="col-12">
-      <p class="underheadingF">
+      <p class="underheadingF ps-2 mt-3">
         You can edit the user rights & add a new user here
       </p>
     </div>
@@ -102,20 +104,38 @@ Clients - User list
     </div>
   @else
     <div class="row" style="margin-top: 122px;">
+      <!--<div class="text-center">-->
+        
+      <!--</div>-->
       <div class="text-center">
-        <svg width="121" height="120" viewBox="0 0 121 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="0.5" width="120" height="120" fill="#9F9F9F" />
-          <line x1="18.8536" y1="17.6464" x2="102.854" y2="101.646" stroke="#D1D1D1" />
-          <line x1="18.1464" y1="101.646" x2="102.146" y2="17.6465" stroke="#D1D1D1" />
-        </svg>
-      </div>
-      <div class="text-center">
-        <p class="underheadingF mt-4">
+           <svg width="94" height="104" viewBox="0 0 94 104" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <rect width="94" height="104" fill="url(#pattern0)"/>
+            <rect x="61" y="21" width="4" height="5" fill="url(#pattern1)"/>
+            <rect x="76" y="21" width="4" height="5" fill="url(#pattern2)"/>
+            <defs>
+            <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0_2_6" transform="matrix(0.0111111 0 0 0.0100427 0 -0.00213675)"/>
+            </pattern>
+            <pattern id="pattern1" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image1_2_6" transform="scale(0.25 0.2)"/>
+            </pattern>
+            <pattern id="pattern2" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image2_2_6" transform="scale(0.25 0.2)"/>
+            </pattern>
+            <image id="image0_2_6" width="90" height="100" xlink:href="data:image/png;base64,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"/>
+            <image id="image1_2_6" width="4" height="5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAYAAABirU3bAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABESURBVHgBVYixDcAgDATtJH1WgE08EhvYG8BIXoWOEjbgkSjgpJfujwmoamLmAC2fmQkk0+ahm3+FfoTxunsTkYhTMZvKMwxW2nFe6wAAAABJRU5ErkJggg=="/>
+            <image id="image2_2_6" width="4" height="5" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAYAAABirU3bAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABDSURBVHgBVYtBDQAhDAS35AScBByCg9YCjpAACsBJ2b4Im+xjMhkxswygishS1fYF8MXdQTkT4cddTni3I7Ew/GDSDwMnD/uPBjZDAAAAAElFTkSuQmCC"/>
+            </defs>
+            </svg>
+          <p class="no-hooman-text mt-4">
+             No Hooman detected
+        </p>
+        <p class="underheadingF">
           It's looks like you didn't created any user yet.
         </p>
       </div>
-      <div class="text-center">
-        <a href="{{route('add_Client_User_New')}}" type="button" class="btn border btn-lg create-user-btn">+ Create user</a>
+      <div class="text-center mt-4">
+        {{-- <a href="{{route('add_Client_User_New')}}" type="button" class="btn rounded-0 border btn-lg create-user-btn">+ Add user</a> --}}
       </div>
     </div>
   @endif

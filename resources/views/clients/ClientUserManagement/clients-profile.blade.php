@@ -25,18 +25,17 @@ Clients - Your Profile
     @endif
 </div>
   <div class="col-12">
-    <h4 class="headingF">Your profile</h4>
+    <h4 class="headingF ps-2">Your profile</h4>
 
   </div>
   <div class="col-12">
-    <p class="underheadingF">
-      You can manage your profile details from here.
+    <p class="underheadingF ps-2  mt-3">
+      You can edit your profile details from here.
     </p>
   </div>
-  <hr style="margin-left: 15px;">
   <form method="POST" action="{{route('UploadeClientAvtar')}}" class="custom-profiles-form personal-details-form" id="UploadeClientAvtar" enctype="multipart/form-data">
     @csrf
-    <div class="col-12 mt-5 d-flex ">
+    <div class="col-12 mt-5 d-flex ps-2">
       @php
           $profile_avtar = $data['profile_avtar'];
           $profile_avtar_path =  asset('uploades/profileavtar/'.$profile_avtar);
@@ -72,44 +71,51 @@ Clients - Your Profile
 <form method="POST" action="{{route('UpdateClientProfile')}}" class="custom-profiles-form personal-details-form" id="personalDetailsForm">
   @csrf
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 ps-lg-4">
       <div class="row mt-4">
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="form-floating mb-3">
-            <input type="text" class="form-control rounded-0" name="clientFirstName" id="clientFirstName" value="{{$data['name']}}" placeholder="First name">
+            <input type="text" class="form-control rounded-0 your-profile-form" name="clientFirstName" id="clientFirstName" value="{{$data['name']}}" placeholder="First name">
             <label for="clientFirstName">First name</label>
           </div>
         </div>
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="form-floating mb-3">
-            <input type="text" class="form-control rounded-0" name="clientLastName" id="clientLastName" value="{{$data['last_name']}}" placeholder="last name">
+            <input type="text" class="form-control rounded-0 your-profile-form" name="clientLastName" id="clientLastName" value="{{$data['last_name']}}" placeholder="last name">
             <label for="clientLastName">Last name</label>
           </div>
         </div>
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="form-floating mb-3">
-            <input type="email" class="form-control rounded-0" name="clientEmail" id="clientEmail" value="{{$data['email']}}" placeholder="Email">
+            <input type="email" class="form-control rounded-0 your-profile-form" name="clientEmail" id="clientEmail" value="{{$data['email']}}" placeholder="Email">
             <label for="clientEmail">Email</label>
           </div>
         </div>
         <div class="col-lg-5 col-md-5 col-sm-12">
           <div class="form-floating mb-3">
-            <input type="tel" class="form-control rounded-0" name="clientPhone" id="clientPhone" value="{{$data['phone']}}" placeholder="Mobile">
+            <input type="tel" class="form-control rounded-0 your-profile-form" name="clientPhone" id="clientPhone" value="{{$data['phone']}}" placeholder="Mobile">
             <label for="clientPhone">Mobile</label>
           </div>
         </div>
         <div class="col-12" id="edit_btn_row">
-          <button onclick="showEditBtn()" type="button" class="btn border user-btn">Edit profile</button>
+          <button onclick="showEditBtn()" type="button" class="btn border rounded-0 user-btn">
+             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.0529 4.53322L4.21122 11.7749C3.95289 12.0499 3.70289 12.5916 3.65289 12.9666L3.34455 15.6666C3.23622 16.6416 3.93622 17.3082 4.90289 17.1416L7.58622 16.6832C7.96122 16.6166 8.48622 16.3416 8.74455 16.0582L15.5862 8.81655C16.7696 7.56655 17.3029 6.14155 15.4612 4.39989C13.6279 2.67489 12.2362 3.28322 11.0529 4.53322Z" stroke="#808080" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9.91113 5.74023C10.0858 6.85761 10.6266 7.88535 11.4486 8.66211C12.2707 9.43887 13.3273 9.92068 14.4528 10.0319" stroke="#808080" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg> &nbsp;
+
+              Edit profile
+          </button>
         </div>
       </div>
     </div>
   </div>
   <div class="row d-none" id="save_btn_row">
-    <div class="col-lg-5 col-md-5">
+    <div class="col-lg-5 col-md-5 ps-lg-4">
       <input type="hidden" name="id" value="{{$data['id']}}">
       <button type="submit" class="btn btn-lg border profile-btn mt-sm-2">Save details</button>
     </div>
-    <div class="col-lg-5 col-md-5">
+    <div class="col-lg-5 col-md-5 ps-lg-3">
       <a href="{{route('ClientProfile')}}" type="button" class="btn btn-lg border profile-btn mt-sm-2">Cancel</a>
     </div>
   </div>

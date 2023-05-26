@@ -280,10 +280,6 @@ textarea,
 .pswd-eye-icon.eye-active img.eye-icon.show-eye {
     display: inline-block;
 }
-
-.btn-success{
-  padding: 16px;
-}
     
   </style>
 @endsection
