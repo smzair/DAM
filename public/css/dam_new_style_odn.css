@@ -3,6 +3,23 @@ body {
  background: #0F0F0F !important;
 }
 
+.accordion-flush .accordion-item {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+    border-bottom: 0;
+}
+
+a.btn.border.rounded-0.btn-secondary:hover {
+   background: #FFF866;
+   color: #0F0F0F;
+}
+
+a.btn.border.rounded-0.view-img:hover {
+    background: #FFF866;
+    color: #0F0F0F;
+}
+
 /*svg color changes sidebar*/
 
 .svg-circle {
@@ -13,16 +30,56 @@ body {
   fill: #0F0F0F;
 }
 
+.btn:focus{
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.mySvg:focus{
+    border-radius: 0;
+    box-shadow: none;
+}
+
 /*svg color changes sidebar end*/
 
 .services-modal{
     background: #1A1A1A;
 }
 
+.total-sku-img-body{
+    background: #1A1A1A;
+}
+
 .sidebar-position{
     position:fixed;
 }
+
+.file-wrc-lot-no{
+    color: #FFFFFF;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0px solid rgba(0,0,0,.125);
+    border-radius: 0px;
+    background: #333333;
+}
+
+.card-header {
+    padding: 0.5rem 0rem;
+    margin-bottom: 0;
+   background: #1A1A1A;
+}
  
+ /*.card-body{*/
+ /*    background: #1A1A1A;*/
+ /*}*/
 
 .nav-date{
    color: #FFFFFF;
@@ -63,6 +120,10 @@ body {
    box-shadow: 0px 0px 40px rgba(255, 248, 102, 0.2);
 }
 
+.breadcrumb-item.active {
+    color: #FFFFFF;
+}
+
 .accordion-item {
     background-color: #fff;
     border: 1px solid #333333;
@@ -99,7 +160,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 24px;
+  padding: 20px;
   gap: 8px;
 
 
@@ -133,7 +194,7 @@ body {
   gap: 8px !important;
   color: #808080;
 
-  width: 253px !important;
+  width: 249px !important;
   height: 52px !important;
   font-weight: 500;
   font-size: 14px;
@@ -178,6 +239,7 @@ body {
   font-weight: 400;
   font-size: 16px;
   color: #808080;
+  line-height: 0.2;
 }
 
 .totallotF {
@@ -203,7 +265,7 @@ body {
 }
 
 .under-content-div .lotnoF{
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .lot-date {
@@ -417,10 +479,10 @@ body {
 
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 74px;
   right: -290px; /* initially hide the sidebar */
   width: 270px;
-  height: 100%;
+  height: 88%;
   background: #1A1A1A;
   transition: right 0.3s ease;
   overflow-y: auto; /* enable vertical scrolling */
@@ -445,20 +507,20 @@ body {
 .side-lot {
   font-weight: 500;
   font-size: 16px;
-  color: #9F9F9F;
+  color: #FFFFFF;
   word-wrap: break-word;
 }
 
 .side-text {
   font-weight: 400;
   font-size: 11px;
-  color: #9F9F9F;
+  color: #808080;
 }
 
 .side-text2 {
   font-weight: 400;
   font-size: 16px;
-  color: #9F9F9F;
+  color: #FFFFFF;
 }
 
 .share {
@@ -509,7 +571,7 @@ body {
 .heading-details {
   font-weight: 500;
   font-size: 14px;
-  color: #9F9F9F;
+  color: #FFFFFF;
 }
 
 .remove-tag {
@@ -535,13 +597,14 @@ body {
 .editedandraw-img-btn {
   padding: 16px;
   gap: 8px !important;
-  width: 393px !important;
+  width: 546px !important;
   height: 52px !important;
   font-weight: 500;
+  color: #808080;
   font-size: 14px;
-  background: #D1D1D1 !important;
+  background: #1A1A1A !important;
   border-radius: 0px !important;
-  border: 2px solid #ffffff !important;
+  
 }
 
 .Adaptation {
@@ -556,13 +619,13 @@ body {
 .brand-text {
   word-wrap: break-word;
   font-weight: 500;
-  font-size: 12px;
-  margin-top: 4px;
-  color: #9F9F9F;
+  font-size: 15px;
+  margin-top: -1px;
+  color: #FFFFFF;
 }
 
 .brand-div {
-  background: #EBEBEB;
+  background: #1A1A1A;
   height: 64px;
   margin-left: 0px;
   margin-right: 0px;
@@ -571,19 +634,21 @@ body {
 .brand {
   font-weight: 400;
   font-size: 16px;
-  color: #9F9F9F;
+  color: #FFFFFF;
   margin-top: 9px;
 }
 
 .brand-div2 {
   height: 56px;
-  background: #EBEBEB;
+ background: #1A1A1A !important;
   margin-left: 0px;
   margin-right: 0px;
 }
 
 .brand-img {
   padding: 16px;
+  background: #333333;
+  border-radius: 0px;
 }
 
 .brand-img-m {
@@ -595,9 +660,9 @@ body {
 .brand-img-name {
   font-weight: 400;
   font-size: 16px;
-  color: #9F9F9F;
+  color: #FFFFFF;
   overflow-wrap: anywhere;
-  margin-top: -19px;
+  margin-top: -9px;
 }
 
 
@@ -609,6 +674,46 @@ body {
   color: #9F9F9F;
 }
 
+button.btn.btn-lg.border.profile-btn:hover{
+    background: #FFF866;
+    color: #0F0F0F; 
+}
+
+a.btn.btn-lg.border.profile-btn:hover{
+     background: #FFF866;
+    color: #0F0F0F; 
+}
+
+button#picDeleteBTN:hover {
+    background: rgba(241, 59, 59, 0.1);
+    color: #F13B3B;
+}
+
+.your-profile-form{
+    background: #0F0F0F;
+    color: #FFFFFF;
+    font-weight: 400;
+    font-size: 16px;
+    border:1px solid #9F9F9F !important;
+}
+
+button.btn.border.rounded-0.user-btn:hover {
+    background: #FFF866;
+    color: #0F0F0F;
+}
+.form-floating input:not(:placeholder-shown)~label, .form-floating textarea:not(:placeholder-shown)~label {
+    transform: translate(0, -50%);
+    top: 0;
+    left: 0.5rem;
+    opacity: 1;
+    background: #0F0F0F !important;
+    padding: 0 0.25rem;
+    color: #FFFFFF !important;
+    font-weight: 600;
+    font-size: 11px;
+    height: 20px;
+}
+
 .back-btn {
   color: #FFFFFF;
   background: #FFFFFF;
@@ -618,10 +723,17 @@ body {
   font-size: 16px;
 }
 
+.add-user-para{
+    font-weight: 400;
+   font-size: 16px;
+   line-height: 24px;
+   color: #808080;
+}
+
 .create-user-txt {
   font-weight: 400;
   font-size: 24px;
-  color: #9F9F9F;
+  color: #FFFFFF;
   margin-top: 35px;
 }
 
@@ -640,11 +752,18 @@ body {
 .user-btn {
   font-weight: 500;
   font-size: 16px;
-  color: #EBEBEB;
+  color: #808080 ;
   height: 56px;
-  background: #9F9F9F;
+  background:#0F0F0F;
+  border:1px solid #9F9F9F;
 }
 
+.no-hooman-text{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #808080;
+}
 .default-pass {
   font-weight: 400;
   font-size: 11px;
@@ -698,13 +817,16 @@ body {
 .myPopover {
   display: none;
   position: absolute;
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
+ background: #0F0F0F;
+ border: 2px solid #333333;
+ box-shadow: 4px 16px 40px rgba(255, 255, 255, 0.06);
   padding: 10px;
   z-index: 1;
   min-width: 50%;
-  width: 60%;
+  width: 74%;
   left: 50%;
+  line-height: 2.5;
+  padding-left: 20px !important;
 }
 
 .myPopover a {
@@ -712,11 +834,12 @@ body {
   margin-bottom: 5px;
   text-decoration: none;
   color: #9F9F9F;
-  font-size: initial;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .myPopover a:hover{
-  color: #0F0F0F;
+  color: #FFFFFF;
 }
 
 /* form floating on top */
@@ -764,7 +887,7 @@ body {
 
 .profile-btn {
   width: 100%;
-  background: #EBEBEB;
+  background: #0F0F0F;
   font-weight: 500;
   font-size: 16px;
   color: #B8B8B8;
