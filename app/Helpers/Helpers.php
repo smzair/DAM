@@ -922,10 +922,22 @@ if(!function_exists('track_lots_routes')){
     }
 }
 
-// your_assets_routes Array
+// your_assets_routes Array 
 if(!function_exists('your_assets_routes')){
     function your_assets_routes(){
-        $your_assets_routes = [ 'your_assets_files',  'your_assets_shoot_wrcs', 'your_assets_shoot_skus', 'your_assets_shoot_adaptation_skus', 'your_assets_shoot_edited_images', 'your_assets_files_shoot_raw_images', 'your_assets_editing_wrcs', 'your_assets_files_editing_uploaded_images'];
+        $your_assets_routes = [
+            'your_assets_files',
+            'your_assets_shoot_wrcs',
+            'your_assets_shoot_skus',
+            'your_assets_shoot_adaptation_skus',
+            'your_assets_shoot_edited_images',
+            'your_assets_files_shoot_raw_images',
+            'your_assets_editing_wrcs',
+            'your_assets_files_editing_uploaded_images',
+            'your_assets_Links',
+            'your_assets_creative_wrcs_links',
+            'your_assets_cataloging_wrcs_links'
+        ];
         return $your_assets_routes;        
     }
 }
@@ -961,9 +973,20 @@ if(!function_exists('get_active_url_data')){
             }
         }else if (in_array($routeName, $your_assets_routes)) {
             $active_tab = 2;
-            $active_link = "your_assets_files";
-            if($routeName == 'your_assets_files'){
-                $active_link = "your_assets_files";
+            switch ($routeName) {
+                case 'your_assets_files':
+                    $active_link = "your_assets_files";
+                    break;
+
+                case 'your_assets_Links':
+                case 'your_assets_creative_wrcs_links':
+                case 'your_assets_cataloging_wrcs_links':
+                    $active_link = "your_assets_Links";
+                    break;
+
+                default:
+                    $active_link = "your_assets_files";
+                    break;
             }
         }else if (in_array($routeName, $admin_control_routes)) {
             $active_tab = 3;
