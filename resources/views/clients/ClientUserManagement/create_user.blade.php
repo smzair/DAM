@@ -21,12 +21,21 @@ Clients - Create New user
 </div>
 <div class="row">
   <div class="col-12">
-    <p class="create-user-txt">Create User</p>
+    <p class="create-user-txt ps-2">Add user</p>
+    <p class="add-user-para ps-2">You can add a maximum of 10 users.</p>
   </div>
   <form action="" method="post" id="createUser_form">
-    <div class="row">
+    <div class="row ps-lg-2 mt-3">
       @csrf
 
+      
+      {{-- name --}}
+
+      <div class="col-lg-5 col-md-5 col-sm-12 form_control_gp">
+        <input class="form-control form-control-lg rounded-0 mb-3 user-form" type="text" placeholder="Enter name"
+          aria-label=".form-control-lg example" name="name" onkeypress ="return isAlphabet(event)">
+          <p class="error"></p> 
+      </div>
       
       {{-- Brand --}}
 
@@ -38,13 +47,7 @@ Clients - Create New user
         </select>
         <p class="error"></p> 
       </div>
-      {{-- name --}}
-
-      <div class="col-lg-5 col-md-5 col-sm-12 form_control_gp">
-        <input class="form-control form-control-lg rounded-0 mb-3 user-form" type="text" placeholder="Enter name"
-          aria-label=".form-control-lg example" name="name" onkeypress ="return isAlphabet(event)">
-          <p class="error"></p> 
-      </div>
+      
       {{-- Email --}}
 
       <div class="col-lg-5 col-md-5 col-sm-12 form_control_gp">
@@ -80,7 +83,7 @@ Clients - Create New user
       <div class="col-10 mt-4">
         <div class="d-lg-flex d-md-flex justify-content-between">
           <input type="hidden" name="role" value="Sub Client">
-          <button type="button" class="btn border user-btn" onclick="createUsers()">+ Create user</button>
+          <button type="button" class="btn rounded-0 user-btn" onclick="createUsers()">+ Create user</button>
           <p id="msg_box" class="" style="display: none"></p>
 
           {{-- <div style="line-height: 0%;">

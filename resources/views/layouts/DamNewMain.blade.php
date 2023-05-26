@@ -49,6 +49,11 @@
 	</style>
 
 	@yield('other_css')
+	<style>
+		.btn-primary , .btn-success , .btn-secondary{
+			padding: 10px !important;
+		}
+	</style>
 </head>
 
 <body>
