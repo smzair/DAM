@@ -117,7 +117,7 @@
 @if (count($lot_links) > 0)
 	<div class="row">
 		<div class="col-12">
-			<a class="btn btn-light border-0 back-btn" href="{{ url()->previous() }}" role="button"><svg width="22" height="14"
+			<a class="btn btn-light border-0 back-btn" href="{{ route('your_assets_Links') }}" role="button"><svg width="22" height="14"
 					viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M6.69628 1.5L1 7L6.69628 12.5M21 7H1.15953" stroke="#9F9F9F" stroke-width="1.5"
 						stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />

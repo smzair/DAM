@@ -22,7 +22,6 @@
 			width: 350px;
 			left: -20px;
 			top: 95%;
-			color: #1A1A1A
 		}
 
 		/* CSS for the popover text */
@@ -117,7 +116,7 @@
 @if (count($lot_links) > 0)
 	<div class="row">
 		<div class="col-12">
-			<a class="btn btn-light border-0 back-btn" href="{{ url()->previous() }}" role="button"><svg width="22" height="14"
+			<a class="btn btn-light border-0 back-btn" href="{{ route('your_assets_Links') }}" role="button"><svg width="22" height="14"
 					viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M6.69628 1.5L1 7L6.69628 12.5M21 7H1.15953" stroke="#9F9F9F" stroke-width="1.5"
 						stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
@@ -196,7 +195,7 @@
 											<div class="upper-heading-wrc-details-table pt-2 pb-1">
 												<div class="col-12 d-flex justify-content-between ps-4 pe-4">
 													<div>
-														<p class="track-lot-table-wrc-no">{{$project_name}}</p>
+														<p class="track-lot-table-wrc-no">{{$wrc_numbers}}</p>
 														<p class="track-lot-table-wrc-date text-start">{{dateFormat($wrc_created_at)}}</p>
 													</div>
 													<div>
