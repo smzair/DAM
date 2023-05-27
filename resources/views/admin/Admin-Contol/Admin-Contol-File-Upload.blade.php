@@ -255,9 +255,9 @@ Admin Control - File Upload
             request.open('POST', uploadForm.action);
 
             request.upload.addEventListener('progress', event => {
-                console.log("loaded ", event.loaded)
-                console.log("total ", event.total)
-                console.log("total in mb ", (event.total/(1024*1024)).toFixed(2) + 'MB')
+                // console.log("loaded ", event.loaded)
+                // console.log("total ", event.total)
+                // console.log("total in mb ", (event.total/(1024*1024)).toFixed(2) + 'MB')
                 let loaded_size_in_mb = event.loaded/(1024*1024) * 1;
                 let tot_size_in_mb = event.total/(1024*1024) * 1;
                 
