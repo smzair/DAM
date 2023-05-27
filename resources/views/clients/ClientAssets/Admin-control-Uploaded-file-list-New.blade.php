@@ -135,17 +135,23 @@ Admin control - Uploaded files
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($data as $index => $row)
+					@if (count($data) > 0)
+						@foreach($data as $index => $row)
+							<tr>
+								{{-- <td width="5%" class="pl-3">{{$index+1}} </td> --}}
+								<td  class="table-column">{{$row['service']}}</td>
+								<td  class="table-column">{{$row['lot_number']}}</td>
+								<td  class="table-column">{{$row['wrc_number']}}</td>
+								<td  class="table-column"><a href="{{asset($row['file_path'].$row['filename'])}}" download="{{$row['filename']}}">Download</a></td>
+								<td  class="table-column">{{$row['uploaded_by']}}</td>
+								<td  class="table-column">{{date('d-M-Y h:i A', strtotime($row['created_at']))}}</td>
+							</tr>
+						@endforeach
+					@else
 						<tr>
-							{{-- <td width="5%" class="pl-3">{{$index+1}} </td> --}}
-							<td  class="table-column">{{$row['service']}}</td>
-							<td  class="table-column">{{$row['lot_number']}}</td>
-							<td  class="table-column">{{$row['wrc_number']}}</td>
-							<td  class="table-column"><a href="{{asset($row['file_path'].$row['filename'])}}" download="{{$row['filename']}}">Download</a></td>
-							<td  class="table-column">{{$row['uploaded_by']}}</td>
-							<td  class="table-column">{{date('d-M-Y h:i A', strtotime($row['created_at']))}}</td>
+							<td class="table-column text-center" colspan="6"> No files.</td>
 						</tr>
-					@endforeach
+					@endif
 				</tbody>
 			</table>
 		</div>
