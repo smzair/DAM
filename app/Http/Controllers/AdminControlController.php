@@ -185,5 +185,10 @@ class AdminControlController extends Controller
         return view('clients.ClientFileManager.Admin-Control-uploded-File-List')->with('data',$AdminControlUploadedFileListForClient);
     }
 
+    public function ClientAdminControlUploadedFileList(){
+        $data = AdminControlFileUpload::AdminControlUploadedFileListForClient();
+        return view('clients.ClientAssets.Admin-control-Uploaded-file-list-New')->with('data',$data);
+    }
+
 
 }
