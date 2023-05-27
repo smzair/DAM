@@ -30,11 +30,27 @@ class AdminControlFileUpload extends Model
     }
 
     public static function AdminControlUploadedFileListForClient(){
-        $user_id = Auth::id();
+        $parent_client_id = $user_id = Auth::id();
+		if (Auth::user()->dam_enable != 1) {
+			request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+			return redirect()->route('home');
+		}
+		$roledata = getUsersRole($user_id);
+		$role_name = "";
+
+		if ($roledata != null) {
+			$role_id = $roledata->role_id;
+			$role_name = $roledata->role_name;
+		}
         $brand_data = DB::table('brands_user')->where('user_id' , $user_id)->get()->pluck('brand_id')->toArray();
         
+        if ($role_name == 'Sub Client') {
+			$parent_user_data = DB::table('users')->where('id', $user_id)->first(['parent_client_id', 'id']);
+			$parent_client_id = $parent_user_data->parent_client_id;
+		}
+
         $UploadedFiles_query = AdminControlFileUpload::
-        whereIn('admin_control_file_uploads.brand_id', $brand_data)->
+        whereIn('admin_control_file_uploads.brand_id', $brand_data)->where('admin_control_file_uploads.user_id', $parent_client_id)->
         leftjoin('users as uploaded_user', 'uploaded_user.id' , '=' , 'admin_control_file_uploads.uploaded_by' )->
         select(
             'admin_control_file_uploads.*',

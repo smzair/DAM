@@ -699,6 +699,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/your-assets-Links-Lots', [User_Assets_links_controller::class, 'index'])->name('your_assets_Links');
     Route::get('/your-assets-Links-creative/{lot_id}', [User_Assets_links_controller::class, 'your_assets_creative_wrcs_links'])->name('your_assets_creative_wrcs_links');
     Route::get('/your-assets-Links-cataloging/{lot_id}', [User_Assets_links_controller::class, 'your_assets_cataloging_wrcs_links'])->name('your_assets_cataloging_wrcs_links');
+    Route::get('/Admin-control-Uploaded-file-list-New', [AdminControlController::class, 'ClientAdminControlUploadedFileList'])->name('ClientAdminControlUploadedFileList');
 
     
 });

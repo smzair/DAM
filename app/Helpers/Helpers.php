@@ -994,6 +994,12 @@ if(!function_exists('get_active_url_data')){
             if($routeName == 'Client_Users_list' || $routeName == "add_Client_User_New"){
                 $active_link = "manage_user";
             }
+        }else if(in_array($routeName, ['ClientAdminControlUploadedFileList'])){
+            $active_tab = 4;
+            $active_link = $routeName;
+            if($routeName == 'ClientAdminControlUploadedFileList'){
+                $active_link = "ClientAdminControlUploadedFileList";
+            }
         }
 
         $get_active_url_data = array(
