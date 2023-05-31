@@ -59,6 +59,7 @@ class ClientDashboardControllerNew extends Controller
         $creative_lots =  $creative_lots->where('creative_lots.user_id', $client_id);
       }
       $creative_lots =  $creative_lots->get()->toArray();
+      // dd($creative_lots);
       
       foreach ($creative_lots as $key => $val) {
         $LotTimelineData = CreatLots::LotTimeline($val['id']);
@@ -74,6 +75,7 @@ class ClientDashboardControllerNew extends Controller
           }
         }        
       }
+      // dd($creative_lots);
 
       /* response data to get catlog lot information with status start*/
       $lots_catalog = LotsCatalog::orderBy('lots_catalog.id', 'DESC')->whereIn('lots_catalog.brand_id', $brand_arr)->groupBy('lots_catalog.id');
@@ -101,6 +103,7 @@ class ClientDashboardControllerNew extends Controller
         }
 
       }
+      // dd($lots_catalog);
 
       /* response data to get editor lot information with status start*/
       $editor_lots = EditorLotModel::orderBy('editor_lots.id', 'DESC')
@@ -234,7 +237,7 @@ class ClientDashboardControllerNew extends Controller
     $LotTimelineData = LotsCatalog::LotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 
     $wrc_detail = $LotTimelineData['wrc_detail']; 
-    // dd($lot_detail, $wrc_detail);
+    // dd($wrc_detail);
     
     return view('clients.Timeline.catlogTimeline_New')->with('lot_detail', $lot_detail)->with('wrc_detail', $wrc_detail);
   }
@@ -266,6 +269,7 @@ class ClientDashboardControllerNew extends Controller
     $LotTimelineData = EditorLotModel::clientsEditorLotTimeline($id);
     $lot_detail = $LotTimelineData['lot_detail']; 
     $wrc_detail = $LotTimelineData['wrc_detail']; 
+    // dd($LotTimelineData);
     return view('clients.Timeline.editorLotTimeline_New')->with('lot_detail', $lot_detail)->with('wrc_detail', $wrc_detail);
   }
 

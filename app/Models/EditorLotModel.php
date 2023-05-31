@@ -108,9 +108,19 @@ class EditorLotModel extends Model
 
     // clients Editor Lot Timeline
     public static function clientsEditorLotTimeline($id){
-        $lot_info_with_wrc_query = EditorLotModel::where('editor_lots.id', $id)->leftJoin('editing_wrcs', 'editing_wrcs.lot_id', 'editor_lots.id');
-    
-        $lot_detail = $lot_info_with_wrc_query->select('editor_lots.id as lot_id','editor_lots.lot_number', 'editor_lots.created_at', DB::raw('sum(editing_wrcs.uploaded_img_qty) as inward_quantity'))->get()->toArray();
+        
+        $lot_detail = EditorLotModel::where('editor_lots.id', $id)->leftJoin('editing_wrcs', 'editing_wrcs.lot_id', 'editor_lots.id')->
+        leftjoin('editors_commercials' ,'editors_commercials.id' , 'editing_wrcs.commercial_id' )->
+        leftjoin('users' ,'users.id' , 'editor_lots.user_id' )->
+        leftjoin('brands' , 'brands.id' , 'editor_lots.brand_id')->select('editor_lots.id as lot_id','editor_lots.lot_number', 'editor_lots.created_at', 'users.Company as company_name',
+        'users.c_short as company_c_short',
+        'brands.name as brand_name',
+        'brands.short_name as brand_short_name', DB::raw('sum(editing_wrcs.uploaded_img_qty) as inward_quantity',))->get()->toArray();
+        
+        $lot_info_with_wrc_query = EditorLotModel::where('editing_wrcs.lot_id', $id)->leftJoin('editing_wrcs', 'editing_wrcs.lot_id', 'editor_lots.id')->
+        leftjoin('editors_commercials' ,'editors_commercials.id' , 'editing_wrcs.commercial_id' )->
+        leftjoin('users' ,'users.id' , 'editor_lots.user_id' )->
+        leftjoin('brands' , 'brands.id' , 'editor_lots.brand_id');
         
         $wrc_detail_query = $lot_info_with_wrc_query->
         leftJoin('editing_allocations', 'editing_allocations.wrc_id', 'editing_wrcs.id')->
@@ -127,7 +137,8 @@ class EditorLotModel extends Model
         'editor_lots.lot_number',
         'editor_lots.request_name',
         'editor_lots.created_at as lot_created_at',
-
+        'editors_commercials.type_of_service',
+        'editors_commercials.CommercialPerImage',
         'editing_allocations.id as allocation_id',
         'editing_allocations.created_at as allocated_created_at',
         'editing_allocations.updated_at as qc_done_at',
