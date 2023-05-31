@@ -103,7 +103,7 @@ class LotsCatalog extends Model
     $count_submission = 0;
     $MarketPlaces = getMarketPlace();
     $market_place_arr = array_column($MarketPlaces, 'marketPlace_name', 'id');
-
+    $modeOfDelivary_arr = modeOfDelivary();
     foreach ($wrc_detail as $key => $wrc_row) {
       $lot_detail[0]['wrc_created_at']  = $wrc_row['wrc_created_at'];
       $lot_detail[0]['allocated_created_at']  = $wrc_row['allocated_created_at'];
@@ -121,6 +121,10 @@ class LotsCatalog extends Model
         } 
       }
       $wrc_detail[$key]['market_place_array'] = $market_place_array;
+      $modeOfDelivary = $wrc_row['modeOfDelivary'];
+      if (array_key_exists($modeOfDelivary, $modeOfDelivary_arr)) {
+        $wrc_detail[$key]['modeOfDelivary'] = $modeOfDelivary_arr[$modeOfDelivary];
+      }
       // dd($market_place_arr ,$market_place_ids);
 
       $wrc_detail[$key]['qc_status'] = "Pending";

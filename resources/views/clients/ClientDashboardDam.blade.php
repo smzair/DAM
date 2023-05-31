@@ -19,14 +19,25 @@ $lot_status_is = $lot_status_val = "";
 
 <div class="row" style="margin-top:24px ;">
 	<div class=" col-12 d-flex justify-content-between">
-		<h4 class="headingF">
+		<h4 class="headingF ms-2">
 			Track Lots - {{$lot_status_val}}
 		</h4>
+		<div class="dropdown mt-2 pe-lg-3">
+          <a class="btn rounded-0 sort-by-button  dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Sort &nbsp;&nbsp;&nbsp;&nbsp;
+          </a>
+
+            <ul class="dropdown-menu dropdown-menu-show-sortby">
+                <li><a class="dropdown-item dropdown-menu-show-sortby-item" href="#">2022</a></li>
+                <li><a class="dropdown-item dropdown-menu-show-sortby-item" href="#">2023</a></li>
+                <li><a class="dropdown-item dropdown-menu-show-sortby-item" href="#"></a></li>
+            </ul>
+        </div>
 	</div>
 </div>
 <div class="row" style="margin-top: 12px;">
 	<div class="col-12">
-		<p class="underheadingF">
+		<p class="underheadingF ms-2">
 			Currently, you are seeing {{$lot_status_val}} lots.
 		</p>
 	</div>
@@ -164,36 +175,39 @@ $lot_status_is = $lot_status_val = "";
 			tabindex="0">
 			<div class="row box-container-responsive">
 				<div class="col-lg-12">
-					<p class="totallotF">Total Lots: {{ count($shoot_lots) }}</p>
+					<p class="totallotF ms-2">Total Lots: {{ count($shoot_lots) }}</p>
 				</div>
 				@foreach ($shoot_lots as $key => $val)
 				@php
 					$overall_progress = $val['overall_progress'];
 					$overall_progress = intval(str_replace('%', '', $overall_progress));
 				@endphp	
-				<div class="col-lg-3 box" style="background: #EBEBEB;">
+				<div class="col-lg-4 box">
 					<div class="row">
 						<div class="under-content-div">
 						    <div class="col-12">
-						        <p class="lot-date" style="font-weight: 400;font-size: 13px;margin-top:15px">Lot no</p>
+						      <p class="lotnoF">{{$val['brand_name']}}</p>
+						      <p class="lot-date" style="font-weight: 500;font-size: 14px;">
+								   <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M9.15545 7.9917H9.1607M9.15545 9.7417H9.1607M6.99711 7.9917H7.00295M6.99711 9.7417H7.00295M4.8382 7.9917H4.84403M4.8382 9.7417H4.84403" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+								 {{ date('d-m-Y' , strtotime($val['created_at']))}}
+							</p>
 						    </div>
-							<div class="col-12">
-								<h3 class="lotnoF">
-									Lot no: {{$val['lot_number']}}
-								</h3>
-							</div>
-							<div class="col-12">
-								<p class="lot-date" style="font-weight: 400;font-size: 13px;">
-									Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
+						    <div class="col-12">
+						        <p class="lot-no-heading">Lot no</p>
+						        <p class="status" style="font-size: 16px;">
+									 {{$val['lot_number']}}
 								</p>
-							</div>
+						    </div>
 							<div class="col-12 d-flex justify-content-between">
 								<div>
-									<p class="current-status" style="font-weight: 400;font-size: 13px;">
-										Current status :
+									<p class="current-status" style="font-weight: 500;font-size: 14px;">
+										Status
 									</p>
 									<p class="status"
-										style="font-weight: 400;font-size: 15px;margin-top: -8px; font-family: 'Poppins', sans-serif;">
+										style="font-weight: 400;font-size: 16px; font-family: 'Poppins', sans-serif;">
 										{{$val['lot_status']}}
 									</p>
 								</div>
@@ -201,7 +215,7 @@ $lot_status_is = $lot_status_val = "";
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a href={{route('clientsShootlotTimelineNew',$val['id'])}} class="btn border rounded-0 btn-secondary" type="button"
-									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
+									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif; padding: 19px !important;">
 									View full details
 								</a>
 							</div>
@@ -220,7 +234,7 @@ $lot_status_is = $lot_status_val = "";
 			tabindex="0">
 			<div class="row box-container-responsive">
 				<div class="col-lg-11">
-					<p class="totallotF">Total Lots: {{ count($creative_lots) }}</p>
+					<p class="totallotF ms-2">Total Lots: {{ count($creative_lots) }}</p>
 				</div>
 
 				@foreach ($creative_lots as $key => $val)
@@ -228,29 +242,34 @@ $lot_status_is = $lot_status_val = "";
 					$overall_progress = $val['overall_progress'];
 					$overall_progress = intval(str_replace('%', '', $overall_progress));
 				@endphp	
-					<div class="col-lg-3 box" style="background: #EBEBEB;">
+					<div class="col-lg-4 box">
 						<div class="row">
 							<div class="under-content-div">
-							    <div class="col-12">
-						           <p class="lot-date" style="font-weight: 400;font-size: 13px;margin-top:15px">Lot no</p>
-						        </div>
-								<div class="col-12">
-									<h3 class="lotnoF">
-										Lot No:- {{ $val['lot_number'] }}
-									</h3>
-								</div>
-								<div class="col-12">
-									<p class="lot-date" style="font-weight: 400;font-size: 13px;">
-										Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
+							  <div class="col-12">
+						          <p class="lotnoF">{{$val['brand_name']}}</p>
+						          	<p class="lot-date" style="font-weight: 500;font-size: 14px;">
+										<svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                         <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                         <path d="M9.15545 7.9917H9.1607M9.15545 9.7417H9.1607M6.99711 7.9917H7.00295M6.99711 9.7417H7.00295M4.8382 7.9917H4.84403M4.8382 9.7417H4.84403" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+										
+										 {{ date('d-m-Y' , strtotime($val['created_at']))}}
 									</p>
-								</div>
+						      </div>
+						      
+							    <div class="col-12">
+						           <p class="lot-no-heading" >Lot no</p>
+						            <h3 class="status" style="font-size: 16px;">
+										 {{ $val['lot_number'] }}
+									</h3>
+						        </div>
 								<div class="col-12 d-flex justify-content-between">
 									<div>
-										<p class="current-status" style="font-weight: 400;font-size: 13px;">
-											Current status:
+										<p class="current-status" style="font-weight: 500;font-size: 14px;">
+											Status
 										</p>
 										<p class="status"
-											style="font-weight: 400;font-size: 15px;margin-top: -8px; font-family: 'Poppins', sans-serif;">
+											style="font-weight: 400;font-size: 16px; font-family: 'Poppins', sans-serif;">
 											{{$val['lot_status']}}
 										</p>
 									</div>
@@ -258,7 +277,7 @@ $lot_status_is = $lot_status_val = "";
 								</div>
 								<div class="col-12 d-grid gap-2">
 									<a href={{route('clientsCreativelotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
-										style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
+										style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif; padding: 19px !important;">
 										View full details
 									</a>
 								</div>
@@ -277,36 +296,40 @@ $lot_status_is = $lot_status_val = "";
 			<div class="row box-container-responsive">
 
 				<div class="col-lg-11">
-					<p class="totallotF">Total Lots: {{ count($lots_catalog) }}</p>
+					<p class="totallotF ms-2">Total Lots: {{ count($lots_catalog) }}</p>
 				</div>
 				@foreach ($lots_catalog as $key => $val)
 				@php
 					$overall_progress = $val['overall_progress'];
 					$overall_progress = intval(str_replace('%', '', $overall_progress));
 				@endphp	
-				<div class="col-lg-3 box" style="background: #EBEBEB;">
+				<div class="col-lg-4 box">
 					<div class="row">
 						<div class="under-content-div">
 						    <div class="col-12">
-						        <p class="lot-date" style="font-weight: 400;font-size: 13px;margin-top:15px">Lot no</p>
-						    </div>
-							<div class="col-12">
-								<h3 class="lotnoF">
-									Lot no: {{ $val['lot_number'] }}
-								</h3>
-							</div>
-							<div class="col-12">
-								<p class="lot-date" style="font-weight: 400;font-size: 13px;">
-									Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
+						          <p class="lotnoF">{{$val['brand_name']}}</p>
+						          <p class="lot-date" style="font-weight: 500;font-size: 14px;">
+								   <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                         <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                         <path d="M9.15545 7.9917H9.1607M9.15545 9.7417H9.1607M6.99711 7.9917H7.00295M6.99711 9.7417H7.00295M4.8382 7.9917H4.84403M4.8382 9.7417H4.84403" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                                   </svg>
+								   
+								   {{ date('d-m-Y' , strtotime($val['created_at']))}}
 								</p>
-							</div>
-							<div class="col-12 d-flex justify-content-between">
+						    </div>
+						    <div class="col-12">
+						        <p class="lot-no-heading">Lot no</p>
+						        <h3 class="status" style="font-size: 16px;">
+									 {{ $val['lot_number'] }}
+								</h3>
+						    </div>
+							<div class="col-12 d-flex justify-content-between" >
 								<div>
-									<p class="current-status" style="font-weight: 400;font-size: 13px;">
-										Current status:
+									<p class="current-status" style="font-weight: 500;font-size: 14px;">
+										Status
 									</p>
 									<p class="status"
-										style="font-weight: 400;font-size: 15px;margin-top: -8px; font-family: 'Poppins', sans-serif;">
+										style="font-weight: 400;font-size: 16px; font-family: 'Poppins', sans-serif;">
 										{{$val['lot_status']}}
 									</p>
 								</div>
@@ -314,7 +337,7 @@ $lot_status_is = $lot_status_val = "";
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a href={{route('clientsCatloglotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
-									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
+									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif; padding: 19px !important;">
 									View full details
 								</a>
 							</div>
@@ -332,36 +355,41 @@ $lot_status_is = $lot_status_val = "";
 			tabindex="0">
 			<div class="row box-container-responsive">
 				<div class="col-12">
-					<p class="totallotF">Total Lots: {{ count($editor_lots) }}</p>
+					<p class="totallotF ms-2">Total Lots: {{ count($editor_lots) }}</p>
 				</div>
 				@foreach ($editor_lots as $key => $val)
 				@php
 						$overall_progress = $val['overall_progress'];
 						$overall_progress = intval(str_replace('%', '', $overall_progress));
 					@endphp	
-				<div class="col-lg-3 box" style="background: #EBEBEB;">
+				<div class="col-lg-4 box">
 					<div class="row">
 						<div class="under-content-div">
 						    <div class="col-12">
-						        <p class="lot-date" style="font-weight: 400;font-size: 13px;margin-top:15px">Lot no</p>
-						    </div>
-							<div class="col-12">
-								<h3 class="lotnoF">
-									Lot no: {{$val['lot_number']}}
-								</h3>
-							</div>
-							<div class="col-12">
-								<p class="lot-date" style="font-weight: 400;font-size: 13px;">
-									Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
+						          <p class="lotnoF">{{$val['brand_name']}}</p>
+						          <p class="lot-date" style="font-weight: 500;font-size: 14px;">
+									  <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                         <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                         <path d="M9.15545 7.9917H9.1607M9.15545 9.7417H9.1607M6.99711 7.9917H7.00295M6.99711 9.7417H7.00295M4.8382 7.9917H4.84403M4.8382 9.7417H4.84403" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                                      </svg>
+									
+									 {{ date('d-m-Y' , strtotime($val['created_at']))}}
 								</p>
-							</div>
+						    </div>
+						    
+						    <div class="col-12">
+						        <p class="lot-no-heading">Lot no</p>
+						        <h3 class="status" style="font-size: 16px;">
+									 {{$val['lot_number']}}
+								</h3>
+						    </div>
 							<div class="col-12 d-flex justify-content-between">
 								<div>
-									<p class="current-status" style="font-weight: 400;font-size: 13px;">
-										Current status:
+									<p class="current-status" style="font-weight: 500;font-size: 14px;">
+								     	Status
 									</p>
 									<p class="status"
-										style="font-weight: 400;font-size: 15px;margin-top: -8px; font-family: 'Poppins', sans-serif;">
+										style="font-weight: 400;font-size: 16px; font-family: 'Poppins', sans-serif;">
 										{{$val['lot_status']}}
 									</p>
 								</div>
@@ -370,7 +398,7 @@ $lot_status_is = $lot_status_val = "";
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a href={{route('clientsEditorLotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
-									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif;">
+									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif; padding: 19px !important;">
 									View full details
 								</a>
 							</div>

@@ -10,14 +10,35 @@ body {
     border-bottom: 0;
 }
 
+.nav-link:hover {
+    color: #FFFFFF;
+}
+
 a.btn.border.rounded-0.btn-secondary:hover {
    background: #FFF866;
    color: #0F0F0F;
+   border: 1px solid #1A1A1A !important;
+}
+
+a.btn.btn-light.border-0.back-btn:hover {
+    background: #FFF866 !important;
+    color: #0F0F0F !important;
+    font-weight: 500 !important;
+    font-size: 16px !important;
 }
 
 a.btn.border.rounded-0.view-img:hover {
     background: #FFF866;
     color: #0F0F0F;
+}
+
+.brand-name-under-track-table{
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 28px;
+    color: #FFFFFF;
+    margin-top:40px;
+    margin-bottom:0px;
 }
 
 /*svg color changes sidebar*/
@@ -39,6 +60,42 @@ a.btn.border.rounded-0.view-img:hover {
     border-radius: 0;
     box-shadow: none;
 }
+
+.sort-by-button{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #808080;
+    border: 1px solid #9F9F9F;
+}
+
+.dropdown-menu-show-sortby{
+    background: #1A1A1A;
+    box-shadow: 4px 16px 40px rgba(255, 255, 255, 0.06);
+    border-radius:0px;
+    border:2px solid #333333;
+}
+
+.dropdown-menu-show-sortby-item{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #B8B8B8;
+}
+
+ .download-img-raw-btn{
+      background: #0F0F0F !important;
+      color: #FFFFFF !important;
+      border:1px solid #9F9F9F!important;
+      border-radius:0px;
+      font-size: 16px;
+  }
+  
+  .download-img-raw-btn:hover{
+      background: #FFF866 !important;
+      color: #0F0F0F !important;
+  }
+
 
 /*svg color changes sidebar end*/
 
@@ -108,10 +165,12 @@ a.btn.border.rounded-0.view-img:hover {
 
 .current-status{
     color: #9F9F9F;
+    margin-bottom:0px;
 }
 
 .status{
     color: #FFFFFF;
+    margin-bottom:0px;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
@@ -161,7 +220,7 @@ a.btn.border.rounded-0.view-img:hover {
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;
-  gap: 8px;
+  gap: 24px;
 
 
   /* ODN Color/Neutral/50 */
@@ -176,12 +235,7 @@ a.btn.border.rounded-0.view-img:hover {
 }
 
 .box {
-  width: 340px !important;
-  height: auto;
-  margin-left: 21px !important;
-  margin-right: 8px !important;
-  margin-bottom: 12px !important;
-  margin-top: 12px !important;
+  padding:24px 24px;
 }
 
 
@@ -201,7 +255,7 @@ a.btn.border.rounded-0.view-img:hover {
 
   /* ODN Color/Neutral/100 */
 
- background: #1A1A1A !important;
+ /*background: #1A1A1A !important;*/
   border-radius: 0px !important;
   /* Inside auto layout */
   /*border: 0px solid #ffffff;*/
@@ -223,10 +277,10 @@ a.btn.border.rounded-0.view-img:hover {
 
 .lotnoF {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 16px !important;
   color: #FFFFFF;
   font-family: 'Poppins';
-  margin-top: -12px;
+  margin-bottom:0px;
 }
 
 .headingF {
@@ -269,10 +323,19 @@ a.btn.border.rounded-0.view-img:hover {
 }
 
 .lot-date {
-  font-weight: 400;
-  font-size: 12px;
+  font-weight: 500;
+  font-size: 14px;
   color: #9F9F9F;
-  margin-top: -8px;
+  line-height: 0;
+  margin-bottom:0px;
+  margin-top:8px;
+}
+
+.lot-no-heading{
+  font-weight: 500;
+  font-size: 14px;
+  color: #9F9F9F;
+  margin-bottom:0px;
 }
 
 .inward-qty {
@@ -309,10 +372,12 @@ a.btn.border.rounded-0.view-img:hover {
 
 .lot-no-sty {
   font-weight: 400;
-  font-size: 22px;
+  font-size: 16px;
   color: #FFFFFF;
   /* margin-left: 24px; */
   margin-top: 40px;
+  line-height:4;
+  margin-bottom:0px;
 }
 
 .lot-date-sty {
@@ -321,6 +386,7 @@ a.btn.border.rounded-0.view-img:hover {
   letter-spacing: 0.25px;
   color: #9F9F9F;
   margin-top: 12px;
+  margin-bottom:0px;
   /* margin-left: 24px; */
 }
 
@@ -367,7 +433,7 @@ a.btn.border.rounded-0.view-img:hover {
     font-size: 14px;
     text-align: left;
     color: #FFFFFF !important;
-    margin-top: 280px;
+    margin-top: 210px;
     border-radius: 0px;
     padding: 16px 32px;
     gap: 8px;
@@ -385,7 +451,7 @@ a.btn.border.rounded-0.view-img:hover {
 .download-invoice {
   font-weight: 500;
   font-size: 14px;
-  color: #9F9F9F;
+  color: #98A7DA;
   margin-top: 50px;
   /* margin-right: 24px; */
   text-decoration: none;
@@ -566,6 +632,7 @@ a.btn.border.rounded-0.view-img:hover {
   font-weight: 400;
   font-size: 12px;
   color: #808080;
+  cursor: pointer;
 }
 
 .heading-details {
@@ -717,6 +784,40 @@ button.btn.border.rounded-0.user-btn:hover {
 .verfication-modal-body{
     background: #0F0F0F;
 }
+
+.verifiy-text{
+    font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
+  color: #FFFFFF;
+  margin-top: 40px !important;
+}
+
+.code-sms-paragraph{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+   color: #808080;
+   margin-top:24px !important;
+}
+
+.acnt-verify-wrapper .verify-btn {
+    color: #0F0F0F !important;
+    width: 100%;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    background: #FFF866 !important;
+    outline: 0;
+    border-radius:0px;
+    padding:16px;
+}
+
+.verification-inputs{
+    background: #0F0F0F !important;
+    border: 1px solid #333333!important;
+}
+
 .back-btn {
   color: #FFFFFF;
   background: #FFFFFF;
@@ -805,7 +906,7 @@ button.btn.border.rounded-0.user-btn:hover {
   font-size: 14px;
   text-align: left;
   color: #808080;
-   margin-top: 280px; 
+   margin-top: 210px; 
   border-radius: 0px;
   align-self: flex-end;
   
@@ -901,6 +1002,20 @@ button.btn.border.rounded-0.user-btn:hover {
 .verification-div {
   padding: 5px;
   margin-left: 0px;
+  margin-top:24px;
+}
+
+.under-verification-div-tag{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #808080;
+}
+
+.under-verification-div-tag-head{
+    font-weight: 400;
+    font-size: 16px;
+    color: #FFFFFF;
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1325px) {
@@ -1010,6 +1125,7 @@ button.btn.border.rounded-0.user-btn:hover {
     color: #9F9F9F;
     /* margin-left: 24px; */
     margin-top: 40px;
+    margin-bottom: 0px;
   }
 
   .lot-date-sty {
@@ -1051,9 +1167,9 @@ button.btn.border.rounded-0.user-btn:hover {
   .last-button {
     font-weight: 500;
     font-size: 12px;
-  
   }
-
+  
+ 
   .log-out-button {
     margin-top: 0px !important;
   }
@@ -1070,7 +1186,6 @@ button.btn.border.rounded-0.user-btn:hover {
     align-items: center;
     padding: 16px;
     gap: 8px !important;
-
     width: 539px !important;
     height: 52px !important;
     font-weight: 500;
@@ -1122,22 +1237,20 @@ button.btn.border.rounded-0.user-btn:hover {
 
 
 div[role="progressbar"] {
-  --size: 3rem;
-  --fg: #9F9F9F;
-  --bg: #D1D1D1;
-  --pgPercentage: var(--value);
-  animation: growProgressBar 3s 1 forwards;
-  width: var(--size);
-  height: var(--size);
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(closest-side, #ebebeb 80%, transparent 0 99.9%, white 0),
-    conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: calc(var(--size) / 5);
-  color: var(--fg);
+    --size: 3rem;
+    --fg: #FFF866;
+    --bg: #333333;
+    --pgPercentage: var(--value);
+    animation: growProgressBar 3s 1 forwards;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 80%;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(closest-side, #1A1A1A 80%, transparent 0 101%, #0c0c0c 0), conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: calc(var(--size) / 5);
+    color: #FFF866;
 }
 
 div[role="progressbar"]::before {
