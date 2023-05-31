@@ -5,20 +5,6 @@
 
 @section('main_content')
 
-{{-- <style>
-	.card-div{
-		width: 100%;
-		padding: 5px 20px;
-		border: 2px solid rgba(203, 190, 190, 0.584);
-		box-shadow: rgb(170, 170, 170) 4px 4px 10px;
-		position: absolute;
-		border-radius: 4px;
-		background: rgb(246, 243, 243);
-		color: rgb(51, 51, 51);
-		z-index: 99999;
-	}
-</style> --}}
-
 <style>
 	.hoverpopover {
 		/* display: none; */
@@ -31,6 +17,15 @@
 		/* Set the width of the popover */
 		top: 328px;
 		left: 411px;
+	}
+
+	.hoverpopoverLinks {
+		position: absolute;
+		background: #0F0F0F;
+		border: 1px solid #333333;
+		box-shadow: 6px 24px 60px rgba(255, 255, 255, 0.06);
+		z-index: 1;
+		width: 220px !important;
 	}
 
 	/* CSS for the popover text */
@@ -116,16 +111,26 @@
 	</div>
 	<div class="col-12 d-flex justify-content-between">
 		<div>
-			<h2 class="lot-no-sty">Lot no: {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
-			<p class="lot-date-sty">Lot date: {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}</p>
+			<p class="brand-name-under-track-table">{{$lot_detail[0]['brand_name']}}</p>
+			<p class="lot-date-sty">
+			    <svg width="14" height="20" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.15538 7.9917H9.16064M9.15538 9.7417H9.16064M6.99705 7.9917H7.00288M6.99705 9.7417H7.00288M4.83813 7.9917H4.84397M4.83813 9.7417H4.84397" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                 </svg>
+			   
+			    {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
+			</p>
 		</div>
-		<p class="inward-sty">Inward Quantity: {{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</p>
 	</div>
 	<div class="col-12 mt-4">
+	    <div class="col-12 d-flex justify-content-between">  
+	    <h2 class="lot-no-sty"><span style="font-weight: 500;font-size: 14px;color: #9F9F9F;">Lot no:</span> {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
+	    <p class="inward-sty">Inward Quantity: {{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</p>
+	    </div>
 		<div class="row">
 			<div class="col-lg-1 mt-3      ">
-				<p style="font-weight: 500;font-size: 16px;color: #9F9F9F;">Status:</p>
-				<p style="font-weight: 700;font-size: 16px;color: #9F9F9F;">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'] : "20%"}}</p>
+				<p style="font-weight: 500;font-size: 14px;color: #9F9F9F;">Status:</p>
+				<p style="font-weight: 700;font-size: 22px;color: #FFF866;">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'] : "20%"}}</p>
 			</div>
 			<div class="col-lg-11">
 				<div class="progress-box">
@@ -256,50 +261,67 @@
 										</div>
 									</div>
 								</div>
-								{{-- <div class="card-div d-none" id="wrcInfo{{$wrc_index}}">
-									<div class="row">
-										<div class="col-sm-8">
-											{{$wrc_row['wrc_number']}}
-										</div>
-										<div class="col-sm-4" style="text-align: right">
-											Quantity
-										</div>
-										<div class="col-sm-8">
-											{{dateFormet_dmy($wrc_row['wrc_created_at'])}}
-										</div>
-										<div class="col-sm-4" style="text-align: right">
-											{{$wrc_row['wrc_order_qty']}}
-										</div>
-										<div class="col-sm-12">Project name</div>
-										<div class="col-sm-12"></div>
-									</div>
-								</div> --}}
+								
 							</td>
 							<td class="table-column">{{dateFormet_dmy($wrc_row['wrc_created_at'])}}</td>
 							<td class="table-column">{{$wrc_row['wrc_order_qty']}}</td>
 							<td class="table-column">{{$wrc_row['qc_status'] == 'Done' ? $wrc_row['cata_sum'] : '-'}}</td>
 							<td class="table-column table-invoice">{{$wrc_row['submission_status']}}</td>
 							<td class="table-column" style="position: relative;">
-								<button style="padding: 5px"onclick="showhideli({{$wrc_index}} , 'link')">View Links</button>
-								<div class="card-div d-none" id="wrcLink{{$wrc_index}}">
-									<div class="row">
-										@php
-											$final_links = $wrc_row['final_links'];
-											$final_links_arr = explode(",",$final_links);                                
-											$tot_final_links = count($final_links_arr);
-										@endphp
-										<div class="col-sm-12">
-											@if ($tot_final_links > 0 && $final_links != '' && $final_links != null )
-												@foreach ($final_links_arr as $final_links_data)
-													<p  class="m-0 p-0" style="white-space: pre-wrap; word-wrap: break-word;">
-														<a href="{{$final_links_data}}" target="_blank" rel="noopener noreferrer">{{$final_links_data}}</a>
-													</p>
+								<button class="download-img-raw-btn" style="padding: 5px" onmouseover="showPopover(this)" onmouseout="hidePopover(this)">View Links</button>
+								
+								<div class="hoverpopoverLinks" style="display: none;" id="wrcLink{{$wrc_index}}">
+									<div class="popover-text">
+										<div class="upper-head-style-for-track-hover">
+											<div class="upper-heading-wrc-details-table pt-2 pb-2">
+												<div class="col-12 d-flex justify-content-between ps-4 pe-4 pb-2">
+													<div class="">
+														<p class="track-lot-table-wrc-no mb-0">Final links</p>
+													</div>
+												</div>
+												@php
+													$final_links = $wrc_row['final_links'];
+													$final_links_arr = explode(",",$final_links);                                
+													$tot_final_links = count($final_links_arr);
+												@endphp
+												@if ($tot_final_links > 0 && $final_links != '' && $final_links != null )
+													@foreach ($final_links_arr as $final_links_data)
+														<div class="col-12 d-flex justify-content-between ps-4 pe-4">
+															<a href="{{$final_links_data}}" target="_blank" rel="noopener noreferrer">View</a>
+														</div>
+													@endforeach
+													@else
+														<div class="col-12 d-flex justify-content-between ps-4 pe-4">
+															<span class="m-0 p-0">No links available</span>
+														</div>
+												@endif				
+											</div>
+										</div>
+
+										{{-- <div class="lower-wrc-details-table mt-2">
+											<div class="col-12 d-flex justify-content-between ps-4 pe-4 pb-2">
+												<div>
+													<p class="track-lot-table-wrc-no mb-0">Creative links</p>
+												</div>
+											</div>
+											@php
+												$copy_links = $wrc_row['copy_links'];
+												$copy_links_arr = explode(",",$copy_links);                                
+												$tot_copy_links = count($copy_links_arr);
+											@endphp	
+											@if ($tot_copy_links > 0 && $copy_links != '' && $copy_links != null )
+												@foreach ($copy_links_arr as $copy_links_data)
+													<div class="col-12 d-flex justify-content-between ps-4 pe-4">
+														<a href="{{$copy_links_data}}" target="_blank" rel="noopener noreferrer">View</a>
+														<span class="m-0 p-0">No links available</span>
+													</div>
 												@endforeach
 											@else
-													<p class="m-0 p-0">No links available</p>
-											@endif
-
-										</div>
+												<div class="col-12 d-flex justify-content-between ps-4 pe-4">
+													<span class="m-0 p-0">No links available</span>
+												</div>
+											@endif								
+										</div> --}}
 									</div>
 								</div>
 
@@ -320,10 +342,17 @@
 		</div>
 		<div class="download-invoice">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<rect width="20" height="20" fill="#9F9F9F" />
-				<line x1="3.35355" y1="2.64645" x2="17.3536" y2="16.6464" stroke="#D1D1D1" />
-				<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
-			</svg>
+                <g clip-path="url(#clip0_1270_842)">
+                <path d="M9.99984 7.08317V12.0832M9.99984 18.3332C14.6023 18.3332 18.3332 14.6023 18.3332 9.99984C18.3332 5.39734 14.6023 1.6665 9.99984 1.6665C5.39734 1.6665 1.6665 5.39734 1.6665 9.99984C1.6665 14.6023 5.39734 18.3332 9.99984 18.3332Z" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" fill="#98A7DA"/>
+                <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_1270_842">
+                <rect width="20" height="20" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg>
 			&nbsp; <a href="#" class="download-invoice"> Download Invoices</a>
 		</div>
 	</div>

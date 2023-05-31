@@ -31,6 +31,61 @@
 		display: inline-block;
 	}
 
+	.upper-head-style-for-track-hover {
+		margin-top: -11px;
+		margin-left: -11px;
+		margin-right: -11px;
+		background: #1A1A1A;
+	}
+
+	.track-lot-table-wrc-no {
+		font-weight: 500;
+		font-size: 16px;
+		color: #FFFFFF;
+		letter-spacing: 0.15px;
+	}
+
+	.track-lot-table-wrc-date {
+		font-weight: 400;
+		font-size: 14px;
+		color: #808080;
+		line-height: 0.1;
+	}
+
+	.track-lot-table-inward-qty {
+		font-weight: 500;
+		font-size: 14px;
+		color: #808080;
+	}
+
+	.track-lot-table-inward-qty-no {
+		font-weight: 700;
+		font-size: 16px;
+		color: #FFFFFF;
+		line-height: 0.1;
+	}
+
+	.track-lot-table-typeof-service {
+		font-weight: 500;
+		font-size: 14px;
+		color: #808080;
+	}
+
+	.track-lot-table-marketplace-pri-mode {
+		font-weight: 400;
+		font-size: 16px;
+		color: #FFFFFF;
+		text-align: left;
+	}
+
+	.track-lot-adaptation-under {
+		font-weight: 400;
+		font-size: 16px;
+		color: #FFFFFF;
+		padding: 8px;
+		background: #333333;
+	}
+
 	.track-lot-table-marketplace-pri-mode{
 		word-wrap: break-word;
 	}
@@ -46,16 +101,25 @@
 	</div>
 	<div class="col-12 d-flex justify-content-between">
 		<div>
-			<h2 class="lot-no-sty">Lot no: {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
-			<p class="lot-date-sty">Lot date: {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}</p>
+			<p class="brand-name-under-track-table">{{$lot_detail[0]['brand_name']}}</p>
+			<p class="lot-date-sty">
+			    <svg width="14" height="20" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9.15538 7.9917H9.16064M9.15538 9.7417H9.16064M6.99705 7.9917H7.00288M6.99705 9.7417H7.00288M4.83813 7.9917H4.84397M4.83813 9.7417H4.84397" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+                 </svg>
+			     {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
+			</p>
 		</div>
-		<p class="inward-sty">Inward Quantity: {{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</p>
 	</div>
 	<div class="col-12 mt-4">
+		<div class="col-12 d-flex justify-content-between">  
+	    <h2 class="lot-no-sty"><span style="font-weight: 500;font-size: 14px;color: #9F9F9F;">Lot no:</span> {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
+	    <p class="inward-sty">Inward Quantity: {{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</p>
+		</div>
 		<div class="row">
-			<div class="col-lg-1 mt-3      ">
-				<p style="font-weight: 500;font-size: 16px;color: #9F9F9F;">Status:</p>
-				<p style="font-weight: 700;font-size: 16px;color: #9F9F9F;">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'] : "20%"}}</p>
+			<div class="col-lg-1 mt-3">
+				<p style="font-weight: 500;font-size: 14px;color: #9F9F9F;">Status:</p>
+				<p style="font-weight: 700;font-size: 22px;color: #FFF866;">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'] : "20%"}}</p>
 			</div>
 			<div class="col-lg-11">
 				<div class="progress-box">
@@ -136,7 +200,7 @@
 								<p style="cursor: pointer;" onmouseover="showPopover(this)" onmouseout="hidePopover(this)">
 									{{$wrc_row['wrc_number']}}
 								</p>
-								<div class="hoverpopover card-div" id="wrcInfo{{$wrc_index}}">
+								<div class="hoverpopover card-div" style="display: none" id="wrcInfo{{$wrc_index}}">
 									<div class="popover-text">
 
 										<div class="upper-head-style-for-track-hover">
@@ -209,15 +273,22 @@
 	</div>
 	<div class="col-12 d-flex justify-content-between last-btn-div">
 		<div class="d-flex last-button-mar">
-			<a href="{{route('download_Editing_Lot_edited', [base64_encode($lot_detail[0]['lot_id'])])}}" type="button" class="btn border btn-lg last-button">Download images</a>&nbsp;&nbsp;&nbsp;
-			<a href="{{route('download_Editing_Lot_raw', [base64_encode($lot_detail[0]['lot_id'])])}}" type="button" class="btn border btn-lg last-button">Download raw</a>
+			<a href="{{route('download_Editing_Lot_edited', [base64_encode($lot_detail[0]['lot_id'])])}}" type="button" class="btn border btn-lg last-button download-img-raw-btn">Download images</a>&nbsp;&nbsp;&nbsp;
+			<a href="{{route('download_Editing_Lot_raw', [base64_encode($lot_detail[0]['lot_id'])])}}" type="button" class="btn border btn-lg last-button download-img-raw-btn">Download raw</a>
 		</div>
 		<div class="download-invoice">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<rect width="20" height="20" fill="#9F9F9F" />
-				<line x1="3.35355" y1="2.64645" x2="17.3536" y2="16.6464" stroke="#D1D1D1" />
-				<line x1="2.64645" y1="16.6464" x2="16.6464" y2="2.64645" stroke="#D1D1D1" />
-			</svg>
+                <g clip-path="url(#clip0_1270_842)">
+                <path d="M9.99984 7.08317V12.0832M9.99984 18.3332C14.6023 18.3332 18.3332 14.6023 18.3332 9.99984C18.3332 5.39734 14.6023 1.6665 9.99984 1.6665C5.39734 1.6665 1.6665 5.39734 1.6665 9.99984C1.6665 14.6023 5.39734 18.3332 9.99984 18.3332Z" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" fill="#98A7DA"/>
+                <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_1270_842">
+                <rect width="20" height="20" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg>
 			&nbsp; <a href="#" class="download-invoice"> Download Invoices</a>
 		</div>
 	</div>
