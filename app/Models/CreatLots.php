@@ -29,11 +29,19 @@ class CreatLots extends Model
     $copy_writer_ids = DB::table('users')->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')->where([['roles.name', '=', 'CW']])->pluck('users.id')->toArray();
     $copy_writer_id_str = implode(',', $copy_writer_ids);
 
-    $lot_info_with_wrc = CreatLots::where('creative_lots.id', $id)->leftJoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id');
+    $lot_info_with_wrc = CreatLots::where('creative_lots.id', $id)->
+    leftJoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->
+    leftJoin('create_commercial', 'create_commercial.id', 'creative_wrc.commercial_id')->
+    leftjoin('users' ,'users.id' , 'creative_lots.user_id' )->
+    leftjoin('brands' , 'brands.id' , 'creative_lots.brand_id');
 
     // Lots Details with Wrc data
-    $lot_detail = $lot_info_with_wrc->select('creative_lots.id as lot_id', 'creative_lots.lot_number', 'creative_lots.created_at', DB::raw('SUM(CASE WHEN sku_required = 1 THEN sku_count ELSE order_qty END) AS inward_quantity'))->get()->toArray();
-
+    $lot_detail = $lot_info_with_wrc->
+    select('creative_lots.id as lot_id', 'creative_lots.lot_number', 'creative_lots.created_at','users.Company as company_name',
+    'users.c_short as company_c_short',
+    'brands.name as brand_name',
+    'brands.short_name as brand_short_name', DB::raw('SUM(CASE WHEN sku_required = 1 THEN sku_count ELSE order_qty END) AS inward_quantity'))->get()->toArray();
+    // dd($lot_detail);
     $wrc_info  = $wrc_detail_query = $lot_info_with_wrc->leftJoin('creative_allocation', 'creative_allocation.wrc_id', 'creative_wrc.id')->leftJoin('creative_time_hash', 'creative_time_hash.allocation_id', 'creative_allocation.id')->leftJoin('creative_upload_links', 'creative_upload_links.allocation_id', 'creative_allocation.id')->leftJoin(
       'creative_submissions',
       function ($join) {
@@ -51,6 +59,9 @@ class CreatLots extends Model
       DB::raw('CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END AS wrc_order_qty'),
       'creative_wrc.cw_qc_status',
       'creative_wrc.alloacte_to_copy_writer',
+      'create_commercial.project_name as commercial_project_name',
+      'create_commercial.kind_of_work',
+      'create_commercial.per_qty_value',
 
       'creative_lots.id as lot_id',
       'creative_lots.lot_number',

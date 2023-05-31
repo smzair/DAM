@@ -29,10 +29,17 @@ class LotsCatalog extends Model
     $user_detail = Auth::user(); // logged in user detail
     $roledata = getUsersRole($user_detail['id']);
 
-    $lot_info_with_wrc_query = LotsCatalog::where('lots_catalog.id', $id)->leftJoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id');
+    $lot_info_with_wrc_query = LotsCatalog::where('lots_catalog.id', $id)->
+    leftJoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id')->
+    leftJoin('create_commercial_catalog', 'create_commercial_catalog.id', 'catlog_wrc.commercial_id')->
+    leftjoin('users' ,'users.id' , 'lots_catalog.user_id' )->
+    leftjoin('brands' , 'brands.id' , 'lots_catalog.brand_id');
 
     // get data for lot generated details
-    $lot_detail = $lot_info_with_wrc_query->select('lots_catalog.id as lot_id', 'lots_catalog.lot_number', 'lots_catalog.created_at', DB::raw('sum(catlog_wrc.sku_qty) as inward_quantity'))->get()->toArray();
+    $lot_detail = $lot_info_with_wrc_query->select('lots_catalog.id as lot_id', 'lots_catalog.lot_number', 'lots_catalog.created_at','users.Company as company_name',
+    'users.c_short as company_c_short',
+    'brands.name as brand_name',
+    'brands.short_name as brand_short_name', DB::raw('sum(catlog_wrc.sku_qty) as inward_quantity'))->get()->toArray();
 
     // Lots Details with Wrc data
     $wrc_detail_query = $lot_info_with_wrc_query->leftJoin(
@@ -48,6 +55,10 @@ class LotsCatalog extends Model
         'catlog_wrc.created_at as wrc_created_at',
         'catlog_wrc.sku_qty',
         'catlog_wrc.sku_qty as wrc_order_qty',
+        'catlog_wrc.modeOfDelivary',
+        'create_commercial_catalog.type_of_service',
+        'create_commercial_catalog.market_place',
+        'create_commercial_catalog.CommercialSKU',
         'lots_catalog.id as lot_id',
         'lots_catalog.lot_number',
         'lots_catalog.created_at as lot_created_at',
@@ -90,6 +101,8 @@ class LotsCatalog extends Model
     $count_wrc = 0;
     $count_qc = 0;
     $count_submission = 0;
+    $MarketPlaces = getMarketPlace();
+    $market_place_arr = array_column($MarketPlaces, 'marketPlace_name', 'id');
 
     foreach ($wrc_detail as $key => $wrc_row) {
       $lot_detail[0]['wrc_created_at']  = $wrc_row['wrc_created_at'];
@@ -98,6 +111,17 @@ class LotsCatalog extends Model
       $copy_sum = $wrc_row['copy_sum'];
       $cata_sum = $wrc_row['cata_sum'];
       $sku_count = $wrc_row['wrc_order_qty'];
+      $market_place = $wrc_row['market_place'];
+      $market_place_ids = explode(',',$market_place);
+      $market_place_array = array();
+      foreach ($market_place_ids as $id) {
+        if (array_key_exists($id, $market_place_arr)) {
+          $market_place = $market_place_arr[$id];
+          array_push($market_place_array ,$market_place);
+        } 
+      }
+      $wrc_detail[$key]['market_place_array'] = $market_place_array;
+      // dd($market_place_arr ,$market_place_ids);
 
       $wrc_detail[$key]['qc_status'] = "Pending";
       $wrc_detail[$key]['submission_status'] = "Pending";

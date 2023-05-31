@@ -18,6 +18,94 @@
 		z-index: 99999;
 	}
 </style>
+
+
+<style>
+	.hoverpopover {
+		/* display: none; */
+		position: absolute;
+		background: #0F0F0F;
+		border: 1px solid #333333;
+		box-shadow: 6px 24px 60px rgba(255, 255, 255, 0.06);
+		z-index: 1;
+		width: 620px !important;
+		/* Set the width of the popover */
+		top: 328px;
+		left: 411px;
+	}
+
+	/* CSS for the popover text */
+	.popover-text {
+		padding: 10px;
+	}
+
+	/* CSS for the text element */
+
+	.text {
+		cursor: pointer;
+		position: relative;
+		display: inline-block;
+	}
+
+	.upper-head-style-for-track-hover {
+  margin-top: -11px;
+  margin-left: -11px;
+  margin-right: -11px;
+  background: #1A1A1A;
+}
+
+.track-lot-table-wrc-no {
+  font-weight: 500;
+  font-size: 16px;
+  color: #FFFFFF;
+  letter-spacing: 0.15px;
+}
+
+.track-lot-table-wrc-date {
+  font-weight: 400;
+  font-size: 14px;
+  color: #808080;
+  line-height: 0.1;
+}
+
+.track-lot-table-inward-qty {
+  font-weight: 500;
+  font-size: 14px;
+  color: #808080;
+}
+
+.track-lot-table-inward-qty-no {
+  font-weight: 700;
+  font-size: 16px;
+  color: #FFFFFF;
+  line-height: 0.1;
+}
+
+.track-lot-table-typeof-service {
+  font-weight: 500;
+  font-size: 14px;
+  color: #808080;
+}
+
+.track-lot-table-marketplace-pri-mode {
+  font-weight: 400;
+  font-size: 16px;
+  color: #FFFFFF;
+  text-align: left;
+}
+
+.track-lot-adaptation-under {
+  font-weight: 400;
+  font-size: 16px;
+  color: #FFFFFF;
+  padding: 8px;
+  background: #333333;
+}
+
+	.track-lot-table-marketplace-pri-mode{
+		word-wrap: break-word;
+	}
+</style>
 <div class="row">
 	<div class="col-12">
 		<a class="btn btn-light border-0 back-btn" href="{{ url()->previous() }}" role="button"><svg width="22" height="14"
@@ -114,11 +202,53 @@
 				@if ($lot_detail[0]['lot_status'] != $creative_and_cataloging_lot_statusArr[0])
 					@foreach ($wrc_detail as $wrc_index => $wrc_row)
 						<tr>
-							<td class="table-column" style="position: relative;">
-								<p style="cursor: pointer;" onclick="showhideli({{$wrc_index}} , 'wrc')">
+							<td class="table-column">
+								<p style="cursor: pointer;" onmouseover="showPopover(this)" onmouseout="hidePopover(this)">
 									{{$wrc_row['wrc_number']}}
 								</p>
-								<div class="card-div d-none" id="wrcInfo{{$wrc_index}}">
+
+								<div class="hoverpopover card-div" style="display: none" id="wrcInfo{{$wrc_index}}">
+									<div class="popover-text">
+
+										<div class="upper-head-style-for-track-hover">
+											<div class="upper-heading-wrc-details-table pt-4">
+												<div class="col-12 d-flex justify-content-between ps-4 pe-4">
+													<div>
+														<p class="track-lot-table-wrc-no">{{$wrc_row['wrc_number']}}</p>
+														<p class="track-lot-table-wrc-date text-start">{{dateFormet_dmy($wrc_row['wrc_created_at'])}}</p>
+													</div>
+													<div>
+														<p class="track-lot-table-inward-qty">Inward Quantity</p>
+														<p class="track-lot-table-inward-qty-no text-start">{{$wrc_row['wrc_order_qty']}}</p>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="lower-wrc-details-table mt-4">
+											<div class="col-12 d-flex justify-content-between ps-3 pe-3">
+												<div class="row">
+													<div class="col-12">
+														<p class="track-lot-table-typeof-service text-start">Project name</p>
+														<p class="track-lot-table-marketplace-pri-mode text-start">{{$wrc_row['project_name']}}</p>
+													</div>
+
+													<div class="col-6">
+														<p class="track-lot-table-typeof-service text-start">Commercial (Per SKU)</p>
+														<p class="track-lot-table-marketplace-pri-mode text-start">{{$wrc_row['per_qty_value']}}</p>
+													</div>
+													<div class="col-6">
+														<p class="track-lot-table-typeof-service text-start">Mode of delivery</p>
+														<p class="track-lot-table-marketplace-pri-mode text-start">-</p>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								{{-- <div class="card-div d-none" id="wrcInfo{{$wrc_index}}">
 									<div class="row">
 										<div class="col-sm-8">
 											{{$wrc_row['wrc_number']}}
@@ -135,7 +265,7 @@
 										<div class="col-sm-12">Project name</div>
 										<div class="col-sm-12"></div>
 									</div>
-								</div>
+								</div> --}}
 							</td>
 							<td class="table-column">{{dateFormet_dmy($wrc_row['wrc_created_at'])}}</td>
 							<td class="table-column">{{$wrc_row['wrc_order_qty']}}</td>
@@ -230,6 +360,19 @@
 			if(hasClass){
 				newElement.removeClass('d-none');
 			}
+		}
+	</script>
+		
+	<script>
+		// JavaScript functions to show and hide the popover
+		function showPopover(element) {
+			var popover = element.nextElementSibling;
+			popover.style.display = 'block';
+		}
+
+		function hidePopover(element) {
+			var popover = element.nextElementSibling;
+			popover.style.display = 'none';
 		}
 	</script>
 @endsection

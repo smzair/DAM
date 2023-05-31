@@ -83,7 +83,14 @@ class Lots extends Model {
     // clients Editor Lot Timeline
     public static function LotTimeline($id){
 
-        $lot_detail = Lots::where('lots.id',$id)->select('lots.id', 
+        $lot_detail = Lots::where('lots.id',$id)->
+        leftjoin('users' ,'users.id' , 'lots.user_id' )->
+        leftjoin('brands' , 'brands.id' , 'lots.brand_id')->
+        select('lots.id', 
+        'users.Company as company_name',
+        'users.c_short as company_c_short',
+        'brands.name as brand_name',
+        'brands.short_name as brand_short_name',
         'lots.lot_id as lot_number',
         'lots.created_at')->get()->toArray(); 
 
@@ -107,11 +114,21 @@ class Lots extends Model {
         
         $wrc_info = [];
         if($wrc_count > 0){            
-            $lot_info_with_wrc_query = Lots::where('lots.id',$id)->leftJoin('wrc', 'wrc.lot_id', 'lots.id');
+            $lot_info_with_wrc_query = Lots::where('lots.id',$id)->leftJoin('wrc', 'wrc.lot_id', 'lots.id')->leftJoin('commercial', 'commercial.id', 'wrc.commercial_id');
             $wrc_info = $lot_info_with_wrc_query->select(
                 'lots.id', 
                 'lots.lot_id as lot_number', 
                 'lots.created_at',
+                'commercial.product_category',
+                'commercial.type_of_shoot',
+                'commercial.type_of_clothing',
+                'commercial.gender',
+                'commercial.adaptation_1',
+                'commercial.adaptation_2',
+                'commercial.adaptation_3',
+                'commercial.adaptation_4',
+                'commercial.adaptation_5',
+                'commercial.commercial_value_per_sku',
                 'wrc.id as wrc_id',
                 'wrc.wrc_id as wrc_number',
                 'wrc.created_at as wrc_created_at',
@@ -119,6 +136,7 @@ class Lots extends Model {
             $tot_sku_count  = 0;
             $submited_wrc = 0;
             $wrc_id_arr = array();
+            // dd($wrc_info , $lot_detail);
             foreach($wrc_info as $key => $val){
                 $sku_info_query = Skus::where('wrc_id', $val['wrc_id'])->where('status', 1);
                 $sku_count = $sku_info_query->count();
@@ -128,9 +146,20 @@ class Lots extends Model {
                 $wrc_info[$key]['qc_status'] =  'pending';
                 $wrc_info[$key]['submission_status'] =  'pending';
 
+                $adaptation_arr = array();
+
+                for($i = 1; $i <= 5 ; $i++){
+                    $adaptation_key = 'adaptation_'.$i;
+                    if($val[$adaptation_key] != 'NA' && $val[$adaptation_key] != null){
+                        array_push($adaptation_arr , $val[$adaptation_key]);
+                    }
+                    unset($wrc_info[$key][$adaptation_key]);
+                }
+                $wrc_info[$key]['adaptation'] = $adaptation_arr;
+                
                 $lot_detail[0]['inward_quantity'] = $tot_sku_count;
                 $lot_detail[0]['wrc_created_at'] = $val['wrc_created_at'];
-                
+
                 if($tot_sku_count > 0){
                     $sku_info = $sku_info_query->pluck('id')->toarray();
 
