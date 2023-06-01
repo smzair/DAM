@@ -28,6 +28,7 @@ use App\Http\Controllers\ClientsControllers\ClientProfileController;
 use App\Http\Controllers\ClientsControllers\ClientSettingsController;
 use App\Http\Controllers\ClientsControllers\Files_controller;
 use App\Http\Controllers\ClientsControllers\User_Assets_Controller;
+use App\Http\Controllers\ClientsControllers\User_Assets_Favorites_controller;
 use App\Http\Controllers\ClientsControllers\User_Assets_links_controller;
 use App\Http\Controllers\ClientsControllers\User_Management_Controller_New;
 use App\Http\Controllers\ClientUserManagementController;
@@ -701,6 +702,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/your-assets-Links-cataloging/{lot_id}', [User_Assets_links_controller::class, 'your_assets_cataloging_wrcs_links'])->name('your_assets_cataloging_wrcs_links');
     Route::get('/Admin-control-Uploaded-file-list-New', [AdminControlController::class, 'ClientAdminControlUploadedFileList'])->name('ClientAdminControlUploadedFileList');
 
+    Route::get('/your-assets-Favorites', [User_Assets_Favorites_controller::class, 'index'])->name('your_assets_Favorites');
     
 });
 
