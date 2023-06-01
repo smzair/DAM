@@ -272,9 +272,9 @@
 							<td class="table-column">{{$wrc_row['qc_status'] == 'Done' ? $wrc_row['gd_sum'] : '-'}}</td>
 							<td class="table-column table-invoice">{{$wrc_row['submission_status']}}</td>
 							<td class="table-column">
-								<button class="download-img-raw-btn" style="padding: 5px" onmouseover="showPopover(this)" onmouseout="hidePopover(this)">View Links</button>
+								<button class="download-img-raw-btn" class="download-img-raw-btn" style="padding: 5px" onclick="showhideli('{{$wrc_index}}' , 'link' )">View Links</button>
 
-								<div class="hoverpopoverLinks" style="display: none;" id="wrcLink{{$wrc_index}}">
+								<div class="hoverpopoverLinks d-none" id="wrcLink{{$wrc_index}}">
 									<div class="popover-text">
 										<div class="upper-head-style-for-track-hover">
 											<div class="upper-heading-wrc-details-table pt-2 pb-2">
@@ -303,7 +303,7 @@
 										</div>
 
 										<div class="lower-wrc-details-table mt-2">
-											<div class="col-12 d-flex justify-content-between ps-4 pe-4 pb-2">
+											<div class="col-12 d-flex justify-content-between ps-2 pe-2 pb-2">
 												<div>
 													<p class="track-lot-table-wrc-no mb-0">Creative links</p>
 												</div>
@@ -315,13 +315,13 @@
 											@endphp	
 											@if ($tot_copy_links > 0 && $copy_links != '' && $copy_links != null )
 												@foreach ($copy_links_arr as $copy_links_data)
-													<div class="col-12 d-flex justify-content-between ps-4 pe-4">
+													<div class="col-12 d-flex justify-content-between ps-2 pe-2">
 														<a href="{{$copy_links_data}}" target="_blank" rel="noopener noreferrer">View</a>
 														<span class="m-0 p-0">No links available</span>
 													</div>
 												@endforeach
 											@else
-												<div class="col-12 d-flex justify-content-between ps-4 pe-4">
+												<div class="col-12 d-flex justify-content-between ps-2 pe-2">
 													<span class="m-0 p-0">No links available</span>
 												</div>
 											@endif								
@@ -373,12 +373,10 @@
 @section('js_scripts')
 	<script>
 		function showhideli(val , click_event = 'link'){
-			let newElement = $('#wrcInfo'+val);
-			if(click_event == 'link'){
-				newElement = $('#wrcLink'+val);
-			}
+			
+			newElement = $('#wrcLink'+val);
 			let hasClass = newElement.hasClass('d-none')
-			let myElement = $('.card-div');
+			let myElement = $('.hoverpopoverLinks');
 			myElement.addClass('d-none');
 			if(hasClass){
 				newElement.removeClass('d-none');

@@ -189,6 +189,7 @@
 					<th scope="col" class="table-heading-sty">Uploading & QC</th>
 					<th scope="col" class="table-heading-sty">Submissions</th>
 					<th scope="col" class="table-heading-sty">Invoice</th>
+					<th scope="col" class="table-heading-sty" style="text-align: center;">Images</th>
 					
 				</tr>
 			</thead>
@@ -260,6 +261,13 @@
 							<td class="table-column">{{$wrc_row['qc_status'] == 'Done' ? $wrc_row['cata_sum'] : '-'}}</td>
 							<td class="table-column table-invoice">{{$wrc_row['submission_status']}}</td>
 							<td class="table-column">-</td>
+							<td class="table-column" style="text-align: center;">
+								<a href="{{route('download_Editing_lot_Edited_wrc' , [ base64_encode($wrc_row['wrc_id']) ] )}}">
+									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M15.0583 12.0253L9.99998 17.0837L4.94165 12.0253M9.99998 2.91699V16.942" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+								</a>
+							</td>
 						</tr>
 					@endforeach
 				@else
