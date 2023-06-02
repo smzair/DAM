@@ -12,9 +12,9 @@
 	$user_role = $roledata != null ? $roledata->role_name : '-';
 @endphp
 
-<div class="row" style="margin-top:24px ;">
+<div class="row">
 	<div class=" col-12 d-flex justify-content-between">
-		<h4 class="headingF ps-2">
+		<h4 class="headingF">
 			Your assets - Files
 		</h4>
 		{{-- <button class="btn btn-none border dropdown-toggle btn-outline-none" type="button" id="dropdownMenuButton4"
@@ -29,7 +29,7 @@
 </div>
 <div class="row" style="margin-top: 12px;">
 	<div class="col-12">
-		<p class="underheadingF ps-2">
+		<p class="underheadingF">
 			Currently, you are seeing Your Assets Files.
 		</p>
 	</div>
@@ -95,7 +95,7 @@
 					tabindex="0">
 					<div class="row box-container-responsive">
 						<div class="col-12">
-							<p class="totallotF ps-2">Total Lots: {{count($shoot_lots)}}</p>
+							<p class="totallotF">Total Lots: {{count($shoot_lots)}}</p>
 						</div>
 						@foreach ($shoot_lots as $key => $row)
 							@php
@@ -107,21 +107,18 @@
 									$shoot_image_src1 = $file_path;
 								}
 							@endphp
-							<div class="col-lg-3 col-md-6 box border-0" style="background: #0F0F0F; position: relative;">
+							<div class="col-lg-4 col-md-6 box border-0" style="background: #0F0F0F; position: relative;">
 								<div class="row">
 									<div class="under-content-div">
 										<div class="col-12">
 											<a href="{{route('your_assets_shoot_wrcs' , [$row['lot_id']])}}">
-												<img  style="width: 100%; height: auto;"  src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid">
+												<img  style="width: 100%; min-height: 393px;"  src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid">
 											</a>
 										</div>
-										<div class="col-12 d-flex">
-											<h3 class="lotnoF">
-												<span>Lot no : <span id="lot_number{{$row['lot_id'].$key}}">{{$row['lot_number']}}</span>&nbsp;&nbsp;
-												<span type="button" class="btn border-0 rounded-circle myButton">
-													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F;line-height: 2.5;">
-													</i>
-												</span>
+										<div class="col-12 d-flex justify-content-between">
+											<div>
+												    <p class="lot-no-heading">Lot no</p>
+												    <span class="your-asset-lotno-underbox" id="lot_number{{$row['lot_id'].$key}}">{{$row['lot_number']}}</span>&nbsp;&nbsp;
 												<div class="myPopover" style="display: none;">
 													@php
 															$download_route_is = "download_Shoot_Lot_edited";
@@ -189,10 +186,14 @@
 													    Add Tag
 													 </a>
 												</div>
-											</h3>
+											</div>
+											<div type="button" class="btn border-0 rounded-circle myButton">
+													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F;line-height: 2.5;">
+													</i>
+											</div>
 										</div>
 										<div class="col-12">
-											<p class="lot-date">Lot date : {{dateFormet_dmy($row['lot_created_at'])}}</p>
+										     <span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}}</span>
 										</div>
 										<div class="col-12 d-flex justify-content-between">
 											<div>
@@ -236,22 +237,19 @@
 									$shoot_image_src1 = $file_path;
 								}
 							@endphp
-							<div class="col-lg-3 col-md-6 box border-0" style="background: #0F0F0F; position: relative;">
+							<div class="col-lg-4 col-md-6 box border-0" style="background: #0F0F0F; position: relative;">
 								<div class="row">
 									<div class="under-content-div">
 										<div class="col-12">
 											<a href="{{route('your_assets_editing_wrcs' , [$row['lot_id']])}}">
-												<img  style="width: 100%; height: auto;"  src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid">
+												<img  style="width: 100%; min-height: 393px;"  src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid">
 											</a>
 										</div>
-										<div class="col-12 d-flex">
-											<h3 class="lotnoF">
-												<span>Lot no : <span id="lot_number{{$row['lot_id'].$key}}">{{$row['lot_number']}}</span>
-												<span type="button" class="btn border-0 rounded-circle myButton">
-													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F; line-height: 2.5;">
-													</i>
-												</span>
-												<div class="myPopover" style="display: none;">
+										<div class="col-12 d-flex d-flex justify-content-between">
+										    <div>
+												<p class="lot-no-heading">Lot no</p>
+												<span class="your-asset-lotno-underbox" id="lot_number{{$row['lot_id'].$key}}">{{$row['lot_number']}}</span>
+												 <div class="myPopover" style="display: none;">
 													@php
 															$download_route_is = "download_Editing_Lot_edited";
 															$lot_id_is = base64_encode($row['lot_id']);
@@ -272,10 +270,15 @@
 													<a href="javascript:void(0)">Favorite</a>
 													<a href="javascript:void(0)">Add Tag</a>
 												</div>
-											</h3>
+											</div>
+												 
+												<div type="button" class="btn border-0 rounded-circle myButton">
+													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F; line-height: 2.5;">
+													</i>
+												</div>
 										</div>
 										<div class="col-12">
-											<p class="lot-date">Lot date : {{dateFormet_dmy($row['lot_created_at'])}}</p>
+											 <span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date"> {{dateFormet_dmy($row['lot_created_at'])}} </span>
 										</div>
 										<div class="col-12 d-flex justify-content-between">
 											<div>

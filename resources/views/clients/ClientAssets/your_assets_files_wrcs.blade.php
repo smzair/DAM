@@ -24,7 +24,7 @@ if($service_is == 'Shoot'){
 
 @if (count($wrc_data) > 0)
 	<div class="row">
-		<div class="col-12 ms-2" style="margin-top: 24px;">
+		<div class="col-12">
 			<nav
 				style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);"
 				aria-label="breadcrumb">
@@ -34,8 +34,8 @@ if($service_is == 'Shoot'){
 				</ol>
 			</nav>
 		</div>
-		<div class="col-12 ms-2" style="margin-top: 40px;">
-			<p style="font-weight: 500;font-size: 12px;color: #FFFFFF;">Total WRC : {{count($wrc_data)}}</p>
+		<div class="col-12" style="margin-top: 40px;">
+			<p style="font-weight: 500;font-size: 12px;color: #FFFFFF; margin-bottom: 0px">Total WRC : {{count($wrc_data)}}</p>
 		</div>
 	</div>
 	{{-- WRCs details --}}
@@ -48,21 +48,31 @@ if($service_is == 'Shoot'){
 					$shoot_image_src = $file_path;
 				}
 			@endphp
-			<div class="col-lg-3 col-md-6 mt-2">
+			<div class="col-lg-3 col-md-6" style="margin-bottom: 24px;">
 				<div class="accordion" id="accordionExample{{$key}}">
 					<div class="card z-depth-0 bordered">
 						<div class="card-header card-header-style" id="headingOne{{$key}}"background: #D1D1D1;>
-							<h5 class="mb-0">
-								<a href="{{route($route_is , [ base64_encode($row['wrc_id'])])}}" class="btn " type="button" data-toggle="collapse" data-target="#collapseOne{{$key}}"
-									aria-expanded="true" aria-controls="collapseOne{{$key}}">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<div class="mb-0 row">
+							    <div class="col-2 mt-2" style="padding-left: 23px;">
+							        
+									<svg width="24" height="24" viewBox="0 0 24 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M23.5736 12.3803C23.5408 12.5339 23.4784 12.6827 23.4168 12.8259C23.2952 13.1075 23.1696 13.3875 23.0336 13.6619C22.0168 15.7147 20.9848 17.7603 19.9704 19.8147C19.5744 20.6171 18.952 20.9955 18.0568 20.9947C12.7056 20.9875 7.35441 20.9899 2.00321 20.9923C1.42481 20.9923 0.829615 20.7443 0.560015 20.2035C0.411215 19.9051 0.562415 19.6427 0.692815 19.3707C0.796815 19.1531 0.900815 18.9363 1.00561 18.7187C1.21361 18.2843 1.42161 17.8499 1.62961 17.4147C1.83761 16.9803 2.04561 16.5451 2.25281 16.1107C2.46081 15.6755 2.66801 15.2411 2.87521 14.8059C3.08241 14.3707 3.28961 13.9355 3.49681 13.5003C3.70401 13.0651 3.91041 12.6299 4.11761 12.1947C4.22641 11.9659 4.33441 11.7379 4.44321 11.5091C4.83441 10.6851 5.47601 10.2755 6.37921 10.2747C11.444 10.2723 16.508 10.2707 21.5728 10.2763C22.0592 10.2763 22.5512 10.3955 22.924 10.7219C23.2064 10.9691 23.4224 11.3003 23.5304 11.6603C23.5848 11.8419 23.6104 12.0323 23.5976 12.2219C23.5944 12.2755 23.5864 12.3283 23.5744 12.3803H23.5736Z" fill="white"/>
 										<path d="M0.408809 16.8165C0.400009 16.8045 0.399209 16.7869 0.400809 16.7725C0.406409 16.7125 0.405609 16.6525 0.405609 16.5925C0.405609 12.5933 0.405609 8.59327 0.405609 4.59407C0.405609 3.57887 0.973609 3.01087 1.99041 3.01007C3.71841 3.01007 5.44641 3.01567 7.17441 3.00687C7.79921 3.00367 8.27521 3.24207 8.62961 3.75887C9.03921 4.35567 9.47361 4.93567 9.88721 5.53007C9.98721 5.67407 10.092 5.73247 10.272 5.73167C12.9736 5.72527 15.6752 5.72847 18.3768 5.72607C18.9816 5.72607 19.4728 5.93727 19.764 6.48687C19.856 6.66047 19.9128 6.87167 19.92 7.06767C19.9408 7.65567 19.9288 8.24447 19.9288 8.83327C19.9288 8.86927 19.9192 8.90527 19.9112 8.96287C19.8 8.96287 19.696 8.96287 19.592 8.96287C14.936 8.96287 10.28 8.96447 5.62401 8.96127C4.91121 8.96127 4.30321 9.17247 3.86801 9.76287C3.76641 9.90127 3.68801 10.0589 3.61361 10.2149C2.59281 12.3493 1.57441 14.4845 0.555209 16.6197C0.540009 16.6517 0.524009 16.6829 0.508809 16.7149C0.494409 16.7445 0.483209 16.7789 0.464009 16.8069C0.452009 16.8245 0.425609 16.8389 0.408809 16.8173V16.8165Z" fill="white"/>
 									</svg>&nbsp;&nbsp;
-									<span class="file-wrc-lot-no" id="lot_number{{$row['wrc_id'].$key}}">{{$row['wrc_number']}}</span>                 
-								</a>
-
-								<span class="test btn myButton" role="button" style="float: right"> <i class="bi bi-three-dots-vertical" style="font-size:20px;color: #808080;"></i></span>
+								             
+							
+							    </div>
+							    <div class="col-8 mt-2" >
+							        <a  class="file-wrc-lot-no" id="lot_number{{$row['wrc_id'].$key}}" href="{{route($route_is , [ base64_encode($row['wrc_id'])])}}" class="btn " type="button" data-toggle="collapse" data-target="#collapseOne{{$key}}"
+									aria-expanded="true" aria-controls="collapseOne{{$key}}">
+											{{$row['wrc_number']}}
+										</a>       
+							        	
+							    </div>
+							    <div class="col-2">
+							        	<span class="test btn myButton" role="button" style="float: right"> <i class="bi bi-three-dots-vertical" style="font-size:20px;color: #808080;"></i></span>
+							    </div>
+							    
 								
 								<div class="myPopover" style="display: none;">
 									@php
@@ -144,7 +154,7 @@ if($service_is == 'Shoot'){
 										Add Tag
 									</a>
 								</div>
-							</h5>
+							</div>
 						</div>
 						
 						<div id="collapseOne{{$key}}" class="collapse show" aria-labelledby="headingOne{{$key}}" data-parent="#">
