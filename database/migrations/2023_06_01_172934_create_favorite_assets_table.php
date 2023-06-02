@@ -21,6 +21,9 @@ class CreateFavoriteAssetsTable extends Migration
             $table->integer('wrc_id')->unsigned();
             $table->enum('service',['SHOOT','EDITING','CATALOGING','CREATIVE'])->default('SHOOT');
             $table->string('module');
+            $table->enum('type', ['Raw', 'Edited'])->nullable();
+            $table->integer('other_data_id')->nullable()->comment('commercial_id or sku id');
+            $table->json('other_data')->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->timestamps();
         });
