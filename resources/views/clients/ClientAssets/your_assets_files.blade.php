@@ -10,6 +10,7 @@
 	$file_manager_permissions = json_decode($user->file_manager_permissions,true);
 	$roledata = getUsersRole($user->id);
 	$user_role = $roledata != null ? $roledata->role_name : '-';
+	// dd($shoot_lots,$editor_lots);
 @endphp
 
 <div class="row">
@@ -165,7 +166,23 @@
 													    Share
 													 </a>
 													<p class="d-none" id="url_{{$key}}">{{route($download_route_is , [ 'id' =>  $row['lot_id'] ] )}}</p>
-													<a href="javascript:void(0)">
+
+													@php
+														$service = base64_encode('SHOOT');
+														$module = base64_encode('lot');
+														$lot_id_is = base64_encode($row['lot_id']);
+														$data_array = array(
+															'user_id' => '', 
+															'brand_id' => '', 
+															'lot_id' => $lot_id_is, 
+															'wrc_id' => '',
+															'service' => $service, 
+															'module' => $module 
+														);
+
+														$data_obj = json_encode($data_array,true);
+													@endphp
+													<a href="javascript:void(0)" onclick="add_to_favorites({{$data_obj}})">
 													   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 											<g clip-path="url(#clip0_1069_2524)">
                 											<path d="M11.4416 2.9252L12.9083 5.85853C13.1083 6.26686 13.6416 6.65853 14.0916 6.73353L16.7499 7.1752C18.4499 7.45853 18.8499 8.69186 17.6249 9.90853L15.5583 11.9752C15.2083 12.3252 15.0166 13.0002 15.1249 13.4835L15.7166 16.0419C16.1833 18.0669 15.1083 18.8502 13.3166 17.7919L10.8249 16.3169C10.3749 16.0502 9.63326 16.0502 9.17492 16.3169L6.68326 17.7919C4.89992 18.8502 3.81659 18.0585 4.28326 16.0419L4.87492 13.4835C4.98326 13.0002 4.79159 12.3252 4.44159 11.9752L2.37492 9.90853C1.15826 8.69186 1.54992 7.45853 3.24992 7.1752L5.90826 6.73353C6.34992 6.65853 6.88326 6.26686 7.08326 5.85853L8.54992 2.9252C9.34992 1.33353 10.6499 1.33353 11.4416 2.9252Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -177,7 +194,7 @@
                 											</defs>
                 										</svg>&nbsp;
                 										Add to favorites
-													 </a>
+													</a>
 													<a href="javascript:void(0)">
 													    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     											<path d="M3.47507 12.7498L7.25007 16.5248C7.99675 17.2693 9.00816 17.6873 10.0626 17.6873C11.117 17.6873 12.1284 17.2693 12.8751 16.5248L16.5334 12.8664C17.2779 12.1198 17.696 11.1084 17.696 10.0539C17.696 8.99952 17.2779 7.98812 16.5334 7.24144L12.7501 3.47477C12.3589 3.08252 11.8898 2.77675 11.373 2.57722C10.8562 2.37769 10.3033 2.28884 9.75007 2.31644L5.58341 2.51644C3.91674 2.59144 2.59174 3.91644 2.50841 5.57477L2.30841 9.74144C2.25841 10.8664 2.68341 11.9581 3.47507 12.7498Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -267,7 +284,24 @@
 													<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$row['lot_id'].$key}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >Share</a>
 													<p class="d-none" id="url_{{$row['lot_id'].$key}}">{{route($download_route_is , [ 'id' =>  base64_encode($row['lot_id']) ] )}}</p>
 													
-													<a href="javascript:void(0)">Favorite</a>
+													@php
+														$service = base64_encode('EDITING');
+														$module = base64_encode('lot');
+														$lot_id_is = base64_encode($row['lot_id']);
+														$data_array = array(
+															'user_id' => '', 
+															'brand_id' => '', 
+															'lot_id' => $lot_id_is, 
+															'wrc_id' => '',
+															'service' => $service, 
+															'module' => $module 
+														);
+
+														$data_obj = json_encode($data_array,true);
+													@endphp
+													<a href="javascript:void(0)" onclick="add_to_favorites({{$data_obj}})">
+														Add to favorites
+													</a>
 													<a href="javascript:void(0)">Add Tag</a>
 												</div>
 											</div>
@@ -315,4 +349,24 @@
 @endsection
 
 @section('js_scripts')
+
+<script>
+	async function add_to_favorites(data_obj = ''){
+		console.log('data_obj => ', data_obj);
+		await $.ajax({
+			url: "{{ url('your-assets-Favorites')}}",
+			type: "POST",
+			dataType: 'json',
+			data: {
+				data : data_obj,
+				_token: '{{ csrf_token() }}'
+			},
+			success: function(res) {
+				alert(res.massage)
+				console.log('res => ', res )
+			}
+		});
+	}
+</script>
+
 @endsection

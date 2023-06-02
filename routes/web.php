@@ -703,6 +703,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/Admin-control-Uploaded-file-list-New', [AdminControlController::class, 'ClientAdminControlUploadedFileList'])->name('ClientAdminControlUploadedFileList');
 
     Route::get('/your-assets-Favorites', [User_Assets_Favorites_controller::class, 'index'])->name('your_assets_Favorites');
+    Route::POST('/your-assets-Favorites', [User_Assets_Favorites_controller::class, 'save'])->name('Save_your_assets_Favorites');
     
 });
 
