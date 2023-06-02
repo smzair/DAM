@@ -17,12 +17,12 @@ $lot_status_is = $lot_status_val = "";
 	} 
 ?>
 
-<div class="row" style="margin-top:24px ;">
+<div class="row">
 	<div class=" col-12 d-flex justify-content-between">
-		<h4 class="headingF ms-2">
+		<h4 class="headingF">
 			Track Lots - {{$lot_status_val}}
 		</h4>
-		<div class="dropdown mt-2 pe-lg-3">
+		<div class="dropdown mt-2">
           <a class="btn rounded-0 sort-by-button  dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Sort &nbsp;&nbsp;&nbsp;&nbsp;
           </a>
@@ -37,7 +37,7 @@ $lot_status_is = $lot_status_val = "";
 </div>
 <div class="row" style="margin-top: 12px;">
 	<div class="col-12">
-		<p class="underheadingF ms-2">
+		<p class="underheadingF">
 			Currently, you are seeing {{$lot_status_val}} lots.
 		</p>
 	</div>
@@ -50,10 +50,10 @@ $lot_status_is = $lot_status_val = "";
 	$user_role = $roledata != null ? $roledata->role_name : '-';
 @endphp
 
-<div class="row" style="margin-top: 40px; padding:0px 24px;">
+<div class="row" style="margin-top: 40px;padding: 0px 11px;">
     <!--<div class="">-->
 	 <div class="col-lg-12 d-flex mt-3 services-modal">
-		<ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist" style="padding:16px 16px 0px 16px">
+		<ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist" style="padding:16px 0px 0px 0px">
 			{{-----lot status Shoot start---}}
 			@if (count($shoot_lots) > 0 &&  ($user_role == 'Client' || $your_assets_permissions['shoot']))
 			<li class="nav-item" role="presentation">
@@ -175,7 +175,7 @@ $lot_status_is = $lot_status_val = "";
 			tabindex="0">
 			<div class="row box-container-responsive">
 				<div class="col-lg-12">
-					<p class="totallotF ms-2">Total Lots: {{ count($shoot_lots) }}</p>
+					<p class="totallotF">Total Lots: {{ count($shoot_lots) }}</p>
 				</div>
 				@foreach ($shoot_lots as $key => $val)
 				@php
@@ -215,7 +215,7 @@ $lot_status_is = $lot_status_val = "";
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a href={{route('clientsShootlotTimelineNew',$val['id'])}} class="btn border rounded-0 btn-secondary" type="button"
-									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif; padding: 19px !important;">
+									style="font-weight: 500;font-size: 16px; font-family: 'Poppins', sans-serif; padding: 16px !important;">
 									View full details
 								</a>
 							</div>
@@ -277,7 +277,7 @@ $lot_status_is = $lot_status_val = "";
 								</div>
 								<div class="col-12 d-grid gap-2">
 									<a href={{route('clientsCreativelotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
-										style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif; padding: 19px !important;">
+										style="font-weight: 500;font-size: 16px; font-family: 'Poppins', sans-serif; padding: 16px !important;">
 										View full details
 									</a>
 								</div>
@@ -337,7 +337,7 @@ $lot_status_is = $lot_status_val = "";
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a href={{route('clientsCatloglotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
-									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif; padding: 19px !important;">
+									style="font-weight: 500;font-size: 16px; font-family: 'Poppins', sans-serif; padding: 16px !important;">
 									View full details
 								</a>
 							</div>
@@ -398,7 +398,7 @@ $lot_status_is = $lot_status_val = "";
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a href={{route('clientsEditorLotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
-									style="font-weight: 500;font-size: 15px;margin-top: 30px; font-family: 'Poppins', sans-serif; padding: 19px !important;">
+									style="font-weight: 500;font-size: 16px; font-family: 'Poppins', sans-serif; padding: 16px !important;">
 									View full details
 								</a>
 							</div>
