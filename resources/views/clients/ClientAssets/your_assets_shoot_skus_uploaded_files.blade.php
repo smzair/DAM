@@ -111,6 +111,55 @@
 							Share
 						</a>
 						<p class="d-none" id="url_{{$key}}">{{ asset($img_src)}}</p>
+
+						@php
+							$service = base64_encode('SHOOT');
+							$module = base64_encode('image');
+							$lot_id_is = base64_encode($row['lot_id']);
+							$wrc_id_is = base64_encode($row['wrc_id']);
+							$sku_code_is = base64_encode($row['sku_code']);
+							$sku_id_is = base64_encode($row['sku_id']);
+							$data_array = array(
+								'user_id' => '', 
+								'brand_id' => '', 
+								'lot_id' => $lot_id_is, 
+								'wrc_id' => $wrc_id_is,
+								'service' => $service, 
+								'module' => $module,
+								'other_data' => [
+									'sku_id' => $sku_id_is,
+									'sku_code' => $sku_code_is,
+									'filename' => $row['filename'],
+									'type' => ucfirst($service_is)
+								]
+							);
+
+							$data_obj = json_encode($data_array,true);
+						@endphp
+						{{-- Add to Favorites --}}
+						<a href="javascript:void(0)" onclick="add_to_favorites({{$data_obj}})">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<g clip-path="url(#clip0_1043_2500)">
+									<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								</g>
+								<defs>
+									<clipPath id="clip0_1043_2500">
+										<rect width="20" height="20" fill="white"/>
+									</clipPath>
+								</defs>
+							</svg>
+							&nbsp;&nbsp;
+							Add to favorites
+						</a>
+						{{-- Add Tag --}}
+						<a href="javascript:void(0)">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M3.47507 12.7507L7.25007 16.5257C7.99675 17.2702 9.00816 17.6883 10.0626 17.6883C11.117 17.6883 12.1284 17.2702 12.8751 16.5257L16.5334 12.8674C17.2779 12.1207 17.696 11.1093 17.696 10.0549C17.696 9.0005 17.2779 7.98909 16.5334 7.24241L12.7501 3.47575C12.3589 3.0835 11.8898 2.77772 11.373 2.57819C10.8562 2.37866 10.3033 2.28982 9.75007 2.31741L5.58341 2.51741C3.91674 2.59241 2.59174 3.91741 2.50841 5.57575L2.30841 9.74241C2.25841 10.8674 2.68341 11.9591 3.47507 12.7507Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								<path d="M7.91659 10.0007C8.46912 10.0007 8.99902 9.78116 9.38972 9.39046C9.78043 8.99976 9.99992 8.46985 9.99992 7.91732C9.99992 7.36478 9.78043 6.83488 9.38972 6.44418C8.99902 6.05348 8.46912 5.83398 7.91659 5.83398C7.36405 5.83398 6.83415 6.05348 6.44345 6.44418C6.05275 6.83488 5.83325 7.36478 5.83325 7.91732C5.83325 8.46985 6.05275 8.99976 6.44345 9.39046C6.83415 9.78116 7.36405 10.0007 7.91659 10.0007Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+							</svg>
+							&nbsp;&nbsp;
+							Add Tag
+						</a>
 					</div>
 				</div>
 			</div>
@@ -143,6 +192,25 @@
 			$("#lot_date").html(lot_date)
 			$("#lot_number").html(lot_number)
 			$("#file_size").html(file_size)
+		}
+	</script>
+
+	<script>
+		async function add_to_favorites(data_obj = ''){
+			console.log('data_obj => ', data_obj);
+			await $.ajax({
+				url: "{{ url('your-assets-Favorites')}}",
+				type: "POST",
+				dataType: 'json',
+				data: {
+					data : data_obj,
+					_token: '{{ csrf_token() }}'
+				},
+				success: function(res) {
+					alert(res.massage)
+					console.log('res => ', res )
+				}
+			});
 		}
 	</script>
 @endsection

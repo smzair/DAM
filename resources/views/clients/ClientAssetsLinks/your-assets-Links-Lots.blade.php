@@ -136,8 +136,24 @@
 
 													</div>
 													
+													@php
+														$service = base64_encode('CREATIVE');
+														$module = base64_encode('lot');
+														$lot_id_is = base64_encode($row['id']);
+														$data_array = array(
+															'user_id' => base64_encode($row['user_id']), 
+															'brand_id' => base64_encode($row['brand_id']), 
+															'lot_id' => $lot_id_is, 
+															'wrc_id' => '',
+															'service' => $service, 
+															'module' => $module 
+														);
+
+														$data_obj = json_encode($data_array,true);
+													@endphp
 													
-													<a href="javascript:void(0)">
+													<a href="javascript:void(0)" onclick="add_to_favorites({{$data_obj}})">
+													
 														<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 															<g clip-path="url(#clip0_1069_2524)">
 															<path d="M11.4416 2.9252L12.9083 5.85853C13.1083 6.26686 13.6416 6.65853 14.0916 6.73353L16.7499 7.1752C18.4499 7.45853 18.8499 8.69186 17.6249 9.90853L15.5583 11.9752C15.2083 12.3252 15.0166 13.0002 15.1249 13.4835L15.7166 16.0419C16.1833 18.0669 15.1083 18.8502 13.3166 17.7919L10.8249 16.3169C10.3749 16.0502 9.63326 16.0502 9.17492 16.3169L6.68326 17.7919C4.89992 18.8502 3.81659 18.0585 4.28326 16.0419L4.87492 13.4835C4.98326 13.0002 4.79159 12.3252 4.44159 11.9752L2.37492 9.90853C1.15826 8.69186 1.54992 7.45853 3.24992 7.1752L5.90826 6.73353C6.34992 6.65853 6.88326 6.26686 7.08326 5.85853L8.54992 2.9252C9.34992 1.33353 10.6499 1.33353 11.4416 2.9252Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -240,8 +256,23 @@
 														<span id="wrc_numbers{{$row['brand_id'].$key}}">{{ $wrc_numbers }}</span>
 													</div>
 													
+													@php
+														$service = base64_encode('CATALOGING');
+														$module = base64_encode('lot');
+														$lot_id_is = base64_encode($row['id']);
+														$data_array = array(
+															'user_id' => base64_encode($row['user_id']), 
+															'brand_id' => base64_encode($row['brand_id']), 
+															'lot_id' => $lot_id_is, 
+															'wrc_id' => '',
+															'service' => $service, 
+															'module' => $module 
+														);
+
+														$data_obj = json_encode($data_array,true);
+													@endphp
+													<a href="javascript:void(0)" onclick="add_to_favorites({{$data_obj}})">
 													
-													<a href="javascript:void(0)">
 														<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 															<g clip-path="url(#clip0_1069_2524)">
 															<path d="M11.4416 2.9252L12.9083 5.85853C13.1083 6.26686 13.6416 6.65853 14.0916 6.73353L16.7499 7.1752C18.4499 7.45853 18.8499 8.69186 17.6249 9.90853L15.5583 11.9752C15.2083 12.3252 15.0166 13.0002 15.1249 13.4835L15.7166 16.0419C16.1833 18.0669 15.1083 18.8502 13.3166 17.7919L10.8249 16.3169C10.3749 16.0502 9.63326 16.0502 9.17492 16.3169L6.68326 17.7919C4.89992 18.8502 3.81659 18.0585 4.28326 16.0419L4.87492 13.4835C4.98326 13.0002 4.79159 12.3252 4.44159 11.9752L2.37492 9.90853C1.15826 8.69186 1.54992 7.45853 3.24992 7.1752L5.90826 6.73353C6.34992 6.65853 6.88326 6.26686 7.08326 5.85853L8.54992 2.9252C9.34992 1.33353 10.6499 1.33353 11.4416 2.9252Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -418,4 +449,24 @@
 		
 	}
 </script>
+{{-- add to favorites Script --}}
+	<script>
+		async function add_to_favorites(data_obj = ''){
+			console.log('data_obj => ', data_obj);
+			await $.ajax({
+				url: "{{ url('your-assets-Favorites')}}",
+				type: "POST",
+				dataType: 'json',
+				data: {
+					data : data_obj,
+					_token: '{{ csrf_token() }}'
+				},
+				success: function(res) {
+					alert(res.massage)
+					console.log('res => ', res )
+				}
+			});
+		}
+	</script>
+
 @endsection
