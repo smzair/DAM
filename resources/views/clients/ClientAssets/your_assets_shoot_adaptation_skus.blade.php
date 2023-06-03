@@ -101,7 +101,32 @@
 								<p class="d-none" id="url_{{$key}}">
 									{{route($download_route_is , [ 'wrc_id' => base64_encode($raw_skus[0]['wrc_id']) , 'adaptation' => base64_encode($raw_skus[0]['adaptation']) , 'sku_id' => base64_encode($row['sku_code']) ] )}}
 								</p>
-								<a href="#">
+
+								@php
+									$service = base64_encode('SHOOT');
+									$module = base64_encode('sku');
+									$lot_id_is = base64_encode($row['lot_id']);
+									$wrc_id_is = base64_encode($row['wrc_id']);
+									$sku_code_is = base64_encode($row['sku_code']);
+									$data_array = array(
+										'user_id' => '', 
+										'brand_id' => '', 
+										'lot_id' => $lot_id_is, 
+										'wrc_id' => $wrc_id_is,
+										'service' => $service, 
+										'module' => $module,
+										'other_data' => [
+											'sku_id' => $sku_id_is,
+											'sku_code' => $sku_code_is,
+											'adaptation' => $row['adaptation'],
+											'type' => 'Edited'
+										]
+									);
+
+									$data_obj = json_encode($data_array,true);
+								@endphp
+
+									<a href="javascript:void(0)" onclick="add_to_favorites({{$data_obj}})">
 									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<g clip-path="url(#clip0_1043_2500)">
 											<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -129,4 +154,25 @@
 		Sku codes not found
 	</div>
 @endif
+@endsection
+
+@section('js_scripts')
+	<script>
+		async function add_to_favorites(data_obj = ''){
+			console.log('data_obj => ', data_obj);
+			await $.ajax({
+				url: "{{ url('your-assets-Favorites')}}",
+				type: "POST",
+				dataType: 'json',
+				data: {
+					data : data_obj,
+					_token: '{{ csrf_token() }}'
+				},
+				success: function(res) {
+					alert(res.massage)
+					console.log('res => ', res )
+				}
+			});
+		}
+	</script>
 @endsection
