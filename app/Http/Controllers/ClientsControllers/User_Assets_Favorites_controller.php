@@ -15,7 +15,64 @@ class User_Assets_Favorites_controller extends Controller
 {
   public function index()
   {
-    return view('clients.ClientAssetsLinks.your-assets-Favorites');
+
+    $data_array = array();
+    $lot_array = array();
+    $images_array = array();
+    $service_array = ['SHOOT', 'EDITING','CATALOGING','CREATIVE'];
+
+    // Getting Images
+    $editing_images = FavoriteAsset::editing_images($service_array);
+    $images_array['editing_images'] = $editing_images;
+    // $shoot_images = FavoriteAsset::shoot_images($service_array);
+    
+    // Getting Lots,
+    // $files_lots = FavoriteAsset::where(function ($query) use ($service_array) {
+    //   $query->where('service',$service_array[0])
+    //   ->orWhere('service',$service_array[1]);
+    // })->where('module', 'lot')->get()->toArray();
+
+    $files_lots = FavoriteAsset::where('module', 'lot')->get()->toArray();
+    foreach ($files_lots as $key => $row) {
+      $lots_data_is = array();
+      $service = $row['service'];
+      $lot_id = $row['lot_id'];
+      if($service == 'SHOOT'){
+        $shoot_lots_data = FavoriteAsset::shoot_lots($lot_id);
+        if(count($shoot_lots_data) > 0){
+          $lots_data_is = $shoot_lots_data[0];
+        }
+      }elseif($service == 'EDITING'){
+        $editor_lots_data = FavoriteAsset::editing_lots($lot_id);
+        if(count($editor_lots_data) > 0){
+          $lots_data_is = $editor_lots_data[0];
+        }
+      }elseif($service == 'CATALOGING'){
+        $catalog_lots_data = FavoriteAsset::cataloging_lots($lot_id);
+        if(count($catalog_lots_data) > 0){
+          $lots_data_is = $catalog_lots_data[0];
+        }
+      }elseif($service == 'CREATIVE'){
+        $creative_lots_data = FavoriteAsset::creative_lots($lot_id);
+        if(count($creative_lots_data) > 0){
+          $lots_data_is = $creative_lots_data[0];
+        }
+      }
+      $files_lots[$key]['lots_data_is'] = $lots_data_is;
+    }
+    $data_array['files_lots'] = $files_lots;
+
+    // Getting Skus
+    $skus_data = FavoriteAsset::where('module', 'sku')->get()->toArray();
+    foreach ($skus_data as $key => $skus_row) {
+      $type = $skus_row['type'];
+      $sku_id = $skus_row['other_data_id'];
+      $other_data = json_decode($skus_row['other_data'], true);
+      $raw_skus_data = FavoriteAsset::sku_data($sku_id , $other_data, $skus_row ); 
+      $skus_data[$key]['raw_skus_data']  = $raw_skus_data;
+    }
+    $data_array['skus_data'] = $skus_data;
+    return view('clients.ClientAssetsLinks.your-assets-Favorites')->with('images_array', $images_array)->with('data_array', $data_array);
   }
 
   public function save(Request $request)

@@ -198,7 +198,7 @@
 										style="width: 100%;">File</a>
 									<a href="{{route('your_assets_Links')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'your_assets_Links' ? 'active' : ''}}"
 										style="width: 100%;">Links</a>
-									<a href="javascript:void(0)" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button"
+									<a href="{{route('your_assets_Favorites')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'your_assets_Favorites' ? 'active' : ''}}"
 										style="width: 100%;">Favorites</a>
 								</div>
 							</div>
