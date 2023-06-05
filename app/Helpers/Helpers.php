@@ -935,6 +935,7 @@ if(!function_exists('your_assets_routes')){
             'your_assets_editing_wrcs',
             'your_assets_files_editing_uploaded_images',
             'your_assets_Links',
+            'your_assets_Favorites',
             'your_assets_creative_wrcs_links',
             'your_assets_cataloging_wrcs_links'
         ];
@@ -982,6 +983,9 @@ if(!function_exists('get_active_url_data')){
                 case 'your_assets_creative_wrcs_links':
                 case 'your_assets_cataloging_wrcs_links':
                     $active_link = "your_assets_Links";
+                    break;
+                case 'your_assets_Favorites':
+                    $active_link = "your_assets_Favorites";
                     break;
 
                 default:
