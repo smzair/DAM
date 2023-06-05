@@ -102,18 +102,15 @@
 								// dd($row);
 							@endphp
 
-							<div class="col-lg-3 col-md-6 box border-0" style="position: relative;">
+							<div class="col-lg-4 col-md-6 box border-0" style="position: relative;">
 								<div class="row">
 									<div class="under-content-div">
 										
-										<div class="col-12 d-flex">
-											<h3 class="lotnoF">
-												<span>Lot no : <span id="lot_number{{$row['id'].$key}}">{{$row['lot_number']}}</span>
-												<span type="button" class="btn border-0 rounded-circle myButton">
-													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F;line-height: 2.5;">
-													</i>
-												</span>
-												<div class="myPopover" style="display: none;">
+										<div class="col-12 d-flex d-flex justify-content-between">
+										    <div>
+												<p class="lot-no-heading">Lot no</p>
+												<span class="your-asset-lotno-underbox" id="lot_number{{$row['id'].$key}}">{{$row['lot_number']}}</span>
+												 <div class="myPopover" style="display: none;">
 													<a href="javascript:void(0)" onclick="toggleSidebar(); set_links_date_time('{{$row['id'].$key}}') ">
 														<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 															<g clip-path="url(#clip0_1069_2515)">
@@ -174,10 +171,14 @@
 														Add Tag
 													</a>
 												</div>
-											</h3>
+											</div>
+											<div type="button" class="btn border-0 rounded-circle myButton">
+													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F;line-height: 2.5;">
+													</i>
+											</div>
 										</div>
 										<div class="col-12">
-											<p class="lot-date">Lot date : {{dateFormet_dmy($row['lot_created_at'])}}</p>
+											<span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}} </span>
 										</div>
 										<div class="col-12 d-flex justify-content-between">
 											<div>
@@ -223,18 +224,15 @@
 								$wrc_numbers = ($row['wrc_numbers'] != '' && $row['wrc_numbers'] != null) ? $row['wrc_numbers'] : 'Wrc not generated'; 
 								// dd($row);
 							@endphp
-							<div class="col-lg-3 col-md-6 box border-0" style="position: relative;">
+							<div class="col-lg-4 col-md-6 box border-0" style="position: relative;">
 								<div class="row">
 									<div class="under-content-div">
 										
-										<div class="col-12 d-flex">
-											<h3 class="lotnoF">
-												<span>Lot no : <span id="lot_number{{$row['brand_id'].$key}}">{{$row['lot_number']}}</span>
-												<span type="button" class="btn border-0 rounded-circle myButton">
-													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F; line-height: 2.5;">
-													</i>
-												</span>
-												<div class="myPopover" style="display: none;">
+										<div class="col-12 d-flex d-flex justify-content-between">
+											     <div>
+											    	<p class="lot-no-heading">Lot no</p>
+											    	<span class="your-asset-lotno-underbox" id="lot_number{{$row['brand_id'].$key}}">{{$row['lot_number']}}</span>
+												 	<div class="myPopover" style="display: none;">
 													<a href="javascript:void(0)" onclick="toggleSidebar(); set_links_date_time('{{$row['brand_id'].$key}}')">
 														<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 															<g clip-path="url(#clip0_1069_2515)">
@@ -293,10 +291,14 @@
 														Add Tag
 													</a>
 												</div>
-											</h3>
+										    	</div>
+												<div type="button" class="btn border-0 rounded-circle myButton">
+													<i class="bi bi-three-dots-vertical" style="color: #9F9F9F; line-height: 2.5;">
+													</i>
+												</div>
 										</div>
 										<div class="col-12">
-											<p class="lot-date">Lot date : {{dateFormet_dmy($row['lot_created_at'])}}</p>
+											<span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}}</span>
 										</div>
 										<div class="col-12 d-flex justify-content-between">
 											<div>
