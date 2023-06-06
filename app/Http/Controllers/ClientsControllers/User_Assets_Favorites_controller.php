@@ -17,20 +17,15 @@ class User_Assets_Favorites_controller extends Controller
   {
 
     $data_array = array();
-    $lot_array = array();
     $images_array = array();
     $service_array = ['SHOOT', 'EDITING','CATALOGING','CREATIVE'];
 
     // Getting Images
     $editing_images = FavoriteAsset::editing_images($service_array);
     $images_array['editing_images'] = $editing_images;
-    // $shoot_images = FavoriteAsset::shoot_images($service_array);
-    
-    // Getting Lots,
-    // $files_lots = FavoriteAsset::where(function ($query) use ($service_array) {
-    //   $query->where('service',$service_array[0])
-    //   ->orWhere('service',$service_array[1]);
-    // })->where('module', 'lot')->get()->toArray();
+    $shoot_images = FavoriteAsset::shoot_images($service_array);
+    $images_array['shoot_images'] = $shoot_images;
+
 
     $files_lots = FavoriteAsset::where('module', 'lot')->get()->toArray();
     foreach ($files_lots as $key => $row) {
@@ -72,9 +67,19 @@ class User_Assets_Favorites_controller extends Controller
       $skus_data[$key]['raw_skus_data']  = $raw_skus_data;
     }
     $data_array['skus_data'] = $skus_data;
+
+    // Getting Wrc Data. 
+    $wrc_data = FavoriteAsset::where('module', 'wrc')->get()->toArray();
+    foreach ($wrc_data as $wrc_key => $wrc_row) {
+      $wrc_data_is = FavoriteAsset::wrc_data($wrc_row);
+      $wrc_data[$wrc_key]['wrc_data'] = $wrc_data_is[0];
+    }
+    $data_array['wrc_data'] = $wrc_data;
+
     return view('clients.ClientAssetsLinks.your-assets-Favorites')->with('images_array', $images_array)->with('data_array', $data_array);
   }
 
+  // Function for save files as as favorites
   public function save(Request $request)
   {
     $user_id = '';
@@ -265,10 +270,12 @@ class User_Assets_Favorites_controller extends Controller
           $type = $other_data_is['type'];
 
           $sku_id = base64_decode($other_data_is['sku_id']);
+          $image_id = base64_decode($other_data_is['image_id']);
           $sku_code = base64_decode($other_data_is['sku_code']);
           
           $other_data_arr = $other_data_is;
           $other_data_arr['sku_id'] = $sku_id;
+          $other_data_arr['image_id'] = $image_id;
           $other_data_arr['sku_code'] = $sku_code;
 
           $other_data = json_encode($other_data_arr);
@@ -284,7 +291,7 @@ class User_Assets_Favorites_controller extends Controller
                 'wrc_id' => $lot_data['wrc_id'],
                 'module' => $module,
                 'type' => $type,
-                'other_data_id' => $sku_id,
+                'other_data_id' => $image_id,
                 'other_data' => $other_data,
                 'created_by' => $createdBy,
               ]
