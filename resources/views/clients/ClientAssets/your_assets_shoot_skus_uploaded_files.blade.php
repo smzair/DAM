@@ -119,6 +119,7 @@
 							$wrc_id_is = base64_encode($row['wrc_id']);
 							$sku_code_is = base64_encode($row['sku_code']);
 							$sku_id_is = base64_encode($row['sku_id']);
+							$image_id = base64_encode($row['image_id']);
 							$data_array = array(
 								'user_id' => '', 
 								'brand_id' => '', 
@@ -128,6 +129,7 @@
 								'module' => $module,
 								'other_data' => [
 									'sku_id' => $sku_id_is,
+									'image_id' => $image_id,
 									'sku_code' => $sku_code_is,
 									'filename' => $row['filename'],
 									'type' => ucfirst($service_is)

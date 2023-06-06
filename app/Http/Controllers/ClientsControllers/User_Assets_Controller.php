@@ -446,7 +446,7 @@ class User_Assets_Controller extends Controller
       'sku.wrc_id',
       'sku.created_at as sku_created_at',
       'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number',
-      'editor_submission.id as submission_id',
+      'editor_submission.id as image_id',
       'editor_submission.adaptation' ,
       'editor_submission.filename' ,
       'editor_submission.created_at as created_at'
@@ -477,10 +477,12 @@ class User_Assets_Controller extends Controller
       'sku.wrc_id',
       'sku.created_at as sku_created_at',
       'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number',
+      'uploadraw.id as image_id',
       'uploadraw.filename' ,
       'uploadraw.created_at as created_at'
     );
     $raw_skus_files = $sku_info_query->get()->toArray();
+    // dd($raw_skus_files);
     return view('clients.ClientAssets.your_assets_shoot_skus_uploaded_files')->with('raw_skus_files' , $raw_skus_files)->with('service_is', 'raw');
   }
 

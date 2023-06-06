@@ -10,6 +10,7 @@ use App\Models\CreatLots;
 use App\Models\EditingRawImgUpload;
 use App\Models\EditingSubmission;
 use App\Models\EditingUploadedImages;
+use App\Models\EditingWrc;
 use App\Models\EditorLotModel;
 use App\Models\editorSubmission;
 use App\Models\Lots;
@@ -17,6 +18,7 @@ use App\Models\LotsCatalog;
 use App\Models\Skus;
 use App\Models\submissions;
 use App\Models\uploadraw;
+use App\Models\Wrc;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -30,24 +32,71 @@ class FavoriteAsset extends Model
   // Shoot Images
   public static function shoot_images($service_array)
   {
-    $shoot_images = FavoriteAsset::where('service', $service_array[0])->where('module', 'image')->get()->toArray();
-    if ($shoot_images > 0) {
-      $shoot_raw_query = FavoriteAsset::where('service', $service_array[0])->where('module', 'image')->where('type', 'Raw');
-      $shoot_raw_images_count = $shoot_raw_query->count();
-      if ($shoot_raw_images_count > 0) {
-        $shoot_raw_images = $shoot_raw_query->get()->toArray();
-
-        foreach ($shoot_raw_images as $img_key => $row) {
-          $sku_id = $row['other_data_id'];
-          $other_data = json_decode($row['other_data'], true);
-          $filename = $other_data['filename'];
-
-          $upload_raw = uploadraw::where('sku_id', $sku_id)->where('filename', $filename)->get()->toArray();
-          dd($row, $other_data, $upload_raw);
+    $shoot_raw_query = FavoriteAsset::where('service', $service_array[0])->where('module', 'image');
+    $shoot_raw_images_count = $shoot_raw_query->count();
+    $shoot_images = $shoot_raw_query->get()->toArray();   
+    if ($shoot_raw_images_count > 0) {
+      foreach ($shoot_images as $img_key => $image_row) {
+        $type = $image_row['type'];
+        $other_data_id = $image_row['other_data_id'];
+        $other_data = json_decode($image_row['other_data'],true);
+        $filename = $other_data['filename'];
+        $sku_id = $other_data['sku_id'];
+        $path = "";
+        if($type == 'Raw'){
+          $sku_info_query = Skus::
+          leftJoin('wrc', 'wrc.id', '=', 'sku.wrc_id')->
+          leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->
+          leftJoin('uploadraw', 'uploadraw.sku_id', '=', 'sku.id')->
+          where('sku.id', '=' , $sku_id)->where('uploadraw.id', '=' , $other_data_id)->where('sku.status', '=' , '1')->
+          select(
+            'sku.id as sku_id',
+            'sku.sku_code',
+            'sku.status',
+            'sku.wrc_id',
+            'sku.created_at as sku_created_at',
+            'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number',
+            'uploadraw.id as image_id',
+            'uploadraw.filename' ,
+            'uploadraw.created_at as created_at'
+          );
+          $skus_count = $sku_info_query->count();
+          $skus_files = $sku_info_query->get()->toArray();
+          
+          if($skus_count > 0){
+            $row = $skus_files[0];
+            $path=  "raw_img_directory/". date('Y', strtotime($row['created_at'])) . "/" . date('M', strtotime($row['created_at'])) . "/" . $row['lot_number'] . "/" . $row['wrc_number']. "/" .$row['sku_code']. "/" . $row['filename'] ;
+          }
+        }else{
+          $sku_info_query = Skus::
+          leftJoin('wrc', 'wrc.id', '=', 'sku.wrc_id')->
+          leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->
+          leftJoin('editor_submission', 'editor_submission.sku_id', '=', 'sku.id')->
+          where('sku.id', '=' , $sku_id)->where('editor_submission.id', '=' , $other_data_id)->where('sku.status', '=' , '1')->where('editor_submission.qc', '=' , "1")->
+          select(
+            'sku.id as sku_id',
+            'sku.sku_code',
+            'sku.status',
+            'sku.wrc_id',
+            'sku.created_at as sku_created_at',
+            'wrc.wrc_id as wrc_number','wrc.lot_id' ,'lots.lot_id as lot_number',
+            'editor_submission.id as image_id',
+            'editor_submission.adaptation' ,
+            'editor_submission.filename' ,
+            'editor_submission.created_at as created_at'
+          );
+          $skus_count = $sku_info_query->count();
+          $skus_files = $sku_info_query->get()->toArray();
+          if($skus_count > 0){
+            $row = $skus_files[0];
+            $path=  "edited_img_directory/". date('Y', strtotime($row['created_at'])) . "/" . date('M', strtotime($row['created_at'])) . "/" . $row['lot_number'] . "/" . $row['wrc_number']. "/" . $row['adaptation']. "/" .$row['sku_code']. "/" . $row['filename'] ;
+          }
         }
+        $shoot_images[$img_key]['img_src'] = $path;
+        $shoot_images[$img_key]['img_row'] = $row;
       }
     }
-    // dd($shoot_images);
+    return $shoot_images;
   }
 
   // Editing Images
@@ -367,5 +416,84 @@ class FavoriteAsset extends Model
       $raw_skus_data[$key]['file_path'] = $file_path;
     }
     return $raw_skus_data[0];
+  }
+
+  // Wrc Data 
+  public static function wrc_data($wrc_row){
+    $wrc_id = $wrc_row['wrc_id'];
+    $lot_id = $wrc_row['lot_id'];
+    $service = $wrc_row['service'];
+    $wrc_data = array();
+
+    if($service == 'SHOOT'){
+      $wrc_data = Wrc::leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->where('wrc.lot_id',$lot_id)->where('wrc.id',$wrc_id)->select(
+        'wrc.id as wrc_id',
+        'wrc.wrc_id as wrc_number',
+        'wrc.lot_id',
+        'wrc.created_at as wrc_created_at',
+        'lots.lot_id as lot_number',
+      )->get()->toArray();
+      foreach ($wrc_data as $key => $value) {
+        $lot_number = $value['lot_number'];
+        $sku_info_query = Skus::where('wrc_id', $value['wrc_id'])->where('status', 1)->select('id as sku_id', 'sku_code', 'status');
+        $skus_count = $sku_info_query->count();
+        $skus_array = $sku_info_query->get()->toArray();
+        $file_path = "";
+        if($skus_count > 0){
+          $lot_number = $value['lot_number'];
+          $wrc_number = $value['wrc_number'];
+          $skus_sku_id_arr = array_column($skus_array , 'sku_id');
+          $skus_sku_code_arr = array_column($skus_array , 'sku_code');
+          $editor_Submission_data = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->get()->toArray();
+  
+          foreach ($editor_Submission_data as $key_is => $item) {
+            if($file_path != ""){
+              break;
+            }            
+            $adaptation = $item['adaptation'];
+            $sku_id = $item['sku_id'];
+            $sku_code = $skus_sku_code_arr[array_search($sku_id ,$skus_sku_id_arr)];
+  
+            $path=  "edited_img_directory/". date('Y', strtotime($item['created_at'])) . "/" . date('M', strtotime($item['created_at'])) . "/" . $lot_number."/" . $wrc_number."/" . $adaptation. "/" .$sku_code. "/" . $item['filename'];
+            if(file_exists($path)){
+              $file_path = $path;
+            }
+          }
+        }
+        $wrc_data[$key]['file_path'] = $file_path;
+      }
+    }else{
+      $wrc_data = EditingWrc::leftJoin('editor_lots', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->where('editing_wrcs.id',$wrc_id)->where('editing_wrcs.lot_id',$lot_id)->select(
+        'editing_wrcs.id as wrc_id',
+        'editing_wrcs.wrc_number',
+        'editing_wrcs.lot_id',
+        'editing_wrcs.uploaded_img_file_path',
+        'editing_wrcs.created_at as wrc_created_at',
+        'editor_lots.lot_number',
+      )->get()->toArray();  
+      
+      foreach ($wrc_data as $key => $row) {
+        $uploaded_img_file_path = $row['uploaded_img_file_path'];
+        $wrc_id_arr = explode(',', $row['wrc_id']);
+        $editing_uploaded_images = EditingUploadedImages::whereIn('editing_uploaded_images.wrc_id', $wrc_id_arr)->get()->toArray();
+          $file_path = "";
+  
+        foreach ($editing_uploaded_images as $key_is => $item) {
+          if($file_path != ""){
+            break;
+          }
+          $path= $item['file_path']. $item['filename'];
+          $path1 = $uploaded_img_file_path. $item['filename'];
+          if(file_exists($path)){
+            $file_path = $path;
+          }else if(file_exists($path1)){
+            $file_path = $path1;
+          }
+        }
+        $wrc_data[$key]['file_path'] = $file_path;
+        $wrc_data[$key]['filename'] = $item['filename'];
+      }
+    }
+    return $wrc_data;
   }
 }
