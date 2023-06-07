@@ -54,6 +54,98 @@
 			padding: 10px !important;
 		}
 	</style>
+	
+	<!--Notifiaction click on bell icon-->
+	
+	<style>
+	 /* Styles for the popover container */
+    .notification-popover-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Styles for the popover content */
+    .popover-for-notifaction {
+      display: none;
+      position: absolute;
+      top: 36px;
+      right: 47px;
+      padding: 24px;
+      background: #0F0F0F;
+      border: 1px solid #9F9F9F!important;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      z-index: 2;
+      width: 400px;
+      border-radius: 0px;
+      box-shadow: 4px 16px 40px rgba(255, 255, 255, 0.06);
+    }
+
+    .notificatio-pop-heading {
+      background: #1A1A1A;
+      color: #FFFFFF;
+      font-weight: 600;
+      font-size: 22px;
+      margin: -23px -23px 0px -23px;
+      padding: 24px 0px 16px 24px;
+    }
+
+    .active-notification {
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.1px;
+      color: #FFFFFF;
+      margin-top: 16px;
+      margin-bottom: 0px;
+      cursor: pointer;
+    }
+
+    .Inactive-notification {
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.25px;
+      color: #808080;
+      margin-bottom: 0px;
+      cursor: pointer;
+    }
+
+    .notification-time {
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: #4D4D4D;
+      margin-top: 4px;
+    }
+
+    .hr-line {
+      color: #9F9F9F;
+    }
+
+    .content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+
+    .expanded {
+      max-height: 1000px;
+    }
+
+    .view-all {
+      color: #98A7DA;
+      text-decoration: none;
+      cursor: pointer;
+      margin-top: 0px;
+      font-weight: 500;
+      font-size: 11px;
+      margin-bottom: 0px;
+    }
+
+    .view-all:hover {
+      color: #7c93e0;
+    }
+	</style>
+	
 </head>
 
 <body>
@@ -118,12 +210,50 @@
 
 						<ul class="navbar-nav ms-auto me-3">
 							{{-- notification bell --}}
-							<li class="nav-item mt-1" style="padding-right: 56px; margin-top: 12px"> 
-								<svg width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<li class="nav-item mt-1 notification-popover-container" style="padding-right: 56px; margin-top: 12px"> 
+								<svg id="popover-trigger" width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<circle cx="18.5696" cy="18" r="18" fill="#1A1A1A"/>
 									<path d="M18.5695 13.3667V16.1417M18.5862 9.66675C15.5195 9.66675 13.0362 12.1501 13.0362 15.2167V16.9667C13.0362 17.5334 12.8028 18.3834 12.5112 18.8667L11.4528 20.6334C10.8028 21.7251 11.2528 22.9417 12.4528 23.3417C16.4372 24.6667 20.7434 24.6667 24.7278 23.3417C24.9907 23.254 25.2306 23.1084 25.4296 22.9155C25.6287 22.7227 25.7819 22.4876 25.8779 22.2276C25.9739 21.9676 26.0102 21.6894 25.9843 21.4134C25.9583 21.1375 25.8707 20.8709 25.7278 20.6334L24.6695 18.8667C24.3778 18.3834 24.1445 17.5251 24.1445 16.9667V15.2167C24.1362 12.1667 21.6362 9.66675 18.5862 9.66675Z" stroke="#D1D1D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
 									<path d="M21.3447 24.25C21.3447 25.775 20.0947 27.025 18.5697 27.025C17.8113 27.025 17.1113 26.7083 16.6113 26.2083C16.1113 25.7083 15.7947 25.0083 15.7947 24.25" fill="#D1D1D1"/>
-									</svg><span class="notify-count">{{$tot_notification}}</span>
+									</svg>
+									<div class="popover-for-notifaction" id="popover-for-notifaction">
+										<div class="notificatio-pop-heading">Notification</div>
+										<p class="active-notification">
+											Armani Exchange lot no. “ODN10032023BEUCBFZ76” status has changed to task started.
+										</p>
+										<p class="notification-time">
+											20 sec. ago
+										</p>
+										<hr class="hr-line">
+										<p class="Inactive-notification">
+											Hey, Hugo boss lot no. “ODN10032023BEUCBFZ76” successfully completed.
+										</p>
+										<p class="notification-time">
+											2 days ago
+										</p>
+										<hr class="hr-line">
+										<p class="Inactive-notification">
+											Hey, Hugo boss lot no. “ODN10032023BEUCBFZ76” successfully completed.
+										</p>
+										<p class="notification-time">
+											20 sec. ago
+										</p>
+										<hr class="hr-line">
+										<div class="content" id="content">
+											<p class="Inactive-notification">
+												Hey, Hugo boss lot no. “ODN10032023BEUCBFZ76” successfully completed.
+											</p>
+											<p class="notification-time">
+												2 days ago
+											</p>
+											<hr class="hr-line">
+										</div>
+										<div class="d-flex justify-content-between">
+											<a role="button" class="view-all" id="viewButton" onclick="toggleContent()">View All</a>
+											<p class="view-all">Mark all as read</p>
+										</div>
+									</div>
+									{{-- <span class="notify-count">{{$tot_notification}}</span> --}}
 							</li>
 							{{-- user name --}}
 							<li class="nav-item">
@@ -504,6 +634,51 @@
 			}
 		});
 	</script>
+	
+	<!--Notifaction Click on bell icon & view more and less-->
+	
+	 <script>
+      document.addEventListener("DOMContentLoaded", function () {
+      var popoverTrigger = document.getElementById("popover-trigger");
+      var popoverContent = document.getElementById("popover-for-notifaction");
+      var isPopoverOpen = false;
+
+      function togglePopover() {
+        if (isPopoverOpen) {
+          popoverContent.style.display = "none";
+          isPopoverOpen = false;
+        } else {
+          popoverContent.style.display = "block";
+          isPopoverOpen = true;
+        }
+      }
+
+      popoverTrigger.addEventListener("click", function () {
+        togglePopover();
+      });
+
+      document.addEventListener("click", function (event) {
+        if (event.target !== popoverTrigger && !popoverTrigger.contains(event.target) && !popoverContent.contains(event.target)) {
+          popoverContent.style.display = "none";
+          isPopoverOpen = false;
+        }
+      });
+    });
+  </script>
+  <script>
+    function toggleContent() {
+      var contentDiv = document.getElementById("content");
+      var viewButton = document.getElementById("viewButton");
+
+      contentDiv.classList.toggle("expanded");
+
+      if (contentDiv.classList.contains("expanded")) {
+        viewButton.innerText = "View Less";
+      } else {
+        viewButton.innerText = "View All";
+      }
+    }
+  </script>
 
     @yield('js_scripts')
 </body>
