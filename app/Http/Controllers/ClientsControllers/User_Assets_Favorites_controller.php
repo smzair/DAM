@@ -550,7 +550,7 @@ class User_Assets_Favorites_controller extends Controller
         'status' => $status,
         'id' => $id,
       );
-      DB::rollback();
+      DB::commit();
     } catch (\Throwable $th) {
       // throw $th;
       DB::rollback();
