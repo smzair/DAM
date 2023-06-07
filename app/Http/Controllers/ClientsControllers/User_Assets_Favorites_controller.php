@@ -10,6 +10,7 @@ use App\Models\Lots;
 use App\Models\LotsCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class User_Assets_Favorites_controller extends Controller
 {
@@ -18,17 +19,37 @@ class User_Assets_Favorites_controller extends Controller
 
     $data_array = array();
     $images_array = array();
+    $files_lots = array();
+    $link_lots = array();
     $service_array = ['SHOOT', 'EDITING','CATALOGING','CREATIVE'];
 
+    $user_data = Auth::user();
+    if ($user_data->dam_enable != 1) {
+      request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+      return view('clients.ClientUserManagement.dam_not_enable');
+    }
+    $parent_client_id = $user_id = $user_data->id;
+    $roledata = getUsersRole($user_id);
+
+    if ($roledata != null) {
+      $role_name = $roledata->role_name;
+    }
+
+    if ($role_name == 'Sub Client') {
+      $parent_user_data = DB::table('users')->where('id', $user_id)->first(['parent_client_id', 'id']);
+      $parent_client_id = $parent_user_data->parent_client_id;
+    }
+    $brand_arr = DB::table('brands_user')->where('user_id', $user_id)->get()->pluck('brand_id')->toArray();
+    
     // Getting Images
     $editing_images = FavoriteAsset::editing_images($service_array);
     $images_array['editing_images'] = $editing_images;
     $shoot_images = FavoriteAsset::shoot_images($service_array);
     $images_array['shoot_images'] = $shoot_images;
 
-
-    $files_lots = FavoriteAsset::where('module', 'lot')->get()->toArray();
-    foreach ($files_lots as $key => $row) {
+    // getting lots
+    $lots_data = FavoriteAsset::where('module', 'lot')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->get()->toArray();
+    foreach ($lots_data as $key => $row) {
       $lots_data_is = array();
       $service = $row['service'];
       $lot_id = $row['lot_id'];
@@ -53,12 +74,20 @@ class User_Assets_Favorites_controller extends Controller
           $lots_data_is = $creative_lots_data[0];
         }
       }
-      $files_lots[$key]['lots_data_is'] = $lots_data_is;
+      $lots_data[$key]['lots_data_is'] = $lots_data_is;
+
+      if($service == 'CATALOGING' || $service == 'CREATIVE'){
+        array_push($link_lots , $lots_data[$key] );
+      }else{
+        array_push($files_lots , $lots_data[$key] );
+      }
     }
     $data_array['files_lots'] = $files_lots;
+    $data_array['link_lots'] = $link_lots;
 
+    // dd($data_array , $link_lots , $files_lots);
     // Getting Skus
-    $skus_data = FavoriteAsset::where('module', 'sku')->get()->toArray();
+    $skus_data = FavoriteAsset::where('module', 'sku')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->get()->toArray();
     foreach ($skus_data as $key => $skus_row) {
       $type = $skus_row['type'];
       $sku_id = $skus_row['other_data_id'];
@@ -69,7 +98,7 @@ class User_Assets_Favorites_controller extends Controller
     $data_array['skus_data'] = $skus_data;
 
     // Getting Wrc Data. 
-    $wrc_data = FavoriteAsset::where('module', 'wrc')->get()->toArray();
+    $wrc_data = FavoriteAsset::where('module', 'wrc')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->get()->toArray();
     foreach ($wrc_data as $wrc_key => $wrc_row) {
       $wrc_data_is = FavoriteAsset::wrc_data($wrc_row);
       $wrc_data[$wrc_key]['wrc_data'] = $wrc_data_is[0];
