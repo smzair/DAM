@@ -21,6 +21,7 @@ use App\Models\uploadraw;
 use App\Models\Wrc;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FavoriteAsset extends Model
@@ -32,7 +33,22 @@ class FavoriteAsset extends Model
   // Shoot Images
   public static function shoot_images($service_array)
   {
-    $shoot_raw_query = FavoriteAsset::where('service', $service_array[0])->where('module', 'image');
+
+    $user_data = Auth::user();
+    $parent_client_id = $user_id = $user_data->id;
+    $roledata = getUsersRole($user_id);
+    if ($roledata != null) {
+      $role_name = $roledata->role_name;
+    }
+
+    if ($role_name == 'Sub Client') {
+      $parent_user_data = DB::table('users')->where('id', $user_id)->first(['parent_client_id', 'id']);
+      $parent_client_id = $parent_user_data->parent_client_id;
+    }
+    $brand_arr = DB::table('brands_user')->where('user_id', $user_id)->get()->pluck('brand_id')->toArray();
+
+    $shoot_raw_query = FavoriteAsset::where('service', $service_array[0])->where('module', 'image')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id);
+
     $shoot_raw_images_count = $shoot_raw_query->count();
     $shoot_images = $shoot_raw_query->get()->toArray();   
     if ($shoot_raw_images_count > 0) {
@@ -102,12 +118,22 @@ class FavoriteAsset extends Model
   // Editing Images
   public static function editing_images($service_array, $type = '')
   {
-    $images_data = FavoriteAsset::where('service', $service_array[1])->where('module', 'image')->count();
-    $editing_images = array();
+    $user_data = Auth::user();
+    $parent_client_id = $user_id = $user_data->id;
+    $roledata = getUsersRole($user_id);
 
-    if ($images_data > 0) {
-      // ->where('type','Raw')
-      $raw_image_query = FavoriteAsset::where('service', $service_array[1])->where('module', 'image');
+    if ($roledata != null) {
+      $role_name = $roledata->role_name;
+    }
+
+    if ($role_name == 'Sub Client') {
+      $parent_user_data = DB::table('users')->where('id', $user_id)->first(['parent_client_id', 'id']);
+      $parent_client_id = $parent_user_data->parent_client_id;
+    }
+    $brand_arr = DB::table('brands_user')->where('user_id', $user_id)->get()->pluck('brand_id')->toArray();
+
+    $editing_images = array();
+      $raw_image_query = FavoriteAsset::where('service', $service_array[1])->where('module', 'image')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id);
       if ($type != '') {
         $raw_image_query = $raw_image_query->where('type', $type);
       }
@@ -126,7 +152,6 @@ class FavoriteAsset extends Model
           $editing_images[$key]['images'] = $Upload_images;
         }
       }
-    }
     return $editing_images;
   }
 
