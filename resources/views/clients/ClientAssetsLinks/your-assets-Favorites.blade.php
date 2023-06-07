@@ -74,9 +74,11 @@
 							$zipFileSize = filesize($path);
 							$zipFileSize = formatBytes($zipFileSize);
 						}
+
+						$tbl_id = $data_row['id'];
 						// dd($other_data , $data_row);
 					@endphp
-					<div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+					<div class="col-sm-6 col-md-4 col-lg-3 mt-2" id="div_{{$tbl_id}}">
 						<div class="card brand-img-m border-0 rounded-0">
 								<img class="card-img-top brand-img" src="{{asset($img_src)}}"
 										alt="Image">
@@ -142,6 +144,22 @@
 														Share
 												</a>
 												<p class="d-none" id="url_{{$action_type}}">{{asset($img_src)}}</p>
+
+												{{-- Remove from Favorites --}}
+												<a href="javascript:void(0)" onclick="remove_favorites('{{base64_encode($tbl_id)}}')">
+													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<g clip-path="url(#clip0_1043_2500)">
+															<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+														</g>
+														<defs>
+															<clipPath id="clip0_1043_2500">
+																<rect width="20" height="20" fill="white"/>
+															</clipPath>
+														</defs>
+													</svg>
+													&nbsp;&nbsp;
+													Remove from favorites
+												</a>
 										</div>
 								</div>
 						</div>
@@ -165,8 +183,9 @@
 							$zipFileSize = formatBytes($zipFileSize);
 						}
 						// dd($other_data , $editing_images);
+						$tbl_id = $row['id'];
 					@endphp
-					<div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+					<div class="col-sm-6 col-md-4 col-lg-3 mt-2" id="div_{{$tbl_id}}">
 						<div class="card brand-img-m border-0 rounded-0">
 								<img class="card-img-top brand-img" src="{{asset($img_src)}}"
 										alt="Image">
@@ -232,6 +251,22 @@
 														Share
 												</a>
 												<p class="d-none" id="url_{{$action_type}}">{{asset($img_src)}}</p>
+
+												{{-- Remove from Favorites --}}
+												<a href="javascript:void(0)" onclick="remove_favorites('{{base64_encode($tbl_id)}}')">
+													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<g clip-path="url(#clip0_1043_2500)">
+															<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+														</g>
+														<defs>
+															<clipPath id="clip0_1043_2500">
+																<rect width="20" height="20" fill="white"/>
+															</clipPath>
+														</defs>
+													</svg>
+													&nbsp;&nbsp;
+													Remove from favorites
+												</a>
 										</div>
 								</div>
 						</div>
@@ -271,10 +306,11 @@
 						$download_route_is = "download_Shoot_lot_Edited_adaptation";
 					}
 					$sku_id_is = base64_encode($row['sku_id']);
+					$tbl_id = $item['id'];
 
 				@endphp
 
-				<div class="col-lg-3 col-md-6 mt-2">
+				<div class="col-lg-3 col-md-6 mt-2" id="div_{{$tbl_id}}">
 					<div class="row brand-div2" style="position: relative;">
 						<div class="col-2 mt-3">
 							<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -391,6 +427,22 @@
 										&nbsp;&nbsp;
 										Add Tag
 									</a>
+
+									{{-- Remove from Favorites --}}
+									<a href="javascript:void(0)" onclick="remove_favorites('{{base64_encode($tbl_id)}}')">
+										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g clip-path="url(#clip0_1043_2500)">
+												<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+											</g>
+											<defs>
+												<clipPath id="clip0_1043_2500">
+													<rect width="20" height="20" fill="white"/>
+												</clipPath>
+											</defs>
+										</svg>
+										&nbsp;&nbsp;
+										Remove from favorites
+									</a>
 								</div>
 						</div>
 					</div>
@@ -415,6 +467,7 @@
 					$row = $item['wrc_data'];
 					$service_is = $item['service'];
 					$file_path = $row['file_path'];
+					$tbl_id = $item['id'];
 					$shoot_image_src = 'IMG/no_preview_available.jpg';
 					if($file_path != ''){
 						$shoot_image_src = $file_path;
@@ -429,7 +482,7 @@
 					$wrc_unic_key = $item['wrc_id'].$item['id'].$wrc_key;
 				?>
 
-				<div class="col-lg-3 col-md-6" style="margin-bottom: 24px;">
+				<div class="col-lg-3 col-md-6" style="margin-bottom: 24px;" id="div_{{$tbl_id}}">
 					<div class="accordion" id="accordionExample{{$wrc_unic_key}}">
 						<div class="card z-depth-0 bordered">
 							<div class="card-header card-header-style" id="headingOne{{$wrc_unic_key}}"background: #D1D1D1;>
@@ -555,6 +608,22 @@
 											</svg> &nbsp;
 											Add Tag
 										</a>
+
+										{{-- Remove from Favorites --}}
+										<a href="javascript:void(0)" onclick="remove_favorites('{{base64_encode($tbl_id)}}')">
+											<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<g clip-path="url(#clip0_1043_2500)">
+													<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+												</g>
+												<defs>
+													<clipPath id="clip0_1043_2500">
+														<rect width="20" height="20" fill="white"/>
+													</clipPath>
+												</defs>
+											</svg>
+											&nbsp;&nbsp;
+											Remove from favorites
+										</a>
 									</div>
 								</div>
 							</div>
@@ -618,6 +687,7 @@
 			@foreach ($files_lots as $lot_index => $item)
 				@php
 					$service = $item['service'];
+					$tbl_id = $item['id'];
 					if($service == 'SHOOT'){
 						$route_is = 'your_assets_shoot_wrcs';
 						$download_route_is = "download_Shoot_Lot_edited";
@@ -640,7 +710,7 @@
 
 				{{-- Shoot Lots --}}
 				@if ($service == 'SHOOT')
-					<div class="col-lg-4 col-md-6 box border-0" style="background: #0F0F0F; position: relative;">
+					<div class="col-lg-4 col-md-6 box border-0" style="background: #0F0F0F; position: relative;" id="div_{{$tbl_id}}">
 						<div class="row">
 							<div class="under-content-div">
 								<div class="col-12">
@@ -737,6 +807,22 @@
 												</svg> &nbsp;
 												Add Tag
 											</a>
+
+											{{-- Remove from Favorites --}}
+											<a href="javascript:void(0)" onclick="remove_favorites('{{base64_encode($tbl_id)}}')">
+												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<g clip-path="url(#clip0_1043_2500)">
+														<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+													</g>
+													<defs>
+														<clipPath id="clip0_1043_2500">
+															<rect width="20" height="20" fill="white"/>
+														</clipPath>
+													</defs>
+												</svg>
+												&nbsp;&nbsp;
+												Remove from favorites
+											</a>
 										</div>
 									</div>
 
@@ -771,7 +857,7 @@
 
 				{{-- Editting Lots --}}
 				@elseif($service == 'EDITING')
-					<div class="col-lg-4 col-md-6 box border-0" style="background: #0F0F0F; position: relative;">
+					<div class="col-lg-4 col-md-6 box border-0" style="background: #0F0F0F; position: relative;" id="div_{{$tbl_id}}">
 						<div class="row">
 							<div class="under-content-div">
 								<div class="col-12">
@@ -854,6 +940,22 @@
 												</svg> &nbsp;
 												Add Tag
 											</a>
+
+											{{-- Remove from Favorites --}}
+											<a href="javascript:void(0)" onclick="remove_favorites('{{base64_encode($tbl_id)}}')">
+												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<g clip-path="url(#clip0_1043_2500)">
+														<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+													</g>
+													<defs>
+														<clipPath id="clip0_1043_2500">
+															<rect width="20" height="20" fill="white"/>
+														</clipPath>
+													</defs>
+												</svg>
+												&nbsp;&nbsp;
+												Remove from favorites
+											</a>
 										</div>
 									</div>
 										
@@ -885,235 +987,8 @@
 							</div>
 						</div>
 					</div>
-				
-				{{-- Cataloging Lots --}}
-				@elseif($service == 'CATALOGING')
-					@php
-						$lot_created_at = $row['lot_created_at'];
-						$submission_date = $row['submission_date'];
-						$lot_id_is = base64_encode($row['id']);
-						$wrc_numbers = ($row['wrc_numbers'] != '' && $row['wrc_numbers'] != null) ? $row['wrc_numbers'] : 'Wrc not generated'; 
-					@endphp
-
-					<div class="col-lg-4 col-md-6 box border-0" style="position: relative;">
-						<div class="row">
-							<div class="under-content-div">
-								<div class="col-12 d-flex d-flex justify-content-between">
-										<div>
-												<p class="lot-no-heading">Lot no</p>
-												<span class="your-asset-lotno-underbox" id="lot_number{{$row['brand_id'].$lot_index}}">{{$row['lot_number']}}</span>
-											<div class="myPopover" style="display: none;">
-												{{-- View Details --}}
-												<a href="javascript:void(0)" onclick="toggleSidebar(); set_links_date_time('{{$row['brand_id'].$lot_index}}')">
-													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-														<g clip-path="url(#clip0_1069_2515)">
-															<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-															<path d="M10.0042 6.66699L9.99665 6.66699" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-														</g>
-														<defs>
-															<clipPath id="clip0_1069_2515">
-																<rect width="20" height="20" fill="white"/>
-															</clipPath>
-														</defs>
-													</svg>&nbsp;
-													View Details
-												</a>
-
-												<div class="d-none">
-													<span id="lot_date{{$row['brand_id'].$lot_index}}">{{dateFormet_dmy($row['lot_created_at'])}}</span>
-													<span id="lot_time{{$row['brand_id'].$lot_index}}">{{date('h:i A', strtotime($row['lot_created_at']))}}</span>
-													<span id="wrc_numbers{{$row['brand_id'].$lot_index}}">{{ $wrc_numbers }}</span>
-												</div>
-											
-												@php
-													$service = base64_encode('CATALOGING');
-													$module = base64_encode('lot');
-													$lot_id_is = base64_encode($row['id']);
-													$data_array = array(
-														'user_id' => base64_encode($row['user_id']), 
-														'brand_id' => base64_encode($row['brand_id']), 
-														'lot_id' => $lot_id_is, 
-														'wrc_id' => '',
-														'service' => $service, 
-														'module' => $module 
-													);
-
-													$data_obj = json_encode($data_array,true);
-												@endphp
-												{{-- Add to favorites --}}
-												{{-- <a href="javascript:void(0)" onclick="add_to_favorites({{$data_obj}})">
-												
-													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-														<g clip-path="url(#clip0_1069_2524)">
-														<path d="M11.4416 2.9252L12.9083 5.85853C13.1083 6.26686 13.6416 6.65853 14.0916 6.73353L16.7499 7.1752C18.4499 7.45853 18.8499 8.69186 17.6249 9.90853L15.5583 11.9752C15.2083 12.3252 15.0166 13.0002 15.1249 13.4835L15.7166 16.0419C16.1833 18.0669 15.1083 18.8502 13.3166 17.7919L10.8249 16.3169C10.3749 16.0502 9.63326 16.0502 9.17492 16.3169L6.68326 17.7919C4.89992 18.8502 3.81659 18.0585 4.28326 16.0419L4.87492 13.4835C4.98326 13.0002 4.79159 12.3252 4.44159 11.9752L2.37492 9.90853C1.15826 8.69186 1.54992 7.45853 3.24992 7.1752L5.90826 6.73353C6.34992 6.65853 6.88326 6.26686 7.08326 5.85853L8.54992 2.9252C9.34992 1.33353 10.6499 1.33353 11.4416 2.9252Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-														</g>
-														<defs>
-														<clipPath id="clip0_1069_2524">
-														<rect width="20" height="20" fill="white"/>
-														</clipPath>
-														</defs>
-													</svg>&nbsp;
-													Add to favorites
-												</a> --}}
-
-												{{-- Add Tag --}}
-												<a href="javascript:void(0)">
-													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-														<path d="M3.47507 12.7498L7.25007 16.5248C7.99675 17.2693 9.00816 17.6873 10.0626 17.6873C11.117 17.6873 12.1284 17.2693 12.8751 16.5248L16.5334 12.8664C17.2779 12.1198 17.696 11.1084 17.696 10.0539C17.696 8.99952 17.2779 7.98812 16.5334 7.24144L12.7501 3.47477C12.3589 3.08252 11.8898 2.77675 11.373 2.57722C10.8562 2.37769 10.3033 2.28884 9.75007 2.31644L5.58341 2.51644C3.91674 2.59144 2.59174 3.91644 2.50841 5.57477L2.30841 9.74144C2.25841 10.8664 2.68341 11.9581 3.47507 12.7498Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-														<path d="M7.91659 9.99967C8.46912 9.99967 8.99902 9.78018 9.38972 9.38948C9.78043 8.99878 9.99992 8.46888 9.99992 7.91634C9.99992 7.36381 9.78043 6.8339 9.38972 6.4432C8.99902 6.0525 8.46912 5.83301 7.91659 5.83301C7.36405 5.83301 6.83415 6.0525 6.44345 6.4432C6.05275 6.8339 5.83325 7.36381 5.83325 7.91634C5.83325 8.46888 6.05275 8.99878 6.44345 9.38948C6.83415 9.78018 7.36405 9.99967 7.91659 9.99967Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-													</svg> &nbsp;
-													Add Tag
-												</a>
-											</div>
-										</div>
-										<div type="button" class="btn border-0 rounded-circle myButton">
-											<i class="bi bi-three-dots-vertical" style="color: #9F9F9F; line-height: 2.5;">
-											</i>
-										</div>
-								</div>
-
-								<div class="col-12">
-									<span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}}</span>
-								</div>
-								<div class="col-12 d-flex justify-content-between">
-									<div>
-										<p class="inward-qty">Inward Quantity : </p>
-										<p class="inward-qty-num">
-											{{$row['inward_qty'] != '' ? $row['inward_qty'] : 0}}
-										</p>
-									</div>
-									<div>
-										<p class="inward-qty">Submission</p>
-										<p class="inward-qty-num">
-											{{$submission_date != '' ? dateFormet_dmy($submission_date) : $submission_date }}
-										</p>
-									</div>
-								</div>
-								<div class="col-12 d-grid gap-2">
-									<a role="button" class="btn border rounded-0 view-img " href="{{route('your_assets_cataloging_wrcs_links' , ['lot_id' => $lot_id_is])}}">
-										View Links
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				
-				
-				{{-- Creative Lots --}}
-				@elseif($service == 'CREATIVE')
-					@php
-						$lot_created_at = $row['lot_created_at'];
-						$submission_date = $row['submission_date'];
-						$wrc_numbers = ($row['wrc_numbers'] != '' && $row['wrc_numbers'] != null) ? $row['wrc_numbers'] : 'Wrc not generated.'; 
-						$lot_id_is = base64_encode($row['id']);
-					@endphp
-
-					<div class="col-lg-4 col-md-6 box border-0" style="position: relative;">
-						<div class="row">
-							<div class="under-content-div">
-								
-								<div class="col-12 d-flex d-flex justify-content-between">
-										<div>
-										<p class="lot-no-heading">Lot no</p>
-										<span class="your-asset-lotno-underbox" id="lot_number{{$row['id'].$lot_index}}">{{$row['lot_number']}}</span>
-										<div class="myPopover" style="display: none;">
-											<a href="javascript:void(0)" onclick="toggleSidebar(); set_links_date_time('{{$row['id'].$lot_index}}') ">
-												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<g clip-path="url(#clip0_1069_2515)">
-														<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-														<path d="M10.0042 6.66699L9.99665 6.66699" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-													</g>
-													<defs>
-														<clipPath id="clip0_1069_2515">
-															<rect width="20" height="20" fill="white"/>
-														</clipPath>
-													</defs>
-												</svg>&nbsp;
-												View Details
-											</a>
-
-											<div class="d-none">
-												<span id="lot_date{{$row['id'].$lot_index}}">{{dateFormet_dmy($row['lot_created_at'])}}</span>
-												<span id="lot_time{{$row['id'].$lot_index}}">{{date('h:i A', strtotime($row['lot_created_at']))}}</span>
-												<span id="wrc_numbers{{$row['id'].$lot_index}}">{{ $wrc_numbers }}</span>
-
-											</div>
-											
-											@php
-												$service = base64_encode('CREATIVE');
-												$module = base64_encode('lot');
-												$lot_id_is = base64_encode($row['id']);
-												$data_array = array(
-													'user_id' => base64_encode($row['user_id']), 
-													'brand_id' => base64_encode($row['brand_id']), 
-													'lot_id' => $lot_id_is, 
-													'wrc_id' => '',
-													'service' => $service, 
-													'module' => $module 
-												);
-
-												$data_obj = json_encode($data_array,true);
-											@endphp
-											
-											{{-- Add to favorites --}}
-
-											{{-- <a href="javascript:void(0)" onclick="add_to_favorites({{$data_obj}})">
-											
-												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<g clip-path="url(#clip0_1069_2524)">
-													<path d="M11.4416 2.9252L12.9083 5.85853C13.1083 6.26686 13.6416 6.65853 14.0916 6.73353L16.7499 7.1752C18.4499 7.45853 18.8499 8.69186 17.6249 9.90853L15.5583 11.9752C15.2083 12.3252 15.0166 13.0002 15.1249 13.4835L15.7166 16.0419C16.1833 18.0669 15.1083 18.8502 13.3166 17.7919L10.8249 16.3169C10.3749 16.0502 9.63326 16.0502 9.17492 16.3169L6.68326 17.7919C4.89992 18.8502 3.81659 18.0585 4.28326 16.0419L4.87492 13.4835C4.98326 13.0002 4.79159 12.3252 4.44159 11.9752L2.37492 9.90853C1.15826 8.69186 1.54992 7.45853 3.24992 7.1752L5.90826 6.73353C6.34992 6.65853 6.88326 6.26686 7.08326 5.85853L8.54992 2.9252C9.34992 1.33353 10.6499 1.33353 11.4416 2.9252Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-													</g>
-													<defs>
-													<clipPath id="clip0_1069_2524">
-													<rect width="20" height="20" fill="white"/>
-													</clipPath>
-													</defs>
-												</svg>&nbsp;
-												Add to favorites
-											</a> --}}
-
-											{{-- Add Tag --}}
-											<a href="javascript:void(0)">
-												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M3.47507 12.7498L7.25007 16.5248C7.99675 17.2693 9.00816 17.6873 10.0626 17.6873C11.117 17.6873 12.1284 17.2693 12.8751 16.5248L16.5334 12.8664C17.2779 12.1198 17.696 11.1084 17.696 10.0539C17.696 8.99952 17.2779 7.98812 16.5334 7.24144L12.7501 3.47477C12.3589 3.08252 11.8898 2.77675 11.373 2.57722C10.8562 2.37769 10.3033 2.28884 9.75007 2.31644L5.58341 2.51644C3.91674 2.59144 2.59174 3.91644 2.50841 5.57477L2.30841 9.74144C2.25841 10.8664 2.68341 11.9581 3.47507 12.7498Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-													<path d="M7.91659 9.99967C8.46912 9.99967 8.99902 9.78018 9.38972 9.38948C9.78043 8.99878 9.99992 8.46888 9.99992 7.91634C9.99992 7.36381 9.78043 6.8339 9.38972 6.4432C8.99902 6.0525 8.46912 5.83301 7.91659 5.83301C7.36405 5.83301 6.83415 6.0525 6.44345 6.4432C6.05275 6.8339 5.83325 7.36381 5.83325 7.91634C5.83325 8.46888 6.05275 8.99878 6.44345 9.38948C6.83415 9.78018 7.36405 9.99967 7.91659 9.99967Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-												</svg> &nbsp;
-												Add Tag
-											</a>
-										</div>
-									</div>
-									<div type="button" class="btn border-0 rounded-circle myButton">
-											<i class="bi bi-three-dots-vertical" style="color: #9F9F9F;line-height: 2.5;">
-											</i>
-									</div>
-								</div>
-								<div class="col-12">
-									<span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}} </span>
-								</div>
-								<div class="col-12 d-flex justify-content-between">
-									<div>
-										<p class="inward-qty">Inward Quantity : </p>
-										<p class="inward-qty-num">
-											{{$row['inward_qty'] != '' ? $row['inward_qty'] : 0}}
-										</p>
-									</div>
-									<div>
-										<p class="inward-qty">Submission</p>
-										<p class="inward-qty-num">
-											{{$submission_date != '' ? dateFormet_dmy($submission_date) : $submission_date }}
-										</p>
-									</div>
-								</div>
-								<div class="col-12 d-grid gap-2">
-									<a role="button" class="btn border rounded-0 view-img " href="{{route('your_assets_creative_wrcs_links' , ['lot_id' => $lot_id_is])}}">
-										View Links
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				
-				@endif
+					
+					@endif
 
 			@endforeach
 
@@ -1134,6 +1009,7 @@
 					$service = $item['service'];
 					$row = $item['lots_data_is'];
 					$lot_index = $item['id'].$item['lot_id'].$lot_index_is;
+					$tbl_id = $item['id'];
 				@endphp
 
 				{{-- Cataloging Lots --}}
@@ -1145,7 +1021,7 @@
 						$wrc_numbers = ($row['wrc_numbers'] != '' && $row['wrc_numbers'] != null) ? $row['wrc_numbers'] : 'Wrc not generated'; 
 					@endphp
 
-					<div class="col-lg-4 col-md-6 box border-0" style="position: relative;">
+					<div class="col-lg-4 col-md-6 box border-0" style="position: relative;" id="div_{{$tbl_id}}">
 						<div class="row">
 							<div class="under-content-div">
 								<div class="col-12 d-flex d-flex justify-content-between">
@@ -1214,6 +1090,22 @@
 													</svg> &nbsp;
 													Add Tag
 												</a>
+
+												{{-- Remove from Favorites --}}
+												<a href="javascript:void(0)" onclick="remove_favorites('{{base64_encode($tbl_id)}}')">
+													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<g clip-path="url(#clip0_1043_2500)">
+															<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+														</g>
+														<defs>
+															<clipPath id="clip0_1043_2500">
+																<rect width="20" height="20" fill="white"/>
+															</clipPath>
+														</defs>
+													</svg>
+													&nbsp;&nbsp;
+													Remove from favorites
+												</a>
 											</div>
 										</div>
 										<div type="button" class="btn border-0 rounded-circle myButton">
@@ -1258,7 +1150,7 @@
 						$lot_id_is = base64_encode($row['id']);
 					@endphp
 
-					<div class="col-lg-4 col-md-6 box border-0" style="position: relative;">
+					<div class="col-lg-4 col-md-6 box border-0" style="position: relative;" id="div_{{$tbl_id}}">
 						<div class="row">
 							<div class="under-content-div">
 								
@@ -1329,6 +1221,22 @@
 													<path d="M7.91659 9.99967C8.46912 9.99967 8.99902 9.78018 9.38972 9.38948C9.78043 8.99878 9.99992 8.46888 9.99992 7.91634C9.99992 7.36381 9.78043 6.8339 9.38972 6.4432C8.99902 6.0525 8.46912 5.83301 7.91659 5.83301C7.36405 5.83301 6.83415 6.0525 6.44345 6.4432C6.05275 6.8339 5.83325 7.36381 5.83325 7.91634C5.83325 8.46888 6.05275 8.99878 6.44345 9.38948C6.83415 9.78018 7.36405 9.99967 7.91659 9.99967Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
 												</svg> &nbsp;
 												Add Tag
+											</a>
+
+											{{-- Remove from Favorites --}}
+											<a href="javascript:void(0)" onclick="remove_favorites('{{base64_encode($tbl_id)}}')">
+												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<g clip-path="url(#clip0_1043_2500)">
+														<path d="M11.4416 2.92422L12.9083 5.85755C13.1083 6.26589 13.6416 6.65755 14.0916 6.73255L16.7499 7.17422C18.4499 7.45755 18.8499 8.69089 17.6249 9.90755L15.5583 11.9742C15.2083 12.3242 15.0166 12.9992 15.1249 13.4826L15.7166 16.0409C16.1833 18.0659 15.1083 18.8492 13.3166 17.7909L10.8249 16.3159C10.3749 16.0492 9.63326 16.0492 9.17492 16.3159L6.68326 17.7909C4.89992 18.8492 3.81659 18.0576 4.28326 16.0409L4.87492 13.4826C4.98326 12.9992 4.79159 12.3242 4.44159 11.9742L2.37492 9.90755C1.15826 8.69089 1.54992 7.45755 3.24992 7.17422L5.90826 6.73255C6.34992 6.65755 6.88326 6.26589 7.08326 5.85755L8.54992 2.92422C9.34992 1.33255 10.6499 1.33255 11.4416 2.92422Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+													</g>
+													<defs>
+														<clipPath id="clip0_1043_2500">
+															<rect width="20" height="20" fill="white"/>
+														</clipPath>
+													</defs>
+												</svg>
+												&nbsp;&nbsp;
+												Remove from favorites
 											</a>
 										</div>
 									</div>
@@ -1540,6 +1448,36 @@
 			const image_src = $("#image_src"+key).html()
 			$("#image_src").attr("src", image_src);
 			
+		}
+	</script>
+
+	{{-- Removing files from favorites --}}
+	<script>
+		async function remove_favorites(id){
+			console.log('id', id)
+			await $.ajax({
+				url: "{{ url('Remove-your-assets-Favorites') }}",
+				type: "POST",
+				dataType: 'json',
+				data: {
+					id: id,
+					_token: '{{ csrf_token() }}'
+				},
+				success: function(res) {
+					if(res?.status){
+						id = res.id;
+						alert('File removed from Favorites List')
+						$('#div_'+id).css({
+							"pointer-events": "none",
+							"opacity": 0.2
+						});
+						// $('#div_'+id).remove();
+						// window.location.reload();
+					}else{
+						alert('somthing went Wrong!!')
+					}
+				}
+			});
 		}
 	</script>
 @endsection
