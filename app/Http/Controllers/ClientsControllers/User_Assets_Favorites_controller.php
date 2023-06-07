@@ -538,4 +538,27 @@ class User_Assets_Favorites_controller extends Controller
 
     echo json_encode($response_data, true);
   }
+
+  // remove_your_assets_Favorites
+  public function remove_your_assets_Favorites(Request $request){
+    // dd($request);
+    $id = base64_decode($request->id);
+    try {
+      DB::beginTransaction();
+      $status = FavoriteAsset::where('id', $id)->delete();
+      $response = array(
+        'status' => $status,
+        'id' => $id,
+      );
+      DB::rollback();
+    } catch (\Throwable $th) {
+      // throw $th;
+      DB::rollback();
+      $response = array(
+        'status' => false,
+        'error' => $th,
+      );
+    }
+    echo json_encode($response);
+  }
 }
