@@ -54,13 +54,105 @@
 			padding: 10px !important;
 		}
 	</style>
+	
+	<!--Notifiaction click on bell icon-->
+	
+	<style>
+	 /* Styles for the popover container */
+    .notification-popover-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Styles for the popover content */
+    .popover-for-notifaction {
+      display: none;
+      position: absolute;
+      top: 36px;
+      right: 47px;
+      padding: 24px;
+      background: #0F0F0F;
+      border: 1px solid #9F9F9F!important;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      z-index: 2;
+      width: 400px;
+      border-radius: 0px;
+      box-shadow: 4px 16px 40px rgba(255, 255, 255, 0.06);
+    }
+
+    .notificatio-pop-heading {
+      background: #1A1A1A;
+      color: #FFFFFF;
+      font-weight: 600;
+      font-size: 22px;
+      margin: -23px -23px 0px -23px;
+      padding: 24px 0px 16px 24px;
+    }
+
+    .active-notification {
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.1px;
+      color: #FFFFFF;
+      margin-top: 16px;
+      margin-bottom: 0px;
+      cursor: pointer;
+    }
+
+    .Inactive-notification {
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.25px;
+      color: #808080;
+      margin-bottom: 0px;
+      cursor: pointer;
+    }
+
+    .notification-time {
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: #4D4D4D;
+      margin-top: 4px;
+    }
+
+    .hr-line {
+      color: #9F9F9F;
+    }
+
+    .content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+
+    .expanded {
+      max-height: 1000px;
+    }
+
+    .view-all {
+      color: #98A7DA;
+      text-decoration: none;
+      cursor: pointer;
+      margin-top: 0px;
+      font-weight: 500;
+      font-size: 11px;
+      margin-bottom: 0px;
+    }
+
+    .view-all:hover {
+      color: #7c93e0;
+    }
+	</style>
+	
 </head>
 
 <body>
 	<div class="wrapper">
     <?php 
       $user_data = Auth::user();         
-      $ClientNotification = getNotificationList($user_data);
+      $ClientNotification = getNotificationList($user_data , 'all');
       $tot_notification = count($ClientNotification);
       // dd($tot_notification , $ClientNotification);
 			$search_query = "";
@@ -118,12 +210,66 @@
 
 						<ul class="navbar-nav ms-auto me-3">
 							{{-- notification bell --}}
-							<li class="nav-item mt-1" style="padding-right: 56px; margin-top: 12px"> 
-								<svg width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<li class="nav-item mt-1 notification-popover-container" style="padding-right: 56px; margin-top: 12px"> 
+								<svg id="popover-trigger" width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<circle cx="18.5696" cy="18" r="18" fill="#1A1A1A"/>
 									<path d="M18.5695 13.3667V16.1417M18.5862 9.66675C15.5195 9.66675 13.0362 12.1501 13.0362 15.2167V16.9667C13.0362 17.5334 12.8028 18.3834 12.5112 18.8667L11.4528 20.6334C10.8028 21.7251 11.2528 22.9417 12.4528 23.3417C16.4372 24.6667 20.7434 24.6667 24.7278 23.3417C24.9907 23.254 25.2306 23.1084 25.4296 22.9155C25.6287 22.7227 25.7819 22.4876 25.8779 22.2276C25.9739 21.9676 26.0102 21.6894 25.9843 21.4134C25.9583 21.1375 25.8707 20.8709 25.7278 20.6334L24.6695 18.8667C24.3778 18.3834 24.1445 17.5251 24.1445 16.9667V15.2167C24.1362 12.1667 21.6362 9.66675 18.5862 9.66675Z" stroke="#D1D1D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
 									<path d="M21.3447 24.25C21.3447 25.775 20.0947 27.025 18.5697 27.025C17.8113 27.025 17.1113 26.7083 16.6113 26.2083C16.1113 25.7083 15.7947 25.0083 15.7947 24.25" fill="#D1D1D1"/>
-									</svg><span class="notify-count">{{$tot_notification}}</span>
+									</svg>
+									<div class="popover-for-notifaction" id="popover-for-notifaction">
+										<div class="notificatio-pop-heading">Notification</div>
+
+										@foreach ($ClientNotification as $notification_key => $row)
+											@php
+												if($notification_key > 2){
+													break;
+												}
+												$create_date_is = date('Y-m-d H:i:s',strtotime($row['created_at']));										
+												$day_ago = timeBefore($row['created_at']);
+												$is_seen = $row['is_seen'];
+												$seen_class = ($is_seen == 1) ? 'Inactive-notification' : 'active-notification';
+											@endphp
+											<div>
+												<p class="{{$seen_class}}">
+													{{$row['discription']}}
+												</p>
+												<p class="notification-time">
+													{{$day_ago}}
+												</p>
+												<hr class="hr-line">
+											</div>
+										@endforeach
+
+										{{-- <p class="Inactive-notification">
+											Hey, Hugo boss lot no. “ODN10032023BEUCBFZ76” successfully completed.
+										</p>
+										<p class="notification-time">
+											2 days ago
+										</p>
+										<hr class="hr-line">
+										<p class="Inactive-notification">
+											Hey, Hugo boss lot no. “ODN10032023BEUCBFZ76” successfully completed.
+										</p>
+										<p class="notification-time">
+											20 sec. ago
+										</p>
+										<hr class="hr-line">
+										<div class="content" id="content">
+											<p class="Inactive-notification">
+												Hey, Hugo boss lot no. “ODN10032023BEUCBFZ76” successfully completed.
+											</p>
+											<p class="notification-time">
+												2 days ago
+											</p>
+											<hr class="hr-line">
+										</div> --}}
+										<div class="d-flex justify-content-between">
+											<a href="{{route('Notifications')}}" role="button" class="view-all" id="viewButton">View All</a>
+											{{-- <a role="button" class="view-all" id="viewButton" onclick="toggleContent()">View All</a> --}}
+											<p class="view-all">Mark all as read</p>
+										</div>
+									</div>
+									{{-- <span class="notify-count">{{$tot_notification}}</span> --}}
 							</li>
 							{{-- user name --}}
 							<li class="nav-item">
@@ -278,16 +424,17 @@
 						<!--</div>-->
 						
 						<div class="logout-container">
-                          <a href="#" class="logout-button" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M18.529 13.141C18.423 13.07 18.3 13.032 18.171 13.032C17.89 13.032 17.634 13.206 17.487 13.498C16.121 16.211 13.421 17.896 10.441 17.896C9.06602 17.896 7.69101 17.528 6.46302 16.831C3.52402 15.163 1.97102 11.689 2.68702 8.38495C3.43702 4.92395 6.29102 2.41395 9.79101 2.13895C11.916 1.97095 13.853 2.59095 15.523 3.97895C16.353 4.66795 17.015 5.52295 17.548 6.59295C17.668 6.83295 17.892 6.97595 18.148 6.97595C18.255 6.97595 18.359 6.95095 18.459 6.90095C18.797 6.72995 18.931 6.33495 18.762 6.00095C17.359 3.21795 15.098 1.50095 12.043 0.896953C11.809 0.850953 11.573 0.821953 11.324 0.791953C11.217 0.778953 11.111 0.765953 11.004 0.751953H9.85001H9.83002C9.72602 0.765953 9.62202 0.778953 9.51802 0.792953C9.28202 0.822953 9.03802 0.854953 8.80202 0.893953C5.25702 1.47595 2.22302 4.33295 1.42402 7.83995C1.35302 8.15395 1.30902 8.46995 1.26302 8.80895C1.24102 8.96795 1.22002 9.12695 1.19502 9.28495C1.18802 9.32695 1.18002 9.36795 1.16902 9.41895L1.16602 10.571V10.59C1.17902 10.681 1.18902 10.773 1.20102 10.868C1.22602 11.083 1.25102 11.286 1.28402 11.491C1.62702 13.582 2.68502 15.509 4.26502 16.917C5.84702 18.326 7.88102 19.152 9.99302 19.241C10.141 19.247 10.29 19.25 10.436 19.25C12.784 19.25 14.882 18.43 16.671 16.814C17.526 16.042 18.223 15.109 18.743 14.04C18.908 13.701 18.822 13.339 18.528 13.141H18.529Z" fill="#0F0F0F"/>
-                              <path d="M11.7121 11.2731C11.5811 11.4041 11.4501 11.5341 11.3191 11.6651L11.3091 11.6751C11.0451 11.9381 10.7721 12.2091 10.5081 12.4801C10.3551 12.6371 10.2851 12.8381 10.3111 13.0451C10.3371 13.2481 10.4501 13.4201 10.6301 13.5301C10.7391 13.5961 10.8561 13.6301 10.9761 13.6301C11.1621 13.6301 11.3411 13.5501 11.4931 13.3991C12.1031 12.7931 12.7101 12.1851 13.3171 11.5761L13.7101 11.1821C14.4261 10.4651 14.4291 9.54012 13.7171 8.82512C13.0231 8.12812 12.3261 7.43312 11.6301 6.73812L11.5261 6.63512C11.4621 6.57112 11.4081 6.52112 11.3531 6.48412C11.2421 6.40912 11.1141 6.37012 10.9821 6.37012C10.7831 6.37012 10.5931 6.46012 10.4601 6.61612C10.2331 6.88112 10.2471 7.25912 10.4911 7.51312C10.7581 7.79112 11.0371 8.06812 11.3071 8.33612L11.3291 8.35812C11.4551 8.48312 11.5801 8.60712 11.7051 8.73312C11.7361 8.76412 11.7661 8.79712 11.8041 8.83812L12.2541 9.32312H8.66915C8.66915 9.32312 7.55815 9.32112 7.33815 9.32112C7.04015 9.32112 6.74215 9.32112 6.44415 9.32512C6.21215 9.32712 6.01115 9.42212 5.88015 9.59112C5.75415 9.75312 5.71315 9.95812 5.76515 10.1681C5.84415 10.4871 6.10715 10.6781 6.47115 10.6781C7.22915 10.6781 7.98715 10.6781 8.74515 10.6781H12.2711L11.8061 11.1721C11.7681 11.2121 11.7401 11.2431 11.7111 11.2721L11.7121 11.2731Z" fill="#0F0F0F"/>
-                              </svg>
-                            Logout</a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-						</form>
-                        </div>
+							<a href="#" class="logout-button" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M18.529 13.141C18.423 13.07 18.3 13.032 18.171 13.032C17.89 13.032 17.634 13.206 17.487 13.498C16.121 16.211 13.421 17.896 10.441 17.896C9.06602 17.896 7.69101 17.528 6.46302 16.831C3.52402 15.163 1.97102 11.689 2.68702 8.38495C3.43702 4.92395 6.29102 2.41395 9.79101 2.13895C11.916 1.97095 13.853 2.59095 15.523 3.97895C16.353 4.66795 17.015 5.52295 17.548 6.59295C17.668 6.83295 17.892 6.97595 18.148 6.97595C18.255 6.97595 18.359 6.95095 18.459 6.90095C18.797 6.72995 18.931 6.33495 18.762 6.00095C17.359 3.21795 15.098 1.50095 12.043 0.896953C11.809 0.850953 11.573 0.821953 11.324 0.791953C11.217 0.778953 11.111 0.765953 11.004 0.751953H9.85001H9.83002C9.72602 0.765953 9.62202 0.778953 9.51802 0.792953C9.28202 0.822953 9.03802 0.854953 8.80202 0.893953C5.25702 1.47595 2.22302 4.33295 1.42402 7.83995C1.35302 8.15395 1.30902 8.46995 1.26302 8.80895C1.24102 8.96795 1.22002 9.12695 1.19502 9.28495C1.18802 9.32695 1.18002 9.36795 1.16902 9.41895L1.16602 10.571V10.59C1.17902 10.681 1.18902 10.773 1.20102 10.868C1.22602 11.083 1.25102 11.286 1.28402 11.491C1.62702 13.582 2.68502 15.509 4.26502 16.917C5.84702 18.326 7.88102 19.152 9.99302 19.241C10.141 19.247 10.29 19.25 10.436 19.25C12.784 19.25 14.882 18.43 16.671 16.814C17.526 16.042 18.223 15.109 18.743 14.04C18.908 13.701 18.822 13.339 18.528 13.141H18.529Z" fill="#0F0F0F"/>
+									<path d="M11.7121 11.2731C11.5811 11.4041 11.4501 11.5341 11.3191 11.6651L11.3091 11.6751C11.0451 11.9381 10.7721 12.2091 10.5081 12.4801C10.3551 12.6371 10.2851 12.8381 10.3111 13.0451C10.3371 13.2481 10.4501 13.4201 10.6301 13.5301C10.7391 13.5961 10.8561 13.6301 10.9761 13.6301C11.1621 13.6301 11.3411 13.5501 11.4931 13.3991C12.1031 12.7931 12.7101 12.1851 13.3171 11.5761L13.7101 11.1821C14.4261 10.4651 14.4291 9.54012 13.7171 8.82512C13.0231 8.12812 12.3261 7.43312 11.6301 6.73812L11.5261 6.63512C11.4621 6.57112 11.4081 6.52112 11.3531 6.48412C11.2421 6.40912 11.1141 6.37012 10.9821 6.37012C10.7831 6.37012 10.5931 6.46012 10.4601 6.61612C10.2331 6.88112 10.2471 7.25912 10.4911 7.51312C10.7581 7.79112 11.0371 8.06812 11.3071 8.33612L11.3291 8.35812C11.4551 8.48312 11.5801 8.60712 11.7051 8.73312C11.7361 8.76412 11.7661 8.79712 11.8041 8.83812L12.2541 9.32312H8.66915C8.66915 9.32312 7.55815 9.32112 7.33815 9.32112C7.04015 9.32112 6.74215 9.32112 6.44415 9.32512C6.21215 9.32712 6.01115 9.42212 5.88015 9.59112C5.75415 9.75312 5.71315 9.95812 5.76515 10.1681C5.84415 10.4871 6.10715 10.6781 6.47115 10.6781C7.22915 10.6781 7.98715 10.6781 8.74515 10.6781H12.2711L11.8061 11.1721C11.7681 11.2121 11.7401 11.2431 11.7111 11.2721L11.7121 11.2731Z" fill="#0F0F0F"/>
+									</svg>
+								Logout
+							</a>
+								<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+									@csrf
+								</form>
+						</div>
 
 					</div>
 				</div>
@@ -310,7 +457,7 @@
 	<script src="{{ asset('ClientsDist\js\common_js_new.js') }}"></script>
 	{{-- Svg script --}}
 	<script>
-           function swapSVG(event) {
+			function swapSVG(event) {
       var container = event.currentTarget;
       var initialSVG = container.querySelector(".initial-svg");
       var replacementSVG = container.querySelector(".replacement-svg");
@@ -504,6 +651,51 @@
 			}
 		});
 	</script>
+	
+	<!--Notifaction Click on bell icon & view more and less-->
+	
+	 <script>
+      document.addEventListener("DOMContentLoaded", function () {
+      var popoverTrigger = document.getElementById("popover-trigger");
+      var popoverContent = document.getElementById("popover-for-notifaction");
+      var isPopoverOpen = false;
+
+      function togglePopover() {
+        if (isPopoverOpen) {
+          popoverContent.style.display = "none";
+          isPopoverOpen = false;
+        } else {
+          popoverContent.style.display = "block";
+          isPopoverOpen = true;
+        }
+      }
+
+      popoverTrigger.addEventListener("click", function () {
+        togglePopover();
+      });
+
+      document.addEventListener("click", function (event) {
+        if (event.target !== popoverTrigger && !popoverTrigger.contains(event.target) && !popoverContent.contains(event.target)) {
+          popoverContent.style.display = "none";
+          isPopoverOpen = false;
+        }
+      });
+    });
+  </script>
+  <script>
+    function toggleContent() {
+      var contentDiv = document.getElementById("content");
+      var viewButton = document.getElementById("viewButton");
+
+      contentDiv.classList.toggle("expanded");
+
+      if (contentDiv.classList.contains("expanded")) {
+        viewButton.innerText = "View Less";
+      } else {
+        viewButton.innerText = "View All";
+      }
+    }
+  </script>
 
     @yield('js_scripts')
 </body>

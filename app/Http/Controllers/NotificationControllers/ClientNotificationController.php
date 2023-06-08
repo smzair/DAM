@@ -108,6 +108,11 @@ class ClientNotificationController extends Controller
         $ClientNotification = ClientNotification::clientNotificationList($user_data , 'all');
         return view('clients.Notification.allnotification')->with('ClientNotification', $ClientNotification);
     }
+    public function Notifications(){
+        $user_data = Auth::user();         
+        $ClientNotification = ClientNotification::clientNotificationList($user_data , 'all');
+        return view('clients.Notification.ClientNotification')->with('ClientNotification', $ClientNotification);
+    }
 
     public function ClientNotificatioDetail($notificationId){
         $id = base64_decode($notificationId);
@@ -121,6 +126,7 @@ class ClientNotificationController extends Controller
                 $update_query->update();
             }
             $ClientNotificatioDetail = $update_query->getAttributes();
+            // dd($ClientNotificatioDetail);
         }
         return view('clients.Notification.Notification-Detail')->with('ClientNotificatioDetail', $ClientNotificatioDetail);
     }

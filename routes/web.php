@@ -706,6 +706,8 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::POST('/your-assets-Favorites', [User_Assets_Favorites_controller::class, 'save'])->name('Save_your_assets_Favorites');
     Route::POST('/Remove-your-assets-Favorites', [User_Assets_Favorites_controller::class, 'remove_your_assets_Favorites'])->name('remove_your_assets_Favorites');
     
+    Route::get('/Notifications', [ClientNotificationController::class, 'Notifications'])->name('Notifications'); 
+
 });
 
 // route for global search in file manager system
