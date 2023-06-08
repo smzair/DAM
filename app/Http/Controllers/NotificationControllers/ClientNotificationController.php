@@ -108,10 +108,37 @@ class ClientNotificationController extends Controller
         $ClientNotification = ClientNotification::clientNotificationList($user_data , 'all');
         return view('clients.Notification.allnotification')->with('ClientNotification', $ClientNotification);
     }
+
+    // Client Notifications New
     public function Notifications(){
         $user_data = Auth::user();         
         $ClientNotification = ClientNotification::clientNotificationList($user_data , 'all');
         return view('clients.Notification.ClientNotification')->with('ClientNotification', $ClientNotification);
+    }
+
+    // set notifiction to seen Based on id
+
+    public function set_notifiction_to_seen(Request $request){
+
+        $ids = $request->ids;
+        $status = false;
+        try {
+            DB::beginTransaction();
+            $response = ClientNotification::whereIn('id', $ids)->where('is_seen', '0')->update(['is_seen' => '1' ,'seen_by' => Auth::id() , 'seen_at' => date('Y-m-d H:i:s')]);
+            $status = true;
+            if($response > 0){
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $response = $th;
+            //throw $th;
+        }
+        echo json_encode(array(
+            'status' => $status,
+            'response' => $response
+        ));
+       
     }
 
     public function ClientNotificatioDetail($notificationId){

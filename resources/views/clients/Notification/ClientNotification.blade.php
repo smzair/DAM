@@ -124,7 +124,7 @@
 	$printedYesterday = false;
 	$printedOlder = false;
 	$total_notification = count($ClientNotification);
-	$ids = array_column($ClientNotification, 'id');
+	$ids = json_encode(array_column($ClientNotification, 'id'),true);
 	// dd($ids , $ClientNotification);
 @endphp
 	
@@ -146,7 +146,7 @@
 					You have {{$total_notification}} new notifiations
 				</p>
 			</div>
-			<p class="p-2 markk-all-read-para">Mark all read</p>
+			<p class="p-2 markk-all-read-para" style="cursor: pointer;" onclick="set_notifiction_to_seen({{$ids}})">Mark all read</p>
 		</div>
 	</div>
 	<hr class="notification-horizontal-line">
@@ -182,7 +182,7 @@
 				<div class="col-12 d-flex justify-content-between">
 					<div>
 						<p class="{{$is_active_notification_class}}">
-							Armani Exchange lot no. “ODN10032023BEUCBFZ76” status has changed to task started.
+							{{$row['discription']}}
 						</p>
 						<p class="notification-time">
 							{{$day_ago}}
