@@ -707,6 +707,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::POST('/Remove-your-assets-Favorites', [User_Assets_Favorites_controller::class, 'remove_your_assets_Favorites'])->name('remove_your_assets_Favorites');
     
     Route::get('/Notifications', [ClientNotificationController::class, 'Notifications'])->name('Notifications'); 
+    Route::POST('/set_notifiction_to_seen', [ClientNotificationController::class, 'set_notifiction_to_seen'])->name('set_notifiction_to_seen');
 
 });
 

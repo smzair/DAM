@@ -154,6 +154,8 @@
       $user_data = Auth::user();         
       $ClientNotification = getNotificationList($user_data , 'all');
       $tot_notification = count($ClientNotification);
+			$ids = json_encode(array_column($ClientNotification, 'id'),true);
+
       // dd($tot_notification , $ClientNotification);
 			$search_query = "";
 			if(isset($other_data)){
@@ -266,7 +268,7 @@
 										<div class="d-flex justify-content-between">
 											<a href="{{route('Notifications')}}" role="button" class="view-all" id="viewButton">View All</a>
 											{{-- <a role="button" class="view-all" id="viewButton" onclick="toggleContent()">View All</a> --}}
-											<p class="view-all">Mark all as read</p>
+											<p class="view-all" onclick="set_notifiction_to_seen({{$ids}})" style="cursor: pointer;">Mark all as read</p>
 										</div>
 									</div>
 									{{-- <span class="notify-count">{{$tot_notification}}</span> --}}
@@ -697,6 +699,45 @@
     }
   </script>
 
-    @yield('js_scripts')
+  <!--svg color change when tab active-->
+  
+  <script>
+  function activateTab(tabNumber) {
+  const tabs = document.getElementsByClassName("tab");
+  
+  for (let i = 0; i < tabs.length; i++) {
+    tabs[i].classList.remove("active");
+  }
+  
+  const tab = document.querySelector(`.tab:nth-child(${tabNumber})`);
+  tab.classList.add("active");
+  }
+ </script>
+
+	{{-- set notification to seen  --}}
+	<script>
+		async function set_notifiction_to_seen(ids){
+			console.log('ids', ids);
+			await $.ajax({
+				url: "{{ url('set_notifiction_to_seen') }}",
+				type: "POST",
+				dataType: 'json',
+				data: {
+					ids,
+					_token: '{{ csrf_token() }}'
+				},
+				success: function(res) {
+					console.log(res)
+					if(res?.status){
+						alert('Notification seen')
+						window.location.reload(true);
+					}
+				}
+			});
+		}
+
+	</script> 
+
+	@yield('js_scripts')
 </body>
 </html>
