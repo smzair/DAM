@@ -866,8 +866,7 @@ if (!function_exists('getUsersRole')) {
 
 // all unseen client's notification list 
 if(!function_exists('getNotificationList')){
-    function getNotificationList($user_data){
-        $is_seen= 0;
+    function getNotificationList($user_data , $is_seen = 'all'){
         $clientNotificationList = ClientNotification::clientNotificationList($user_data , $is_seen);
         return $clientNotificationList;
     }
