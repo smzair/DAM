@@ -21,18 +21,18 @@ Clients - Create New user
 </div>
 <div class="row">
   <div class="col-12">
-    <p class="create-user-txt ps-2">Add user</p>
-    <p class="add-user-para ps-2">You can add a maximum of 10 users.</p>
+    <p class="create-user-txt">Add user</p>
+    <p class="add-user-para">You can add a maximum of 10 users.</p>
   </div>
   <form action="" method="post" id="createUser_form">
-    <div class="row ps-lg-2 mt-3">
+    <div class="row mt-3">
       @csrf
 
       
       {{-- name --}}
 
       <div class="col-lg-5 col-md-5 col-sm-12 form_control_gp">
-        <input class="form-control form-control-lg rounded-0 mb-3 user-form" type="text" placeholder="Enter name"
+        <input class="form-control form-control-lg rounded-0 mb-4 user-form" type="text" placeholder="Enter name"
           aria-label=".form-control-lg example" name="name" onkeypress ="return isAlphabet(event)">
           <p class="error"></p> 
       </div>
@@ -40,7 +40,7 @@ Clients - Create New user
       {{-- Brand --}}
 
       <div class="col-lg-5 col-md-5 col-sm-12 form_control_gp">
-        <select id="brand" class="form-select form-select-lg rounded-0 mb-3 user-form" aria-label=".form-select-lg example"  name="brand[]" multiple>
+        <select id="brand" class="form-select form-select-lg rounded-0 mb-4 user-form" aria-label=".form-select-lg example"  name="brand[]" multiple>
           @foreach ($brands as $row)
             <option value="{{$row['brand_id']}}">{{$row['name']}}</option>
           @endforeach
@@ -51,26 +51,26 @@ Clients - Create New user
       {{-- Email --}}
 
       <div class="col-lg-5 col-md-5 col-sm-12 form_control_gp">
-        <input class="form-control form-control-lg rounded-0 mb-3 user-form" type="text" placeholder="Enter email" aria-label=".form-control-lg example" name="email" >
+        <input class="form-control form-control-lg rounded-0 mb-4 user-form" type="text" placeholder="Enter email" aria-label=".form-control-lg example" name="email" >
         <p class="error"></p> 
       </div>
       
       {{-- phone --}}
       <div class="col-lg-5 col-md-5 col-sm-12 form_control_gp">
-        <input class="form-control form-control-lg rounded-0 mb-3 user-form" type="text"  placeholder="Enter phone no." aria-label=".form-control-lg example"  maxlength="10" onkeypress="return isNumber(event)" name="phone" >
+        <input class="form-control form-control-lg rounded-0 mb-4 user-form" type="text"  placeholder="Enter phone no." aria-label=".form-control-lg example"  maxlength="10" onkeypress="return isNumber(event)" name="phone" >
         <p class="error"></p> 
       </div>
 
       {{-- Address --}}
       <div class="col-lg-10 col-md-10  col-sm-12 form_control_gp">
-        <input class="form-control form-control-lg rounded-0 mb-3 user-form" type="text" placeholder="Address" aria-label=".form-control-lg example" name="address">
+        <input class="form-control form-control-lg rounded-0 mb-4 user-form" type="text" placeholder="Address" aria-label=".form-control-lg example" name="address">
           <p class="error"></p> 
       </div>
 
       {{-- user_module --}}
-      <div class="col-lg-5 col-md-5 col-sm-12 form_control_gp">
-        <select  class="form-select form-select-lg rounded-0 mb-3 user-form" aria-label=".form-select-lg example"  name="user_module[]" id="user_module" multiple>
-          <option value="DAM">DAM</option>
+      <div class="col-lg-5 col-md-5 col-sm-12 form_control_gp d-none">
+        <select  class="form-select form-select-lg rounded-0 mb-4 user-form" aria-label=".form-select-lg example"  name="user_module[]" id="user_module" multiple>
+          <option value="DAM" selected>DAM</option>
           <option value="OMS">OMS</option>
         </select>
         <p class="error"></p> 
@@ -228,5 +228,3 @@ Clients - Create New user
 </script>
 
 @endsection
-
-
