@@ -29,8 +29,8 @@
 		z-index: 1;
 		width: 620px !important;
 		/* Set the width of the popover */
-		top: 328px;
-		left: 411px;
+		top: 455px;
+        left: 405px;
 	}
 	.hoverpopoverLinks {
 		position: absolute;
@@ -64,8 +64,8 @@
 
 .track-lot-table-wrc-no {
   font-weight: 500;
-  font-size: 16px;
-  color: #FFFFFF;
+  font-size: 14px;
+  color: #B8B8B8;
   letter-spacing: 0.15px;
 }
 
@@ -74,6 +74,12 @@
   font-size: 14px;
   color: #808080;
   line-height: 0.1;
+}
+
+.No-links-available{
+    font-weight: 400;
+    font-size: 16px;
+    color: #4D4D4D;
 }
 
 .track-lot-table-inward-qty {
@@ -116,37 +122,52 @@
 </style>
 <div class="row">
 	<div class="col-12">
-		<a class="btn btn-light border-0 back-btn" href="{{ url()->previous() }}" role="button"><svg width="22" height="14"
-				viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M6.69628 1.5L1 7L6.69628 12.5M21 7H1.15953" stroke="#9F9F9F" stroke-width="1.5"
-					stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-			</svg>
+		<a class="btn btn-light border-0 back-btn" href="{{ url()->previous() }}" role="button">
+		    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_1463_886)">
+            <path d="M6.05829 15.1167L0.999958 10.0584L6.05829 5.00003M20.0833 10.0584L1.14162 10.0584" stroke="#808080" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_1463_886">
+            <rect width="20" height="20" fill="#808080"/>
+            </clipPath>
+            </defs>
+            </svg>
 			&nbsp; back</a>
 	</div>
 	<div class="col-12 d-flex justify-content-between">
 		<div>
 			<p class="brand-name-under-track-table">{{$lot_detail[0]['brand_name']}}</p>
 			<p class="lot-date-sty">
-			    <svg width="14" height="20" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+			    <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M9.15538 7.9917H9.16064M9.15538 9.7417H9.16064M6.99705 7.9917H7.00288M6.99705 9.7417H7.00288M4.83813 7.9917H4.84397M4.83813 9.7417H4.84397" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
                  </svg>
 			     {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
 			</p>
 		</div>
-		
 	</div>
-	<div class="col-12 mt-4">
-	    <div class="col-12 d-flex justify-content-between">  
-	    <h2 class="lot-no-sty"><span style="font-weight: 500;font-size: 14px;color: #9F9F9F;">Lot no:</span> {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
-	    <p class="inward-sty">Inward Quantity: {{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</p>
-	     </div>
-		<div class="row">
-			<div class="col-lg-1 mt-3      ">
-				<p style="font-weight: 500;font-size: 14px;color: #9F9F9F;">Status:</p>
-				<p style="font-weight: 700;font-size: 22px;color: #FFF866;">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'] : "20%"}}</p>
+	<div style="color: #9F9F9F;">
+	    <hr style="margin-top:24px; margin-bottom:24px;">
+	</div>
+	
+	<div class="col-12">
+	    <div class="col-12 d-flex justify-content-between">
+	       <div>
+	          <p style="font-weight: 500;font-size: 16px;color: #808080;margin-bottom: 0px;">LOT NO</p>
+	          <h2 class="lot-no-sty"> {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
+	      </div>
+	      <div>
+	          <p style="font-weight: 500;font-size: 16px;color: #808080;margin-bottom: 0px;">INWARD QUANTITY </p>
+	           <h2 class="lot-no-sty">{{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</h2>
+	      </div>
+	    </div>
+		<div class="row progress-row">
+			<div class="col-lg-1 progress-column-status-percen">
+				<p class="progress-status-head">Status:</p>
+				<p class="progress-status-percentage">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'] : "20%"}}</p>
 			</div>
-			<div class="col-lg-11">
+			<div class="col-lg-11 progress-columnn">
 				<div class="progress-box">
 					<div class="progress-labels">
 						<div class="progress-label progress-label-1">
@@ -199,9 +220,9 @@
 		</div>
 
 	</div>
-
-	<div class="col-12 mt-4 table-responsive">
-		<table class="table border-light">
+    <p class="WRC-info-para">WRC INFO.</p>
+	<div class="col-12 table-responsive track-lot-table-details">
+		<table class="table table-borderless">
 			<thead>
 				<tr>
 					<th scope="col" class="table-heading-sty">WRC No.</th>
@@ -209,7 +230,7 @@
 					<th scope="col" class="table-heading-sty">Quantity</th>
 					<th scope="col" class="table-heading-sty">Uploading & QC</th>
 					<th scope="col" class="table-heading-sty">Submissions</th>
-					<th scope="col" class="table-heading-sty">Final Links</th>
+					<th scope="col" class="table-heading-sty">File Links</th>
 					<th scope="col" class="table-heading-sty">Invoice</th>
 				</tr>
 			</thead>
@@ -296,7 +317,7 @@
 													@endforeach
 													@else
 														<div class="col-12 d-flex justify-content-between ps-4 pe-4">
-															<span class="m-0 p-0">No links available</span>
+															<span class="m-0 p-0 No-links-available">No links available</span>
 														</div>
 												@endif				
 											</div>
@@ -305,7 +326,7 @@
 										<div class="lower-wrc-details-table mt-2">
 											<div class="col-12 d-flex justify-content-between ps-2 pe-2 pb-2">
 												<div>
-													<p class="track-lot-table-wrc-no mb-0">Creative links</p>
+													<p class="track-lot-table-wrc-no mb-0">Copy links</p>
 												</div>
 											</div>
 											@php
@@ -317,12 +338,12 @@
 												@foreach ($copy_links_arr as $copy_links_data)
 													<div class="col-12 d-flex justify-content-between ps-2 pe-2">
 														<a href="{{$copy_links_data}}" target="_blank" rel="noopener noreferrer">View</a>
-														<span class="m-0 p-0">No links available</span>
+														<span class="m-0 p-0 No-links-available">No links available</span>
 													</div>
 												@endforeach
 											@else
 												<div class="col-12 d-flex justify-content-between ps-2 pe-2">
-													<span class="m-0 p-0">No links available</span>
+													<span class="m-0 p-0 No-links-available">No links available</span>
 												</div>
 											@endif								
 										</div>
