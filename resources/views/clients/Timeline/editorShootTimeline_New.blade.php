@@ -144,22 +144,21 @@
 				<div class="progress-box">
 
 					@php
-						$overall_progress = $lot_detail[0]['overall_progress'];
+						$overall_progress_is = $lot_detail[0]['overall_progress'];
+						$overall_progress_is = str_replace('%', '', $overall_progress_is);
 						$dispaly_bar_1 = false;
 						$dispaly_bar_2 = false;
 						$dispaly_bar_3 = false;
 						$dispaly_bar_4 = false;
 						$dispaly_bar_5 = false;
-						if($overall_progress <= 20){
+						if($overall_progress_is <= 20){
 							$dispaly_bar_1 = true;
-						}else if($overall_progress > 20 && $overall_progress <= 40){
+						}else if($overall_progress_is > 20 && $overall_progress_is <= 40){
 							$dispaly_bar_2 = true;
-						}else if($overall_progress > 40 && $overall_progress <= 60){
+						}else if($overall_progress_is > 40 && $overall_progress_is <= 60){
 							$dispaly_bar_3 = true;
-						}else if($overall_progress > 60 && $overall_progress <= 80){
+						}else if($overall_progress_is > 60 && $overall_progress_is <= 80){
 							$dispaly_bar_4 = true;
-						}else if($overall_progress > 80){
-							$dispaly_bar_5 = true;
 						}
 					@endphp
 					<div class="progress-labels">
@@ -185,30 +184,33 @@
 							</p>
 						</div>
 						<div class="progress-label progress-label-3">
-							@if ($dispaly_bar_3)
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_3)
 								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
-								@endif 
+								@endif
 								Shoot started</p>
 						</div>
 						<div class="progress-label progress-label-4">
-							@if ($dispaly_bar_4)
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_4)
 								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
-								@endif 
+								@endif
 								Quality Check (QC)</p>
 						</div>
 						<div class="progress-label progress-label-5">
-							@if ($dispaly_bar_5)
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_5)
 								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
-								@endif 
+								@endif
 								Submissions</p>
 						</div>
 					</div>
@@ -333,7 +335,7 @@
 								{{$wrc_row['submission_status']}}
 								<?php
 									$diables_img_download = 'diables_img_download';
-									if($wrc_row['submission_status'] != 'pending'){
+									if($wrc_row['submission_status'] == 'Done'){
 										$diables_img_download = "";
 										echo "<br>".date('d/m/Y', strtotime($wrc_row['submission_date']));
 									}
@@ -342,10 +344,16 @@
 							<td class="table-column">-</td>
 							<td class="table-column" style="text-align: center;">
 								<a class="{{$diables_img_download}}" href="{{route('download_Shoot_lot_Edited_wrc' , [ base64_encode($wrc_row['wrc_id']) ] )}}"  >
-									<svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14 9.5625V16.3125M14 24.75C20.2134 24.75 25.25 19.7134 25.25 13.5C25.25 7.28663 20.2134 2.25 14 2.25C7.78663 2.25 2.75 7.28663 2.75 13.5C2.75 19.7134 7.78663 24.75 14 24.75Z" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M10.625 14.0625L14 17.4375L17.375 14.0625" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
+									@if ($wrc_row['submission_status'] == 'Done')
+										<svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M14 2C7.652 2 2.5 7.152 2.5 13.5C2.5 19.848 7.652 25 14 25C20.348 25 25.5 19.848 25.5 13.5C25.5 7.152 20.348 2 14 2ZM18.0595 14.6845L14.6095 18.1345C14.437 18.307 14.2185 18.3875 14 18.3875C13.7815 18.3875 13.563 18.307 13.3905 18.1345L9.9405 14.6845C9.7801 14.5222 9.69014 14.3032 9.69014 14.075C9.69014 13.8468 9.7801 13.6278 9.9405 13.4655C10.274 13.132 10.826 13.132 11.1595 13.4655L13.1375 15.4435V9.475C13.1375 9.0035 13.5285 8.6125 14 8.6125C14.4715 8.6125 14.8625 9.0035 14.8625 9.475V15.4435L16.8405 13.4655C17.174 13.132 17.726 13.132 18.0595 13.4655C18.393 13.799 18.393 14.351 18.0595 14.6845Z" fill="white"/>
+										</svg>
+									@else
+										<svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M14 9.5625V16.3125M14 24.75C20.2134 24.75 25.25 19.7134 25.25 13.5C25.25 7.28663 20.2134 2.25 14 2.25C7.78663 2.25 2.75 7.28663 2.75 13.5C2.75 19.7134 7.78663 24.75 14 24.75Z" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+											<path d="M10.625 14.0625L14 17.4375L17.375 14.0625" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+										</svg>
+									@endif
 								</a>
 							</td>
 						</tr>

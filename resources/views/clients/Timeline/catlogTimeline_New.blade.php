@@ -158,21 +158,74 @@
 			</div>
 			<div class="col-lg-11 progress-columnn">
 				<div class="progress-box">
+					@php
+						$overall_progress_is = $lot_detail[0]['overall_progress'];
+						$overall_progress_is = str_replace('%', '', $overall_progress_is);
+						$dispaly_bar_1 = false;
+						$dispaly_bar_2 = false;
+						$dispaly_bar_3 = false;
+						$dispaly_bar_4 = false;
+						$dispaly_bar_5 = false;
+						if($overall_progress_is <= 20){
+							$dispaly_bar_1 = true;
+						}else if($overall_progress_is > 20 && $overall_progress_is <= 40){
+							$dispaly_bar_2 = true;
+						}else if($overall_progress_is > 40 && $overall_progress_is <= 60){
+							$dispaly_bar_3 = true;
+						}else if($overall_progress_is > 60 && $overall_progress_is <= 80){
+							$dispaly_bar_4 = true;
+						}
+					@endphp
 					<div class="progress-labels">
 						<div class="progress-label progress-label-1">
-							<p class="progress-upper-heading">Inward</p>
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_1)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif
+								Inward</p>
 						</div>
 						<div class="progress-label progress-label-2">
-							<p class="progress-upper-heading">WRC Generated</p>
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_2)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif
+								WRC Generated</p>
 						</div>
 						<div class="progress-label progress-label-3">
-							<p class="progress-upper-heading">Task Assigned</p>
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_3)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif
+								Task Assigned</p>
 						</div>
 						<div class="progress-label progress-label-4">
-							<p class="progress-upper-heading">Editing & QC</p>
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_4)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif
+								Editing & QC</p>
 						</div>
 						<div class="progress-label progress-label-5">
-							<p class="progress-upper-heading">Submissions</p>
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_5)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif
+								Submissions</p>
 						</div>
 					</div>
 					<div class="progress">
