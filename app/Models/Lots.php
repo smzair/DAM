@@ -138,13 +138,15 @@ class Lots extends Model {
             $wrc_id_arr = array();
             // dd($wrc_info , $lot_detail);
             foreach($wrc_info as $key => $val){
-                $sku_info_query = Skus::where('wrc_id', $val['wrc_id'])->where('status', 1);
+                $sku_info_query = Skus::where('wrc_id', $val['wrc_id']);
+                // $sku_info_query = Skus::where('wrc_id', $val['wrc_id'])->where('status', 1);
                 $sku_count = $sku_info_query->count();
                 $tot_sku_count += $sku_count;
                 $wrc_info[$key]['wrc_order_qty'] =  $sku_count;
-                $wrc_info[$key]['wrc_qc_qty'] =  $sku_count;
+                $wrc_info[$key]['wrc_qc_qty'] =  '';
                 $wrc_info[$key]['qc_status'] =  'pending';
                 $wrc_info[$key]['submission_status'] =  'pending';
+                $wrc_info[$key]['submission_date'] =  '';
 
                 $adaptation_arr = array();
 
@@ -175,7 +177,7 @@ class Lots extends Model {
 
                     $allocation_info = allocation::whereIn('uploadraw_id', $upload_raw_info_id)->get()->toArray();
 
-                    $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->get()->toArray();
+                    $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->where('editor_submission.qc' , '=' , '1')->groupby('editor_submission.sku_id')->get()->toArray();
                     
                     if(count($editor_qc_info) > 0){
                         $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[3];

@@ -15,8 +15,9 @@
 		z-index: 1;
 		width: 620px !important;
 		/* Set the width of the popover */
-		top: 328px;
-		left: 411px;
+		top: 455px;
+        left: 405px;
+
 	}
 
 	/* CSS for the popover text */
@@ -93,52 +94,122 @@
 </style>
 <div class="row">
 	<div class="col-12">
-		<a class="btn btn-light border-0 back-btn" href="{{ url()->previous() }}" role="button"><svg width="22" height="14"
-				viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M6.69628 1.5L1 7L6.69628 12.5M21 7H1.15953" stroke="#9F9F9F" stroke-width="1.5"
-					stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-			</svg>
+		<a class="btn btn-light border-0 back-btn" href="{{ url()->previous() }}" role="button">
+		   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_1463_886)">
+            <path d="M6.05829 15.1167L0.999958 10.0584L6.05829 5.00003M20.0833 10.0584L1.14162 10.0584" stroke="#808080" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_1463_886">
+            <rect width="20" height="20" fill="#808080"/>
+            </clipPath>
+            </defs>
+            </svg>
+
 			&nbsp; back</a>
 	</div>
 	<div class="col-12 d-flex justify-content-between">
 		<div>
 			<p class="brand-name-under-track-table">{{$lot_detail[0]['brand_name']}}</p>
 			<p class="lot-date-sty">
-			      <svg width="14" height="20" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+			      <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M9.15538 7.9917H9.16064M9.15538 9.7417H9.16064M6.99705 7.9917H7.00288M6.99705 9.7417H7.00288M4.83813 7.9917H4.84397M4.83813 9.7417H4.84397" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
 			     {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
-			     </p>
+			 </p>
 		</div>
 	</div>
-	<div class="col-12 mt-4">
+	<div style="color: #9F9F9F;">
+	    <hr style="margin-top:24px; margin-bottom:24px;">
+	</div>
+
+	<div class="col-12">
 	   <div class="col-12 d-flex justify-content-between">  
-	     <h2 class="lot-no-sty"> <span style="font-weight: 500;font-size: 14px;color: #9F9F9F;">Lot no:</span> {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
-	     <p class="inward-sty">Inward Quantity: {{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</p>
+	      <div>
+	          <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">Lot no:</p>
+	          <h2 class="lot-no-sty">  {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
+	      </div>
+	      <div>
+	          <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">Inward Quantity: </p>
+	           <h2 class="lot-no-sty">{{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</h2>
+	      </div>
 	   </div>
-		<div class="row">
-			<div class="col-lg-1 mt-3">
-				<p style="font-weight: 500;font-size: 14px;color: #9F9F9F;">Status:</p>
-				<p style="font-weight: 700;font-size: 22px;color: #FFF866;">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'].'%' : "20%"}}</p>
+		<div class="row progress-row">
+			<div class="col-lg-1 progress-column-status-percen">
+				<p class="progress-status-head">Status:</p>
+				<p class="progress-status-percentage">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'].'%' : "20%"}}</p>
 			</div>
-			<div class="col-lg-11">
+			<div class="col-lg-11 progress-columnn">
 				<div class="progress-box">
+
+					@php
+						$overall_progress = $lot_detail[0]['overall_progress'];
+						$dispaly_bar_1 = false;
+						$dispaly_bar_2 = false;
+						$dispaly_bar_3 = false;
+						$dispaly_bar_4 = false;
+						$dispaly_bar_5 = false;
+						if($overall_progress <= 20){
+							$dispaly_bar_1 = true;
+						}else if($overall_progress > 20 && $overall_progress <= 40){
+							$dispaly_bar_2 = true;
+						}else if($overall_progress > 40 && $overall_progress <= 60){
+							$dispaly_bar_3 = true;
+						}else if($overall_progress > 60 && $overall_progress <= 80){
+							$dispaly_bar_4 = true;
+						}else if($overall_progress > 80){
+							$dispaly_bar_5 = true;
+						}
+					@endphp
 					<div class="progress-labels">
 						<div class="progress-label progress-label-1">
-							<p class="progress-upper-heading">Inward</p>
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_1)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif
+								Inward</p>
 						</div>
 						<div class="progress-label progress-label-2">
-							<p class="progress-upper-heading">WRC Generated</p>
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_2)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif
+								WRC Generated
+							</p>
 						</div>
 						<div class="progress-label progress-label-3">
-							<p class="progress-upper-heading">Shoot started</p>
+							@if ($dispaly_bar_3)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif 
+								Shoot started</p>
 						</div>
 						<div class="progress-label progress-label-4">
-							<p class="progress-upper-heading">Editing & QC</p>
+							@if ($dispaly_bar_4)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif 
+								Quality Check (QC)</p>
 						</div>
 						<div class="progress-label progress-label-5">
-							<p class="progress-upper-heading">Submissions</p>
+							@if ($dispaly_bar_5)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif 
+								Submissions</p>
 						</div>
 					</div>
 					<div class="progress">
@@ -179,15 +250,15 @@
 		</div>
 
 	</div>
-
-	<div class="col-12 mt-4 table-responsive">
-		<table class="table border-light">
+      <p class="WRC-info-para">WRC INFO.</p>
+	<div class="col-12 table-responsive track-lot-table-details">
+		<table class="table table-borderless">
 			<thead>
 				<tr>
 					<th scope="col" class="table-heading-sty">WRC No.</th>
 					<th scope="col" class="table-heading-sty">Date</th>
 					<th scope="col" class="table-heading-sty">Quantity</th>
-					<th scope="col" class="table-heading-sty">Uploading & QC</th>
+					<th scope="col" class="table-heading-sty">Quality Check (QC)</th>
 					<th scope="col" class="table-heading-sty">Submissions</th>
 					<th scope="col" class="table-heading-sty">Invoice</th>
 					<th scope="col" class="table-heading-sty" style="text-align: center;">Images</th>
@@ -258,13 +329,23 @@
 							<td class="table-column">{{dateFormet_dmy($wrc_row['wrc_created_at'])}}</td>
 							<td class="table-column">{{$wrc_row['wrc_order_qty']}}</td>
 							<td class="table-column">{{$wrc_row['qc_status'] == 'Done' ? $wrc_row['wrc_qc_qty'] : '-'}}</td>
-							<td class="table-column table-invoice">{{$wrc_row['submission_status']}}</td>
+							<td class="table-column table-invoice">
+								{{$wrc_row['submission_status']}}
+								<?php
+									$diables_img_download = 'diables_img_download';
+									if($wrc_row['submission_status'] != 'pending'){
+										$diables_img_download = "";
+										echo "<br>".date('d/m/Y', strtotime($wrc_row['submission_date']));
+									}
+								?>
+							</td>
 							<td class="table-column">-</td>
 							<td class="table-column" style="text-align: center;">
-								<a href="{{route('download_Shoot_lot_Edited_wrc' , [ base64_encode($wrc_row['wrc_id']) ] )}}">
-									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M15.0583 12.0253L9.99998 17.0837L4.94165 12.0253M9.99998 2.91699V16.942" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-									</svg>
+								<a class="{{$diables_img_download}}" href="{{route('download_Shoot_lot_Edited_wrc' , [ base64_encode($wrc_row['wrc_id']) ] )}}"  >
+									<svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14 9.5625V16.3125M14 24.75C20.2134 24.75 25.25 19.7134 25.25 13.5C25.25 7.28663 20.2134 2.25 14 2.25C7.78663 2.25 2.75 7.28663 2.75 13.5C2.75 19.7134 7.78663 24.75 14 24.75Z" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M10.625 14.0625L14 17.4375L17.375 14.0625" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
 								</a>
 							</td>
 						</tr>
@@ -280,8 +361,16 @@
 	</div>
 	<div class="col-12 d-flex justify-content-between last-btn-div">
 		<div class="d-flex last-button-mar">
-			<a href="{{route('download_Shoot_Lot_edited', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn">Download images</a>&nbsp;&nbsp;&nbsp;
-			<a href="{{route('download_Shoot_Lot_raw', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn">Download raw</a>&nbsp;&nbsp;&nbsp;
+
+			<?php 
+				$lot_status_is = $lot_detail[0]['lot_status'];
+				$img_download = "";
+				if($lot_status_is != 'Submission Done'){
+					$img_download = "diables_img_download";
+				}
+				?>
+			<a href="{{route('download_Shoot_Lot_edited', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn {{$img_download}}">Download images</a>&nbsp;&nbsp;&nbsp;
+			<a href="{{route('download_Shoot_Lot_raw', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn {{$img_download}}">Download raw</a>&nbsp;&nbsp;&nbsp;
 		</div>
 		<div class="download-invoice">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
