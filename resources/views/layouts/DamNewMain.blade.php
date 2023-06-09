@@ -84,7 +84,7 @@
     .notificatio-pop-heading {
       background: #1A1A1A;
       color: #FFFFFF;
-      font-weight: 600;
+      font-weight: 500;
       font-size: 22px;
       margin: -23px -23px 0px -23px;
       padding: 24px 0px 16px 24px;
@@ -151,27 +151,27 @@
 	{{-- Track lot new Css  --}}
 	<style>
 		
-	@keyframes scaleAnimation {
-			0% { transform: scale(1); }
-			50% { transform: scale(1.2); }
-			100% { transform: scale(1); }
-		}
-		
-		.task-status-svg {
-			width: 20px;
-			height: 20px;
-		}
-		
-		.task-status-svg circle {
-			fill: #59ABB2;
-			stroke: none;
-			transition: fill 0.3s;
-			transform-origin: center;
-		}
-		
-		.task-status-svg .scale-animation {
-			animation: scaleAnimation 1.5s infinite;
-    }
+	  @keyframes scaleAnimation {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    
+    .task-status-svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .task-status-svg circle {
+      fill: #59ABB2;
+      stroke: none;
+      transition: fill 0.3s;
+      transform-origin: center;
+    }
+    
+    .task-status-svg .scale-animation {
+      animation: scaleAnimation 1.5s infinite;
+    }
 
 		.diables_img_download{
 			pointer-events: none;
@@ -180,6 +180,28 @@
 		.last-button-mar .diables_img_download{
 			background: #4D4D4D !important;
 			color: #808080 !important;
+			border:0px !important;
+		}
+	</style>
+
+	{{-- No New notification css --}}
+	<style>
+		@keyframes taskStatus {
+			0% { transform: scale(1); }
+			50% { transform: scale(1.2); }
+			100% { transform: scale(1); }
+		}
+		
+		rect[x="1.3999"][y="1"][width="14"][height="14"] {
+			animation: taskStatus 1.5s infinite;
+			fill: #59ABB2;
+			stroke: #59ABB2;
+			transition: fill 0.3s, stroke 0.3s;
+		}
+		
+		rect[x="1.3999"][y="1"][width="14"][height="14"]:hover {
+			fill: #FFD700;
+			stroke: #FFD700;
 		}
 	</style>
 </head>
@@ -189,10 +211,14 @@
     <?php 
       $user_data = Auth::user();         
       $ClientNotification = getNotificationList($user_data , 'all');
-      $tot_notification = count($ClientNotification);
+      
+			$is_seen_notifications = array_column($ClientNotification, 'id','is_seen');
+			$new_notification = array_key_exists('0', $is_seen_notifications);
+
+			$tot_notification = count($ClientNotification);
 			$ids = json_encode(array_column($ClientNotification, 'id'),true);
 
-      // dd($tot_notification , $ClientNotification);
+      // dd($is_seen_notifications , $ClientNotification);
 			$search_query = "";
 			if(isset($other_data)){
 				if(isset($other_data['search_query'])){
@@ -248,64 +274,72 @@
 
 						<ul class="navbar-nav ms-auto me-3">
 							{{-- notification bell --}}
-							<li class="nav-item mt-1 notification-popover-container" style="padding-right: 56px; margin-top: 12px"> 
-								<svg id="popover-trigger" width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<circle cx="18.5696" cy="18" r="18" fill="#1A1A1A"/>
-									<path d="M18.5695 13.3667V16.1417M18.5862 9.66675C15.5195 9.66675 13.0362 12.1501 13.0362 15.2167V16.9667C13.0362 17.5334 12.8028 18.3834 12.5112 18.8667L11.4528 20.6334C10.8028 21.7251 11.2528 22.9417 12.4528 23.3417C16.4372 24.6667 20.7434 24.6667 24.7278 23.3417C24.9907 23.254 25.2306 23.1084 25.4296 22.9155C25.6287 22.7227 25.7819 22.4876 25.8779 22.2276C25.9739 21.9676 26.0102 21.6894 25.9843 21.4134C25.9583 21.1375 25.8707 20.8709 25.7278 20.6334L24.6695 18.8667C24.3778 18.3834 24.1445 17.5251 24.1445 16.9667V15.2167C24.1362 12.1667 21.6362 9.66675 18.5862 9.66675Z" stroke="#D1D1D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
-									<path d="M21.3447 24.25C21.3447 25.775 20.0947 27.025 18.5697 27.025C17.8113 27.025 17.1113 26.7083 16.6113 26.2083C16.1113 25.7083 15.7947 25.0083 15.7947 24.25" fill="#D1D1D1"/>
-									</svg>
+							<li class="nav-item mt-1 notification-popover-container" style="padding-right: 56px; margin-top: 12px">
+								
+									@if ($new_notification)
+										<svg  id="popover-trigger" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<rect width="36" height="36" rx="18" fill="#1A1A1A"/>
+											<path d="M18 13.366V16.141M18.0167 9.66602C14.95 9.66602 12.4667 12.1493 12.4667 15.216V16.966C12.4667 17.5327 12.2334 18.3827 11.9417 18.866L10.8834 20.6327C10.2334 21.7243 10.6834 22.941 11.8834 23.341C15.8678 24.666 20.174 24.666 24.1584 23.341C24.4213 23.2533 24.6611 23.1077 24.8602 22.9148C25.0592 22.722 25.2124 22.4869 25.3084 22.2269C25.4044 21.9669 25.4408 21.6886 25.4148 21.4127C25.3888 21.1368 25.3012 20.8702 25.1584 20.6327L24.1 18.866C23.8084 18.3827 23.575 17.5243 23.575 16.966V15.216C23.5667 12.166 21.0667 9.66602 18.0167 9.66602Z" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+											<path d="M20.775 24.25C20.775 25.775 19.525 27.025 18 27.025C17.2416 27.025 16.5416 26.7083 16.0416 26.2083C15.5416 25.7083 15.225 25.0083 15.225 24.25" fill="white"/>
+											<circle cx="30.4307" cy="5" r="4.25" fill="#FFF866" stroke="#0F0F0F" stroke-width="1.5"/>
+										</svg>
+											
+									@else
+										<svg id="popover-trigger" width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<circle cx="18.5696" cy="18" r="18" fill="#1A1A1A"/>
+											<path d="M18.5695 13.3667V16.1417M18.5862 9.66675C15.5195 9.66675 13.0362 12.1501 13.0362 15.2167V16.9667C13.0362 17.5334 12.8028 18.3834 12.5112 18.8667L11.4528 20.6334C10.8028 21.7251 11.2528 22.9417 12.4528 23.3417C16.4372 24.6667 20.7434 24.6667 24.7278 23.3417C24.9907 23.254 25.2306 23.1084 25.4296 22.9155C25.6287 22.7227 25.7819 22.4876 25.8779 22.2276C25.9739 21.9676 26.0102 21.6894 25.9843 21.4134C25.9583 21.1375 25.8707 20.8709 25.7278 20.6334L24.6695 18.8667C24.3778 18.3834 24.1445 17.5251 24.1445 16.9667V15.2167C24.1362 12.1667 21.6362 9.66675 18.5862 9.66675Z" stroke="#D1D1D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+											<path d="M21.3447 24.25C21.3447 25.775 20.0947 27.025 18.5697 27.025C17.8113 27.025 17.1113 26.7083 16.6113 26.2083C16.1113 25.7083 15.7947 25.0083 15.7947 24.25" fill="#D1D1D1"/>
+										</svg>
+									@endif
 									<div class="popover-for-notifaction" id="popover-for-notifaction">
 										<div class="notificatio-pop-heading">Notification</div>
 
-										@foreach ($ClientNotification as $notification_key => $row)
-											@php
-												if($notification_key > 2){
-													break;
-												}
-												$create_date_is = date('Y-m-d H:i:s',strtotime($row['created_at']));										
-												$day_ago = timeBefore($row['created_at']);
-												$is_seen = $row['is_seen'];
-												$seen_class = ($is_seen == 1) ? 'Inactive-notification' : 'active-notification';
-											@endphp
-											<div>
-												<p class="{{$seen_class}}">
-													{{$row['discription']}}
-												</p>
-												<p class="notification-time">
-													{{$day_ago}}
-												</p>
-												<hr class="hr-line">
+										@if ($tot_notification > 0)
+											@foreach ($ClientNotification as $notification_key => $row)
+												@php
+													if($notification_key > 2){
+														break;
+													}
+													$create_date_is = date('Y-m-d H:i:s',strtotime($row['created_at']));										
+													$day_ago = timeBefore($row['created_at']);
+													$is_seen = $row['is_seen'];
+													$seen_class = ($is_seen == 1) ? 'Inactive-notification' : 'active-notification';
+												@endphp
+												<div>
+													<p class="{{$seen_class}}">
+														{{$row['discription']}}
+													</p>
+													<p class="notification-time">
+														{{$day_ago}}
+													</p>
+													<hr class="hr-line">
+												</div>
+											@endforeach
+											<div class="d-flex justify-content-between">
+												{{-- <a role="button" class="view-all" id="viewButton" onclick="toggleContent()">View All</a> --}}
+												<p class="view-all" onclick="set_notifiction_to_seen({{$ids}})" style="cursor: pointer;">Mark all as read</p>
+												<a href="{{route('Notifications')}}" role="button" class="view-all" id="viewButton">
+														View All 
+														<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<path d="M5.93994 13.2807L10.2866 8.93404C10.7999 8.4207 10.7999 7.5807 10.2866 7.06737L5.93994 2.7207" stroke="#98A7DA" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+														</svg>
+												</a>
 											</div>
-										@endforeach
-
-										{{-- <p class="Inactive-notification">
-											Hey, Hugo boss lot no. “ODN10032023BEUCBFZ76” successfully completed.
-										</p>
-										<p class="notification-time">
-											2 days ago
-										</p>
-										<hr class="hr-line">
-										<p class="Inactive-notification">
-											Hey, Hugo boss lot no. “ODN10032023BEUCBFZ76” successfully completed.
-										</p>
-										<p class="notification-time">
-											20 sec. ago
-										</p>
-										<hr class="hr-line">
-										<div class="content" id="content">
-											<p class="Inactive-notification">
-												Hey, Hugo boss lot no. “ODN10032023BEUCBFZ76” successfully completed.
-											</p>
-											<p class="notification-time">
-												2 days ago
-											</p>
-											<hr class="hr-line">
-										</div> --}}
-										<div class="d-flex justify-content-between">
-											<a href="{{route('Notifications')}}" role="button" class="view-all" id="viewButton">View All</a>
-											{{-- <a role="button" class="view-all" id="viewButton" onclick="toggleContent()">View All</a> --}}
-											<p class="view-all" onclick="set_notifiction_to_seen({{$ids}})" style="cursor: pointer;">Mark all as read</p>
-										</div>
+										@else
+											<div class="text-center" style="margin-top: 16px;">
+                                              <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="9" y="9" width="72" height="72" rx="36" fill="#1A1A1A" />
+                                                <path
+                                                  d="M45.0001 37.586V42.026M45.0268 31.666C40.1201 31.666 36.1468 35.6393 36.1468 40.546V43.346C36.1468 44.2527 35.7734 45.6127 35.3068 46.386L33.6134 49.2127C32.5734 50.9593 33.2934 52.906 35.2134 53.546C41.5885 55.666 48.4784 55.666 54.8534 53.546C55.2741 53.4057 55.6578 53.1726 55.9763 52.8641C56.2948 52.5555 56.5399 52.1794 56.6935 51.7634C56.8471 51.3474 56.9053 50.9022 56.8638 50.4607C56.8222 50.0192 56.682 49.5927 56.4534 49.2127L54.7601 46.386C54.2934 45.6127 53.9201 44.2393 53.9201 43.346V40.546C53.9068 35.666 49.9068 31.666 45.0268 31.666Z"
+                                                  stroke="#4D4D4D" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" />
+                                                <path
+                                                  d="M49.4401 55C49.4401 57.44 47.4401 59.44 45.0001 59.44C43.7867 59.44 42.6667 58.9333 41.8667 58.1333C41.0667 57.3333 40.5601 56.2133 40.5601 55"
+                                                  fill="#4D4D4D" />
+                                              </svg>
+                                            </div>
+                                            <p class="text-center No-notifications-rec">No notifications received.</p>
+										@endif
+										
 									</div>
 									{{-- <span class="notify-count">{{$tot_notification}}</span> --}}
 							</li>
@@ -464,8 +498,8 @@
 						<div class="logout-container">
 							<a href="#" class="logout-button" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
 								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M18.529 13.141C18.423 13.07 18.3 13.032 18.171 13.032C17.89 13.032 17.634 13.206 17.487 13.498C16.121 16.211 13.421 17.896 10.441 17.896C9.06602 17.896 7.69101 17.528 6.46302 16.831C3.52402 15.163 1.97102 11.689 2.68702 8.38495C3.43702 4.92395 6.29102 2.41395 9.79101 2.13895C11.916 1.97095 13.853 2.59095 15.523 3.97895C16.353 4.66795 17.015 5.52295 17.548 6.59295C17.668 6.83295 17.892 6.97595 18.148 6.97595C18.255 6.97595 18.359 6.95095 18.459 6.90095C18.797 6.72995 18.931 6.33495 18.762 6.00095C17.359 3.21795 15.098 1.50095 12.043 0.896953C11.809 0.850953 11.573 0.821953 11.324 0.791953C11.217 0.778953 11.111 0.765953 11.004 0.751953H9.85001H9.83002C9.72602 0.765953 9.62202 0.778953 9.51802 0.792953C9.28202 0.822953 9.03802 0.854953 8.80202 0.893953C5.25702 1.47595 2.22302 4.33295 1.42402 7.83995C1.35302 8.15395 1.30902 8.46995 1.26302 8.80895C1.24102 8.96795 1.22002 9.12695 1.19502 9.28495C1.18802 9.32695 1.18002 9.36795 1.16902 9.41895L1.16602 10.571V10.59C1.17902 10.681 1.18902 10.773 1.20102 10.868C1.22602 11.083 1.25102 11.286 1.28402 11.491C1.62702 13.582 2.68502 15.509 4.26502 16.917C5.84702 18.326 7.88102 19.152 9.99302 19.241C10.141 19.247 10.29 19.25 10.436 19.25C12.784 19.25 14.882 18.43 16.671 16.814C17.526 16.042 18.223 15.109 18.743 14.04C18.908 13.701 18.822 13.339 18.528 13.141H18.529Z" fill="#0F0F0F"/>
-									<path d="M11.7121 11.2731C11.5811 11.4041 11.4501 11.5341 11.3191 11.6651L11.3091 11.6751C11.0451 11.9381 10.7721 12.2091 10.5081 12.4801C10.3551 12.6371 10.2851 12.8381 10.3111 13.0451C10.3371 13.2481 10.4501 13.4201 10.6301 13.5301C10.7391 13.5961 10.8561 13.6301 10.9761 13.6301C11.1621 13.6301 11.3411 13.5501 11.4931 13.3991C12.1031 12.7931 12.7101 12.1851 13.3171 11.5761L13.7101 11.1821C14.4261 10.4651 14.4291 9.54012 13.7171 8.82512C13.0231 8.12812 12.3261 7.43312 11.6301 6.73812L11.5261 6.63512C11.4621 6.57112 11.4081 6.52112 11.3531 6.48412C11.2421 6.40912 11.1141 6.37012 10.9821 6.37012C10.7831 6.37012 10.5931 6.46012 10.4601 6.61612C10.2331 6.88112 10.2471 7.25912 10.4911 7.51312C10.7581 7.79112 11.0371 8.06812 11.3071 8.33612L11.3291 8.35812C11.4551 8.48312 11.5801 8.60712 11.7051 8.73312C11.7361 8.76412 11.7661 8.79712 11.8041 8.83812L12.2541 9.32312H8.66915C8.66915 9.32312 7.55815 9.32112 7.33815 9.32112C7.04015 9.32112 6.74215 9.32112 6.44415 9.32512C6.21215 9.32712 6.01115 9.42212 5.88015 9.59112C5.75415 9.75312 5.71315 9.95812 5.76515 10.1681C5.84415 10.4871 6.10715 10.6781 6.47115 10.6781C7.22915 10.6781 7.98715 10.6781 8.74515 10.6781H12.2711L11.8061 11.1721C11.7681 11.2121 11.7401 11.2431 11.7111 11.2721L11.7121 11.2731Z" fill="#0F0F0F"/>
+									<path class="button-icon" d="M18.529 13.141C18.423 13.07 18.3 13.032 18.171 13.032C17.89 13.032 17.634 13.206 17.487 13.498C16.121 16.211 13.421 17.896 10.441 17.896C9.06602 17.896 7.69101 17.528 6.46302 16.831C3.52402 15.163 1.97102 11.689 2.68702 8.38495C3.43702 4.92395 6.29102 2.41395 9.79101 2.13895C11.916 1.97095 13.853 2.59095 15.523 3.97895C16.353 4.66795 17.015 5.52295 17.548 6.59295C17.668 6.83295 17.892 6.97595 18.148 6.97595C18.255 6.97595 18.359 6.95095 18.459 6.90095C18.797 6.72995 18.931 6.33495 18.762 6.00095C17.359 3.21795 15.098 1.50095 12.043 0.896953C11.809 0.850953 11.573 0.821953 11.324 0.791953C11.217 0.778953 11.111 0.765953 11.004 0.751953H9.85001H9.83002C9.72602 0.765953 9.62202 0.778953 9.51802 0.792953C9.28202 0.822953 9.03802 0.854953 8.80202 0.893953C5.25702 1.47595 2.22302 4.33295 1.42402 7.83995C1.35302 8.15395 1.30902 8.46995 1.26302 8.80895C1.24102 8.96795 1.22002 9.12695 1.19502 9.28495C1.18802 9.32695 1.18002 9.36795 1.16902 9.41895L1.16602 10.571V10.59C1.17902 10.681 1.18902 10.773 1.20102 10.868C1.22602 11.083 1.25102 11.286 1.28402 11.491C1.62702 13.582 2.68502 15.509 4.26502 16.917C5.84702 18.326 7.88102 19.152 9.99302 19.241C10.141 19.247 10.29 19.25 10.436 19.25C12.784 19.25 14.882 18.43 16.671 16.814C17.526 16.042 18.223 15.109 18.743 14.04C18.908 13.701 18.822 13.339 18.528 13.141H18.529Z" fill="#808080"/>
+									<path class="button-icon" d="M11.7121 11.2731C11.5811 11.4041 11.4501 11.5341 11.3191 11.6651L11.3091 11.6751C11.0451 11.9381 10.7721 12.2091 10.5081 12.4801C10.3551 12.6371 10.2851 12.8381 10.3111 13.0451C10.3371 13.2481 10.4501 13.4201 10.6301 13.5301C10.7391 13.5961 10.8561 13.6301 10.9761 13.6301C11.1621 13.6301 11.3411 13.5501 11.4931 13.3991C12.1031 12.7931 12.7101 12.1851 13.3171 11.5761L13.7101 11.1821C14.4261 10.4651 14.4291 9.54012 13.7171 8.82512C13.0231 8.12812 12.3261 7.43312 11.6301 6.73812L11.5261 6.63512C11.4621 6.57112 11.4081 6.52112 11.3531 6.48412C11.2421 6.40912 11.1141 6.37012 10.9821 6.37012C10.7831 6.37012 10.5931 6.46012 10.4601 6.61612C10.2331 6.88112 10.2471 7.25912 10.4911 7.51312C10.7581 7.79112 11.0371 8.06812 11.3071 8.33612L11.3291 8.35812C11.4551 8.48312 11.5801 8.60712 11.7051 8.73312C11.7361 8.76412 11.7661 8.79712 11.8041 8.83812L12.2541 9.32312H8.66915C8.66915 9.32312 7.55815 9.32112 7.33815 9.32112C7.04015 9.32112 6.74215 9.32112 6.44415 9.32512C6.21215 9.32712 6.01115 9.42212 5.88015 9.59112C5.75415 9.75312 5.71315 9.95812 5.76515 10.1681C5.84415 10.4871 6.10715 10.6781 6.47115 10.6781C7.22915 10.6781 7.98715 10.6781 8.74515 10.6781H12.2711L11.8061 11.1721C11.7681 11.2121 11.7401 11.2431 11.7111 11.2721L11.7121 11.2731Z" fill="#808080"/>
 									</svg>
 								Logout
 							</a>
