@@ -148,6 +148,8 @@ class Lots extends Model {
                 $wrc_info[$key]['submission_status'] =  'pending';
                 $wrc_info[$key]['submission_date'] =  '';
 
+                $rejected_skus = Skus::where('wrc_id', $val['wrc_id'])->where('status', '=' , 0)->count();
+                $wrc_info[$key]['rejected_skus'] =  $rejected_skus;                
                 $adaptation_arr = array();
 
                 for($i = 1; $i <= 5 ; $i++){
@@ -209,15 +211,6 @@ class Lots extends Model {
                             $lot_detail[0]['submission_date'] = $lot_submission_data[0]['submission_date'];
 
                         }
-                        
-                        // $editor_submission_info = editorSubmission::whereIn('sku_id', $sku_info)->where('qc', '2')->orderByDesc('updated_at')->get()->toArray();
-                        // if(count($editor_submission_info) > 0 && count($editor_submission_info) == count($editor_qc_info) ){
-                        //     $wrc_info[$key]['submission_status'] =  'Done';
-                        //     $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[4];
-                        //     $lot_detail[0]['overall_progress']  = 100;
-                        //     $lot_detail[0]['wrc_submission']  = "20";
-                        //     $lot_detail[0]['submission_date'] = $editor_submission_info[0]['updated_at'];
-                        // }
                     }
                 }
             }

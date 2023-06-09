@@ -261,8 +261,9 @@
 					<th scope="col" class="table-heading-sty">Date</th>
 					<th scope="col" class="table-heading-sty">Quantity</th>
 					<th scope="col" class="table-heading-sty">Quality Check (QC)</th>
+					<th scope="col" class="table-heading-sty">Rejected</th>
 					<th scope="col" class="table-heading-sty">Submissions</th>
-					<th scope="col" class="table-heading-sty">Invoice</th>
+					{{-- <th scope="col" class="table-heading-sty">Invoice</th> --}}
 					<th scope="col" class="table-heading-sty" style="text-align: center;">Images</th>
 					
 				</tr>
@@ -331,6 +332,7 @@
 							<td class="table-column">{{dateFormet_dmy($wrc_row['wrc_created_at'])}}</td>
 							<td class="table-column">{{$wrc_row['wrc_order_qty']}}</td>
 							<td class="table-column">{{$wrc_row['qc_status'] == 'Done' ? $wrc_row['wrc_qc_qty'] : '-'}}</td>
+							<td class="table-column">{{$wrc_row['rejected_skus']}}</td>
 							<td class="table-column table-invoice">
 								{{$wrc_row['submission_status']}}
 								<?php
@@ -341,7 +343,7 @@
 									}
 								?>
 							</td>
-							<td class="table-column">-</td>
+							{{-- <td class="table-column">-</td> --}}
 							<td class="table-column" style="text-align: center;">
 								<a class="{{$diables_img_download}}" href="{{route('download_Shoot_lot_Edited_wrc' , [ base64_encode($wrc_row['wrc_id']) ] )}}"  >
 									@if ($wrc_row['submission_status'] == 'Done')
