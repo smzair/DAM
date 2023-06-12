@@ -44,7 +44,7 @@
 	</div>
 </div>
 
-<div class="row" style="margin-top: 12px;">
+<div class="row">
 
 	@foreach ($raw_skus_files as $key => $row)
 		@php
@@ -65,12 +65,12 @@
 
 		}
 		@endphp
-		<div class="col-sm-6 col-md-4 col-lg-3 mt-2" >
+		<div class="col-sm-6 col-md-4 col-lg-3 SKU-BOX-STYLE" >
 			<div class="card brand-img-m border-0 rounded-0" >
 				<img class="card-img-top brand-img" src="{{ asset($img_src)}}" alt="Image">
 				<div class="card-body total-sku-img-body d-flex justify-content-between" style="position: relative">
 					<p class="brand-img-name" id="lot_number{{$row['sku_id'].$key}}">{{$row['filename']}}</p>
-					<i class="bi bi-three-dots-vertical myButton" style="cursor: pointer;color:#808080;"></i>
+					<i class="bi bi-three-dots-vertical myButton" style="cursor: pointer;color:#808080;font-size:20px;"></i>
 					<div class="myPopover" style="display: none; top 20%;">
 
 						<a href="{{ asset($img_src)}}" download="{{$row['filename']}}">

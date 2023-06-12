@@ -39,7 +39,7 @@ if($service_is == 'Shoot'){
 		</div>
 	</div>
 	{{-- WRCs details --}}
-	<div class="row ps-lg-1 ps-0 pe-lg-2 pe-0" style="margin-top: 12px;">
+	<div class="row" style="margin-top: 12px;">
 		@foreach ($wrc_data as $key => $row)
 			@php
 				$file_path = $row['file_path'];
@@ -180,39 +180,39 @@ if($service_is == 'Shoot'){
 							</div>
 						</div>
 						
-						<div id="collapseOne{{$key}}" class="collapse show" aria-labelledby="headingOne{{$key}}" data-parent="#">
-							<div class="card-body card-body-style">
-								<div class="col-12">
-									<p class="TAGS">TAGS
-										<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<g clip-path="url(#clip0_92_3135)">
-												<path
-													d="M7.00004 9.33301L7.00004 6.41634M7.00004 1.16634C3.79171 1.16634 1.16671 3.79134 1.16671 6.99968C1.16671 10.208 3.79171 12.833 7.00004 12.833C10.2084 12.833 12.8334 10.208 12.8334 6.99967C12.8334 3.79134 10.2084 1.16634 7.00004 1.16634Z"
-													stroke="#9F9F9F" stroke-linecap="round" stroke-linejoin="round" />
-												<path d="M7.00293 4.66699L6.99493 4.66699" stroke="#9F9F9F" stroke-linecap="round"
-													stroke-linejoin="round" />
-											</g>
-											<defs>
-												<clipPath id="clip0_92_3135">
-													<rect width="14" height="14" fill="white" transform="translate(14 14) rotate(180)" />
-												</clipPath>
-											</defs>
-										</svg>
-									</p>
-								</div>
-								<div class="row">
-									<div class="col-4">
-										<button type="button" class="btn btn-sm under-acco-button">Black Tees</button>
-									</div>
-									<div class="col-4">
-										<button type="button" class="btn btn-sm under-acco-button">FSN code</button>
-									</div>
-									<div class="col-4">
-										<button type="button" class="btn btn-sm under-acco-button">ASIN code</button>
-									</div>
-								</div>
-							</div>
-						</div>
+						<!--<div id="collapseOne{{$key}}" class="collapse show" aria-labelledby="headingOne{{$key}}" data-parent="#">-->
+						<!--	<div class="card-body card-body-style">-->
+						<!--		<div class="col-12">-->
+						<!--			<p class="TAGS">TAGS-->
+						<!--				<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+						<!--					<g clip-path="url(#clip0_92_3135)">-->
+						<!--						<path-->
+						<!--							d="M7.00004 9.33301L7.00004 6.41634M7.00004 1.16634C3.79171 1.16634 1.16671 3.79134 1.16671 6.99968C1.16671 10.208 3.79171 12.833 7.00004 12.833C10.2084 12.833 12.8334 10.208 12.8334 6.99967C12.8334 3.79134 10.2084 1.16634 7.00004 1.16634Z"-->
+						<!--							stroke="#9F9F9F" stroke-linecap="round" stroke-linejoin="round" />-->
+						<!--						<path d="M7.00293 4.66699L6.99493 4.66699" stroke="#9F9F9F" stroke-linecap="round"-->
+						<!--							stroke-linejoin="round" />-->
+						<!--					</g>-->
+						<!--					<defs>-->
+						<!--						<clipPath id="clip0_92_3135">-->
+						<!--							<rect width="14" height="14" fill="white" transform="translate(14 14) rotate(180)" />-->
+						<!--						</clipPath>-->
+						<!--					</defs>-->
+						<!--				</svg>-->
+						<!--			</p>-->
+						<!--		</div>-->
+						<!--		<div class="row">-->
+						<!--			<div class="col-4">-->
+						<!--				<button type="button" class="btn btn-sm under-acco-button">Black Tees</button>-->
+						<!--			</div>-->
+						<!--			<div class="col-4">-->
+						<!--				<button type="button" class="btn btn-sm under-acco-button">FSN code</button>-->
+						<!--			</div>-->
+						<!--			<div class="col-4">-->
+						<!--				<button type="button" class="btn btn-sm under-acco-button">ASIN code</button>-->
+						<!--			</div>-->
+						<!--		</div>-->
+						<!--	</div>-->
+						<!--</div>-->
 					</div>
 				</div>
 			</div>

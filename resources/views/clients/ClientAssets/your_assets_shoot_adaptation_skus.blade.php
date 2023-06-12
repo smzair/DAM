@@ -30,7 +30,7 @@
 			<p style="font-weight: 500;font-size: 12px;margin-bottom:0px;color: #FFFFFF;">Total SKU: {{count($raw_skus)}}</p>
 		</div>
 	</div>
-	<div class="row" style="margin-top: 12px;">
+	<div class="row">
 		@foreach ($raw_skus as $key => $row)
 			@php
 				$file_path = $row['file_path'];
@@ -39,7 +39,7 @@
 					$shoot_image_src = $file_path;
 				}
 			@endphp
-			<div class="col-lg-3 col-md-6 mt-2">
+			<div class="col-lg-3 col-md-6 SKU-BOX-STYLE">
 				<div class="row brand-div" style="position: relative">
 					<div class="col-2 mt-3">
 						<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -150,7 +150,7 @@
 
 @include('clients.ClientAssets.your_assets_side_bar_popup')
 @else
-	<div style="margin-top: 40px">
+	<div style="color:#FFFFFF">
 		Sku codes not found
 	</div>
 @endif
