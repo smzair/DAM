@@ -13,13 +13,12 @@
 			box-shadow: 6px 24px 60px rgba(255, 255, 255, 0.06);
 			z-index: 1;
 			width: 385px !important;
-			/* left: 927.5px !important; */
-			right: 20px !important;
-			/* Set the width of the popover */
+		    left: -250px !important;
+			top: auto !important;
 		}
 
 		.myPopover_links{
-			width: 350px;
+			width: 218px;
 			left: -20px;
 			top: 95%;
 			color: #1A1A1A
@@ -45,9 +44,9 @@
 		/* Extra add-on CSS */
 
 		.upper-head-style-for-track-hover {
-			margin-top: -11px;
-			margin-left: -11px;
-			margin-right: -11px;
+			margin-top: -10px;
+			margin-left: -10px;
+			margin-right: -10px;
 			background: #1A1A1A;
 		}
 
@@ -126,7 +125,7 @@
 		</div>
 
 		<div class="col-12 mt-4 table-responsive" style="min-height: 80vh">
-			<table class="table border-light" style="background: #0F0F0F;">
+			<table class="table border-light" style="background: #0F0F0F;" id="linktablehover">
 				<thead>
 					<tr>
 						<th scope="col" class="table-heading-sty">Project name</th>
@@ -165,7 +164,7 @@
 								</button>
 								<div class="myPopover myPopover_links" style="display: none">
 									<div class="mt-2" style="line-height: 0.7;">
-										<p>Catalog links</p>
+										<p style="color: #B8B8B8;">Catalog links</p>
 										@if ($catalog_links_count > 0)
 											@foreach ($catalog_upload_links as $links)
 												@if ($links != '')
@@ -177,7 +176,7 @@
 										@endif
 									</div>
 									<div class="mt-2" style="line-height: 0.7;">
-										<p>Copy links</p>
+										<p style="color: #808080;">Copy links</p>
 										@if ($copy_links_count > 0)
 										@foreach ($copy_upload_links as $links)
 										@if ($links != '')
@@ -191,7 +190,7 @@
 								</div>
 							</td>
 							<td class="wrc-no-sty" style="position: relative">
-								<p class="text" onmouseover="showPopover(this)" onmouseout="hidePopover(this)">{{$wrc_numbers}}</p>
+								<p class="text" >{{$wrc_numbers}}</p>
 								<div class="hoverpopoverforlinks" id="myPopover" style="display: none">
 									<div class="popover-text">
 										<div class="upper-head-style-for-track-hover">
@@ -306,7 +305,7 @@
 		</div>
 	</div>
 @else
-	<div style="margin-top: 40px">
+	<div style="color: #FFFFFF;">
 		Wrc Not found
 	</div>
 @endif
@@ -314,16 +313,40 @@
 
 @section('js_scripts')
 	<script>
-		// JavaScript functions to show and hide the popover
-		function showPopover(element) {
-			var popover = element.nextElementSibling;
-			popover.style.display = 'block';
-		}
-
-		function hidePopover(element) {
-			var popover = element.nextElementSibling;
-			popover.style.display = 'none';
-		}
+		// Attach event listeners to the parent container
+        var linktablehover = document.getElementById('linktablehover');
+        linktablehover.addEventListener('mouseover', showPopover);
+        linktablehover.addEventListener('mouseout', hidePopover);
+        
+        // Show the popover when hovering over a text element
+        function showPopover(event) {
+          var target = event.target;
+          if (target.classList.contains('text')) {
+            var hoverpopoverforlinks = target.nextElementSibling;
+            positionPopover(target, hoverpopoverforlinks);
+            hoverpopoverforlinks.style.display = 'block';
+          }
+        }
+        
+        // Position the popover to the left of the text element
+        function positionPopover(textElement, hoverpopoverforlinks) {
+          var textRect = textElement.getBoundingClientRect();
+          var textLeft = textRect.left;
+          var textTop = textRect.top;
+        
+          hoverpopoverforlinks.style.right = 'auto'; // Reset the right property
+          hoverpopoverforlinks.style.left = textLeft + 'px';
+          hoverpopoverforlinks.style.top = textTop + 'px';
+        }
+        
+        // Hide the popover when moving away from a text element
+        function hidePopover(event) {
+          var target = event.target;
+          if (target.classList.contains('text')) {
+            var hoverpopoverforlinks = target.nextElementSibling;
+            hoverpopoverforlinks.style.display = 'none';
+          }
+        }
 	</script>
 
 	
