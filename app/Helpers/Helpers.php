@@ -901,14 +901,14 @@ if(!function_exists('timeBefore')){
 
 if(!function_exists('creative_and_cataloging_lot_statusArr')){
     function creative_and_cataloging_lot_statusArr(){
-        $creative_and_cataloging_lot_statusArr = ['Inverd', 'WRC Generated', 'Task Assigned', 'Editing & QC Done', 'Submission Done'];
+        $creative_and_cataloging_lot_statusArr = ['Inward', 'WRC Generated', 'Task Started', 'Upload & QC Done', 'Submission Done'];
         return $creative_and_cataloging_lot_statusArr;        
     }
 }
 
 if(!function_exists('shoot_lot_statusArr')){
     function shoot_lot_statusArr(){
-        $shoot_lot_statusArr = ['Inverd', 'WRC Generated', 'Shoot started', 'Editing & QC Done', 'Submission Done'];
+        $shoot_lot_statusArr = ['Inward', 'WRC Generated', 'Shoot started', 'Editing & QC Done', 'Submission Done'];
         return $shoot_lot_statusArr;        
     }
 }

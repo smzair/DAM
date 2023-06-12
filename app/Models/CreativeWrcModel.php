@@ -176,7 +176,7 @@ class CreativeWrcModel extends Model
        foreach($wrcs as $key => $val){
         $lot_id = $val['lot_id'];
 			$creative_wrc_count = DB::table('creative_wrc')->where('lot_id',$lot_id)->count();
-			$wrc_status = $creative_wrc_count > 0 ? 'Allocation Pending' : 'Inverd Pending';
+			$wrc_status = $creative_wrc_count > 0 ? 'Allocation Pending' : 'Inward Pending';
             $val['wrc_status']  = $wrc_status;
 
             if($wrc_status == 'Allocation Pending'){
