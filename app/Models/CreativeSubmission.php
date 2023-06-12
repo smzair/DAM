@@ -251,7 +251,7 @@ class CreativeSubmission extends Model
 
 			// dd($creative_wrc_count);
 
-			$lot_status = $creative_wrc_count > 0 ? 'Allocation Pending' : 'Inverd Pending';
+			$lot_status = $creative_wrc_count > 0 ? 'Allocation Pending' : 'Inward Pending';
 
 
 			$val['lot_status']  = $lot_status;
