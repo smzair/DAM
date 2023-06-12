@@ -654,7 +654,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
 
     Route::get('/clients-shoot-lot-timelineNew/{id}', [ClientDashboardControllerNew::class, 'clientsShootlotTimelineNew'])->name('clientsShootlotTimelineNew'); // Shoot
     
-    Route::get('/track-lots/{lotStatus?}', [ClientDashboardControllerNew::class, 'index'])->name('TrackLots');
+    Route::get('/track-lots/{lotStatus?}/{sortBy?}', [ClientDashboardControllerNew::class, 'index'])->name('TrackLots');
     
     Route::get('/Uploaded-file-list', [AdminControlController::class, 'AdminControlUploadedFileListForClient'])->name('AdminControlUploadedFileList'); // Admin Control Uploaded File List
     // ClientProfile Routes

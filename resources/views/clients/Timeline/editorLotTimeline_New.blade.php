@@ -14,8 +14,8 @@
 		z-index: 1;
 		width: 620px !important;
 		/* Set the width of the popover */
-		top: 455px;
-        left: 405px;
+		/*top: 455px;*/
+  /*      left: 405px;*/
 	}
 
 	/* CSS for the popover text */
@@ -186,7 +186,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Task Assigned</p>
+								Editing started</p>
 						</div>
 						<div class="progress-label progress-label-4">
 							<p class="progress-upper-heading">
@@ -249,7 +249,7 @@
 	</div>
     <p class="WRC-info-para">WRC INFO.</p>
 	<div class="col-12 table-responsive track-lot-table-details">
-		<table class="table table-borderless">
+		<table class="table table-borderless" id="tracktablehover">
 			<thead>
 				<tr>
 					<th scope="col" class="table-heading-sty">WRC No.</th>
@@ -267,7 +267,7 @@
 					@foreach ($wrc_detail as $wrc_index => $wrc_row)
 						<tr>
 							<td class="table-column">
-								<p style="cursor: pointer;" onmouseover="showPopover(this)" onmouseout="hidePopover(this)">
+								<p  class="text">
 									{{$wrc_row['wrc_number']}}
 								</p>
 								<div class="hoverpopover card-div" style="display: none" id="wrcInfo{{$wrc_index}}">
@@ -401,17 +401,40 @@
 		}
 	</script>
 
-	<script>
-		// JavaScript functions to show and hide the popover
-		function showPopover(element) {
-			var popover = element.nextElementSibling;
-			popover.style.display = 'block';
-		}
-
-		function hidePopover(element) {
-			var popover = element.nextElementSibling;
-			popover.style.display = 'none';
-		}
-	</script>
+   <script>
+      // Attach event listeners to the parent container
+      var tracktablehover = document.getElementById('tracktablehover');
+      tracktablehover.addEventListener('mouseover', showPopover);
+      tracktablehover.addEventListener('mouseout', hidePopover);
+  
+      // Show the popover when hovering over a text element
+      function showPopover(event) {
+        var target = event.target;
+        if (target.classList.contains('text')) {
+          var hoverpopover = target.nextElementSibling;
+          positionPopover(target, hoverpopover);
+          hoverpopover.style.display = 'block';
+        }
+      }
+  
+      // Position the popover to the right of the text element
+      function positionPopover(textElement, hoverpopover) {
+        var textRect = textElement.getBoundingClientRect();
+        var textRight = textRect.right;
+        var textTop = textRect.top;
+  
+        hoverpopover.style.left = textRight + 'px';
+        hoverpopover.style.top = textTop + 'px';
+      }
+  
+      // Hide the popover when moving away from a text element
+      function hidePopover(event) {
+        var target = event.target;
+        if (target.classList.contains('text')) {
+          var hoverpopover = target.nextElementSibling;
+          hoverpopover.style.display = 'none';
+        }
+      }
+    </script>
 	
 @endsection
