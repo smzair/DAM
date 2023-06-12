@@ -29,6 +29,7 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
           <a class="btn rounded-0 sort-by-button  dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Sort &nbsp;&nbsp;&nbsp;&nbsp;
           </a>
+
             <ul class="dropdown-menu dropdown-menu-show-sortby">
 							<li><a class="dropdown-item dropdown-menu-show-sortby-item {{$sortBy == 'latest' ? 'active' : ''}}" href="{{route('TrackLots', ['lotStatus' => $lot_status_is, 'sortBy' => 'latest' ])}}">Latest</a></li>
 							<li><a class="dropdown-item dropdown-menu-show-sortby-item {{($sortBy == 'oldest' || $sortBy == 'old')  ? 'active' : ''}}" href="{{route('TrackLots', ['lotStatus' => $lot_status_is, 'sortBy' => 'oldest' ] )}}">Oldest</a></li>
@@ -58,7 +59,7 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 		<ul class="nav nav-pills mb-3 nav-fill tabs" id="pills-tab" role="tablist" style="padding:16px 4px 0px 4px;width: 100%;">
 			{{-----lot status Shoot start---}}
 			@if (count($shoot_lots) > 0 &&  ($user_role == 'Client' || $your_assets_permissions['shoot']))
-			<li class="nav-item tab" role="presentation" onclick="activateTab(1)">
+			<li class="nav-item tab active" role="presentation" onclick="activateTab(1)">
 				<button class="nav-link svg-container btn-lg tab-button border border-dark border-start-0 border-top-0 border-bottom-0 tab-text" id="pills-home-tab" data-bs-toggle="pill"
 					data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >
 					<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -197,7 +198,7 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 										Status
 									</p>
 									<p class="status"
-										style="font-weight: 400;font-size: 16px; font-family: 'Poppins', sans-serif;">
+										style="font-weight: 400;font-size: 16px; font-family: 'Poppins';">
 										{{$val['lot_status']}}
 									</p>
 								</div>
