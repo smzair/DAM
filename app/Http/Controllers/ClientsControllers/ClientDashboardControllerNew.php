@@ -132,17 +132,18 @@ class ClientDashboardControllerNew extends Controller
       }
 
       $editor_lots = $editor_lots->get()->toArray();
+      $Editing_lot_statusArr = Editing_lot_statusArr();
       
       foreach ($editor_lots as $key => $val) {
         $LotTimelineData = EditorLotModel::clientsEditorLotTimeline($val['lot_id']);
         $lot_detail = $LotTimelineData['lot_detail']; 
         $editor_lots[$key] = $lot_detail[0];
         if($lotStatus == 'active'){
-          if ($editor_lots[$key]['lot_status'] == $creative_and_cataloging_lot_statusArr[4]) {
+          if ($editor_lots[$key]['lot_status'] == $Editing_lot_statusArr[4]) {
             unset($editor_lots[$key]);
           }
         }elseif($lotStatus == 'completed'){
-          if ($editor_lots[$key]['lot_status'] != $creative_and_cataloging_lot_statusArr[4]) {
+          if ($editor_lots[$key]['lot_status'] != $Editing_lot_statusArr[4]) {
             unset($editor_lots[$key]);
           }
         }        

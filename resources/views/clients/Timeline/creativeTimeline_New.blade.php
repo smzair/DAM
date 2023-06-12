@@ -284,7 +284,7 @@
 					<th scope="col" class="table-heading-sty">Uploading & QC</th>
 					<th scope="col" class="table-heading-sty">Submissions</th>
 					<th scope="col" class="table-heading-sty">File Links</th>
-					<th scope="col" class="table-heading-sty">Invoice</th>
+					{{-- <th scope="col" class="table-heading-sty">Invoice</th> --}}
 				</tr>
 			</thead>
 			<tbody>
@@ -404,7 +404,7 @@
 								</div>
 
 							</td>
-							<td class="table-column table-invoice">{{'invoiceNumber'}}</td>
+							{{-- <td class="table-column table-invoice">{{'invoiceNumber'}}</td> --}}
 						</tr>
 					@endforeach
 				@else
@@ -419,7 +419,8 @@
 	<div class="col-12 d-flex justify-content-between last-btn-div">
 		<div class="d-flex last-button-mar">
 		</div>
-		<div class="download-invoice">
+		{{-- Download Invoices Section --}}
+		{{-- <div class="download-invoice">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_1270_842)">
                 <path d="M9.99984 7.08317V12.0832M9.99984 18.3332C14.6023 18.3332 18.3332 14.6023 18.3332 9.99984C18.3332 5.39734 14.6023 1.6665 9.99984 1.6665C5.39734 1.6665 1.6665 5.39734 1.6665 9.99984C1.6665 14.6023 5.39734 18.3332 9.99984 18.3332Z" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -433,7 +434,7 @@
                 </defs>
                 </svg>
 			&nbsp; <a href="#" class="download-invoice"> Download Invoices</a>
-		</div>
+		</div> --}}
 	</div>
 </div>
 
