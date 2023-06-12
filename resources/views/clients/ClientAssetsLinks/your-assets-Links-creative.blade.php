@@ -13,13 +13,12 @@
 			box-shadow: 6px 24px 60px rgba(255, 255, 255, 0.06);
 			z-index: 1;
 			width: 385px !important;
-			/* left: 927.5px !important; */
-			right: 20px !important;
-			/* Set the width of the popover */
+			left: -220px !important;
+			top: auto !important;
 		}
 
 		.myPopover_links{
-			width: 350px;
+			width: 218px;
 			left: -20px;
 			top: 95%;
 		}
@@ -44,9 +43,9 @@
 		/* Extra add-on CSS */
 
 		.upper-head-style-for-track-hover {
-			margin-top: -11px;
-			margin-left: -11px;
-			margin-right: -11px;
+			margin-top: -10px;
+			margin-left: -10px;
+			margin-right: -10px;
 			background: #1A1A1A;
 		}
 
@@ -125,7 +124,7 @@
 		</div>
 
 		<div class="col-12 mt-4 table-responsive" style="min-height: 80vh">
-			<table class="table border-light" style="background: #0F0F0F;">
+			<table class="table border-light" style="background: #0F0F0F;" id="linktablehover">
 				<thead>
 					<tr>
 						<th scope="col" class="table-heading-sty">Project name</th>
@@ -188,8 +187,8 @@
 								</div>
 							</td>
 							<td class="wrc-no-sty" style="position: relative">
-								<p class="text" onmouseover="showPopover(this)" onmouseout="hidePopover(this)">{{$wrc_numbers}}</p>
-								<div class="hoverpopoverforlinks" id="myPopover" style="display: none">
+								<p class="text" >{{$wrc_numbers}}</p>
+								<div class="hoverpopoverforlinks" style="display: none">
 									<div class="popover-text">
 										<div class="upper-head-style-for-track-hover">
 											<div class="upper-heading-wrc-details-table pt-2 pb-1">
@@ -303,7 +302,7 @@
 		</div>
 	</div>
 @else
-	<div style="margin-top: 40px">
+	<div style="color: #FFFFFF;">
 		Wrc Not found
 	</div>
 @endif
@@ -311,16 +310,41 @@
 
 @section('js_scripts')
 	<script>
-		// JavaScript functions to show and hide the popover
-		function showPopover(element) {
-			var popover = element.nextElementSibling;
-			popover.style.display = 'block';
-		}
+		  // Attach event listeners to the parent container
+        var linktablehover = document.getElementById('linktablehover');
+        linktablehover.addEventListener('mouseover', showPopover);
+        linktablehover.addEventListener('mouseout', hidePopover);
+        
+        // Show the popover when hovering over a text element
+        function showPopover(event) {
+          var target = event.target;
+          if (target.classList.contains('text')) {
+            var hoverpopoverforlinks = target.nextElementSibling;
+            positionPopover(target, hoverpopoverforlinks);
+            hoverpopoverforlinks.style.display = 'block';
+          }
+        }
+        
+        // Position the popover to the left of the text element
+        function positionPopover(textElement, hoverpopoverforlinks) {
+          var textRect = textElement.getBoundingClientRect();
+          var textLeft = textRect.left;
+          var textTop = textRect.top;
+        
+          hoverpopoverforlinks.style.right = 'auto'; // Reset the right property
+          hoverpopoverforlinks.style.left = textLeft + 'px';
+          hoverpopoverforlinks.style.top = textTop + 'px';
+        }
+        
+        // Hide the popover when moving away from a text element
+        function hidePopover(event) {
+          var target = event.target;
+          if (target.classList.contains('text')) {
+            var hoverpopoverforlinks = target.nextElementSibling;
+            hoverpopoverforlinks.style.display = 'none';
+          }
+        }
 
-		function hidePopover(element) {
-			var popover = element.nextElementSibling;
-			popover.style.display = 'none';
-		}
 	</script>
 
 	

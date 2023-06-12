@@ -8,7 +8,7 @@
 		.fovourites-img-lot-sku-wrc-section {
 			font-weight: 500;
 			font-size: 14px;
-			color: #e61313;
+		    color: #FFFFFF;
 			margin-bottom: 12px;
 			margin-top: 40px;
 		}
@@ -78,7 +78,7 @@
 						$tbl_id = $data_row['id'];
 						// dd($other_data , $data_row);
 					@endphp
-					<div class="col-sm-6 col-md-4 col-lg-3 mt-2" id="div_{{$tbl_id}}">
+					<div class="col-sm-6 col-md-4 col-lg-3" id="div_{{$tbl_id}}">
 						<div class="card brand-img-m border-0 rounded-0">
 								<img class="card-img-top brand-img" src="{{asset($img_src)}}"
 										alt="Image">
@@ -101,7 +101,6 @@
 														&nbsp;&nbsp;
 														Download
 												</a>
-
 												<a href="javascript:void(0)" onclick="toggleSidebar(); set_image_date_time({{$unic_index}});">
 														<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
 																xmlns="http://www.w3.org/2000/svg">
@@ -185,7 +184,7 @@
 						// dd($other_data , $editing_images);
 						$tbl_id = $row['id'];
 					@endphp
-					<div class="col-sm-6 col-md-4 col-lg-3 mt-2" id="div_{{$tbl_id}}">
+					<div class="col-sm-6 col-md-4 col-lg-3" id="div_{{$tbl_id}}">
 						<div class="card brand-img-m border-0 rounded-0">
 								<img class="card-img-top brand-img" src="{{asset($img_src)}}"
 										alt="Image">
@@ -274,8 +273,8 @@
 				@endforeach
 			@endif
 		@else
-		<div class="col-sm-6 col-md-4 col-lg-3 mt-2">
-			<p class="brand-img-name">No Images</p>
+		<div class="col-sm-6 col-md-4 col-lg-3">
+			<p class="underheadingF">No Images</p>
 		</div>
 		@endif
 	</div>
@@ -310,7 +309,7 @@
 
 				@endphp
 
-				<div class="col-lg-3 col-md-6 mt-2" id="div_{{$tbl_id}}">
+				<div class="col-lg-3 col-md-6" id="div_{{$tbl_id}}">
 					<div class="row brand-div2" style="position: relative;">
 						<div class="col-2 mt-3">
 							<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -451,8 +450,8 @@
 			@endforeach
 				
 		@else
-			<div class="col-sm-6 col-md-4 col-lg-3 mt-2">
-				<p class="brand-img-name">No Skus</p>
+			<div class="col-sm-6 col-md-4 col-lg-3">
+				<p class="underheadingF">No Skus</p>
 			</div>
 		@endif
 	</div>
@@ -666,20 +665,18 @@
 				</div>
 			@endforeach
 		@else
-		<div class="col-sm-6 col-md-4 col-lg-3 mt-2">
-			<p class="brand-img-name">No WRCs</p>
+		<div class="col-sm-6 col-md-4 col-lg-3">
+			<p class="underheadingF">No WRCs</p>
 		</div>	
 		@endif
 	</div>
 
 	<!-- Lots Section -->
 	<div class="row">
-		<p class="fovourites-img-lot-sku-wrc-section">Lots</p>
-
 		@if (count($files_lots) > 0 || count($link_lots) > 0)
 
 			<div class="col-sm-12 col-md-12 col-lg-12">
-				<span class="brand-img-name">Shoot & Post-production Lots</span>
+				<p class="fovourites-img-lot-sku-wrc-section">Shoot & Post-production Lots</p>
 			</div>
 
 			@if (count($files_lots) > 0)
@@ -993,13 +990,15 @@
 			@endforeach
 
 			@else
-				<div class="col-sm-6 col-md-4 col-lg-3 mt-4">
-					<p class="brand-img-name">No Lots</p>
+				<div class="col-sm-6 col-md-4 col-lg-3">
+					<p class="underheadingF">No Lots</p>
 				</div>
 			@endif
-
+			
+			</div>
+        <div class="row">
 			<div class="col-sm-12 col-md-12 col-lg-12">
-				<span class="brand-img-name">Marketing Creative & Listing Lots</span>
+				<p class="fovourites-img-lot-sku-wrc-section">Marketing Creative & Listing Lots</p>
 			</div>
 
 			@if (count($link_lots) > 0)
@@ -1276,14 +1275,14 @@
 			@endforeach
 			
 			@else
-				<div class="col-sm-6 col-md-4 col-lg-3 mt-4">
-					<p class="brand-img-name">No Lots</p>
+				<div class="col-sm-6 col-md-4 col-lg-3">
+					<p class="underheadingF">No Lots</p>
 				</div>
 			@endif
 
 		@else
-			<div class="col-sm-6 col-md-4 col-lg-3 mt-2">
-				<p class="brand-img-name">No Lots</p>
+			<div class="col-sm-6 col-md-4 col-lg-3 ">
+				<p class="underheadingF">No Lots</p>
 			</div>
 		@endif
 	</div>
