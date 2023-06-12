@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class ClientDashboardControllerNew extends Controller
 {
 
-  public static function index($lotStatus = 'all')
+  public static function index($lot_status_is = 'all' , $sortBy = 'latest')
   {
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
@@ -39,6 +39,19 @@ class ClientDashboardControllerNew extends Controller
     $role_id = "";
     $brand_arr = [];
 
+    if ($sortBy == 'oldest' || $sortBy == 'old') {
+      $sortByIs = 'ASC';
+    } else {
+      $sortByIs = 'DESC';
+    }
+
+    $lot_status_arr = ['all' , 'active' , 'completed'];
+    if (in_array($lot_status_is, $lot_status_arr)) {
+      $lotStatus = $lot_status_is;
+    }else{
+      $lotStatus = 'all';
+    } 
+
     if ($roledata != null) {
       $role_id = $roledata->role_id;
       $role_name = $roledata->role_name;
@@ -51,7 +64,7 @@ class ClientDashboardControllerNew extends Controller
       $creative_and_cataloging_lot_statusArr = creative_and_cataloging_lot_statusArr();
 
       /* response data to get Creative lot information with status start*/
-      $creative_lots =  CreatLots::orderBy('creative_lots.id', 'DESC')->whereIn('creative_lots.brand_id', $brand_arr);
+      $creative_lots =  CreatLots::orderBy('creative_lots.id', $sortByIs)->whereIn('creative_lots.brand_id', $brand_arr);
       if ($role_name == 'Sub Client') {
         $creative_lots =  $creative_lots->where('creative_lots.user_id', $parent_client_id);
       }
@@ -78,7 +91,7 @@ class ClientDashboardControllerNew extends Controller
       // dd($creative_lots);
 
       /* response data to get catlog lot information with status start*/
-      $lots_catalog = LotsCatalog::orderBy('lots_catalog.id', 'DESC')->whereIn('lots_catalog.brand_id', $brand_arr)->groupBy('lots_catalog.id');
+      $lots_catalog = LotsCatalog::orderBy('lots_catalog.id', $sortByIs)->whereIn('lots_catalog.brand_id', $brand_arr)->groupBy('lots_catalog.id');
 
       if ($role_name == 'Sub Client') {
         $lots_catalog =  $lots_catalog->where('lots_catalog.user_id', $parent_client_id);
@@ -106,7 +119,7 @@ class ClientDashboardControllerNew extends Controller
       // dd($lots_catalog);
 
       /* response data to get editor lot information with status start*/
-      $editor_lots = EditorLotModel::orderBy('editor_lots.id', 'DESC')
+      $editor_lots = EditorLotModel::orderBy('editor_lots.id', $sortByIs)
         ->leftJoin('editing_wrcs', 'editing_wrcs.lot_id', 'editor_lots.id')
         ->select('editor_lots.id as lot_id', 'editor_lots.created_at', 'editor_lots.lot_number', 'editing_wrcs.id as wrc_id')
         ->whereIn('editor_lots.brand_id', $brand_arr)
@@ -137,7 +150,7 @@ class ClientDashboardControllerNew extends Controller
       // dd($editor_lots);
 
       /* response data to get shoot lot information with status start*/
-      $shoot_lots_query = Lots::orderBy('lots.id', 'DESC')
+      $shoot_lots_query = Lots::orderBy('lots.id', $sortByIs)
         ->select('lots.id as lot_id', 'lots.lot_id as lot_number', 'lots.created_at')
         ->whereIn('lots.brand_id', $brand_arr)
         ->groupBy('lots.id');
@@ -220,7 +233,8 @@ class ClientDashboardControllerNew extends Controller
     // dd($creative_lots);
     $other_data = array(
       'search_query' => '',
-      'lot_status' => $lotStatus
+      'lot_status' => $lotStatus,
+      'sortBy' => $sortBy
     );
     return view('clients.ClientDashboardDam', compact('creative_lots', 'shoot_lots', 'lots_catalog', 'editor_lots'))->with('other_data',$other_data);
     

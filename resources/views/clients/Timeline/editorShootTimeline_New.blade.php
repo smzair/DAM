@@ -15,8 +15,8 @@
 		z-index: 1;
 		width: 620px !important;
 		/* Set the width of the popover */
-		top: 455px;
-        left: 405px;
+		/*top: 455px !important;*/
+  /*      left: 405px !important;*/
 
 	}
 
@@ -127,11 +127,11 @@
 	<div class="col-12">
 	   <div class="col-12 d-flex justify-content-between">  
 	      <div>
-	          <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">Lot no:</p>
+	          <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">LOT NO</p>
 	          <h2 class="lot-no-sty">  {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
 	      </div>
 	      <div>
-	          <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">Inward Quantity: </p>
+	          <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">INWARD QUANTITY</p>
 	           <h2 class="lot-no-sty">{{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</h2>
 	      </div>
 	   </div>
@@ -170,7 +170,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Inward</p>
+								Inwarding</p>
 						</div>
 						<div class="progress-label progress-label-2">
 							<p class="progress-upper-heading">
@@ -201,7 +201,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Quality Check (QC)</p>
+								Editing & QC</p>
 						</div>
 						<div class="progress-label progress-label-5">
 							<p class="progress-upper-heading">
@@ -254,7 +254,7 @@
 	</div>
       <p class="WRC-info-para">WRC INFO.</p>
 	<div class="col-12 table-responsive track-lot-table-details">
-		<table class="table table-borderless">
+		<table class="table table-borderless " id="tracktablehover">
 			<thead>
 				<tr>
 					<th scope="col" class="table-heading-sty">WRC No.</th>
@@ -273,7 +273,7 @@
 					@foreach ($wrc_detail as $wrc_index => $wrc_row)
 						<tr>
 							<td class="table-column wrc-no-sty">
-								<p style="cursor: pointer;" onmouseover="showPopover(this)" onmouseout="hidePopover(this)">
+								<p class="text">
 									{{$wrc_row['wrc_number']}}
 								</p>
 
@@ -382,7 +382,7 @@
 			<a href="{{route('download_Shoot_Lot_edited', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn {{$img_download}}">Download images</a>&nbsp;&nbsp;&nbsp;
 			<a href="{{route('download_Shoot_Lot_raw', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn {{$img_download}}">Download raw</a>&nbsp;&nbsp;&nbsp;
 		</div>
-		<div class="download-invoice">
+	{{--	<div class="download-invoice">
 			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_1270_842)">
                 <path d="M9.99984 7.08317V12.0832M9.99984 18.3332C14.6023 18.3332 18.3332 14.6023 18.3332 9.99984C18.3332 5.39734 14.6023 1.6665 9.99984 1.6665C5.39734 1.6665 1.6665 5.39734 1.6665 9.99984C1.6665 14.6023 5.39734 18.3332 9.99984 18.3332Z" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -396,7 +396,7 @@
                 </defs>
                 </svg>
 			&nbsp; <a href="#" class="download-invoice"> Download Invoices</a>
-		</div>
+		</div>  --}}
 	</div>
 </div>
 
@@ -423,17 +423,40 @@
 		}
 	</script>
 
-<script>
-	// JavaScript functions to show and hide the popover
-	function showPopover(element) {
-		var popover = element.nextElementSibling;
-		popover.style.display = 'block';
-	}
-
-	function hidePopover(element) {
-		var popover = element.nextElementSibling;
-		popover.style.display = 'none';
-	}
-</script>
+ <script>
+      // Attach event listeners to the parent container
+      var tracktablehover = document.getElementById('tracktablehover');
+      tracktablehover.addEventListener('mouseover', showPopover);
+      tracktablehover.addEventListener('mouseout', hidePopover);
+  
+      // Show the popover when hovering over a text element
+      function showPopover(event) {
+        var target = event.target;
+        if (target.classList.contains('text')) {
+          var hoverpopover = target.nextElementSibling;
+          positionPopover(target, hoverpopover);
+          hoverpopover.style.display = 'block';
+        }
+      }
+  
+      // Position the popover to the right of the text element
+      function positionPopover(textElement, hoverpopover) {
+        var textRect = textElement.getBoundingClientRect();
+        var textRight = textRect.right;
+        var textTop = textRect.top;
+  
+        hoverpopover.style.left = textRight + 'px';
+        hoverpopover.style.top = textTop + 'px';
+      }
+  
+      // Hide the popover when moving away from a text element
+      function hidePopover(event) {
+        var target = event.target;
+        if (target.classList.contains('text')) {
+          var hoverpopover = target.nextElementSibling;
+          hoverpopover.style.display = 'none';
+        }
+      }
+    </script>
 
 @endsection

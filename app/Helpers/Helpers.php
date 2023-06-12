@@ -965,7 +965,15 @@ if(!function_exists('get_active_url_data')){
         if (in_array($routeName, $track_lots_routes)) {
             $active_tab = 1;
             $url_arr = explode('/',$currentUrl);
-            $url_is = $url_arr[count($url_arr)-1];
+            // $url_is = $url_arr[count($url_arr)-1];
+            $lot_status_arr = ['active' , 'completed'];
+            $url_is = '';
+            foreach ($lot_status_arr as $key => $lot_status_is) {
+                if (in_array($lot_status_is, $url_arr)) {
+                    $url_is = $lot_status_is;
+                } 
+            }
+
             if($url_is == 'active'){
                 $active_link = "active_lot";
             }else if($url_is == 'completed'){
