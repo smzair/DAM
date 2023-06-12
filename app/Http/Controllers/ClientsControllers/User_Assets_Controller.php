@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 
 class User_Assets_Controller extends Controller
 {
-  public function your_assets_files()
+  public function your_assets_files($sortBy = 'latest')
   {
     $user_data = Auth::user();
     if ($user_data->dam_enable != 1) {
@@ -41,6 +41,13 @@ class User_Assets_Controller extends Controller
     }
     $brand_arr = DB::table('brands_user')->where('user_id', $user_id)->get()->pluck('brand_id')->toArray();
 
+    // Sorting Changes
+    if ($sortBy == 'oldest' || $sortBy == 'old') {
+      $sortByIs = 'ASC';
+    } else {
+      $sortByIs = 'DESC';
+    }
+
     /** Shoot lots **/
     $lots_query_cataloging = Lots::leftJoin('wrc', 'wrc.lot_id', '=', 'lots.id')->whereIn('lots.brand_id', $brand_arr)->whereNotNull('wrc.id')->
       select(
@@ -53,7 +60,7 @@ class User_Assets_Controller extends Controller
         DB::raw("GROUP_CONCAT(wrc.id) as wrc_ids"),
         DB::raw("GROUP_CONCAT(wrc.wrc_id) as wrc_numbers"),
         DB::raw("COUNT(wrc.id) as wrc_counts"),
-      )->groupby('lots.id');
+      )->groupby('lots.id')->orderBy('lots.created_at', $sortByIs);
     $shoot_lots = $lots_query_cataloging->where('lots.user_id', $parent_client_id);
     $shoot_lots = $lots_query_cataloging->get()->toArray();
 
@@ -133,7 +140,7 @@ class User_Assets_Controller extends Controller
         DB::raw("COUNT(editing_wrcs.id) as wrc_counts"),
       )->groupby('editor_lots.id');
 
-    $editor_lots = $lots_query_cataloging->where('editor_lots.user_id', $parent_client_id);
+    $editor_lots = $lots_query_cataloging->where('editor_lots.user_id', $parent_client_id)->orderBy('editor_lots.created_at', $sortByIs);
     $editor_lots = $lots_query_cataloging->get()->toArray();
 
     $editor_lots_data = array();
@@ -176,8 +183,11 @@ class User_Assets_Controller extends Controller
       }
     }
     // dd($editor_lots_data,$shoot_lots_data , $shoot_lots);
+    $other_data = array(
+      'sortBy' => $sortBy
+    );
 
-    return view('clients.ClientAssets.your_assets_files')->with('shoot_lots', $shoot_lots_data)->with('editor_lots', $editor_lots_data);
+    return view('clients.ClientAssets.your_assets_files')->with('shoot_lots', $shoot_lots_data)->with('editor_lots', $editor_lots_data)->with('other_data',$other_data);
   }
   
   // Shoot wrc list

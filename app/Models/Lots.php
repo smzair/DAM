@@ -171,7 +171,7 @@ class Lots extends Model {
                     $upload_raw_info_id = [];
                     if(count($upload_raw_info) > 0){
                         $lot_detail[0]['allocated_created_at'] = $upload_raw_info[0]['created_at'];
-                        $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[3];
+                        $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[2];
                         $lot_detail[0]['overall_progress']  = 60;
                         $lot_detail[0]['wrc_assign']  = "20";
                         $upload_raw_info_id = array_column($upload_raw_info, 'id');

@@ -913,6 +913,14 @@ if(!function_exists('shoot_lot_statusArr')){
     }
 }
 
+// Editing lot statusArr
+if(!function_exists('Editing_lot_statusArr')){
+    function Editing_lot_statusArr(){
+        $Editing_lot_statusArr = ['Inward', 'WRC Generated', 'Editing started', 'Editing & QC Done', 'Submission Done'];
+        return $Editing_lot_statusArr;        
+    }
+}
+
 // track_lots_routes Array
 if(!function_exists('track_lots_routes')){
     function track_lots_routes(){

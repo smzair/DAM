@@ -13,14 +13,32 @@
 	// dd($catalog_lots, $creative_lots);
 
 @endphp
+{{-- Sort by  --}}
+<?php 
+$lot_status_is = $sortBy = $lot_status_val = "" ;
+	if(isset($other_data)){
+		if(isset($other_data['sortBy'])){
+			$sortBy = $other_data['sortBy'];
+		}
+	}
+?>
 
 <div class="row">
 	<div class=" col-12 d-flex justify-content-between">
 		<h4 class="headingF">
 			Your Assets - Links
 		</h4>
+		<div class="dropdown mt-2">
+			<a class="btn rounded-0 sort-by-button  dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				Sort &nbsp;&nbsp;&nbsp;&nbsp;
+			</a>
+			<ul class="dropdown-menu dropdown-menu-show-sortby">
+				<li><a class="dropdown-item dropdown-menu-show-sortby-item {{$sortBy == 'latest' ? 'active' : ''}}" href="{{route('your_assets_Links', ['sortBy' => 'latest' ])}}">Latest</a></li>
+				<li><a class="dropdown-item dropdown-menu-show-sortby-item {{($sortBy == 'oldest' || $sortBy == 'old')  ? 'active' : ''}}" href="{{route('your_assets_Links', ['sortBy' => 'oldest' ] )}}">Oldest</a></li>
+			</ul>
 	</div>
 </div>
+
 <div class="row" style="margin-top: 12px;">
 	<div class="col-12">
 		<p class="underheadingF">

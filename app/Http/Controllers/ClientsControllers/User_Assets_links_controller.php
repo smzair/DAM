@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 class User_Assets_links_controller extends Controller
 {
 
-	public function index()
+	public function index($sortBy = 'latest')
 	{
 		$parent_client_id = $user_id = Auth::id();
 		if (Auth::user()->dam_enable != 1) {
@@ -43,6 +43,12 @@ class User_Assets_links_controller extends Controller
 			$parent_client_id = $parent_user_data->parent_client_id;
 		}
 
+		// Sorting Changes
+    if ($sortBy == 'oldest' || $sortBy == 'old') {
+      $sortByIs = 'ASC';
+    } else {
+      $sortByIs = 'DESC';
+    }
 
 		// creative Lots Data.
 		$lots_query = CreatLots::leftjoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->whereIn('creative_lots.brand_id', $brand_arr);
@@ -59,7 +65,7 @@ class User_Assets_links_controller extends Controller
 			'creative_lots.lot_number',
 			'creative_lots.created_at as lot_created_at'
 		)->where('user_id', $parent_client_id);
-		$lots = $lots_query->groupBy('creative_lots.id');
+		$lots = $lots_query->groupBy('creative_lots.id')->orderBy('creative_lots.created_at', $sortByIs);
 		$lots = $lots_query->get()->toArray();
 
 		$creative_lots = array();
@@ -102,7 +108,7 @@ class User_Assets_links_controller extends Controller
 			'lots_catalog.lot_number',
 			'lots_catalog.created_at as lot_created_at'
 		)->where('user_id', $parent_client_id);
-		$catalog_lots = $catalog_lots_query->groupBy('lots_catalog.id');
+		$catalog_lots = $catalog_lots_query->groupBy('lots_catalog.id')->orderBy('lots_catalog.created_at', $sortByIs);
 		$catalog_lots = $catalog_lots_query->get()->toArray();
 
 		foreach ($catalog_lots as $key => $row) {
@@ -129,8 +135,10 @@ class User_Assets_links_controller extends Controller
 			$catalog_lots[$key]['submission_date'] = $submission_date;
 		}
 		$catalog_lots_data = $catalog_lots;
-    return view('clients.ClientAssetsLinks.your-assets-Links-Lots')->with('catalog_lots', $catalog_lots_data)->with('creative_lots', $creative_lots);
-
+		$other_data = array(
+      'sortBy' => $sortBy
+    );
+    return view('clients.ClientAssetsLinks.your-assets-Links-Lots')->with('catalog_lots', $catalog_lots_data)->with('creative_lots', $creative_lots)->with('other_data',$other_data);
 	}
 
 	// your assets creative wrcs links
