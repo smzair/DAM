@@ -31,7 +31,7 @@ class FavoriteAsset extends Model
   protected $fillable = ['user_id', 'brand_id', 'lot_id', 'wrc_id', 'service', 'module', 'type', 'other_data_id', 'other_data', 'created_by'];
 
   // Shoot Images
-  public static function shoot_images($service_array)
+  public static function shoot_images($service_array , $type = '' , $sortByIs = 'DESC')
   {
 
     $user_data = Auth::user();
@@ -47,7 +47,7 @@ class FavoriteAsset extends Model
     }
     $brand_arr = DB::table('brands_user')->where('user_id', $user_id)->get()->pluck('brand_id')->toArray();
 
-    $shoot_raw_query = FavoriteAsset::where('service', $service_array[0])->where('module', 'image')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id);
+    $shoot_raw_query = FavoriteAsset::where('service', $service_array[0])->where('module', 'image')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->orderBy('favorite_assets.created_at', $sortByIs);
 
     $shoot_raw_images_count = $shoot_raw_query->count();
     $shoot_images = $shoot_raw_query->get()->toArray();   
@@ -116,7 +116,7 @@ class FavoriteAsset extends Model
   }
 
   // Editing Images
-  public static function editing_images($service_array, $type = '')
+  public static function editing_images($service_array, $type = '' , $sortByIs = 'DESC')
   {
     $user_data = Auth::user();
     $parent_client_id = $user_id = $user_data->id;
@@ -133,7 +133,7 @@ class FavoriteAsset extends Model
     $brand_arr = DB::table('brands_user')->where('user_id', $user_id)->get()->pluck('brand_id')->toArray();
 
     $editing_images = array();
-      $raw_image_query = FavoriteAsset::where('service', $service_array[1])->where('module', 'image')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id);
+      $raw_image_query = FavoriteAsset::where('service', $service_array[1])->where('module', 'image')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->orderBy('favorite_assets.created_at', $sortByIs);
       if ($type != '') {
         $raw_image_query = $raw_image_query->where('type', $type);
       }

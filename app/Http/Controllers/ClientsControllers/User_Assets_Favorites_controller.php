@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class User_Assets_Favorites_controller extends Controller
 {
-  public function index()
+  public function index($sortBy = 'latest')
   {
 
     $data_array = array();
@@ -41,14 +41,23 @@ class User_Assets_Favorites_controller extends Controller
     }
     $brand_arr = DB::table('brands_user')->where('user_id', $user_id)->get()->pluck('brand_id')->toArray();
     
+    // Sorting Changes
+    if ($sortBy == 'oldest' || $sortBy == 'old') {
+      $sortByIs = 'ASC';
+    } else {
+      $sortBy = 'latest';
+      $sortByIs = 'DESC';
+    }
+
     // Getting Images
-    $editing_images = FavoriteAsset::editing_images($service_array);
+    $type = '';
+    $editing_images = FavoriteAsset::editing_images($service_array , $type , $sortByIs);
     $images_array['editing_images'] = $editing_images;
-    $shoot_images = FavoriteAsset::shoot_images($service_array);
+    $shoot_images = FavoriteAsset::shoot_images($service_array, $type , $sortByIs);
     $images_array['shoot_images'] = $shoot_images;
 
     // getting lots
-    $lots_data = FavoriteAsset::where('module', 'lot')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->get()->toArray();
+    $lots_data = FavoriteAsset::where('module', 'lot')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->orderBy('favorite_assets.created_at', $sortByIs)->get()->toArray();
     foreach ($lots_data as $key => $row) {
       $lots_data_is = array();
       $service = $row['service'];
@@ -87,7 +96,7 @@ class User_Assets_Favorites_controller extends Controller
 
     // dd($data_array , $link_lots , $files_lots);
     // Getting Skus
-    $skus_data = FavoriteAsset::where('module', 'sku')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->get()->toArray();
+    $skus_data = FavoriteAsset::where('module', 'sku')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->orderBy('favorite_assets.created_at', $sortByIs)->get()->toArray();
     foreach ($skus_data as $key => $skus_row) {
       $type = $skus_row['type'];
       $sku_id = $skus_row['other_data_id'];
@@ -98,14 +107,18 @@ class User_Assets_Favorites_controller extends Controller
     $data_array['skus_data'] = $skus_data;
 
     // Getting Wrc Data. 
-    $wrc_data = FavoriteAsset::where('module', 'wrc')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->get()->toArray();
+    $wrc_data = FavoriteAsset::where('module', 'wrc')->whereIn('favorite_assets.brand_id', $brand_arr)->where('favorite_assets.user_id', $parent_client_id)->orderBy('favorite_assets.created_at', $sortByIs)->get()->toArray();
     foreach ($wrc_data as $wrc_key => $wrc_row) {
       $wrc_data_is = FavoriteAsset::wrc_data($wrc_row);
       $wrc_data[$wrc_key]['wrc_data'] = $wrc_data_is[0];
     }
     $data_array['wrc_data'] = $wrc_data;
 
-    return view('clients.ClientAssetsLinks.your-assets-Favorites')->with('images_array', $images_array)->with('data_array', $data_array);
+    // other Data 
+    $other_data = array(
+      'sortBy' => $sortBy
+    );
+    return view('clients.ClientAssetsLinks.your-assets-Favorites')->with('images_array', $images_array)->with('data_array', $data_array)->with('other_data',$other_data);
   }
 
   // Function for save files as as favorites

@@ -702,7 +702,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::get('/your-assets-Links-cataloging/{lot_id}', [User_Assets_links_controller::class, 'your_assets_cataloging_wrcs_links'])->name('your_assets_cataloging_wrcs_links');
     Route::get('/Admin-control-Uploaded-file-list-New', [AdminControlController::class, 'ClientAdminControlUploadedFileList'])->name('ClientAdminControlUploadedFileList');
 
-    Route::get('/your-assets-Favorites', [User_Assets_Favorites_controller::class, 'index'])->name('your_assets_Favorites');
+    Route::get('/your-assets-Favorites/{sortBy?}', [User_Assets_Favorites_controller::class, 'index'])->name('your_assets_Favorites');
     Route::POST('/your-assets-Favorites', [User_Assets_Favorites_controller::class, 'save'])->name('Save_your_assets_Favorites');
     Route::POST('/Remove-your-assets-Favorites', [User_Assets_Favorites_controller::class, 'remove_your_assets_Favorites'])->name('remove_your_assets_Favorites');
     
