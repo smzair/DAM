@@ -30,20 +30,30 @@
 
 	@endphp
 
+	{{-- Sort by  --}}
+	<?php 
+	$lot_status_is = $sortBy = $lot_status_val = "" ;
+		if(isset($other_data)){
+			if(isset($other_data['sortBy'])){
+				$sortBy = $other_data['sortBy'];
+			}
+		}
+	?>
+
 	<div class="row">
 		<div class=" col-12 d-flex justify-content-between">
 				<h4 class="headingF">
 						Your Assets
 				</h4>
-				<button class="btn btn-none border dropdown-toggle btn-outline-none" type="button"
-						id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
-						Sort
-				</button>
-				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-						<li><a class="dropdown-item" href="#">2022</a></li>
-						<li><a class="dropdown-item" href="#">2023</a></li>
-				</ul>
-		</div>
+				<div class="dropdown mt-2">
+					<a class="btn rounded-0 sort-by-button  dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Sort &nbsp;&nbsp;&nbsp;&nbsp;
+					</a>
+					<ul class="dropdown-menu dropdown-menu-show-sortby">
+						<li><a class="dropdown-item dropdown-menu-show-sortby-item {{($sortBy == 'latest' || $sortBy == 'newest') ? 'active' : ''}}" href="{{route('your_assets_Favorites', ['sortBy' => 'latest' ])}}">Newest</a></li>
+						<li><a class="dropdown-item dropdown-menu-show-sortby-item {{($sortBy == 'oldest' || $sortBy == 'old')  ? 'active' : ''}}" href="{{route('your_assets_Favorites', ['sortBy' => 'oldest' ] )}}">Oldest</a></li>
+					</ul>
+			</div>
 	</div>
 	<div class="row" style="margin-top: 12px;">
 		<div class="col-12">
