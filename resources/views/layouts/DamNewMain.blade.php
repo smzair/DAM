@@ -258,7 +258,7 @@
 
 					<div class="collapse navbar-collapse" id="navbarCollapse">
 
-					 <form action="{{route('gloableSearch')}}" method="post" class="ms-4" style="width:50%;">
+					 <form action="{{route('gloableSearchNew')}}" method="post" class="ms-4" style="width:50%;">
 						@csrf
 						<div class="input-group ms-auto  nav-searchbar" style="width:59%;">
 								<input type="text" id="searchBar" class="form-control rounded-0" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" style="background: #1A1A1A;border: 1px solid #333333; color: #FFFFFF;" name="search_query" value="{{$search_query}}">

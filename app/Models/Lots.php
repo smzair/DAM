@@ -86,7 +86,9 @@ class Lots extends Model {
         $lot_detail = Lots::where('lots.id',$id)->
         leftjoin('users' ,'users.id' , 'lots.user_id' )->
         leftjoin('brands' , 'brands.id' , 'lots.brand_id')->
-        select('lots.id', 
+        select('lots.id',
+        'lots.id as lot_id', 
+        'lots.created_at as lot_created_at',
         'users.Company as company_name',
         'users.c_short as company_c_short',
         'brands.name as brand_name',
@@ -111,6 +113,13 @@ class Lots extends Model {
         $lot_detail[0]['allocated_created_at']  = null;
         $lot_detail[0]['qc_done_at']  = null;
         $lot_detail[0]['submission_date']  = null;
+        $lot_detail[0]['file_path'] =  '';
+        $lot_detail[0]['skus_count'] =  '';
+        $lot_detail[0]['raw_images'] =  '';
+        $lot_detail[0]['edited_images'] =  '';
+        $lot_detail[0]['s_type'] =  '';
+        $lot_detail[0]['wrc_numbers'] =  '';
+
         
         $wrc_info = [];
         if($wrc_count > 0){            
@@ -123,6 +132,7 @@ class Lots extends Model {
                 'commercial.type_of_shoot',
                 'commercial.type_of_clothing',
                 'commercial.gender',
+                'commercial.adaptation_1 as primary_adaptation',
                 'commercial.adaptation_1',
                 'commercial.adaptation_2',
                 'commercial.adaptation_3',
@@ -214,7 +224,75 @@ class Lots extends Model {
                     }
                 }
             }
-            // dd($wrc_count, $lot_detail , $wrc_info);          
+            // dd($wrc_count, $lot_detail , $wrc_info);
+
+            $wrc_id_arr = array_column($wrc_info, 'wrc_id');
+            $wrc_number_arr = array_column($wrc_info, 'wrc_number');
+            $sku_info_query = Skus::whereIn('sku.wrc_id', $wrc_id_arr)->where('status', 1)->select('id as sku_id', 'wrc_id', 'sku_code', 'status');
+            $skus_count = $sku_info_query->count();
+            $skus_array = $sku_info_query->get()->toArray();
+            if($skus_count > 0){
+                $file_path = "";
+                $lot_number = $lot_detail[0]['lot_number'];
+                $skus_sku_id_arr = array_column($skus_array , 'sku_id');
+                $skus_sku_code_arr = array_column($skus_array , 'sku_code' , 'sku_id');
+                
+                $upload_raw_query = uploadraw::whereIn('sku_id', $skus_sku_id_arr)->where('filename', 'LIKE', '%_1.%')->groupby('sku_id')->groupby('filename');
+                $upload_raw_count = $upload_raw_query->count();
+                $upload_raw_data = $upload_raw_query->get()->toArray();
+
+                foreach ($upload_raw_data as $key_is => $raw_data) {
+                    if($file_path != ""){
+                      break;
+                    }
+                    $sku_id = $raw_data['sku_id'];
+                    $sku_code = $skus_sku_code_arr[$raw_data['sku_id']];
+                    $created_at = $raw_data['created_at'];
+                    $filename = $raw_data['filename'];
+
+                    foreach ($wrc_number_arr as $key => $wrc_number) {
+                        if($file_path != ""){
+                            break;
+                        }
+                        $path =  "raw_img_directory/" . date('Y', strtotime($created_at)) . "/" . date('M', strtotime($created_at)) . "/" . $lot_number."/" . $wrc_number."/" . $sku_code."/" . $filename;
+                        if(file_exists($path)){
+                          $file_path = $path;
+                        }
+                    }
+          
+                }
+                
+
+                if($file_path == ''){
+                    $editor_Submission_data = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->where('filename', 'LIKE', '%_1.%')->get()->toArray();
+                    foreach ($editor_Submission_data as $key_is => $item) {
+                        if($file_path != ""){
+                            break;
+                        }            
+                        $adaptation = $item['adaptation'];
+                        $sku_id = $item['sku_id'];
+                        $sku_code = $skus_sku_code_arr[$raw_data['sku_id']];
+                        
+                        foreach ($wrc_number_arr as $key => $wrc_number) {
+                            if($file_path != ""){
+                                break;
+                            }   
+                            $path=  "edited_img_directory/". date('Y', strtotime($item['created_at'])) . "/" . date('M', strtotime($item['created_at'])) . "/" . $lot_number."/" . $wrc_number."/" . $adaptation. "/" .$sku_code. "/" . $item['filename'];
+
+
+                            if(file_exists($path)){
+                                $file_path = $path;
+                            }
+                        }
+
+                    }
+                    $lot_detail[0]['file_path'] =  $file_path;
+
+                    // if($lot_detail[0]['id'] == 3744){
+                    //     dd($wrc_number_arr, $upload_raw_data ,$file_path , $lot_detail[0]); 
+                    // }
+                }
+            }        
         }
 
         // insert into user activity log
