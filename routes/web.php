@@ -680,6 +680,8 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     // DAM New UI Routes
     Route::post('/gloableSearch', [ClientCommonController::class, 'gloableSearch'])->name('gloableSearch');
     Route::get('/gloableSearch', [App\Http\Controllers\HomeController::class, 'index']);// client raw images mgmt when hit common search
+    Route::Post('/gloableSearchNew', [ClientCommonController::class, 'gloableSearchNew'])->name('gloableSearchNew');
+    Route::get('/gloableSearchNew', [ClientCommonController::class, 'gloableSearchNew']);
 
     Route::get('/your-assets-Files/{sortBy?}', [User_Assets_Controller::class, 'your_assets_files'])->name('your_assets_files');
     Route::get('/your-assets-shoot-wrcs/{id}', [User_Assets_Controller::class, 'your_assets_shoot_wrcs'])->name('your_assets_shoot_wrcs');
