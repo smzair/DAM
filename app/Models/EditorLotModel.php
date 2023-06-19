@@ -112,7 +112,13 @@ class EditorLotModel extends Model
         $lot_detail = EditorLotModel::where('editor_lots.id', $id)->leftJoin('editing_wrcs', 'editing_wrcs.lot_id', 'editor_lots.id')->
         leftjoin('editors_commercials' ,'editors_commercials.id' , 'editing_wrcs.commercial_id' )->
         leftjoin('users' ,'users.id' , 'editor_lots.user_id' )->
-        leftjoin('brands' , 'brands.id' , 'editor_lots.brand_id')->select('editor_lots.id as lot_id','editor_lots.lot_number', 'editor_lots.created_at', 'users.Company as company_name',
+        leftjoin('brands' , 'brands.id' , 'editor_lots.brand_id')->
+        select(
+            'editor_lots.id',
+            'editor_lots.id as lot_id',
+            'editor_lots.created_at as lot_created_at',
+            DB::raw("DATE_FORMAT(editor_lots.created_at, '%d-%m-%Y') as lots_formatted_date"),
+            'editor_lots.lot_number', 'editor_lots.created_at', 'users.Company as company_name',
         'users.c_short as company_c_short',
         'brands.name as brand_name',
         'brands.short_name as brand_short_name', DB::raw('sum(editing_wrcs.uploaded_img_qty) as inward_quantity',))->get()->toArray();
@@ -130,13 +136,16 @@ class EditorLotModel extends Model
         'editing_wrcs.id as wrc_id',
         'editing_wrcs.wrc_number',
         'editing_wrcs.created_at as wrc_created_at',
+        DB::raw("DATE_FORMAT(editing_wrcs.created_at, '%d-%m-%Y') as wrc_formatted_date"),
         'editing_wrcs.documentUrl',
         'editing_wrcs.imgQty as imgqty',
+        'editing_wrcs.uploaded_img_file_path',
         'editing_wrcs.uploaded_img_qty as wrc_order_qty',
         'editor_lots.id as lot_id',
         'editor_lots.lot_number',
         'editor_lots.request_name',
         'editor_lots.created_at as lot_created_at',
+        DB::raw("DATE_FORMAT(editor_lots.created_at, '%d-%m-%Y') as lots_formatted_date"),
         'editors_commercials.type_of_service',
         'editors_commercials.CommercialPerImage',
         'editing_allocations.id as allocation_id',
@@ -174,6 +183,13 @@ class EditorLotModel extends Model
         $lot_detail[0]['wrc_assign']  = "0%";
         $lot_detail[0]['wrc_qc']  = "0%";
         $lot_detail[0]['wrc_submission']  = "0%";
+        $lot_detail[0]['submission_date']  = '';
+        $lot_detail[0]['file_path'] =  '';
+        $lot_detail[0]['skus_count'] =  '';
+        $lot_detail[0]['raw_images'] =  '';
+        $lot_detail[0]['edited_images'] =  '';
+        $lot_detail[0]['s_type'] =  '';
+        $lot_detail[0]['wrc_numbers'] =  '';
 
         $count_wrc = 0;
         $count_qc = 0;

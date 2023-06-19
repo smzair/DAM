@@ -55,7 +55,8 @@
 		}
 
 		$shoot_image_src = 'IMG/no_preview_available.jpg';
-		$img_src = 'IMG/group_10.png';
+		$img_src = 'IMG/no_preview_available.jpg';
+		// $img_src = 'IMG/group_10.png';
 		$zipFileSize = "File Not Found!!";
 		if(file_exists($path)){
 			$img_src = $path;
