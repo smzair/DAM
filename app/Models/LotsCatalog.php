@@ -36,10 +36,22 @@ class LotsCatalog extends Model
     leftjoin('brands' , 'brands.id' , 'lots_catalog.brand_id');
 
     // get data for lot generated details
-    $lot_detail = $lot_info_with_wrc_query->select('lots_catalog.id as lot_id', 'lots_catalog.lot_number', 'lots_catalog.created_at','users.Company as company_name',
-    'users.c_short as company_c_short',
-    'brands.name as brand_name',
-    'brands.short_name as brand_short_name', DB::raw('sum(catlog_wrc.sku_qty) as inward_quantity'))->get()->toArray();
+    $lot_detail = $lot_info_with_wrc_query->
+    select(
+      'lots_catalog.id',
+      'lots_catalog.id as lot_id',
+      'lots_catalog.lot_number', 
+      'lots_catalog.created_at',
+      'lots_catalog.created_at as lot_created_at',
+      DB::raw("DATE_FORMAT(lots_catalog.created_at, '%d-%m-%Y') as lots_formatted_date"),
+
+      'users.Company as company_name',
+      'users.c_short as company_c_short',
+      'brands.name as brand_name',
+      'brands.short_name as brand_short_name',
+      DB::raw('sum(catlog_wrc.sku_qty) as inward_quantity'
+    )
+    )->get()->toArray();
 
     // Lots Details with Wrc data
     $wrc_detail_query = $lot_info_with_wrc_query->leftJoin(
@@ -53,6 +65,7 @@ class LotsCatalog extends Model
         'catlog_wrc.wrc_number',
         'catlog_wrc.alloacte_to_copy_writer',
         'catlog_wrc.created_at as wrc_created_at',
+        DB::raw("DATE_FORMAT(catlog_wrc.created_at, '%d-%m-%Y') as wrc_formatted_date"),
         'catlog_wrc.sku_qty',
         'catlog_wrc.sku_qty as wrc_order_qty',
         'catlog_wrc.modeOfDelivary',
@@ -62,6 +75,7 @@ class LotsCatalog extends Model
         'lots_catalog.id as lot_id',
         'lots_catalog.lot_number',
         'lots_catalog.created_at as lot_created_at',
+        DB::raw("DATE_FORMAT(lots_catalog.created_at, '%d-%m-%Y') as lots_formatted_date"),
         'catalog_allocation.created_at as allocated_created_at',
         'catalog_time_hash.updated_at as qc_done_at',
         DB::raw('GROUP_CONCAT(catalog_allocation.id) as allocation_ids'),
@@ -97,6 +111,8 @@ class LotsCatalog extends Model
     $lot_detail[0]['wrc_assign']  = "0%";
     $lot_detail[0]['wrc_qc']  = "0%";
     $lot_detail[0]['wrc_submission']  = "0%";
+    $lot_detail[0]['submission_date']  = '';
+    $lot_detail[0]['wrc_numbers'] =  '';
 
     $count_wrc = 0;
     $count_qc = 0;

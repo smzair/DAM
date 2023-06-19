@@ -37,11 +37,22 @@ class CreatLots extends Model
 
     // Lots Details with Wrc data
     $lot_detail = $lot_info_with_wrc->
-    select('creative_lots.id as lot_id', 'creative_lots.lot_number', 'creative_lots.created_at','users.Company as company_name',
-    'users.c_short as company_c_short',
-    'brands.name as brand_name',
-    'brands.short_name as brand_short_name', DB::raw('SUM(CASE WHEN sku_required = 1 THEN sku_count ELSE order_qty END) AS inward_quantity'))->get()->toArray();
+    select(
+      'creative_lots.id',
+      'creative_lots.id as lot_id',
+      'creative_lots.lot_number',
+      'creative_lots.created_at',
+      'creative_lots.created_at as lot_created_at',
+      DB::raw("DATE_FORMAT(creative_lots.created_at, '%d-%m-%Y') as lots_formatted_date"),
+      'users.Company as company_name',
+      'users.c_short as company_c_short',
+      'brands.name as brand_name',
+      'brands.short_name as brand_short_name',
+      DB::raw('SUM(CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END) AS inward_qty'),
+      DB::raw('SUM(CASE WHEN sku_required = 1 THEN sku_count ELSE order_qty END) AS inward_quantity')
+    )->get()->toArray();
     // dd($lot_detail);
+
     $wrc_info  = $wrc_detail_query = $lot_info_with_wrc->leftJoin('creative_allocation', 'creative_allocation.wrc_id', 'creative_wrc.id')->leftJoin('creative_time_hash', 'creative_time_hash.allocation_id', 'creative_allocation.id')->leftJoin('creative_upload_links', 'creative_upload_links.allocation_id', 'creative_allocation.id')->leftJoin(
       'creative_submissions',
       function ($join) {
@@ -49,10 +60,12 @@ class CreatLots extends Model
         $join->on('creative_allocation.batch_no', '=', 'creative_submissions.batch_no');
       }
     )->select(
+      'creative_wrc.id',
       'creative_wrc.id as wrc_id',
       'creative_wrc.wrc_number',
       'creative_wrc.commercial_id',
       'creative_wrc.created_at as wrc_created_at',
+      DB::raw("DATE_FORMAT(creative_wrc.created_at, '%d-%m-%Y') as wrc_formatted_date"),      
       'creative_wrc.sku_required',
       'creative_wrc.sku_count',
       'creative_wrc.order_qty',
@@ -62,12 +75,13 @@ class CreatLots extends Model
       'create_commercial.project_name as commercial_project_name',
       'create_commercial.kind_of_work',
       'create_commercial.per_qty_value',
-
+      
       'creative_lots.id as lot_id',
       'creative_lots.lot_number',
       'creative_lots.project_name',
       'creative_lots.verticle',
       'creative_lots.created_at as lot_created_at',
+      DB::raw("DATE_FORMAT(creative_lots.created_at, '%d-%m-%Y') as lots_formatted_date"),
 
       'creative_allocation.id as allocation_id',
       'creative_allocation.user_id',
@@ -112,6 +126,8 @@ class CreatLots extends Model
     $lot_detail[0]['wrc_assign']  = "0%";
     $lot_detail[0]['wrc_qc']  = "0%";
     $lot_detail[0]['wrc_submission']  = "0%";
+    $lot_detail[0]['submission_date']  = '';
+    $lot_detail[0]['wrc_numbers'] =  '';
 
     $count_wrc = 0;
     $count_qc = 0;

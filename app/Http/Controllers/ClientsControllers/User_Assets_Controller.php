@@ -216,7 +216,7 @@ class User_Assets_Controller extends Controller
         $wrc_number = $value['wrc_number'];
         $skus_sku_id_arr = array_column($skus_array , 'sku_id');
         $skus_sku_code_arr = array_column($skus_array , 'sku_code');
-        $editor_Submission_data = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->get()->toArray();
+        $editor_Submission_data = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->where('filename', 'LIKE', '%_1.%')->get()->toArray();
 
         foreach ($editor_Submission_data as $key_is => $item) {
           if($file_path != ""){

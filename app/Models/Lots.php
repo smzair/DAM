@@ -89,6 +89,7 @@ class Lots extends Model {
         select('lots.id',
         'lots.id as lot_id', 
         'lots.created_at as lot_created_at',
+        DB::raw("DATE_FORMAT(lots.created_at, '%d-%m-%Y') as lots_formatted_date"),
         'users.Company as company_name',
         'users.c_short as company_c_short',
         'brands.name as brand_name',
@@ -128,6 +129,9 @@ class Lots extends Model {
                 'lots.id', 
                 'lots.lot_id as lot_number', 
                 'lots.created_at',
+                'lots.created_at as lot_created_at',
+                DB::raw("DATE_FORMAT(lots.created_at, '%d-%m-%Y') as lots_formatted_date"),
+                DB::raw("CONCAT(commercial.product_category, ', ', commercial.type_of_shoot, ', ', commercial.type_of_clothing, ', ', commercial.gender, ', ', commercial.adaptation_1) as tags"),
                 'commercial.product_category',
                 'commercial.type_of_shoot',
                 'commercial.type_of_clothing',
@@ -142,6 +146,7 @@ class Lots extends Model {
                 'wrc.id as wrc_id',
                 'wrc.wrc_id as wrc_number',
                 'wrc.created_at as wrc_created_at',
+                DB::raw("DATE_FORMAT(wrc.created_at, '%d-%m-%Y') as wrc_formatted_date"),
             )->get()->toArray();
             $tot_sku_count  = 0;
             $submited_wrc = 0;
@@ -157,6 +162,10 @@ class Lots extends Model {
                 $wrc_info[$key]['qc_status'] =  'pending';
                 $wrc_info[$key]['submission_status'] =  'pending';
                 $wrc_info[$key]['submission_date'] =  '';
+                $wrc_info[$key]['service'] =  'SHOOT';
+
+                $file_path = '';
+
 
                 $rejected_skus = Skus::where('wrc_id', $val['wrc_id'])->where('status', '=' , 0)->count();
                 $wrc_info[$key]['rejected_skus'] =  $rejected_skus;                
@@ -174,7 +183,7 @@ class Lots extends Model {
                 $lot_detail[0]['inward_quantity'] = $tot_sku_count;
                 $lot_detail[0]['wrc_created_at'] = $val['wrc_created_at'];
 
-                if($tot_sku_count > 0){
+                if($sku_count > 0){
                     $sku_info = $sku_info_query->pluck('id')->toarray();
 
                     $upload_raw_info = uploadraw::whereIn('sku_id', $sku_info)->get()->toArray();
@@ -189,7 +198,9 @@ class Lots extends Model {
 
                     $allocation_info = allocation::whereIn('uploadraw_id', $upload_raw_info_id)->get()->toArray();
 
-                    $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->where('editor_submission.qc' , '=' , '1')->groupby('editor_submission.sku_id')->get()->toArray();
+                    $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->where('editor_submission.qc' , '=' , '1')->orderby('editor_submission.filename' , 'ASC')->get()->toArray();
+                    // $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->where('editor_submission.qc' , '=' , '1')->orderby('editor_submission.filename' , 'DESC')->groupby('editor_submission.sku_id')->get()->toArray();
+                    
                     
                     if(count($editor_qc_info) > 0){
                         $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[3];
@@ -223,6 +234,7 @@ class Lots extends Model {
                         }
                     }
                 }
+                $wrc_info[$key]['file_path'] =  $file_path;
             }
             // dd($wrc_count, $lot_detail , $wrc_info);
 
@@ -236,32 +248,6 @@ class Lots extends Model {
                 $lot_number = $lot_detail[0]['lot_number'];
                 $skus_sku_id_arr = array_column($skus_array , 'sku_id');
                 $skus_sku_code_arr = array_column($skus_array , 'sku_code' , 'sku_id');
-                
-                $upload_raw_query = uploadraw::whereIn('sku_id', $skus_sku_id_arr)->where('filename', 'LIKE', '%_1.%')->groupby('sku_id')->groupby('filename');
-                $upload_raw_count = $upload_raw_query->count();
-                $upload_raw_data = $upload_raw_query->get()->toArray();
-
-                foreach ($upload_raw_data as $key_is => $raw_data) {
-                    if($file_path != ""){
-                      break;
-                    }
-                    $sku_id = $raw_data['sku_id'];
-                    $sku_code = $skus_sku_code_arr[$raw_data['sku_id']];
-                    $created_at = $raw_data['created_at'];
-                    $filename = $raw_data['filename'];
-
-                    foreach ($wrc_number_arr as $key => $wrc_number) {
-                        if($file_path != ""){
-                            break;
-                        }
-                        $path =  "raw_img_directory/" . date('Y', strtotime($created_at)) . "/" . date('M', strtotime($created_at)) . "/" . $lot_number."/" . $wrc_number."/" . $sku_code."/" . $filename;
-                        if(file_exists($path)){
-                          $file_path = $path;
-                        }
-                    }
-          
-                }
-                
 
                 if($file_path == ''){
                     $editor_Submission_data = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->where('filename', 'LIKE', '%_1.%')->get()->toArray();
@@ -271,7 +257,7 @@ class Lots extends Model {
                         }            
                         $adaptation = $item['adaptation'];
                         $sku_id = $item['sku_id'];
-                        $sku_code = $skus_sku_code_arr[$raw_data['sku_id']];
+                        $sku_code = $skus_sku_code_arr[$item['sku_id']];
                         
                         foreach ($wrc_number_arr as $key => $wrc_number) {
                             if($file_path != ""){
@@ -291,6 +277,33 @@ class Lots extends Model {
                     // if($lot_detail[0]['id'] == 3744){
                     //     dd($wrc_number_arr, $upload_raw_data ,$file_path , $lot_detail[0]); 
                     // }
+                }
+                
+                if($file_path == ''){
+                    $upload_raw_query = uploadraw::whereIn('sku_id', $skus_sku_id_arr)->where('filename', 'LIKE', '%_1.%')->groupby('sku_id')->groupby('filename');
+                    $upload_raw_count = $upload_raw_query->count();
+                    $upload_raw_data = $upload_raw_query->get()->toArray();
+    
+                    foreach ($upload_raw_data as $key_is => $raw_data) {
+                        if($file_path != ""){
+                          break;
+                        }
+                        $sku_id = $raw_data['sku_id'];
+                        $sku_code = $skus_sku_code_arr[$raw_data['sku_id']];
+                        $created_at = $raw_data['created_at'];
+                        $filename = $raw_data['filename'];
+    
+                        foreach ($wrc_number_arr as $key => $wrc_number) {
+                            if($file_path != ""){
+                                break;
+                            }
+                            $path =  "raw_img_directory/" . date('Y', strtotime($created_at)) . "/" . date('M', strtotime($created_at)) . "/" . $lot_number."/" . $wrc_number."/" . $sku_code."/" . $filename;
+                            if(file_exists($path)){
+                              $file_path = $path;
+                            }
+                        }
+              
+                    }
                 }
             }        
         }

@@ -67,9 +67,8 @@
 								@php
 									// dd($row);
 									$path = $row['file_path'].$row['filename'];
-									$img_src = 'IMG/group_10.png';
 									$zipFileSize = "File Not Found!!";
-									$shoot_image_src = 'IMG/no_preview_available.jpg';
+									$img_src = $shoot_image_src = 'IMG/no_preview_available.jpg';
 
 									if(file_exists($path)){
 										$img_src = $path;
@@ -197,9 +196,8 @@
 								@foreach ($wrc_raw_images as $row)
 									@php
 										$path = $row['file_path'].$row['filename'];
-										$img_src = 'IMG/group_10.png';
 										$zipFileSize = "File Not Found!!";
-										$shoot_image_src = 'IMG/no_preview_available.jpg';
+										$img_src = $shoot_image_src = 'IMG/no_preview_available.jpg';
 
 										if(file_exists($path)){
 											$img_src = $path;

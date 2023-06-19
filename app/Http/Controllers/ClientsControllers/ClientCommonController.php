@@ -259,81 +259,159 @@ class ClientCommonController extends Controller
     }
 
 
+    // Data set from app\Jobs\SearchDataCollection.php
     /********************************* Shoot search data *******************************************/
-    $shootLots = [];
-    $shootWrcData = [];
-    $shootSkuData = [];
+      $shootLots = [];
+      $shootWrcData = [];
+      $shootSkuData = [];
 
-    if (Session::has('shoot_data')) {
-      $shoot_data = Session::get('shoot_data');
-      if (isset($shoot_data['lots'])) {
-        $shootLots = $shoot_data['lots'];
+      if (Session::has('shoot_data')) {
+        $shoot_data = Session::get('shoot_data');
+        if (isset($shoot_data['lots'])) {
+          $shootLots = $shoot_data['lots'];
+        }
+        if (isset($shoot_data['wrc'])) {
+          $shootWrcData = $shoot_data['wrc'];
+        }
+        if (isset($shoot_data['sku'])) {
+          $shootSkuData = $shoot_data['sku'];
+        }
       }
-      if (isset($shoot_data['wrc'])) {
-        $shootWrcData = $shoot_data['wrc'];
-      }
-      if (isset($shoot_data['sku'])) {
-        $shootSkuData = $shoot_data['sku'];
-      }
-    }
 
-    $data_array = [];
-    // Lot data
-    $searchData_shoot_lot = array();
-    foreach ($shootLots as $item) {
-      $serializedItem = serialize($item);
-      if (stripos($serializedItem, $searchTerm) !== false) {
-        $searchData_shoot_lot[] = $item;
+      $data_array = [];
+      // Lot data
+      $searchData_shoot_lot = array();
+      foreach ($shootLots as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_shoot_lot[] = $item;
+        }
       }
-    }
 
-    $data_array['searchData_shoot_lot'] = $searchData_shoot_lot;
-    // Wrc Data.
-    $searchData_shoot_wrc = array();
-    foreach ($shootWrcData as $item) {
-      $serializedItem = serialize($item);
-      if (stripos($serializedItem, $searchTerm) !== false) {
-        $searchData_shoot_wrc[] = $item;
+      $data_array['searchData_shoot_lot'] = $searchData_shoot_lot;
+      // Wrc Data.
+      $searchData_shoot_wrc = array();
+      foreach ($shootWrcData as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_shoot_wrc[] = $item;
+        }
       }
-    }
-    $data_array['searchData_shoot_wrc'] = $searchData_shoot_wrc;
+      $data_array['searchData_shoot_wrc'] = $searchData_shoot_wrc;
 
-    // Sku Data
-    $searchData_shoot_sku = array();
-    foreach ($shootSkuData as $item) {
-      $serializedItem = serialize($item);
-      if (stripos($serializedItem, $searchTerm) !== false) {
-        $searchData_shoot_sku[] = $item;
+      // Sku Data
+      $searchData_shoot_sku = array();
+      foreach ($shootSkuData as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_shoot_sku[] = $item;
+        }
       }
-    }
-    $data_array['searchData_shoot_sku'] = $searchData_shoot_sku;
+      $data_array['searchData_shoot_sku'] = $searchData_shoot_sku;
 
 
     /********************************* Editing search data *******************************************/
-    $editing_data = [];
-    if (Session::has('editing_data')) {
-      $editing_data = Session::get('editing_data');
-      if (isset($editing_data['lots'])) {
-        $editingLots = $editing_data['lots'];
+      $editingLots = [];
+      $editingWrcData = [];
+      $editingLots = [];
+      if (Session::has('editing_data')) {
+        $editing_data = Session::get('editing_data');
+        if (isset($editing_data['lots'])) {
+          $editingLots = $editing_data['lots'];
+        }
+        if (isset($editing_data['wrc'])) {
+          $editingWrcData = $editing_data['wrc'];
+        }
       }
-      if (isset($editing_data['wrc'])) {
-        $editingWrcData = $editing_data['wrc'];
+      // Lot data
+      $searchData_editing_lot = array();
+      foreach ($editingLots as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_editing_lot[] = $item;
+        }
       }
-    }
+      // Wrc Data
+      $searchData_editing_wrc = array();
+      foreach ($editingWrcData as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_editing_wrc[] = $item;
+        }
+      }
+      $data_array['searchData_editing_lot'] = $searchData_editing_lot;
+      $data_array['searchData_editing_wrc'] = $searchData_editing_wrc;
 
-    // Lot data
-    $searchData_editing_lot = array();
-    foreach ($editingLots as $item) {
-      $serializedItem = serialize($item);
-      if (stripos($serializedItem, $searchTerm) !== false) {
-        $searchData_editing_lot[] = $item;
-      }
-    }
-    $data_array['searchData_editing_lot'] = $searchData_editing_lot;
+    /********************************* Creative search data *******************************************/
+      $creativeLots = [];
+      $creativeWrcData = [];
 
-    // dd($data_array , Session::all());
+
+      if (Session::has('creative_Data')) {
+        $creative_Data = Session::get('creative_Data');
+        if (isset($creative_Data['lots'])) {
+          $creativeLots = $creative_Data['lots'];
+        }
+        if (isset($creative_Data['wrc'])) {
+          $creativeWrcData = $creative_Data['wrc'];
+        }
+      }
+
+      // Lot data
+      $searchData_creative_lot = array();
+      foreach ($creativeLots as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_creative_lot[] = $item;
+        }
+      }
+
+      // Wrc Data
+      $searchData_creative_wrc = array();
+      foreach ($creativeWrcData as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_creative_wrc[] = $item;
+        }
+      }
+
+      $data_array['searchData_creative_lot'] = $searchData_creative_lot;
+      $data_array['searchData_creative_wrc'] = $searchData_creative_wrc;
+      
+    /********************************* Catalog search data *******************************************/
+      $catalogLots = [];
+      $catalogWrcData = [];
+
+      if (Session::has('catalog_data')) {
+        $catalog_data = Session::get('catalog_data');
+        if (isset($catalog_data['lots'])) {
+          $catalogLots = $catalog_data['lots'];
+        }
+        if (isset($catalog_data['wrc'])) {
+          $catalogWrcData = $catalog_data['wrc'];
+        }
+      }
+
+      // Catalog Lot data
+      $searchData_catalog_lot = array();
+      foreach ($catalogLots as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_catalog_lot[] = $item;
+        }
+      }
+
+      // Wrc Data
+      $searchData_catalog_wrc = array();
+      foreach ($catalogWrcData as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_catalog_wrc[] = $item;
+        }
+      }
+      $data_array['searchData_catalog_lot'] = $searchData_catalog_lot;
+      $data_array['searchData_catalog_wrc'] = $searchData_catalog_wrc;
+
     return view('clients.gloableSearchNew')->with('data_array', $data_array)->with('other_data', $other_data);
-
-    dd($searchData_shoot_lot, $searchData_shoot_wrc, $searchData_shoot_sku, $searchData_editing_lot);
   }
 }
