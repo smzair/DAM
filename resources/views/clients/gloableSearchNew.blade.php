@@ -25,7 +25,8 @@
 		$searchData_shoot_lot = $data_array['searchData_shoot_lot'];
 		$searchData_shoot_wrc = $data_array['searchData_shoot_wrc'];
 		$searchData_shoot_sku = $data_array['searchData_shoot_sku'];
-		// dd($searchData_shoot_lot,$searchData_shoot_wrc);
+		$searchData_shoot_edited_images = $data_array['searchData_shoot_edited_images'];
+		// dd($searchData_shoot_lot,$searchData_shoot_edited_images);
 
 		// Editing
 		$searchData_editing_lot = $data_array['searchData_editing_lot'];
@@ -39,7 +40,6 @@
 		// Cataloging 
 		$searchData_catalog_lot = $data_array['searchData_catalog_lot'];
 		$searchData_catalog_wrc = $data_array['searchData_catalog_wrc'];
-		// dd($searchData_catalog_wrc);
 		
 		// dd($data_array , $searchData_editing_wrc);
 	@endphp
@@ -59,6 +59,88 @@
 		</div>
 	</div>
 
+	{{-- Image section  --}}
+
+	<div class="row">
+		@if (count($searchData_shoot_edited_images) == 0)
+			<div class="col-sm-12 col-md-12 col-lg-12">
+				<p class="fovourites-img-lot-sku-wrc-section">Shoot Images</p>
+			</div>
+			@foreach ($searchData_shoot_edited_images as $index => $row)
+				@php
+					$unic_index = $row['id'].$row['sku_id'].$index;
+					$path = $row['file_path'];
+					$img_src = "IMG/no_preview_available.jpg";
+					$zipFileSize = "File Not Found!!";
+
+					if(file_exists($path)){
+						$img_src = $path;
+						$zipFileSize = filesize($path);
+						$zipFileSize = formatBytes($zipFileSize);
+					}
+
+					$tbl_id = $row['id'];
+					// dd($row , $row);
+				@endphp
+				<div class="col-sm-6 col-md-4 col-lg-3 mt-2" id="div_{{$tbl_id}}">
+					<div class="card brand-img-m border-0 rounded-0">
+							<img class="card-img-top brand-img" src="{{asset($img_src)}}"
+									alt="Image">
+							<div class="card-body total-sku-img-body d-flex justify-content-between"
+									style="position: relative">
+									<p class="brand-img-name" id="lot_number{{$unic_index}}">{{$row['filename']}}</p>
+									<i class="bi bi-three-dots-vertical myButton"
+											style="cursor: pointer;color:#808080;"></i>
+									<div class="myPopover" style="display: none; top:70%;">
+
+										<a href="{{asset($img_src)}}"
+												download="{{$row['filename']}}">
+												<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+														xmlns="http://www.w3.org/2000/svg">
+														<path
+																d="M15.0583 12.0253L9.99998 17.0837L4.94165 12.0253M9.99998 2.91699V16.942"
+																stroke="white" stroke-width="1.5" stroke-miterlimit="10"
+																stroke-linecap="round" stroke-linejoin="round"></path>
+												</svg>
+												&nbsp;&nbsp;
+												Download
+										</a>
+										<a href="javascript:void(0)" onclick="toggleSidebar(); set_image_date_time({{$unic_index}});">
+												<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+														xmlns="http://www.w3.org/2000/svg">
+														<g clip-path="url(#clip0_1043_2491)">
+																<path
+																		d="M9.99992 13.334L9.99992 9.16732M9.99992 1.66732C5.41658 1.66732 1.66658 5.41732 1.66658 10.0007C1.66659 14.584 5.41659 18.334 9.99992 18.334C14.5833 18.334 18.3333 14.584 18.3333 10.0007C18.3333 5.41732 14.5833 1.66732 9.99992 1.66732Z"
+																		stroke="white" stroke-width="1.5" stroke-linecap="round"
+																		stroke-linejoin="round"></path>
+																<path d="M10.0042 6.66602L9.99665 6.66602" stroke="white"
+																		stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+																</path>
+														</g>
+														<defs>
+																<clipPath id="clip0_1043_2491">
+																		<rect width="20" height="20" fill="white"></rect>
+																</clipPath>
+														</defs>
+												</svg>
+												&nbsp;&nbsp;
+												View Details
+										</a>
+										<div class="d-none">
+											<span id="lot_date{{$unic_index}}">{{dateFormet_dmy($row['created_at'])}}</span>
+											<span id="lot_time{{$unic_index}}">{{date('h:i A', strtotime($row['created_at']))}}</span>
+											<span id="file_size{{$unic_index}}">{{ $zipFileSize }}</span>
+											<span id="image_src{{$unic_index}}">{{asset($img_src)}}</span>
+										</div>
+
+									</div>
+							</div>
+					</div>
+				</div>
+			@endforeach
+		@endif
+	</div>
+
 	<!-- SKUs Section -->
 	<div class="row">
 		@if (count($searchData_shoot_sku) > 0)
@@ -66,7 +148,7 @@
 			@foreach ($searchData_shoot_sku as $key => $row)
 				@php
 					// $type = $item['type'];
-					// $other_data = json_decode($item['other_data'],true);
+					// $row = json_decode($item['row'],true);
 					// $row = $item['raw_skus_data'];
 					$service_is = isset($row['service']) ? $row['service'] : 'SHOOT';
 					$file_path = isset($row['file_path']) ? $row['file_path'] : '';
@@ -74,17 +156,7 @@
 					if($file_path != ''){
 						$shoot_image_src = $file_path;
 					}
-					// $download_route_is = "your_assets_shoot_edited_images";
 					$sku_files_images_image_route = 'your_assets_shoot_edited_images';
-					// if($type == 'Raw'){
-					// 	$sku_files_images_image_route = 'your_assets_files_shoot_raw_images';
-					// 	$download_route_is = "download_Shoot_lot_raw_sku";
-					// }else{
-					// 	$adaptation = base64_encode($other_data['adaptation']);
-
-					// 	$sku_files_images_image_route = 'your_assets_shoot_edited_images';
-					// 	$download_route_is = "download_Shoot_lot_Edited_adaptation";
-					// }
 					$sku_id_is = base64_encode($row['id']);
 					$tbl_id = $row['id'];
 
@@ -620,7 +692,9 @@
 				</div>
 				@foreach ($searchData_shoot_lot as $lot_index => $row)
 					@php
-						$service = $row['service'];
+						// dd($searchData_shoot_lot);
+						$service = $service_is = isset($row['service']) ? $row['service'] : 'SHOOT';
+
 						$tbl_id =  $row['id'];
 						$route_is = 'your_assets_shoot_wrcs';
 						$download_route_is = "download_Shoot_Lot_edited";
@@ -789,7 +863,8 @@
 				</div>
 				@foreach ($searchData_editing_lot as $key_index => $row)
 					@php
-						$service  = $service_is = 'EDITING';
+						$service = $service_is = isset($row['service']) ? $row['service'] : 'EDITING';
+
 						$lot_index = $key_index.$row['company_c_short'];
 						$file_path = isset($row['file_path']) ? $row['file_path'] : '';
 						$tbl_id =  $row['lot_id'].$row['brand_short_name'];
@@ -1163,7 +1238,7 @@
 						<P class="side-text2">Black Tees, Ajio code</P>
 					</div>
 
-					<div class="col-12 d-grid gap-2 ps-4 pe-4">
+					{{-- <div class="col-12 d-grid gap-2 ps-4 pe-4">
 						<button class="btn border rounded-0  heading-details" type="button">
 							<svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path
@@ -1177,7 +1252,7 @@
 							</svg>
 							&nbsp; Edit tag
 						</button>
-					</div>
+					</div> --}}
 					
 					<div class="col-12 ps-4" style="margin-top: 24px;">
 						<p class="heading-details">Share</p>

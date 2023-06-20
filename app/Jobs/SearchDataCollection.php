@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\CreatLots;
 use App\Models\EditingUploadedImages;
 use App\Models\EditorLotModel;
+use App\Models\editorSubmission;
 use App\Models\Lots;
 use App\Models\LotsCatalog;
 use App\Models\Skus;
@@ -77,17 +78,17 @@ class SearchDataCollection implements ShouldQueue
       if ($role_name == 'Client') {
         $shoot_lots_query = $shoot_lots_query->where('lots.user_id', $client_id);
       }
-      $shoot_lots = $shoot_lots_query->get()->toArray();
+      $shoot_lots_is = $shoot_lots = $shoot_lots_query->get()->toArray();
 
       $shoot_wrc_data = array();
       $shoot_sku_data = array();
+      $shoot_edited_images = [];
       foreach ($shoot_lots as $key => $val) {
         $LotTimelineData = Lots::LotTimeline($val['lot_id']);
         $lot_detail = $LotTimelineData['lot_detail']; 
         $wrc_detail = $LotTimelineData['wrc_detail'];
         $wrc_detail_new = [];
         foreach ($wrc_detail as $wrc_key => $wrc_row) {
-
           // Soot sku Datas.
           $sku_info_query = Skus::where('wrc_id', $wrc_row['wrc_id']);
           $sku_info_count = $sku_info_query->count();
@@ -97,11 +98,34 @@ class SearchDataCollection implements ShouldQueue
             array_push($shoot_sku_data, $sku_row);
           }
           $sku_ids = array_column($sku_info , 'id');
+          $sku_codes_with_id = array_column($sku_info , 'sku_code', 'id');
           $upload_raw_info = uploadraw::whereIn('sku_id', $sku_ids)->get()->toArray();
+          // Edited uploaded images
+          $editor_qc_image_query = editorSubmission::whereIn('sku_id', $sku_ids)->where('editor_submission.qc' , '=' , '1')->select('*')->orderby('editor_submission.created_at' , 'ASC');
+          $editor_qc_image_count = $editor_qc_image_query->count();
+          $editor_qc_image_info = [];
+
+          $lot_number = $wrc_row['lot_number'];
+          $wrc_number = $wrc_row['wrc_number'];
+          if($editor_qc_image_count > 0){
+            $editor_qc_image_info = $editor_qc_image_query->get()->toArray();
+            foreach ($editor_qc_image_info as $img_key => $img_row) {
+              $sku_code = $sku_codes_with_id[$img_row['sku_id']];
+              $adaptation = $img_row['adaptation'];
+              $path=  "edited_img_directory/". date('Y', strtotime($img_row['created_at'])) . "/" . date('M', strtotime($img_row['created_at'])) . "/" . $lot_number."/" . $wrc_number."/" . $adaptation. "/" .$sku_code. "/" . $img_row['filename'];
+              if(file_exists($path)){
+                $editor_qc_image_info[$img_key]['file_path'] = $path;
+                array_push($shoot_edited_images , $editor_qc_image_info[$img_key]);
+              }else{
+                unset($editor_qc_image_info[$img_key]);
+              }
+            }
+          }
 
           $wrc_detail[$wrc_key]['sku_info_count'] = $sku_info_count;
           $wrc_detail[$wrc_key]['sku_info'] = $sku_info;
           $wrc_detail[$wrc_key]['upload_raw_info'] = $upload_raw_info;
+          $wrc_detail[$wrc_key]['editor_qc_image_info'] = $editor_qc_image_info;
           array_push($shoot_wrc_data, $wrc_detail[$wrc_key]);
         }
         $shoot_lots[$key] = $lot_detail[0];
@@ -208,6 +232,7 @@ class SearchDataCollection implements ShouldQueue
     $shoot_data = array(
       'lots' => $shoot_lots,
       'wrc' => $shoot_wrc_data,
+      'shoot_edited_images' => $shoot_edited_images,
       'sku' => $shoot_sku_data
     );
     $editing_data = array(

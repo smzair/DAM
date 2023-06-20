@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ClientsControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\CreatLots;
+use App\Jobs\SearchDataCollection;
 use App\Models\EditorLotModel;
 use App\Models\Lots;
 use App\Models\LotsCatalog;
@@ -264,6 +265,7 @@ class ClientCommonController extends Controller
       $shootLots = [];
       $shootWrcData = [];
       $shootSkuData = [];
+      $shoot_edited_images_list = [];
 
       if (Session::has('shoot_data')) {
         $shoot_data = Session::get('shoot_data');
@@ -276,11 +278,17 @@ class ClientCommonController extends Controller
         if (isset($shoot_data['sku'])) {
           $shootSkuData = $shoot_data['sku'];
         }
+        if (isset($shoot_data['shoot_edited_images'])) {
+          $shoot_edited_images_list = $shoot_data['shoot_edited_images'];
+        }
+        // dd($shoot_data);
       }
 
       $data_array = [];
       // Lot data
       $searchData_shoot_lot = array();
+      // dd($shootLots);
+
       foreach ($shootLots as $item) {
         $serializedItem = serialize($item);
         if (stripos($serializedItem, $searchTerm) !== false) {
@@ -308,6 +316,16 @@ class ClientCommonController extends Controller
         }
       }
       $data_array['searchData_shoot_sku'] = $searchData_shoot_sku;
+
+      // Sku Data
+      $searchData_shoot_edited_images = array();
+      foreach ($shoot_edited_images_list as $item) {
+        $serializedItem = serialize($item);
+        if (stripos($serializedItem, $searchTerm) !== false) {
+          $searchData_shoot_edited_images[] = $item;
+        }
+      }
+      $data_array['searchData_shoot_edited_images'] = $searchData_shoot_edited_images;
 
 
     /********************************* Editing search data *******************************************/
