@@ -88,6 +88,7 @@ class Lots extends Model {
         leftjoin('brands' , 'brands.id' , 'lots.brand_id')->
         select('lots.id',
         'lots.id as lot_id', 
+        'lots.s_type as s_type', 
         'lots.created_at as lot_created_at',
         DB::raw("DATE_FORMAT(lots.created_at, '%d-%m-%Y') as lots_formatted_date"),
         'users.Company as company_name',
@@ -115,10 +116,10 @@ class Lots extends Model {
         $lot_detail[0]['qc_done_at']  = null;
         $lot_detail[0]['submission_date']  = null;
         $lot_detail[0]['file_path'] =  '';
-        $lot_detail[0]['skus_count'] =  '';
+        $lot_detail[0]['skus_count'] =  0;
         $lot_detail[0]['raw_images'] =  '';
         $lot_detail[0]['edited_images'] =  '';
-        $lot_detail[0]['s_type'] =  '';
+        // $lot_detail[0]['s_type'] =  '';
         $lot_detail[0]['wrc_numbers'] =  '';
 
         
@@ -198,8 +199,8 @@ class Lots extends Model {
 
                     $allocation_info = allocation::whereIn('uploadraw_id', $upload_raw_info_id)->get()->toArray();
 
-                    $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->where('editor_submission.qc' , '=' , '1')->orderby('editor_submission.filename' , 'ASC')->get()->toArray();
-                    // $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->where('editor_submission.qc' , '=' , '1')->orderby('editor_submission.filename' , 'DESC')->groupby('editor_submission.sku_id')->get()->toArray();
+                    // $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->where('editor_submission.qc' , '=' , '1')->orderby('editor_submission.filename' , 'ASC')->get()->toArray();
+                    $editor_qc_info = editorSubmission::whereIn('sku_id', $sku_info)->where('editor_submission.qc' , '=' , '1')->orderby('editor_submission.filename' , 'DESC')->groupby('editor_submission.sku_id')->get()->toArray();
                     
                     
                     if(count($editor_qc_info) > 0){
@@ -236,10 +237,12 @@ class Lots extends Model {
                 }
                 $wrc_info[$key]['file_path'] =  $file_path;
             }
+            $lot_detail[0]['skus_count'] =  $tot_sku_count;
             // dd($wrc_count, $lot_detail , $wrc_info);
 
             $wrc_id_arr = array_column($wrc_info, 'wrc_id');
             $wrc_number_arr = array_column($wrc_info, 'wrc_number');
+            $wrc_numbers = implode(',',$wrc_number_arr);
             $sku_info_query = Skus::whereIn('sku.wrc_id', $wrc_id_arr)->where('status', 1)->select('id as sku_id', 'wrc_id', 'sku_code', 'status');
             $skus_count = $sku_info_query->count();
             $skus_array = $sku_info_query->get()->toArray();
@@ -248,6 +251,12 @@ class Lots extends Model {
                 $lot_number = $lot_detail[0]['lot_number'];
                 $skus_sku_id_arr = array_column($skus_array , 'sku_id');
                 $skus_sku_code_arr = array_column($skus_array , 'sku_code' , 'sku_id');
+
+                $upload_raw_count = uploadraw::whereIn('sku_id', $skus_sku_id_arr)->count();
+                $editor_Submission_count = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->count();
+
+                $lot_detail[0]['raw_images'] =  $upload_raw_count;
+                $lot_detail[0]['edited_images'] =  $editor_Submission_count;
 
                 if($file_path == ''){
                     $editor_Submission_data = editorSubmission::wherein('sku_id' , $skus_sku_id_arr)->where('qc','=','1')->where('filename', 'LIKE', '%_1.%')->get()->toArray();
@@ -306,6 +315,7 @@ class Lots extends Model {
                     }
                 }
             }        
+            $lot_detail[0]['wrc_numbers'] =  $wrc_numbers;
         }
 
         // insert into user activity log
