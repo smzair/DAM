@@ -155,6 +155,7 @@ class Lots extends Model {
             // dd($wrc_info , $lot_detail);
             foreach($wrc_info as $key => $val){
                 $sku_info_query = Skus::where('wrc_id', $val['wrc_id']);
+
                 // $sku_info_query = Skus::where('wrc_id', $val['wrc_id'])->where('status', 1);
                 $sku_count = $sku_info_query->count();
                 $tot_sku_count += $sku_count;
@@ -185,7 +186,9 @@ class Lots extends Model {
                 $lot_detail[0]['wrc_created_at'] = $val['wrc_created_at'];
 
                 if($sku_count > 0){
-                    $sku_info = $sku_info_query->pluck('id')->toarray();
+                    $sku_info_data = $sku_info_query->get()->toarray();
+                    $sku_info = array_column($sku_info_data , 'id');
+                    $skus_sku_code_arr = array_column($sku_info_data , 'sku_code' , 'id' );
 
                     $upload_raw_info = uploadraw::whereIn('sku_id', $sku_info)->get()->toArray();
                     $upload_raw_info_id = [];
@@ -208,6 +211,22 @@ class Lots extends Model {
                         $lot_detail[0]['overall_progress']  = 80;
                         $lot_detail[0]['wrc_qc']  = "20";
                         $lot_detail[0]['qc_done_at'] = $editor_qc_info[0]['created_at'];
+                        
+                        $wrc_number_is = $val['wrc_number'];
+                        $lot_number = $val['lot_number'];
+
+                        foreach ($editor_qc_info as $qc_info_is => $item) {
+                            if($file_path != ""){
+                                break;
+                            }            
+                            $adaptation = $item['adaptation'];
+                            $sku_code = $skus_sku_code_arr[$item['sku_id']];
+                            
+                            $path=  "edited_img_directory/". date('Y', strtotime($item['created_at'])) . "/" . date('M', strtotime($item['created_at'])) . "/" . $lot_number."/" . $wrc_number_is."/" . $adaptation. "/" .$sku_code. "/" . $item['filename'];
+                            if(file_exists($path)){
+                                $file_path = $path;
+                            }
+                        }
                         
                         $wrc_info[$key]['qc_status'] =  'Done';
                         $wrc_info[$key]['wrc_qc_qty'] =  count($editor_qc_info);

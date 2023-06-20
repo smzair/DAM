@@ -90,13 +90,49 @@ class SearchDataCollection implements ShouldQueue
         $wrc_detail_new = [];
         foreach ($wrc_detail as $wrc_key => $wrc_row) {
           // Soot sku Datas.
-          $sku_info_query = Skus::where('wrc_id', $wrc_row['wrc_id']);
+          $sku_info_query = Skus::where('wrc_id', $wrc_row['wrc_id'])->leftJoin('editor_submission', 'editor_submission.sku_id', '=', 'sku.id')->orderby('sku.id' , 'ASC')->orderby('editor_submission.filename' , 'DESC')->groupBy('sku.id');
           $sku_info_count = $sku_info_query->count();
-          $sku_info = $sku_info_query->get()->toArray();
+          $sku_info = $sku_info_query->select(
+            'editor_submission.adaptation',
+            'editor_submission.filename',
+            'editor_submission.created_at as submission_created_at',
+            DB::raw("COUNT(editor_submission.id) as file_count"),
+            DB::raw("GROUP_CONCAT(editor_submission.filename) as filename_list"),
+            DB::raw("GROUP_CONCAT(editor_submission.adaptation) as adaptation_list"),
+            'sku.id as sku_id',
+            'sku.*',
+            'sku.created_at as sku_created_at'
+          )->get()->toArray();
+          $lot_number = $wrc_row['lot_number'];
+          $wrc_number = $wrc_row['wrc_number'];
           foreach ($sku_info as $sky_key => $sku_row) {
-            $sku_row['wrc_info'] = $wrc_row;
-            array_push($shoot_sku_data, $sku_row);
+            $file_path = '';
+            $file_count = $sku_row['file_count'];
+            if($file_count > 0){
+              $filename_list = $sku_row['filename_list'];
+              $filename_list_arr = explode(',',$filename_list);
+
+              foreach ($filename_list_arr as $img_key => $filename) {
+                if($file_path != ""){
+                  break;
+                }  
+                $adaptation = $sku_row['adaptation'];
+                $sku_code = $sku_row['sku_code'];
+                $path=  "edited_img_directory/". date('Y', strtotime($sku_row['submission_created_at'])) . "/" . date('M', strtotime($sku_row['submission_created_at'])) . "/" . $lot_number."/" . $wrc_number."/" . $adaptation. "/" .$sku_code. "/" . $filename;
+
+                if(file_exists($path)){
+                  $file_path = $path;
+                }
+              }
+            }
+            $sku_info[$sky_key]['file_path'] = $file_path;
+            $sku_info[$sky_key]['wrc_info'] = $wrc_row;
+            if($wrc_row['id'] == '3744'){
+              // dd($sku_row, $filename_list_arr, $wrc_row );
+            }
+            array_push($shoot_sku_data, $sku_info[$sky_key]);
           }
+
           $sku_ids = array_column($sku_info , 'id');
           $sku_codes_with_id = array_column($sku_info , 'sku_code', 'id');
           $upload_raw_info = uploadraw::whereIn('sku_id', $sku_ids)->get()->toArray();
