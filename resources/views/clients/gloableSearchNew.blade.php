@@ -730,7 +730,7 @@
 											</a>
 
 											{{-- View Details --}}
-											<a href="javascript:void(0)" onclick="toggleSidebarNew('image'); set_shoot_date_time({{$row['lot_id'].$lot_index}}, 'shoot');lots_details('{{ $lot_id_is  }}' , 'lot' , 'Edited') ">
+											<a href="javascript:void(0)" onclick="toggleSidebarNew('image' , 'wrc'); set_shoot_date_time({{$row['lot_id'].$lot_index}}, 'shoot');lots_details('{{ $lot_id_is  }}' , 'lot' , 'Edited') ">
 												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<g clip-path="url(#clip0_1069_2515)">
 														<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -859,10 +859,11 @@
 				</div>
 				@foreach ($searchData_editing_lot as $key_index => $row)
 					@php
+						// dd($row);
 						$service = $service_is = isset($row['service']) ? $row['service'] : 'EDITING';
-
 						$lot_index = $key_index.$row['company_c_short'];
 						$file_path = isset($row['file_path']) ? $row['file_path'] : '';
+						$wrc_numbers = isset($row['wrc_numbers']) ? $row['wrc_numbers'] : '';
 						$tbl_id =  $row['lot_id'].$row['brand_short_name'];
 						$route_is = 'your_assets_editing_wrcs';
 						$download_route_is = "download_Editing_Lot_edited";
@@ -900,7 +901,7 @@
 											</a>
 
 											{{-- View Details --}}
-											<a href="javascript:void(0)" onclick="toggleSidebarNew('image');set_date_time('{{$row['lot_id'].$lot_index}}');editing_lots_details('{{$lot_id_is}}','lot','Edited')">
+											<a href="javascript:void(0)" onclick="toggleSidebarNew('image', 'wrc');set_editing_date_time('{{$row['lot_id'].$lot_index}}' , 'Editing');editing_lots_details('{{$lot_id_is}}','lot','Edited')">
 												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<g clip-path="url(#clip0_1069_2515)">
 														<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -919,6 +920,8 @@
 												<span id="lot_date{{$row['lot_id'].$lot_index}}">{{dateFormet_dmy($row['lot_created_at'])}}</span>
 												<span id="lot_time{{$row['lot_id'].$lot_index}}">{{date('h:i A', strtotime($row['lot_created_at']))}}</span>
 												<span id="image_src{{$row['lot_id'].$lot_index}}">{{asset($shoot_image_src1)}}</span>
+												<span id="wrc_numbers{{$row['lot_id'].$lot_index}}">{{ $wrc_numbers }}</span>
+
 											</div>
 											{{-- Share --}}
 											<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$lot_index}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >
@@ -1057,7 +1060,7 @@
 				</div>
 				@foreach ($searchData_catalog_lot as $key => $row)
 					@php
-						// dd($row);
+						// dd('gloableSearchNew' ,$row);
 						$lot_created_at = $row['lot_created_at'];
 						$submission_date = $row['submission_date'] != '' ? dateFormet_dmy($row['submission_date']) : '';
 						$wrc_numbers = ($row['wrc_numbers'] != '' && $row['wrc_numbers'] != null) ? $row['wrc_numbers'] : 'Wrc not generated.'; 
@@ -1261,6 +1264,7 @@
 			$('.wrc-detail-img').addClass('d-none')
 			$('.file_size_row').addClass('d-none')
 			$('.wrc_row').addClass('d-none')
+			$("#shoot_files_details").addClass('d-none')
 			if(action_has == 'image'){
 				$('.wrc-detail-img').removeClass('d-none')
 				$('.file_size_row').removeClass('d-none')
@@ -1297,6 +1301,22 @@
 			}else{
 				$("#shoot_files_details").addClass('d-none')
 			}
+		}
+	</script>
+
+{{-- set_shoot_date_time --}}
+	<script>
+		const set_editing_date_time = (key , service = 'other') => {
+			console.log('key', key)
+			const lot_number = $("#lot_number"+key).html()
+			const lot_date = $("#lot_date"+key).html()
+			const lot_time = $("#lot_time"+key).html()
+			$("#lot_time").html(lot_time)
+			$("#lot_date").html(lot_date)
+			$("#lot_number").html(lot_number)
+			$("#wrc_numbers").html($("#wrc_numbers"+key).html())
+			const image_src = $("#image_src"+key).html()
+			$("#image_src").attr("src", image_src);
 		}
 	</script>
 

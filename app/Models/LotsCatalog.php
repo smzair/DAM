@@ -93,8 +93,8 @@ class LotsCatalog extends Model
         'catalog_submissions.ar_status',
         'catalog_submissions.invoiceNumber',
         'catalog_submissions.action_date',
-      )->orderBy('catlog_wrc.id')->orderBy('catalog_allocation.id')->orderBy('catalog_time_hash.updated_at')->orderBy('catalog_submissions.id');
-    $wrc_detail_query = $wrc_detail_query->groupBy('catalog_allocation.wrc_id');
+      )->where('catlog_wrc.id', '<>' ,null)->orderBy('catlog_wrc.id')->orderBy('catalog_allocation.id')->orderBy('catalog_time_hash.updated_at')->orderBy('catalog_submissions.id');
+    $wrc_detail_query = $wrc_detail_query->groupBy('catlog_wrc.id');
     $wrc_detail = $wrc_detail_query->get()->toArray();
     // dd($lot_detail, $wrc_detail_query->toSql(), $wrc_detail);
 
@@ -113,6 +113,12 @@ class LotsCatalog extends Model
     $lot_detail[0]['wrc_submission']  = "0%";
     $lot_detail[0]['submission_date']  = '';
     $lot_detail[0]['wrc_numbers'] =  '';
+    $lot_detail[0]['wrc_created_at']  = '';
+    $lot_detail[0]['allocated_created_at']  = '';
+
+    if(count($wrc_detail) > 0){
+      $lot_detail[0]['wrc_numbers'] =  implode(', ',array_column($wrc_detail , 'wrc_number'));
+    }
 
     $count_wrc = 0;
     $count_qc = 0;

@@ -167,7 +167,7 @@ class EditorLotModel extends Model
         'editing_submissions.action_date',
         );
         $wrc_detail_query = $wrc_detail_query->orderBy('editing_wrcs.id')->orderBy('editing_allocations.id')->orderBy('editing_upload_links.updated_at')->orderBy('editing_submissions.id');
-        $wrc_detail_query = $wrc_detail_query->groupBy('editing_allocations.wrc_id');
+        $wrc_detail_query = $wrc_detail_query->groupBy('editing_wrcs.id');
         $wrc_detail = $wrc_detail_query->get()->toArray();
 
         $Editing_lot_statusArr = Editing_lot_statusArr();
@@ -190,6 +190,12 @@ class EditorLotModel extends Model
         $lot_detail[0]['edited_images'] =  '';
         $lot_detail[0]['s_type'] =  '';
         $lot_detail[0]['wrc_numbers'] =  '';
+        $lot_detail[0]['wrc_created_at']  = '';
+        $lot_detail[0]['allocated_created_at']  = '';
+
+        if(count($wrc_detail) > 0){
+            $lot_detail[0]['wrc_numbers'] =  implode(', ',array_column($wrc_detail , 'wrc_number'));
+          }
 
         $count_wrc = 0;
         $count_qc = 0;
