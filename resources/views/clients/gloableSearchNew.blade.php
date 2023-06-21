@@ -62,7 +62,7 @@
 	{{-- Image section  --}}
 
 	<div class="row">
-		@if (count($searchData_shoot_edited_images) > 0)
+		@if (count($searchData_shoot_edited_images)  > 0)
 			<div class="col-sm-12 col-md-12 col-lg-12">
 				<p class="fovourites-img-lot-sku-wrc-section">Shoot Images</p>
 			</div>
@@ -105,7 +105,7 @@
 												&nbsp;&nbsp;
 												Download
 										</a>
-										<a href="javascript:void(0)" onclick="toggleSidebar(); set_image_date_time({{$unic_index}});">
+										<a href="javascript:void(0)" onclick="toggleSidebarNew('image'); set_image_date_time({{$unic_index}});">
 												<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
 														xmlns="http://www.w3.org/2000/svg">
 														<g clip-path="url(#clip0_1043_2491)">
@@ -152,13 +152,13 @@
 
 	<!-- SKUs Section -->
 	<div class="row">
-		@if (count($searchData_shoot_sku) > 0)
+		@if (count($searchData_shoot_sku)  > 0)
 			<p class="fovourites-img-lot-sku-wrc-section">SKUs</p>
 			@foreach ($searchData_shoot_sku as $key_index => $row)
 				@php
 
 					// dd($row);
-					$key = $row['sku_id'].$key_index.$row['sku_id'];
+					$key = $row['sku_id'].$key_index;
 					$wrc_info = $row['wrc_info'];
 					$wrc_id = $wrc_info['wrc_id'];
 					$service_is = isset($row['service']) ? $row['service'] : 'SHOOT';
@@ -204,7 +204,7 @@
 									@endif
 									
 									{{-- View Details --}}
-									<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['id'].$key}}); lots_details('{{ $sku_id_is  }}' , 'sku' , '{{$adaptation}}') ">
+									<a href="javascript:void(0)" onclick="toggleSidebarNew('image'); set_shoot_date_time({{$row['id'].$key}}); lots_details('{{ $sku_id_is  }}' , 'sku' , '{{$adaptation}}') ">
 										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<g clip-path="url(#clip0_1043_2491)">
 												<path d="M9.99992 13.334L9.99992 9.16732M9.99992 1.66732C5.41658 1.66732 1.66658 5.41732 1.66658 10.0007C1.66659 14.584 5.41659 18.334 9.99992 18.334C14.5833 18.334 18.3333 14.584 18.3333 10.0007C18.3333 5.41732 14.5833 1.66732 9.99992 1.66732Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -237,9 +237,7 @@
 											&nbsp;&nbsp;
 											Share
 										</a>
-										<p class="d-none" id="url_{{$key.$row['wrc_id']}}">
-											{{route($download_route_is , [ 'wrc_id' => base64_encode($wrc_id) , 'adaptation' => $adaptation , 'sku_id' => base64_encode($row['sku_code']) ] )}}
-										</p>
+										<p class="d-none" id="url_{{$key.$row['wrc_id']}}">{{route($download_route_is , [ 'wrc_id' => base64_encode($wrc_id) , 'adaptation' => $adaptation , 'sku_id' => base64_encode($row['sku_code']) ] )}}</p>
 									@endif
 									
 								</div>
@@ -254,7 +252,7 @@
 	<!-- WRCs Section -->
 	<div class="row">
 		{{-- Shoot Wrcs --}}
-			@if (count($searchData_shoot_wrc) > 0)
+			@if (count($searchData_shoot_wrc)  > 0)
 				{{-- shoot wrc --}}
 				<div class="col-sm-12 col-md-12 col-lg-12">
 					<p class="fovourites-img-lot-sku-wrc-section">Shoot Wrcs</p>
@@ -302,7 +300,7 @@
 											<span class="test btn myButton" role="button" style="float: right"> <i class="bi bi-three-dots-vertical" style="font-size:20px;color: #808080;"></i></span>
 										</div>
 										
-										<div class="myPopover" style="display: none;">
+										<div class="ShootWrcsmyPopover myPopover" style="left: 25%; top: 60%; display: none;">
 											@php
 												$wrc_id_is = base64_encode($row['wrc_id']);
 											@endphp
@@ -315,7 +313,7 @@
 											</a>
 											
 											{{-- View Details --}}
-											<a href="javascript:void(0)" onclick="toggleSidebar(); set_shoot_date_time({{$row['wrc_id'].$wrc_unic_key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
+											<a href="javascript:void(0)" onclick="toggleSidebarNew('image'); set_shoot_date_time({{$row['wrc_id'].$wrc_unic_key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
 												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<g clip-path="url(#clip0_1069_2515)">
 														<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -430,7 +428,7 @@
 											<span class="test btn myButton" role="button" style="float: right"> <i class="bi bi-three-dots-vertical" style="font-size:20px;color: #808080;"></i></span>
 										</div>
 										
-										<div class="myPopover" style="display: none;">
+										<div class="myPopover" style="left: 25%; top: 60%;display: none;">
 											@php
 												$wrc_id_is = base64_encode($row['wrc_id']);
 											@endphp
@@ -444,7 +442,7 @@
 											
 											{{-- View Details --}}
 											@if ($service_is == 'SHOOT')
-												<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$wrc_unic_key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
+												<a href="javascript:void(0)" onclick="toggleSidebarNew('image'); set_date_time({{$row['wrc_id'].$wrc_unic_key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
 													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 														<g clip-path="url(#clip0_1069_2515)">
 															<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -459,7 +457,7 @@
 													View Details
 												</a>
 											@else
-												<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$wrc_unic_key}}); editing_lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
+												<a href="javascript:void(0)" onclick="toggleSidebarNew('image'); set_date_time({{$row['wrc_id'].$wrc_unic_key}}); editing_lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
 													<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 														<g clip-path="url(#clip0_1069_2515)">
 														<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -532,9 +530,9 @@
 			@endif
 			
 		{{-- Marketing creative WRCs --}}
-			@if (count($searchData_creative_wrc) > 0)
+			@if (count($searchData_creative_wrc)  > 0)
 				<div class="col-sm-12 col-md-12 col-lg-12">
-					<p class="fovourites-img-lot-sku-wrc-section">Post-production Wrcs</p>
+					<p class="fovourites-img-lot-sku-wrc-section">Marketing creative Wrcs</p>
 				</div>
 				@foreach ($searchData_creative_wrc as $wrc_key => $row)
 					<?php 
@@ -581,7 +579,7 @@
 										
 										<div class="myPopover d-none" style="display: none;">
 											{{-- View Details --}}
-											<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$wrc_unic_key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
+											<a href="javascript:void(0)" onclick="toggleSidebarNew(); set_date_time({{$row['wrc_id'].$wrc_unic_key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
 												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<g clip-path="url(#clip0_1069_2515)">
 														<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -606,7 +604,7 @@
 
 
 		{{-- Listing WRCs --}}
-			@if (count($searchData_catalog_wrc) > 0)
+			@if (count($searchData_catalog_wrc)  > 0)
 				<div class="col-sm-12 col-md-12 col-lg-12">
 					<p class="fovourites-img-lot-sku-wrc-section">Listing Wrcs</p>
 				</div>
@@ -655,7 +653,7 @@
 										
 										<div class="myPopover d-none" style="display: none;">
 											{{-- View Details --}}
-											<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$wrc_unic_key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
+											<a href="javascript:void(0)" onclick="toggleSidebarNew(); set_date_time({{$row['wrc_id'].$wrc_unic_key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
 												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<g clip-path="url(#clip0_1069_2515)">
 														<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -684,7 +682,7 @@
 	<!-- Lots Section -->
 	<div class="row">
 		{{-- Shoot Lots  --}}
-			@if (count($searchData_shoot_lot) > 0)
+			@if (count($searchData_shoot_lot)  > 0)
 				<div class="col-sm-12 col-md-12 col-lg-12">
 					<p class="fovourites-img-lot-sku-wrc-section">Shoot Lots</p>
 				</div>
@@ -732,7 +730,7 @@
 											</a>
 
 											{{-- View Details --}}
-											<a href="javascript:void(0)" onclick="toggleSidebar(); set_shoot_date_time({{$row['lot_id'].$lot_index}}, 'shoot');lots_details('{{ $lot_id_is  }}' , 'lot' , 'Edited') ">
+											<a href="javascript:void(0)" onclick="toggleSidebarNew('image'); set_shoot_date_time({{$row['lot_id'].$lot_index}}, 'shoot');lots_details('{{ $lot_id_is  }}' , 'lot' , 'Edited') ">
 												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<g clip-path="url(#clip0_1069_2515)">
 														<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -894,7 +892,7 @@
 												$lot_id_is = base64_encode($row['lot_id']);
 											@endphp
 											{{-- Download --}}
-											<a href="{{route($download_route_is , [ 'id' =>  $row['lot_id'] ] )}}">
+											<a href="{{route($download_route_is , [ 'id' =>  $lot_id_is ] )}}">
 												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<path d="M15.0583 12.0253L9.99998 17.0837L4.94165 12.0253M9.99998 2.91699V16.942" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 												</svg>&nbsp;
@@ -902,7 +900,7 @@
 											</a>
 
 											{{-- View Details --}}
-											<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['lot_id'].$lot_index}});editing_lots_details('{{ $lot_id_is  }}' , 'lot' , 'Edited') ">
+											<a href="javascript:void(0)" onclick="toggleSidebarNew('image');set_date_time('{{$row['lot_id'].$lot_index}}');editing_lots_details('{{$lot_id_is}}','lot','Edited')">
 												<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<g clip-path="url(#clip0_1069_2515)">
 														<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -921,11 +919,6 @@
 												<span id="lot_date{{$row['lot_id'].$lot_index}}">{{dateFormet_dmy($row['lot_created_at'])}}</span>
 												<span id="lot_time{{$row['lot_id'].$lot_index}}">{{date('h:i A', strtotime($row['lot_created_at']))}}</span>
 												<span id="image_src{{$row['lot_id'].$lot_index}}">{{asset($shoot_image_src1)}}</span>
-												{{-- <span id="skus_count{{$row['lot_id'].$lot_index}}">{{ $row['skus_count'] }}</span> --}}
-												{{-- <span id="raw_images{{$row['lot_id'].$lot_index}}">{{ $row['raw_images'] }}</span> --}}
-												{{-- <span id="edited_images{{$row['lot_id'].$lot_index}}">{{ $row['edited_images'] }}</span> --}}
-												{{-- <span id="s_type{{$row['lot_id'].$lot_index}}">{{ $row['s_type'] }}</span> --}}
-												{{-- <span id="wrc_numbers{{$row['lot_id'].$lot_index}}">{{ $row['wrc_numbers'] }}</span> --}}
 											</div>
 											{{-- Share --}}
 											<a href="javascript:void(0)" onclick="copyUrlToClipboard('url_{{$lot_index}}' , 'Shoot Lot WRC Image' , 'Shoot WRC')" >
@@ -934,7 +927,7 @@
 												</svg>&nbsp;
 												Share
 											</a>
-											<p class="d-none" id="url_{{$lot_index}}">{{route($download_route_is , [ 'id' =>  $row['lot_id'] ] )}}</p>
+											<p class="d-none" id="url_{{$lot_index}}">{{route($download_route_is , [ 'id' =>  $lot_id_is ] )}}</p>
 										</div>
 									</div>
 
@@ -970,7 +963,7 @@
 			@endif
 
 		{{-- Marketing creative Lots --}}
-			@if (count($searchData_creative_lot) > 0)
+			@if (count($searchData_creative_lot)  > 0)
 				<div class="col-sm-12 col-md-12 col-lg-12">
 					<p class="fovourites-img-lot-sku-wrc-section">Marketing Creative Lots</p>
 				</div>
@@ -981,7 +974,7 @@
 						$submission_date = $row['submission_date'] != '' ? dateFormet_dmy($row['submission_date']) : '';
 						$wrc_numbers = ($row['wrc_numbers'] != '' && $row['wrc_numbers'] != null) ? $row['wrc_numbers'] : 'Wrc not generated.'; 
 						$lot_id_is = base64_encode($row['id']);
-						$lot_index = $tbl_id = $row['lot_id'].$row['id'].$key;
+						$lot_index = $tbl_id = $row['lot_id'].$key.$row['id'];
 					@endphp
 
 					<div class="col-lg-4 col-md-6 box border-0" style="background: #0F0F0F; position: relative;" id="div_{{$tbl_id}}">
@@ -999,7 +992,7 @@
 									</div>
 									{{-- 3DOT  myPopover--}}
 									<div class="creativemyPopover myPopover" style=" top: 80%; left:25%;display: none;">
-										<a href="javascript:void(0)" onclick="toggleSidebar(); set_links_date_time('{{$row['id'].$key}}') ">
+										<a href="javascript:void(0)" onclick="toggleSidebarNew('creative' , 'wrc'); set_links_date_time('{{$row['id'].$lot_index}}') ">
 											<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<g clip-path="url(#clip0_1069_2515)">
 													<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1015,9 +1008,9 @@
 										</a>
 	
 										<div class="d-none">
-											<span id="lot_date{{$row['id'].$key}}">{{dateFormet_dmy($row['lot_created_at'])}}</span>
-											<span id="lot_time{{$row['id'].$key}}">{{date('h:i A', strtotime($row['lot_created_at']))}}</span>
-											<span id="wrc_numbers{{$row['id'].$key}}">{{ $wrc_numbers }}</span>
+											<span id="lot_date{{$row['id'].$lot_index}}">{{dateFormet_dmy($row['lot_created_at'])}}</span>
+											<span id="lot_time{{$row['id'].$lot_index}}">{{date('h:i A', strtotime($row['lot_created_at']))}}</span>
+											<span id="wrc_numbers{{$row['id'].$lot_index}}">{{ $wrc_numbers }}</span>
 										</div>
 										
 										
@@ -1058,7 +1051,7 @@
 			@endif
 
 		{{-- Listing Lots --}}
-			@if (count($searchData_catalog_lot) > 0)
+			@if (count($searchData_catalog_lot)  > 0)
 				<div class="col-sm-12 col-md-12 col-lg-12">
 					<p class="fovourites-img-lot-sku-wrc-section">Listing Lots</p>
 				</div>
@@ -1087,7 +1080,7 @@
 									</div>
 									{{--  myPopover--}}
 									<div class="catalogmyPopover myPopover" style=" top: 80%; left:25%;display: none;">
-										<a href="javascript:void(0)" onclick="toggleSidebar(); set_links_date_time('{{$row['id'].$key}}') ">
+										<a href="javascript:void(0)" onclick="toggleSidebarNew('Listing' , 'wrc'); set_links_date_time('{{$row['lot_id'].$lot_index}}') ">
 											<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<g clip-path="url(#clip0_1069_2515)">
 													<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1103,9 +1096,9 @@
 										</a>
 	
 										<div class="d-none">
-											<span id="lot_date{{$row['id'].$key}}">{{dateFormet_dmy($row['lot_created_at'])}}</span>
-											<span id="lot_time{{$row['id'].$key}}">{{date('h:i A', strtotime($row['lot_created_at']))}}</span>
-											<span id="wrc_numbers{{$row['id'].$key}}">{{ $wrc_numbers }}</span>
+											<span id="lot_date{{$row['lot_id'].$lot_index}}">{{dateFormet_dmy($row['lot_created_at'])}}</span>
+											<span id="lot_time{{$row['lot_id'].$lot_index}}">{{date('h:i A', strtotime($row['lot_created_at']))}}</span>
+											<span id="wrc_numbers{{$row['lot_id'].$lot_index}}">{{ $wrc_numbers }}</span>
 										</div>
 										
 										
@@ -1151,7 +1144,7 @@
 		<div class="row">
 			<div class="col-12 d-flex justify-content-between ps-4">
 				<p class="mt-3 side-lot" id="lot_number"></p>
-				<button onclick="toggleSidebar()" type="button" class="btn border-0 close-button">
+				<button onclick="toggleSidebarNew()" type="button" class="btn border-0 close-button">
 					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path
 							d="M14.19 0H5.81C2.17 0 0 2.17 0 5.81V14.18C0 17.83 2.17 20 5.81 20H14.18C17.82 20 19.99 17.83 19.99 14.19V5.81C20 2.17 17.83 0 14.19 0ZM13.36 12.3C13.65 12.59 13.65 13.07 13.36 13.36C13.21 13.51 13.02 13.58 12.83 13.58C12.64 13.58 12.45 13.51 12.3 13.36L10 11.06L7.7 13.36C7.55 13.51 7.36 13.58 7.17 13.58C6.98 13.58 6.79 13.51 6.64 13.36C6.50052 13.2189 6.4223 13.0284 6.4223 12.83C6.4223 12.6316 6.50052 12.4411 6.64 12.3L8.94 10L6.64 7.7C6.50052 7.55886 6.4223 7.36843 6.4223 7.17C6.4223 6.97157 6.50052 6.78114 6.64 6.64C6.93 6.35 7.41 6.35 7.7 6.64L10 8.94L12.3 6.64C12.59 6.35 13.07 6.35 13.36 6.64C13.65 6.93 13.65 7.41 13.36 7.7L11.06 10L13.36 12.3Z"
@@ -1163,7 +1156,7 @@
 			<div class="col-12 wrc-detail-img ">
 				<div class="row">
 					<div class="col-12 ps-4 pe-4" style="margin-top: 16px;">
-						<img id="image_src" src="{{asset('IMG/group_10.png')}}" alt="" class="img-fluid" style="background: rgba(255, 255, 255, 0.1);">
+						<img id="image_src" src="{{asset('IMG/no_preview_available.jpg')}}" alt="" class="img-fluid" style="background: rgba(255, 255, 255, 0.1);">
 					</div>
 				</div>
 			</div>
@@ -1200,16 +1193,17 @@
 							</p>
 						</div>
 					</div>
-					<div class="col-12 ps-4">
+					<div class="col-12 ps-4 file_size_row d-none">
 						<p class="side-text">SIZE</p>
 						<P class="side-text2" id="file_size"></P>
 					</div>
+
+					<div class="col-11 ps-4 wrc_row d-none">
+						<p class="side-text">WRC</p>
+						<P  id="wrc_numbers" class="side-text2"></P>
+					</div>
 					{{-- Shoot files other data --}}
 					<div id="shoot_files_details" class="p-0 d-none">
-						<div class="col-11 ps-4">
-							<p class="side-text">WRC</p>
-							<P  id="wrc_numbers" class="side-text2"></P>
-						</div>
 						<div class="col-10 ps-4">
 							<div class="d-flex justify-content-between">
 								<p class="side-text">SHOOT TYPE</p>
@@ -1236,21 +1230,7 @@
 						<P class="side-text2">Black Tees, Ajio code</P>
 					</div>
 
-					{{-- <div class="col-12 d-grid gap-2 ps-4 pe-4">
-						<button class="btn border rounded-0  heading-details" type="button">
-							<svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<path
-									d="M11.5529 4.53224L4.71122 11.7739C4.45289 12.0489 4.20289 12.5906 4.15289 12.9656L3.84455 15.6656C3.73622 16.6406 4.43622 17.3072 5.40289 17.1406L8.08622 16.6822C8.46122 16.6156 8.98622 16.3406 9.24455 16.0572L16.0862 8.81558C17.2696 7.56558 17.8029 6.14058 15.9612 4.39891C14.1279 2.67391 12.7362 3.28224 11.5529 4.53224Z"
-									stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-									stroke-linejoin="round" />
-								<path
-									d="M10.4111 5.74121C10.5858 6.85859 11.1266 7.88632 11.9486 8.66308C12.7707 9.43984 13.8273 9.92165 14.9528 10.0329"
-									stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-									stroke-linejoin="round" />
-							</svg>
-							&nbsp; Edit tag
-						</button>
-					</div> --}}
+					
 					
 					<div class="col-12 ps-4" style="margin-top: 24px;">
 						<p class="heading-details">Share</p>
@@ -1275,44 +1255,66 @@
 
 @section('js_scripts')
 
-<script>
-	const set_shoot_date_time = (key , service = 'other') => {
-		const lot_number = $("#lot_number"+key).html()
-		const lot_date = $("#lot_date"+key).html()
-		const lot_time = $("#lot_time"+key).html()
-		$("#lot_time").html(lot_time)
-		$("#lot_date").html(lot_date)
-		$("#lot_number").html(lot_number)
-
-		const image_src = $("#image_src"+key).html()
-		$("#image_src").attr("src", image_src);
-
-		if(service == 'shoot'){
-			$("#s_type").html($("#s_type"+key).html())
-			$("#skus_count").html($("#skus_count"+key).html())
-			$("#raw_images").html($("#raw_images"+key).html())
-			$("#edited_images").html($("#edited_images"+key).html())
-			$("#wrc_numbers").html($("#wrc_numbers"+key).html())
-			$("#shoot_files_details").removeClass('d-none')
-		}else{
-			$("#shoot_files_details").addClass('d-none')
-		}
-	}
-</script>
-	{{-- Setting data and time in side bar --}}
+	{{-- right sidebar toggle script --}}
 	<script>
-		const set_links_date_time = (key) => {
+		function toggleSidebarNew(action_has = '' , is_wrc = '') {
+			$('.wrc-detail-img').addClass('d-none')
+			$('.file_size_row').addClass('d-none')
+			$('.wrc_row').addClass('d-none')
+			if(action_has == 'image'){
+				$('.wrc-detail-img').removeClass('d-none')
+				$('.file_size_row').removeClass('d-none')
+			}
+			if(is_wrc == 'wrc'){
+				$('.wrc_row').removeClass('d-none')
+			}
+			var sidebar = document.querySelector('.sidebar');
+			sidebar.classList.toggle('open');
+		}
+	</script>
+
+{{-- set_shoot_date_time --}}
+	<script>
+		const set_shoot_date_time = (key , service = 'other') => {
 			console.log('key', key)
 			const lot_number = $("#lot_number"+key).html()
 			const lot_date = $("#lot_date"+key).html()
 			const lot_time = $("#lot_time"+key).html()
+			$("#lot_time").html(lot_time)
+			$("#lot_date").html(lot_date)
+			$("#lot_number").html(lot_number)
+
+			const image_src = $("#image_src"+key).html()
+			$("#image_src").attr("src", image_src);
+
+			if(service == 'shoot'){
+				$("#s_type").html($("#s_type"+key).html())
+				$("#skus_count").html($("#skus_count"+key).html())
+				$("#raw_images").html($("#raw_images"+key).html())
+				$("#edited_images").html($("#edited_images"+key).html())
+				$("#wrc_numbers").html($("#wrc_numbers"+key).html())
+				$("#shoot_files_details").removeClass('d-none')
+			}else{
+				$("#shoot_files_details").addClass('d-none')
+			}
+		}
+	</script>
+
+	{{-- Setting data and time in side bar --}}
+	<script>
+		const set_links_date_time = (key) => {
+			console.log('set_links_date_time key', key)
+			const lot_number = $("#lot_number"+key).html()
+			const lot_date = $("#lot_date"+key).html()
+			const lot_time = $("#lot_time"+key).html()
 			const file_size = $("#file_size"+key).html()
+			console.log({lot_number,lot_date , lot_time})
 			$("#lot_time").html(lot_time)
 			$("#lot_date").html(lot_date)
 			$("#lot_number").html(lot_number)
 			$("#file_size").html(file_size)
-			const image_src = $("#image_src"+key).html()
-			$("#image_src").attr("src", image_src);
+			$("#wrc_numbers").html($("#wrc_numbers"+key).html())
+			
 		}
 	</script>
 
@@ -1333,6 +1335,5 @@
 			
 		}
 	</script>
-
 	
 @endsection

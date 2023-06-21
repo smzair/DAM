@@ -194,8 +194,32 @@ class EditorLotModel extends Model
         $count_wrc = 0;
         $count_qc = 0;
         $count_submission = 0;
+        $lots_file_path = "";
 
         foreach($wrc_detail as $key => $wrc_row){
+            $uploaded_img_file_path = $wrc_row['uploaded_img_file_path'];
+            $wrc_id_arr = explode(',', $wrc_row['wrc_id']);
+            $editing_uploaded_images = EditingUploadedImages::whereIn('editing_uploaded_images.wrc_id', $wrc_id_arr)->get()->toArray();
+            $file_path = "";
+
+            foreach ($editing_uploaded_images as $key_is => $item) {
+                if($file_path != ""){
+                    break;
+                }
+                $path= $item['file_path']. $item['filename'];
+                $path1 = $uploaded_img_file_path. $item['filename'];
+                if(file_exists($path)){
+                    $file_path = $path;
+                }else if(file_exists($path1)){
+                    $file_path = $path1;
+                }
+            }
+            if($lots_file_path == '' && $file_path != ''){
+                $lots_file_path = $file_path;
+            }
+            $lot_detail[0]['file_path'] = $lots_file_path;
+            $wrc_detail[$key]['file_path'] = $file_path;
+            
             $lot_detail[0]['wrc_created_at']  = $wrc_row['wrc_created_at'];
             $lot_detail[0]['allocated_created_at']  = $wrc_row['allocated_created_at'];
             $cata_sum = $wrc_row['cata_sum'];
@@ -269,7 +293,7 @@ class EditorLotModel extends Model
             'subject_id' => '0',
             'properties' => [],
         );
-        ClientActivityLog::saveClient_activity_logs($data_array);
+        // ClientActivityLog::saveClient_activity_logs($data_array);
 
         return array(
             'lot_detail' => $lot_detail,

@@ -341,6 +341,7 @@ class ClientCommonController extends Controller
           $editingWrcData = $editing_data['wrc'];
         }
       }
+      // dd('ClientCommonController' , $editing_data);
       // Lot data
       $searchData_editing_lot = array();
       foreach ($editingLots as $item) {
@@ -360,6 +361,7 @@ class ClientCommonController extends Controller
       $data_array['searchData_editing_lot'] = $searchData_editing_lot;
       $data_array['searchData_editing_wrc'] = $searchData_editing_wrc;
 
+      // dd('ClientCommonController' , $searchData_editing_lot , $searchData_editing_wrc);
     /********************************* Creative search data *******************************************/
       $creativeLots = [];
       $creativeWrcData = [];
@@ -395,6 +397,7 @@ class ClientCommonController extends Controller
 
       $data_array['searchData_creative_lot'] = $searchData_creative_lot;
       $data_array['searchData_creative_wrc'] = $searchData_creative_wrc;
+      // dd($creative_Data);
       
     /********************************* Catalog search data *******************************************/
       $catalogLots = [];
