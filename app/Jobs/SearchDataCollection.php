@@ -192,31 +192,39 @@ class SearchDataCollection implements ShouldQueue
         $wrc_detail = $LotTimelineData['wrc_detail']; 
         $editor_lots[$key] = $lot_detail[0];
         $editor_lots[$key]['service'] = 'EDITING';
+        $lots_file_path = $editor_lots[$key]['file_path'];
         foreach ($wrc_detail as $wrc_key => $wrc_row) {
-          
-          $uploaded_img_file_path = $wrc_row['uploaded_img_file_path'];
-          $wrc_id_arr = explode(',', $wrc_row['wrc_id']);
-          $editing_uploaded_images = EditingUploadedImages::whereIn('editing_uploaded_images.wrc_id', $wrc_id_arr)->get()->toArray();
-          $file_path = "";
+          $file_path = $wrc_row['file_path'];
+          // geting image path foe lots and wrcs;
+          if($file_path == '' || $lots_file_path == ''){
+            $uploaded_img_file_path = $wrc_row['uploaded_img_file_path'];
+            $wrc_id_arr = explode(',', $wrc_row['wrc_id']);
+            $editing_uploaded_images = EditingUploadedImages::whereIn('editing_uploaded_images.wrc_id', $wrc_id_arr)->get()->toArray();
+            foreach ($editing_uploaded_images as $key_is => $item) {
+              if($file_path != ""){
+                break;
+              }
+              $path= $item['file_path']. $item['filename'];
+              $path1 = $uploaded_img_file_path. $item['filename'];
+              if(file_exists($path)){
+                $file_path = $path;
+              }else if(file_exists($path1)){
+                $file_path = $path1;
+              }
+            }
+            if($lots_file_path == ''){
+              $lots_file_path = $file_path;
+            }
 
-          foreach ($editing_uploaded_images as $key_is => $item) {
-            if($file_path != ""){
-              break;
-            }
-            $path= $item['file_path']. $item['filename'];
-            $path1 = $uploaded_img_file_path. $item['filename'];
-            if(file_exists($path)){
-              $file_path = $path;
-            }else if(file_exists($path1)){
-              $file_path = $path1;
-            }
           }
+          
           $wrc_detail[$wrc_key]['file_path']= $file_path;
           array_push($editing_wrc_data , $wrc_detail[$wrc_key]);
         }
         $editor_lots[$key]['wrc_detail'] = $wrc_detail;
-
+        $editor_lots[$key]['file_path'] = $lots_file_path;
       }
+      // dd('SearchDataCollection' , $editor_lots);
 
     /****************************** Creative Data ******************************/
       $creative_lots =  CreatLots::orderBy('creative_lots.id', $sortByIs)->whereIn('creative_lots.brand_id', $brand_arr);
@@ -235,8 +243,8 @@ class SearchDataCollection implements ShouldQueue
         foreach ($wrc_detail as $wrc_key => $wrc_row) {
           array_push($creative_wrc_data , $wrc_detail[$wrc_key]);
         }
-        $creative_lots[$key]['wrc_detail'] = $wrc_detail;
         $creative_lots[$key] = $lot_detail[0];
+        $creative_lots[$key]['wrc_detail'] = $wrc_detail;
       }
 
     /****************************** Catalog Data ******************************/

@@ -53,7 +53,11 @@ class CreatLots extends Model
     )->get()->toArray();
     // dd($lot_detail);
 
-    $wrc_info  = $wrc_detail_query = $lot_info_with_wrc->leftJoin('creative_allocation', 'creative_allocation.wrc_id', 'creative_wrc.id')->leftJoin('creative_time_hash', 'creative_time_hash.allocation_id', 'creative_allocation.id')->leftJoin('creative_upload_links', 'creative_upload_links.allocation_id', 'creative_allocation.id')->leftJoin(
+    $wrc_detail_query = CreatLots::where('creative_lots.id', $id)->
+    leftJoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->
+    leftJoin('create_commercial', 'create_commercial.id', 'creative_wrc.commercial_id')->
+    leftjoin('users' ,'users.id' , 'creative_lots.user_id' )->
+    leftjoin('brands' , 'brands.id' , 'creative_lots.brand_id')->leftJoin('creative_allocation', 'creative_allocation.wrc_id', 'creative_wrc.id')->leftJoin('creative_time_hash', 'creative_time_hash.allocation_id', 'creative_allocation.id')->leftJoin('creative_upload_links', 'creative_upload_links.allocation_id', 'creative_allocation.id')->leftJoin(
       'creative_submissions',
       function ($join) {
         $join->on('creative_allocation.wrc_id', '=', 'creative_submissions.wrc_id');
@@ -111,7 +115,7 @@ class CreatLots extends Model
       'creative_submissions.Status as status'
     )->orderBy('creative_wrc.id')->orderBy('creative_allocation.id')->orderBy('creative_time_hash.updated_at')->orderBy('creative_submissions.id');
 
-    $wrc_detail_query = $wrc_detail_query->groupBy('creative_allocation.wrc_id');
+    $wrc_detail_query = $wrc_detail_query->where('creative_wrc.id', '<>' ,null)->groupBy('creative_wrc.id');
     $wrc_detail = $wrc_detail_query->get()->toArray();
 
     $creative_and_cataloging_lot_statusArr = creative_and_cataloging_lot_statusArr();
@@ -128,6 +132,12 @@ class CreatLots extends Model
     $lot_detail[0]['wrc_submission']  = "0%";
     $lot_detail[0]['submission_date']  = '';
     $lot_detail[0]['wrc_numbers'] =  '';
+    $lot_detail[0]['wrc_created_at']  = '';
+    $lot_detail[0]['allocated_created_at']  = '';
+
+    if(count($wrc_detail) > 0){
+      $lot_detail[0]['wrc_numbers'] =  implode(', ',array_column($wrc_detail , 'wrc_number'));
+    }
 
     $count_wrc = 0;
     $count_qc = 0;
