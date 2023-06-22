@@ -55,8 +55,8 @@
 		}
 
 		$shoot_image_src = 'IMG/no_preview_available.jpg';
-		$img_src = 'IMG/no_preview_available.jpg';
 		// $img_src = 'IMG/group_10.png';
+		$img_src = 'IMG/no_preview_available.jpg';
 		$zipFileSize = "File Not Found!!";
 		if(file_exists($path)){
 			$img_src = $path;
@@ -68,7 +68,18 @@
 		@endphp
 		<div class="col-sm-6 col-md-4 col-lg-3 SKU-BOX-STYLE" >
 			<div class="card brand-img-m border-0 rounded-0" >
-				<img class="card-img-top brand-img" src="{{ asset($img_src)}}" alt="Image">
+				<img class="card-img-top brand-img zoomable-image" src="{{ asset($img_src)}}" alt="Image">
+				<div class="zoomed-container">
+					<img src="{{ asset($img_src)}}" alt="Zoomed Image" class="zoomed-image">
+				</div>
+				<div class="navigation-buttons left">
+				<button class="previous-button">&#8249;</button>
+				</div>
+		
+				<div class="navigation-buttons right">
+						<button class="next-button">&#8250;</button>
+				</div>
+                
 				<div class="card-body total-sku-img-body d-flex justify-content-between" style="position: relative">
 					<p class="brand-img-name" id="lot_number{{$row['sku_id'].$key}}">{{$row['filename']}}</p>
 					<i class="bi bi-three-dots-vertical myButton" style="cursor: pointer;color:#808080;font-size:20px;"></i>

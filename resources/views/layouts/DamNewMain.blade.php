@@ -69,10 +69,10 @@
       display: none;
       position: absolute;
       top: 36px;
-      right: 47px;
+      right: -20px;
       padding: 24px;
       background: #0F0F0F;
-      border: 1px solid #9F9F9F!important;
+      border: 1px solid #333333!important;
       border-radius: 4px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       z-index: 2;
@@ -115,6 +115,14 @@
       letter-spacing: 0.5px;
       color: #4D4D4D;
       margin-top: 4px;
+    }
+    
+     .No-notifications-rec {
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 0.25px;
+      color: #808080;
+      margin-bottom:0px;
     }
 
     .hr-line {
@@ -292,7 +300,7 @@
 										</svg>
 									@endif
 									<div class="popover-for-notifaction" id="popover-for-notifaction">
-										<div class="notificatio-pop-heading">Notification</div>
+										<div class="notificatio-pop-heading">Notifications</div>
 
 										@if ($tot_notification > 0)
 											@foreach ($ClientNotification as $notification_key => $row)
@@ -783,6 +791,59 @@
   tab.classList.add("active");
   }
  </script>
+ 
+ <!--Zoomed image script on tap image-->
+ 
+ <script>
+        var zoomableImages = document.querySelectorAll(".zoomable-image");
+        var zoomedContainer = document.querySelector(".zoomed-container");
+        var zoomedImg = zoomedContainer.querySelector(".zoomed-image");
+        var previousButton = document.querySelector(".previous-button");
+        var nextButton = document.querySelector(".next-button");
+        var navigationButtons = document.querySelectorAll(".navigation-buttons");
+
+        var currentIndex = 0;
+
+        zoomableImages.forEach(function(image, index) {
+            image.addEventListener("click", function(event) {
+                currentIndex = index;
+                zoomedImg.src = event.target.src;
+                zoomedContainer.classList.add("active");
+                navigationButtons.forEach(function(button) {
+                    button.classList.add("active");
+                });
+            });
+        });
+
+        previousButton.addEventListener("click", showPreviousImage);
+        nextButton.addEventListener("click", showNextImage);
+
+        zoomedContainer.addEventListener("click", function() {
+            zoomedContainer.classList.remove("active");
+            navigationButtons.forEach(function(button) {
+                button.classList.remove("active");
+            });
+        });
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "ArrowLeft") {
+                showPreviousImage();
+            } else if (event.key === "ArrowRight") {
+                showNextImage();
+            }
+        });
+
+        function showPreviousImage() {
+            currentIndex = (currentIndex - 1 + zoomableImages.length) % zoomableImages.length;
+            zoomedImg.src = zoomableImages[currentIndex].src;
+        }
+
+        function showNextImage() {
+            currentIndex = (currentIndex + 1) % zoomableImages.length;
+            zoomedImg.src = zoomableImages[currentIndex].src;
+        }
+    </script>
+ 
 
 	{{-- set notification to seen  --}}
 	<script>
