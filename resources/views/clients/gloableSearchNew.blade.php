@@ -82,7 +82,7 @@
 					$tbl_id = $row['id'];
 					// dd($row , $row);
 				@endphp
-				<div class="col-sm-6 col-md-4 col-lg-3 mt-2" id="div_{{$tbl_id}}">
+				<div class="col-sm-6 col-md-4 col-lg-3 SKU-BOX-STYLE" id="div_{{$tbl_id}}">
 					<div class="card brand-img-m border-0 rounded-0">
 							<img class="card-img-top brand-img" src="{{asset($img_src)}}"
 									alt="Image">
@@ -175,7 +175,7 @@
 
 				@endphp
 
-				<div class="col-lg-3 col-md-6 mb-1" id="div_{{$tbl_id}}">
+				<div class="col-lg-3 col-md-6 SKU-BOX-STYLE" id="div_{{$tbl_id}}">
 					<div class="row brand-div2" style="position: relative;">
 						<div class="col-2 mt-3">
 							<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -710,13 +710,22 @@
 							<div class="under-content-div">
 								<div class="col-12">
 									<a href="{{route('your_assets_shoot_wrcs' , [$row['lot_id']])}}">
-										<img  style="width: 100%; min-height: 393px;"  src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid">
+										<img src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid yourasse-file-img">
 									</a>
 								</div>
 								<div class="col-12 d-flex justify-content-between">
 									<div>
 										<p class="lot-no-heading">Lot no</p>
-										<span class="your-asset-lotno-underbox" id="lot_number{{$row['lot_id'].$lot_index}}">{{$row['lot_number']}}</span>&nbsp;&nbsp;
+										<p class="your-asset-lotno-underbox" id="lot_number{{$row['lot_id'].$lot_index}}">{{$row['lot_number']}}</p>
+										<p class="file-lot-date-para">
+											<span class="your-asset-lot-date-underbox">
+													<svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+																									<path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+																									<path d="M9.15545 7.9917H9.1607M9.15545 9.7417H9.1607M6.99711 7.9917H7.00295M6.99711 9.7417H7.00295M4.8382 7.9917H4.84403M4.8382 9.7417H4.84403" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
+																									</svg>
+											</span>
+											<span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}}</span>
+											</p>
 										<div class="myPopover" style="display: none;">
 											@php
 												$lot_id_is = base64_encode($row['lot_id']);
@@ -826,14 +835,11 @@
 										</i>
 									</div>
 								</div>
-								<div class="col-12">
-										<span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}}</span>
-								</div>
 								<div class="col-12 d-flex justify-content-between">
 									<div>
 										<p class="inward-qty">Inward Quantity : </p>
 										<p class="inward-qty-num">
-											{{$row['inward_quantity']}}
+											{{$row['inward_quantity'] > 0 ? $row['inward_quantity'] : '0'}}
 										</p>
 									</div>
 									<div>
@@ -881,13 +887,16 @@
 							<div class="under-content-div">
 								<div class="col-12">
 									<a href="{{route('your_assets_shoot_wrcs' , [$row['lot_id']])}}">
-										<img  style="width: 100%; min-height: 393px;"  src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid">
+										<img src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid yourasse-file-img">
 									</a>
 								</div>
 								<div class="col-12 d-flex justify-content-between">
 									<div>
 										<p class="lot-no-heading">Lot no</p>
-										<span class="your-asset-lotno-underbox" id="lot_number{{$row['lot_id'].$lot_index}}">{{$row['lot_number']}}</span>&nbsp;&nbsp;
+										<p class="your-asset-lotno-underbox" id="lot_number{{$row['lot_id'].$lot_index}}">{{$row['lot_number']}}</p>
+										<p class="file-lot-date-para">
+											<span class="your-asset-lot-date-underbox">Date:</span> &nbsp;<span class="your-asset-lot-date"> {{dateFormet_dmy($row['lot_created_at'])}} </span>
+										</p>
 										<div class="myPopover" style="display: none;">
 											@php
 												$lot_id_is = base64_encode($row['lot_id']);
@@ -939,9 +948,7 @@
 										</i>
 									</div>
 								</div>
-								<div class="col-12">
-										<span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}}</span>
-								</div>
+								
 								<div class="col-12 d-flex justify-content-between">
 									<div>
 										<p class="inward-qty">Inward Quantity : </p>
@@ -1144,16 +1151,20 @@
 
 	<!-- sidebar popup start -->
 	<div class="sidebar">
-		<div class="row">
-			<div class="col-12 d-flex justify-content-between ps-4">
-				<p class="mt-3 side-lot" id="lot_number"></p>
-				<button onclick="toggleSidebarNew()" type="button" class="btn border-0 close-button">
-					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path
-							d="M14.19 0H5.81C2.17 0 0 2.17 0 5.81V14.18C0 17.83 2.17 20 5.81 20H14.18C17.82 20 19.99 17.83 19.99 14.19V5.81C20 2.17 17.83 0 14.19 0ZM13.36 12.3C13.65 12.59 13.65 13.07 13.36 13.36C13.21 13.51 13.02 13.58 12.83 13.58C12.64 13.58 12.45 13.51 12.3 13.36L10 11.06L7.7 13.36C7.55 13.51 7.36 13.58 7.17 13.58C6.98 13.58 6.79 13.51 6.64 13.36C6.50052 13.2189 6.4223 13.0284 6.4223 12.83C6.4223 12.6316 6.50052 12.4411 6.64 12.3L8.94 10L6.64 7.7C6.50052 7.55886 6.4223 7.36843 6.4223 7.17C6.4223 6.97157 6.50052 6.78114 6.64 6.64C6.93 6.35 7.41 6.35 7.7 6.64L10 8.94L12.3 6.64C12.59 6.35 13.07 6.35 13.36 6.64C13.65 6.93 13.65 7.41 13.36 7.7L11.06 10L13.36 12.3Z"
-							fill="white" />
-					</svg>
-				</button>
+		<div class="row sidebar-row-where-content">
+			<div class="col-12 d-flex justify-content-between">
+				<div class="row">
+					 <div class="col-11">
+							<p class="side-lot" id="lot_number">ODN27122022-GBSTES3744</p>
+					 </div>
+					 <div class="col-1">
+							<button onclick="toggleSidebarNew()" type="button" class="btn border-0 close-button">
+								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M14.19 0H5.81C2.17 0 0 2.17 0 5.81V14.18C0 17.83 2.17 20 5.81 20H14.18C17.82 20 19.99 17.83 19.99 14.19V5.81C20 2.17 17.83 0 14.19 0ZM13.36 12.3C13.65 12.59 13.65 13.07 13.36 13.36C13.21 13.51 13.02 13.58 12.83 13.58C12.64 13.58 12.45 13.51 12.3 13.36L10 11.06L7.7 13.36C7.55 13.51 7.36 13.58 7.17 13.58C6.98 13.58 6.79 13.51 6.64 13.36C6.50052 13.2189 6.4223 13.0284 6.4223 12.83C6.4223 12.6316 6.50052 12.4411 6.64 12.3L8.94 10L6.64 7.7C6.50052 7.55886 6.4223 7.36843 6.4223 7.17C6.4223 6.97157 6.50052 6.78114 6.64 6.64C6.93 6.35 7.41 6.35 7.7 6.64L10 8.94L12.3 6.64C12.59 6.35 13.07 6.35 13.36 6.64C13.65 6.93 13.65 7.41 13.36 7.7L11.06 10L13.36 12.3Z" fill="white"></path>
+								</svg>
+							</button>
+					 </div>
+				</div>
 			</div>
 
 			<div class="col-12 wrc-detail-img ">
