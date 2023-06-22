@@ -49,12 +49,8 @@ class HomeController extends Controller
         $user_role = $user->roles->pluck('name');
         if($user->roles->pluck( 'name' )->contains( 'Client' ) || $user->roles->pluck( 'name' )->contains( 'Sub Client' )){
             // return ClientDashboardController::index();
-            // dd($user);
             dispatch(new SearchDataCollection($user))->onQueue('search_data_collection_queue');
             return ClientDashboardControllerNew::index();
-            // SearchDataCollection::dispatch()->onQueue('search_data_collection_queue');
-            // return view('clients.ClientDashboard');
-
         }
         if ($role->name ==  'Performance') {
             $catalog = CatalogWrcMasterSheet::CatalogWrcMasterList();
