@@ -34,9 +34,9 @@
 	}
 
 	.upper-head-style-for-track-hover {
-  margin-top: -11px;
-  margin-left: -11px;
-  margin-right: -11px;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
   background: #1A1A1A;
 }
 

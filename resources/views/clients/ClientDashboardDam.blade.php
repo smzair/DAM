@@ -3,6 +3,57 @@
   Client Dashboard
 @endsection
 
+@section('other_css')
+	<style>
+		.progress-circle {
+			position: relative;
+			display: inline-block;
+		}
+		
+		.progress {
+			transform: rotate(-90deg);
+			width: 80px;
+			height: 61px;
+			background: #1A1A1A;
+		}
+		
+		.progress-bar-bg {
+			fill: #1A1A1A;
+			stroke: #333333;
+			stroke-width: 2;
+		}
+		
+		.progress-bar {
+			fill: transparent;
+			stroke: #FFF866;
+			stroke-width: 10;
+			stroke-dasharray: 283;
+			stroke-dashoffset: 0;
+			transition: stroke-dashoffset 0.5s ease;
+		}
+		
+		.progress-bar-filled {
+			stroke: #4CAF50;
+			color: #4CAF50 !important;
+		}
+		
+		.progress-value {
+			font-size: 14px;
+			font-weight: 800;
+			color: #FFF866;
+			text-align: center;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+	</style>
+@endsection
+
 @section('main_content')
 <?php 
 $lot_status_is = $sortBy = $lot_status_val = "" ;
@@ -202,7 +253,14 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 										{{$val['lot_status']}}
 									</p>
 								</div>
-								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>
+								<!--<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>-->
+								<div class="progress-circle">
+										<svg class="progress" viewBox="0 0 100 100">
+											<circle class="progress-bar-bg" cx="50" cy="50" r="45"></circle>
+											<circle class="progress-bar" cx="50" cy="50" r="45"></circle>
+										</svg>
+										<div class="progress-value ">{{$overall_progress."%"}}</div>
+									</div>
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a href={{route('clientsShootlotTimelineNew',$val['id'])}} class="btn border rounded-0 btn-secondary" type="button"
@@ -264,7 +322,14 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 											{{$val['lot_status']}}
 										</p>
 									</div>
-								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>
+								<!--<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>-->
+								<div class="progress-circle">
+										<svg class="progress" viewBox="0 0 100 100">
+											<circle class="progress-bar-bg" cx="50" cy="50" r="45"></circle>
+											<circle class="progress-bar" cx="50" cy="50" r="45"></circle>
+										</svg>
+										<div class="progress-value ">{{$overall_progress."%"}}</div>
+									</div>
 								</div>
 								<div class="col-12 d-grid gap-2">
 									<a href={{route('clientsCreativelotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
@@ -324,7 +389,14 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 										{{$val['lot_status']}}
 									</p>
 								</div>
-								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>
+								<!--<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100" style="--value:{{$overall_progress}}"></div>-->
+								<div class="progress-circle">
+										<svg class="progress" viewBox="0 0 100 100">
+											<circle class="progress-bar-bg" cx="50" cy="50" r="45"></circle>
+											<circle class="progress-bar" cx="50" cy="50" r="45"></circle>
+										</svg>
+										<div class="progress-value ">{{$overall_progress."%"}}</div>
+									</div>
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a href={{route('clientsCatloglotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
@@ -384,8 +456,15 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 										{{$val['lot_status']}}
 									</p>
 								</div>
-								<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100"
-									style="--value:{{$overall_progress}}"></div>
+								<!--<div role="progressbar" aria-valuenow="{{$overall_progress}}" aria-valuemin="0" aria-valuemax="100"-->
+								<!--	style="--value:{{$overall_progress}}"></div>-->
+								<div class="progress-circle">
+                                    <svg class="progress" viewBox="0 0 100 100">
+                                      <circle class="progress-bar-bg" cx="50" cy="50" r="45"></circle>
+                                      <circle class="progress-bar" cx="50" cy="50" r="45"></circle>
+                                    </svg>
+                                    <div class="progress-value ">{{$overall_progress."%"}}</div>
+                                 </div>
 							</div>
 							<div class="col-12 d-grid gap-2">
 								<a href={{route('clientsEditorLotTimelineNew',$val['lot_id'])}} class="btn border rounded-0 btn-secondary" type="button"
@@ -402,4 +481,38 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 		@endif
 	</div>
 </div>
+@endsection
+
+@section('js_scripts')
+	
+	<script>
+		function animateProgressBars() {
+			var progressCircles = document.querySelectorAll('.progress-circle');
+		
+			progressCircles.forEach(function(circle) {
+				var progressValue = circle.querySelector('.progress-value');
+				var progress = circle.querySelector('.progress-bar');
+		
+				var percentage = parseInt(progressValue.textContent);
+		
+				var circumference = 2 * Math.PI * progress.getAttribute('r');
+				var offset = circumference * (100 - percentage) / 100;
+		
+				progress.style.strokeDashoffset = circumference;
+		
+				progress.classList.remove('progress-bar-filled');
+				progress.getBoundingClientRect();
+		
+				progress.style.transition = 'stroke-dashoffset 1s ease-in-out';
+				progress.style.strokeDashoffset = offset + 'px';
+		
+				if (percentage === 100) {
+					progress.classList.add('progress-bar-filled');
+						progressValue.classList.add('progress-bar-filled');
+				}
+			});
+		}
+		animateProgressBars();
+	</script>
+	
 @endsection

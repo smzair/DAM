@@ -32,9 +32,9 @@
 	}
 
 	.upper-head-style-for-track-hover {
-		margin-top: -11px;
-		margin-left: -11px;
-		margin-right: -11px;
+		margin-top: -10px;
+		margin-left: -10px;
+		margin-right: -10px;
 		background: #1A1A1A;
 	}
 
@@ -257,7 +257,7 @@
 					<th scope="col" class="table-heading-sty">Quantity</th>
 					<th scope="col" class="table-heading-sty">Quality Check (QC)</th>
 					<th scope="col" class="table-heading-sty">Submissions</th>
-					<th scope="col" class="table-heading-sty">Invoice</th>
+				{{--<th scope="col" class="table-heading-sty">Invoice</th> --}}
 					<th scope="col" class="table-heading-sty" style="text-align: center;">Images</th>
 					
 				</tr>
@@ -360,21 +360,21 @@
 
 			<a href="{{route('download_Editing_Lot_raw', [base64_encode($lot_detail[0]['lot_id'])])}}" type="button" class="btn border btn-lg last-button download-img-raw-btn {{$img_download}}">Download raw</a>
 		</div>
-		<div class="download-invoice">
-			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_1270_842)">
-                <path d="M9.99984 7.08317V12.0832M9.99984 18.3332C14.6023 18.3332 18.3332 14.6023 18.3332 9.99984C18.3332 5.39734 14.6023 1.6665 9.99984 1.6665C5.39734 1.6665 1.6665 5.39734 1.6665 9.99984C1.6665 14.6023 5.39734 18.3332 9.99984 18.3332Z" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" fill="#98A7DA"/>
-                <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </g>
-                <defs>
-                <clipPath id="clip0_1270_842">
-                <rect width="20" height="20" fill="white"/>
-                </clipPath>
-                </defs>
-                </svg>
-			&nbsp; <a href="#" class="download-invoice"> Download Invoices</a>
-		</div>
+		<!--<div class="download-invoice">-->
+		<!--	<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+  <!--              <g clip-path="url(#clip0_1270_842)">-->
+  <!--              <path d="M9.99984 7.08317V12.0832M9.99984 18.3332C14.6023 18.3332 18.3332 14.6023 18.3332 9.99984C18.3332 5.39734 14.6023 1.6665 9.99984 1.6665C5.39734 1.6665 1.6665 5.39734 1.6665 9.99984C1.6665 14.6023 5.39734 18.3332 9.99984 18.3332Z" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+  <!--              <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" fill="#98A7DA"/>-->
+  <!--              <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+  <!--              </g>-->
+  <!--              <defs>-->
+  <!--              <clipPath id="clip0_1270_842">-->
+  <!--              <rect width="20" height="20" fill="white"/>-->
+  <!--              </clipPath>-->
+  <!--              </defs>-->
+  <!--              </svg>-->
+		<!--	&nbsp; <a href="#" class="download-invoice"> Download Invoices</a>-->
+		<!--</div>-->
 	</div>
 </div>
 
