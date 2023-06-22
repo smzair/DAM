@@ -39,6 +39,7 @@
 		box-shadow: 6px 24px 60px rgba(255, 255, 255, 0.06);
 		z-index: 1;
 		width: 220px !important;
+		right: 24px;
 	}
 
 
@@ -56,9 +57,9 @@
 	}
 
 	.upper-head-style-for-track-hover {
-  margin-top: -11px;
-  margin-left: -11px;
-  margin-right: -11px;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
   background: #1A1A1A;
 }
 
@@ -457,6 +458,8 @@
 				newElement.removeClass('d-none');
 			}
 		}
+
+      
 	</script>
 		
     <script>
