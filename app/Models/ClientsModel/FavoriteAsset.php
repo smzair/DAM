@@ -2,6 +2,7 @@
 
 namespace App\Models\ClientsModel;
 
+use App\Http\Controllers\ClientsControllers\ClientCommonController;
 use App\Models\CatalogSubmission;
 use App\Models\CatalogWrcBatch;
 use App\Models\CreativeSubmission;
@@ -451,14 +452,44 @@ class FavoriteAsset extends Model
     $wrc_data = array();
 
     if($service == 'SHOOT'){
-      $wrc_data = Wrc::leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->where('wrc.lot_id',$lot_id)->where('wrc.id',$wrc_id)->select(
+      $wrc_data = Wrc::leftJoin('lots', 'wrc.lot_id', '=', 'lots.id')->leftJoin('commercial', 'commercial.id', 'wrc.commercial_id')->where('wrc.lot_id',$lot_id)->where('wrc.id',$wrc_id)->select(
         'wrc.id as wrc_id',
         'wrc.wrc_id as wrc_number',
         'wrc.lot_id',
         'wrc.created_at as wrc_created_at',
         'lots.lot_id as lot_number',
+        'commercial.product_category',
+        'commercial.type_of_shoot',
+        'commercial.type_of_clothing',
+        'commercial.gender',
+        'commercial.adaptation_1 as primary_adaptation',
+        'commercial.adaptation_1',
+        'commercial.adaptation_2',
+        'commercial.adaptation_3',
+        'commercial.adaptation_4',
+        'commercial.adaptation_5',
+        'commercial.commercial_value_per_sku'
       )->get()->toArray();
       foreach ($wrc_data as $key => $value) {
+        // adaptation data
+        $adaptation_arr = array();
+        for($i = 1; $i <= 5 ; $i++){
+          $adaptation_key = 'adaptation_'.$i;
+          if($value[$adaptation_key] != 'NA' && $value[$adaptation_key] != null){
+              array_push($adaptation_arr , $value[$adaptation_key]);
+          }
+          unset($wrc_data[$key][$adaptation_key]);
+        }
+        // Setting Svg into addaption
+        $adaptation_svg_data_arr = array();
+
+        $clientCommonController = new ClientCommonController();
+        if(count($adaptation_arr) > 0){
+            $adaptation_svg_data_arr = $clientCommonController->adaptation_svg_data_arr($adaptation_arr);
+        }
+        $wrc_data[$key]['adaptation_svg_data_arr'] = $adaptation_svg_data_arr;
+        $wrc_data[$key]['adaptation'] = $adaptation_arr;
+
         $lot_number = $value['lot_number'];
         $sku_info_query = Skus::where('wrc_id', $value['wrc_id'])->where('status', 1)->select('id as sku_id', 'sku_code', 'status');
         $skus_count = $sku_info_query->count();

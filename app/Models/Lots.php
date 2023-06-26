@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\ClientsControllers\ClientCommonController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -180,6 +181,15 @@ class Lots extends Model {
                     }
                     unset($wrc_info[$key][$adaptation_key]);
                 }
+
+                // Setting Svg into addaption
+                $adaptation_svg_data_arr = array();
+
+                $clientCommonController = new ClientCommonController();
+                if(count($adaptation_arr) > 0){
+                    $adaptation_svg_data_arr = $clientCommonController->adaptation_svg_data_arr($adaptation_arr);
+                }
+                $wrc_info[$key]['adaptation_svg_data_arr'] = $adaptation_svg_data_arr;
                 $wrc_info[$key]['adaptation'] = $adaptation_arr;
                 
                 $lot_detail[0]['inward_quantity'] = $tot_sku_count;
