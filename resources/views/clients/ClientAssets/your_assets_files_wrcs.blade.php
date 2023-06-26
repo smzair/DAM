@@ -266,7 +266,7 @@ if($service_is == 'Shoot'){
 							<p class="Adaptations-text-wrclevel">Adaptations</p>
 
 							<div class="AdaptLogo-section icon-container my-carousel owl-carousel">
-								@foreach ($row['adaptation'] as $adaptation_key =>  $adaptation_svg)
+								@foreach ($row['adaptation_svg_data_arr'] as $adaptation_key =>  $adaptation_svg)
 									<span class="item" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{$adaptation_key}}">
 										<?php echo $adaptation_svg;?>
 									</span>
@@ -290,14 +290,12 @@ if($service_is == 'Shoot'){
 @endsection
 
 @section('js_links')
-	{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 @endsection
 
 @section('js_scripts')
 	<script>
 		async function add_to_favorites(data_obj = ''){
-			console.log('data_obj => ', data_obj);
 			await $.ajax({
 				url: "{{ url('your-assets-Favorites')}}",
 				type: "POST",
@@ -308,7 +306,6 @@ if($service_is == 'Shoot'){
 				},
 				success: function(res) {
 					alert(res.massage)
-					console.log('res => ', res )
 				}
 			});
 		}
@@ -341,8 +338,6 @@ if($service_is == 'Shoot'){
 	{{-- tooltip --}}
 	<script>
 		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-		console.log('tooltipTriggerList', tooltipTriggerList)
 		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-		console.log('tooltipList', tooltipList)
 	</script>
 @endsection

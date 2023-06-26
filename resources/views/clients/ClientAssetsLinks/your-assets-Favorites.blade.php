@@ -3,6 +3,12 @@
   Your Assets - Favorites
 @endsection
 
+@section('css_links')
+	<!-- Owl carausel link -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+@endsection
+
 @section('other_css')
 	<style>
 		.fovourites-img-lot-sku-wrc-section {
@@ -11,6 +17,76 @@
 		    color: #FFFFFF;
 			margin-bottom: 12px;
 			margin-top: 40px;
+		}
+	</style>
+	<style>
+		.adap-div {
+			background: #1A1A1A;
+		}
+
+		.under-adap-div {
+			display: flex;
+			justify-content: space-between;
+			padding: 16px;
+		}
+
+		.adap-wrc {
+			color: #FFFFFF;
+		}
+
+		.adap-wrc,
+		.adap-wrc-dots {
+			display: inline-block;
+			/* Set display property to inline-block */
+			vertical-align: middle;
+			/* Align elements vertically */
+		}
+
+		.wrc-file-div {
+			padding: 12px 12px 12px 12px;
+		}
+
+		.adap-div-forAdaption {
+			background: #333333;
+		}
+
+		.adap-div-forAdaption-content {
+			padding: 12px 16px 16px 16px;
+		}
+
+		.Adaptations-text-wrclevel {
+			font-weight: 500;
+			font-size: 11px;
+			letter-spacing: 0.5px;
+			color: #FFFFFF;
+			margin-bottom: 0px;
+		}
+
+		.WRC-no-file {
+			font-weight: 400;
+			font-size: 14px;
+			letter-spacing: 0.25px;
+			color: #FFFFFF;
+		}
+
+		.AdaptLogo-section {
+			margin-top: 8px;
+			display: flex;
+			/* gap: 12px; */
+			overflow: hidden;
+		}
+
+		.owl-item.active {
+			width: 39.3px !important;
+			margin-right: 0px !important;
+		}
+
+		.owl-nav {
+			height: 0px !important;
+		}
+
+		.owl-dots {
+			height: 0px !important;
 		}
 	</style>
 @endsection
@@ -27,6 +103,7 @@
 		$wrc_data = $data_array['wrc_data'];
 		$shoot_images = $images_array['shoot_images'];
 		$editing_images = $images_array['editing_images'];
+		// dd($wrc_data);
 
 	@endphp
 
@@ -636,40 +713,23 @@
 									</div>
 								</div>
 							</div>
-							
-							<div id="collapseOne{{$wrc_unic_key}}" class="collapse show" aria-labelledby="headingOne{{$wrc_unic_key}}" data-parent="#">
-								<div class="card-body card-body-style">
-									<div class="col-12">
-										<p class="TAGS">TAGS
-											<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<g clip-path="url(#clip0_92_3135)">
-													<path
-														d="M7.00004 9.33301L7.00004 6.41634M7.00004 1.16634C3.79171 1.16634 1.16671 3.79134 1.16671 6.99968C1.16671 10.208 3.79171 12.833 7.00004 12.833C10.2084 12.833 12.8334 10.208 12.8334 6.99967C12.8334 3.79134 10.2084 1.16634 7.00004 1.16634Z"
-														stroke="#9F9F9F" stroke-linecap="round" stroke-linejoin="round" />
-													<path d="M7.00293 4.66699L6.99493 4.66699" stroke="#9F9F9F" stroke-linecap="round"
-														stroke-linejoin="round" />
-												</g>
-												<defs>
-													<clipPath id="clip0_92_3135">
-														<rect width="14" height="14" fill="white" transform="translate(14 14) rotate(180)" />
-													</clipPath>
-												</defs>
-											</svg>
-										</p>
-									</div>
-									<div class="row">
-										<div class="col-4">
-											<button type="button" class="btn btn-sm under-acco-button">Black Tees</button>
-										</div>
-										<div class="col-4">
-											<button type="button" class="btn btn-sm under-acco-button">FSN code</button>
-										</div>
-										<div class="col-4">
-											<button type="button" class="btn btn-sm under-acco-button">ASIN code</button>
+
+							@if ($service_is == 'SHOOT')
+								<div class="adap-div-forAdaption">
+									<div class="adap-div-forAdaption-content">
+										<p class="Adaptations-text-wrclevel">Adaptations</p>
+			
+										<div class="AdaptLogo-section icon-container my-carousel owl-carousel">
+											@foreach ($row['adaptation_svg_data_arr'] as $adaptation_key =>  $adaptation_svg)
+												<span class="item" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{$adaptation_key}}">
+													<?php echo $adaptation_svg;?>
+												</span>
+											@endforeach
+			
 										</div>
 									</div>
 								</div>
-							</div>
+							@endif
 						</div>
 					</div>
 				</div>
@@ -1424,7 +1484,43 @@
 	<!-- sidebar popup end -->
 @endsection
 
+@section('js_links')
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+@endsection
+
 @section('js_scripts')
+	{{-- owlCarousel --}}
+	<script>
+		$(document).ready(function () {
+			$('.my-carousel').owlCarousel({
+				items: 1,
+				loop: false,
+				nav: true,
+				dots: true,
+				margin: 10,
+				autoHeight: true,
+				responsive: {
+					0: {
+							items: 1
+					},
+					600: {
+							items: 2
+					},
+					1000: {
+							items: 5
+					}
+				}
+			});
+		});
+	</script>
+	{{-- tooltip --}}
+	<script>
+		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+		console.log('tooltipTriggerList', tooltipTriggerList)
+		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+		console.log('tooltipList', tooltipList)
+	</script>
+
 	{{-- Setting data and time in side bar --}}
 	<script>
 		const set_links_date_time = (key) => {
