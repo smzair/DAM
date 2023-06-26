@@ -357,9 +357,19 @@
 							</li>
 							{{-- user profile image --}}
 							<li class="nav-item">
-								<svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+								@php
+									$profile_avtar = $user_data->profile_avtar;
+									$profile_avtar_path =  asset('uploades/profileavtar/'.$profile_avtar);
+									if(!file_exists($profile_avtar_path) && $profile_avtar != ''){
+											$profile_avtar_src = $profile_avtar_path;
+									}else{
+											$profile_avtar_src = "assets-images\Desktop-Assets\your profile\blank-avtar.jpg";
+									}
+								@endphp
+								<img width="46" height="46" style="border: 1px solid;border-radius: 50%;overflow: hidden;"  src="{{$profile_avtar_src}}" alt="">
+								{{-- <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<circle cx="23" cy="23" r="23" fill="#808080"/>
-									</svg>            
+									</svg>             --}}
 							</li>
 						</ul>
 					</div>
