@@ -321,7 +321,7 @@
 								?>
 							
 							</td>
-							<td class="table-column">-</td>
+							{{-- <td class="table-column">-</td> --}}
 							<td class="table-column" style="text-align: center;">
 								<a class="{{$diables_img_download}}" href="{{route('download_Editing_lot_Edited_wrc' , [ base64_encode($wrc_row['wrc_id']) ] )}}">
 									@if ($wrc_row['submission_status'] == 'Done')
