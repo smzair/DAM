@@ -151,7 +151,7 @@ class ImageDownloadController extends Controller
   }
 
   //Shoot lot Edited Image zip Download based on wrc id
-  public function download_Shoot_lot_Edited_wrc($wrc_id)
+  public function download_Shoot_lot_Edited_wrc($wrc_id ,$is_multipal = '')
   {
     $wrc_id = base64_decode($wrc_id); // lot id
     $lot_data_arr = Lots::leftJoin('wrc','wrc.lot_id', '=' , 'lots.id')->whereNotNull('lots.id')->
@@ -166,6 +166,7 @@ class ImageDownloadController extends Controller
       $fileName = $wrc_number . ".zip";
       $path =  "edited_img_directory/" . date('Y', strtotime($lot_created_at)) . "/" . date('M', strtotime($lot_created_at)) . "/" . $lot_no."/" . $wrc_number;
       
+      // dd($path);
       $zip = new ZipArchive;
       if ($zip->open($fileName, ZipArchive::CREATE) === TRUE) {
         if (file_exists($path)) {
@@ -187,13 +188,25 @@ class ImageDownloadController extends Controller
           ClientActivityLog::saveClient_activity_logs($data_array);
           return response()->download($fileName)->deleteFileAfterSend(true);
         } else {
-          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+          if($is_multipal == ''){
+            return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+          }else{
+            return "error";
+          }
         }
       }else{
-        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
       }
     }else{
-      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, Invailid Wrc id');
+      if($is_multipal == ''){
+        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, Invailid Wrc id');
+      }else{
+        return "error";
+      }
     }
   }
 

@@ -576,7 +576,7 @@ Route::get('/download-Editing-lot-raw/{id}', [ImageDownloadController::class, 'd
 
 Route::get('/download-Editing-lot-edited/{id}', [ImageDownloadController::class, 'download_Editing_Lot_edited'])->name('download_Editing_Lot_edited'); //shoot-lot-raw Image download
 
-Route::get('/Shoot-lot-Edited-wrc-Images/{wrc_id}', [ImageDownloadController::class, 'download_Shoot_lot_Edited_wrc'])->name('download_Shoot_lot_Edited_wrc'); //shoot-lot-Edited Image download Wrc wisw
+Route::get('/Shoot-lot-Edited-wrc-Images/{wrc_id}/{is_multipal?}', [ImageDownloadController::class, 'download_Shoot_lot_Edited_wrc'])->name('download_Shoot_lot_Edited_wrc'); //shoot-lot-Edited Image download Wrc wisw
 
 Route::get('/Editing-lot-Edited-wrc-Images/{wrc_id}', [ImageDownloadController::class, 'download_Editing_lot_Edited_wrc'])->name('download_Editing_lot_Edited_wrc'); //Editing-lot-Edited Image download not done
 
@@ -710,6 +710,9 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     
     Route::get('/Notifications', [ClientNotificationController::class, 'Notifications'])->name('Notifications'); 
     Route::POST('/set_notifiction_to_seen', [ClientNotificationController::class, 'set_notifiction_to_seen'])->name('set_notifiction_to_seen');
+    
+    // Add to your-assets-Multipal-Favorites 
+    Route::POST('/your-assets-Multipal-Favorites', [User_Assets_Favorites_controller::class, 'Multi_save']);
 
 });
 
