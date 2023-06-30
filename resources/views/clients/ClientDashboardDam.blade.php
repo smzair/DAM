@@ -25,7 +25,7 @@
 		
 		.progress-bar {
 			fill: transparent;
-			stroke: #FFF866;
+			stroke: #FFF300;
 			stroke-width: 10;
 			stroke-dasharray: 283;
 			stroke-dashoffset: 0;
@@ -33,14 +33,14 @@
 		}
 		
 		.progress-bar-filled {
-			stroke: #4CAF50;
-			color: #4CAF50 !important;
+			stroke: #50AB64;
+			color: #50AB64 !important;
 		}
 		
 		.progress-value {
 			font-size: 14px;
 			font-weight: 800;
-			color: #FFF866;
+			color: #FFF300;
 			text-align: center;
 			display: flex;
 			justify-content: center;

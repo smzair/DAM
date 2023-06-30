@@ -15,9 +15,7 @@
 		z-index: 1;
 		width: 620px !important;
 		/* Set the width of the popover */
-		/*top: 455px !important;*/
-  /*      left: 405px !important;*/
-
+		top: auto !important;
 	}
 
 	/* CSS for the popover text */
@@ -31,6 +29,7 @@
 		cursor: pointer;
 		position: relative;
 		display: inline-block;
+		text-decoration: underline !important;
 	}
 
 	.upper-head-style-for-track-hover {
@@ -91,24 +90,39 @@
 	.track-lot-table-marketplace-pri-mode{
 		word-wrap: break-word;
 	}
+	
+	
+	.back-svg-container {
+       display: inline-block;
+       position: relative;
+    }
+    
+    .back-svg-container:hover .svg-rect {
+      fill: #FFFFFF; /* Change the color on hover */
+    }
+    
+    .back-svg-container:hover .svg-path {
+      stroke: #0F0F0F; /* Change the color on hover */
+      }
+      
 </style>
 <div class="row">
 	<div class="col-12">
-		<a class="btn btn-light border-0 back-btn" href="{{ url()->previous() }}" role="button">
-		   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_1463_886)">
-            <path d="M6.05829 15.1167L0.999958 10.0584L6.05829 5.00003M20.0833 10.0584L1.14162 10.0584" stroke="#808080" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-            </g>
-            <defs>
-            <clipPath id="clip0_1463_886">
-            <rect width="20" height="20" fill="#808080"/>
-            </clipPath>
-            </defs>
-            </svg>
-
-			&nbsp; back</a>
+		<a class="btn back-svg-container  back-btn" href="{{ url()->previous() }}" role="button">
+		   <svg class="svg-icon" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect class="svg-rect" width="44" height="44" rx="22" fill="#1A1A1A" />
+              <g class="svg-path" clip-path="url(#clip0_1827_12903)">
+                <path class="svg-path" d="M18.0583 27.1167L13 22.0584L18.0583 17M32.0833 22.0584L13.1416 22.0584" stroke="#808080" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+              <defs>
+                <clipPath id="clip0_1827_12903">
+                  <rect width="20" height="20" fill="white" transform="translate(12 12)" />
+                </clipPath>
+              </defs>
+         </svg>
+        </a>
 	</div>
-	<div class="col-12 d-flex justify-content-between">
+	<div class="col-12 d-flex justify-content-between" style="margin-top:40px;">
 		<div>
 			<p class="brand-name-under-track-table">{{$lot_detail[0]['brand_name']}}</p>
 			<p class="lot-date-sty">
@@ -119,22 +133,33 @@
 			     {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
 			 </p>
 		</div>
+		  <div class="lot-inwrd-vertical-parent-div">
+               <div class="sec-parent-div d-flex">
+                   <div>
+                     <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">Lot No.</p>
+	                 <h2 class="lot-no-sty">  {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
+                   </div>
+                   <span class="border border-dark border-for-track-lot-start"></span>
+                   <div>
+                     <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">Inward quantity</p>
+	                 <h2 class="lot-no-sty">{{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</h2>
+                   </div>
+                   <span class="border border-1 border-dark border-for-track-lot-start"></span>
+                   <div>
+                    <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">Vertical type</p>
+	                <h2 class="lot-no-sty">Shoot Lot</h2>
+                   </div>
+               </div>
+        </div>
 	</div>
 	<div style="color: #9F9F9F;">
 	    <hr style="margin-top:24px; margin-bottom:24px;">
 	</div>
-
+    <div class="col-12">
+        <p class="LOT-STATUS-head-tracklots">LOT STATUS</p>
+    </div>
+    
 	<div class="col-12">
-	   <div class="col-12 d-flex justify-content-between">  
-	      <div>
-	          <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">LOT NO</p>
-	          <h2 class="lot-no-sty">  {{$lot_detail[0] != null ? $lot_detail[0]['lot_number'] : "-"}}</h2>
-	      </div>
-	      <div>
-	          <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">INWARD QUANTITY</p>
-	           <h2 class="lot-no-sty">{{$lot_detail[0] != null ? $lot_detail[0]['inward_quantity'] : "-"}}</h2>
-	      </div>
-	   </div>
 		<div class="row progress-row">
 			<div class="col-lg-1 progress-column-status-percen">
 				<p class="progress-status-head">Status:</p>

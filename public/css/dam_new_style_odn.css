@@ -62,7 +62,6 @@ a.btn.border.rounded-0.view-img:hover {
     font-size: 28px;
     line-height: 36px;
     color: #FFFFFF;
-    margin-top:40px;
     margin-bottom:0px;
 }
 
@@ -134,8 +133,31 @@ a.btn.border.rounded-0.view-img:hover {
   }
 
 
-
 /*svg color changes sidebar end*/
+
+
+.LOT-STATUS-head-tracklots{
+       color: var(--shades-0, #FFF);
+       font-size: 16px;
+        font-family: Poppins;
+        font-weight: 500;
+        line-height: 24px;
+        letter-spacing: 0.15px;
+        margin-bottom:16px;
+        margin-top:40px;
+        text-transform: uppercase;
+  }
+  
+  .sec-parent-div{
+        gap:24px;
+        padding: 16px 32px;
+        background-color: #1A1A1A;
+    }
+    .border-for-track-lot-start{
+      color: #333;
+      height: 30px;
+      margin-top: 10px;
+    }
 
 .services-modal{
     background: #1A1A1A;
@@ -271,7 +293,7 @@ li.breadcrumb-item, ::after {
 
 .accordion-button:not(.collapsed) {
     color: #0F0F0F;
-   background: #FFF866;
+   background: #FFF300;
 }
 
 .accordion-button::after {
@@ -542,13 +564,13 @@ tbody{
 
 
 .lot-no-sty {
-  font-weight: 400;
-  font-size: 22px;
+  font-weight: 600;
+  font-size: 16px;
   color: #FFFFFF;
   /* margin-left: 24px; */
-  margin-top: 8px;
-  margin-bottom:24px;
-  line-height:28px;
+  margin-top: 4px;
+  line-height:24px;
+  margin-bottom: 0px;
 }
 
 .lot-date-sty {
@@ -714,7 +736,7 @@ td.table-column {
 .progress-status-percentage{
     font-weight: 700;
     font-size: 22px;
-    color: #FFF866;
+    color: #FFF300;
     padding-left: 16px;
     margin-top:4px;
 }
