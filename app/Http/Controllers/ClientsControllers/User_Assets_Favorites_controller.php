@@ -10,6 +10,7 @@ use App\Models\Lots;
 use App\Models\LotsCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 class User_Assets_Favorites_controller extends Controller
@@ -122,7 +123,7 @@ class User_Assets_Favorites_controller extends Controller
   }
 
   // Function for save files as as favorites
-  public function save(Request $request)
+  public function save(Request $request , $is_multipal = '')
   {
     $user_id = '';
     $brand_id = '';
@@ -154,6 +155,7 @@ class User_Assets_Favorites_controller extends Controller
       $brand_id = $data['brand_id'] != '' ? base64_decode($data['brand_id']) : '';
     }
 
+    // echo " <br> service => $service , module => $module , lot_id => $lot_id , wrc_id => $wrc_id , brand_id => $brand_id , ";
 
     try {
       $createdBy = Auth::id();
@@ -198,8 +200,9 @@ class User_Assets_Favorites_controller extends Controller
           )->get()->toArray();
           if (count($lot_detail) > 0) {
             $lot_data = $lot_detail[0];
+            $cureent_date = Date::now();
             $response = FavoriteAsset::updateOrCreate(
-              ['service' => $service, 'module' => $module, 'lot_id' => $lot_id],
+              ['service' => $service, 'module' => $module, 'lot_id' => $lot_id , 'wrc_id' => $wrc_id],
               [
                 'user_id' => $lot_data['user_id'],
                 'brand_id' => $lot_data['brand_id'],
@@ -207,6 +210,7 @@ class User_Assets_Favorites_controller extends Controller
                 'wrc_id' => $lot_data['wrc_id'],
                 'module' => $module,
                 'created_by' => $createdBy,
+                'updated_at' => $cureent_date
               ]
             );
             if ($response) {
@@ -547,9 +551,14 @@ class User_Assets_Favorites_controller extends Controller
       );
     }
 
+    // dd($response_data);
+    $response =  json_encode($response_data, true);
 
-
-    echo json_encode($response_data, true);
+    if($is_multipal == 'Multipal'){
+      return $response_data;
+    }else{
+      echo $response;
+    }
   }
 
   // remove_your_assets_Favorites
@@ -573,5 +582,50 @@ class User_Assets_Favorites_controller extends Controller
       );
     }
     echo json_encode($response);
+  }
+
+  // your-assets-Multipal-Favorites
+  public function Multi_save(Request $request)
+  {   
+    $response = array(); 
+    $status = false;
+    $massage = "Somthing went wrong!!";
+    try {
+      $data_array = $request->data;
+      $counter = 0;
+      foreach ($data_array as $key => $value) {
+        $user_id = '';
+        $brand_id = '';
+        $lot_id = '';
+        $wrc_id = '';
+        $service = '';
+        $module = '';
+
+        $data = json_decode($value , true);  
+        $newRequest = new Request(array('data' => $data));
+        $response = $this->save($newRequest , 'Multipal');
+        if($response['status']){
+          $counter += 1;
+        }
+      }
+      if($counter > 0){
+        $status = true;
+        $massage = $counter.' Data successfully added to Favorite!!';
+      }
+      $response_data = array(
+        'status' => $status,
+        'massage' => $massage,
+        'data' => $data_array
+      );
+
+    } catch (\Throwable $th) {
+      // dd($th);
+      $response_data = array(
+        'status' => $status,
+        'massage' => $massage,
+        'errorInfo' => $th
+      );
+    }
+    echo json_encode($response_data , true);
   }
 }
