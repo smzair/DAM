@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\ClientsControllers\ClientCommonController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -142,6 +143,15 @@ class LotsCatalog extends Model
           array_push($market_place_array ,$market_place);
         } 
       }
+      $track_lot_adaptation_svg_data_arr = array();
+
+      $clientCommonController = new ClientCommonController();
+
+      if(count($market_place_array) > 0){
+        $track_lot_adaptation_svg_data_arr = $clientCommonController->track_lot_adaptation_svg_data_arr($market_place_array);
+      }
+      $wrc_detail[$key]['track_lot_adaptation_svg_data_arr'] = $track_lot_adaptation_svg_data_arr;
+
       $wrc_detail[$key]['market_place_array'] = $market_place_array;
       $modeOfDelivary = $wrc_row['modeOfDelivary'];
       if (array_key_exists($modeOfDelivary, $modeOfDelivary_arr)) {
