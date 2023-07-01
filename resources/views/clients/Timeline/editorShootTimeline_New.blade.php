@@ -346,9 +346,22 @@
 											</p>
 										</div>
 										<div class="col-12 d-flex ps-3 text-start">
-											@foreach ($wrc_row['adaptation'] as $item)
+											{{-- @foreach ($wrc_row['adaptation'] as $item)
+												
 												<p class="track-lot-adaptation-under">{{$item}}</p> &nbsp;&nbsp;&nbsp;&nbsp;
-											@endforeach
+											@endforeach --}}
+											<div class="adap-div-forAdaption">
+												<div class="adap-div-forAdaption-content">
+													<div class="AdaptLogo-section icon-container my-carousel owl-carousel">
+														@foreach ($wrc_row['track_lot_adaptation_svg_data_arr'] as $adaptation_key =>  $adaptation_svg)
+															<span class="item" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{{$adaptation_key}}">
+																<?php echo $adaptation_svg;?>
+															</span>
+														@endforeach
+						
+													</div>
+												</div>
+											</div>
 											{{-- <p class="track-lot-adaptation-under">Myntra_premium</p> &nbsp;&nbsp;&nbsp; &nbsp; --}}
 										</div>
 									</div>
@@ -483,5 +496,11 @@
         }
       }
     </script>
+
+{{-- tooltip --}}
+	<script>
+		const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+	</script>	
 
 @endsection

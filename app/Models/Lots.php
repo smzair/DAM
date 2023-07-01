@@ -184,12 +184,15 @@ class Lots extends Model {
 
                 // Setting Svg into addaption
                 $adaptation_svg_data_arr = array();
+                $track_lot_adaptation_svg_data_arr = array();
 
                 $clientCommonController = new ClientCommonController();
                 if(count($adaptation_arr) > 0){
                     $adaptation_svg_data_arr = $clientCommonController->adaptation_svg_data_arr($adaptation_arr);
+                    $track_lot_adaptation_svg_data_arr = $clientCommonController->track_lot_adaptation_svg_data_arr($adaptation_arr);
                 }
                 $wrc_info[$key]['adaptation_svg_data_arr'] = $adaptation_svg_data_arr;
+                $wrc_info[$key]['track_lot_adaptation_svg_data_arr'] = $track_lot_adaptation_svg_data_arr;
                 $wrc_info[$key]['adaptation'] = $adaptation_arr;
                 
                 $lot_detail[0]['inward_quantity'] = $tot_sku_count;
