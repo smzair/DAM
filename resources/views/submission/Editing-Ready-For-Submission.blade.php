@@ -153,6 +153,7 @@ Editing -Ready for Submission
                             @foreach($Editing_Wrc_list_ready_for_Submission as $row)
                                 @php
                                     $wrc_id = $row['wrc_id'];
+                                    $proforma_item = $row['proforma_item'];
                                     $btn_disable = "disabled";
                                     $reworkbtn_disable = "";
                                     $submit_check_disable = "disabled"; // checked 
@@ -210,6 +211,7 @@ Editing -Ready for Submission
                                         <div class="d-inline-block mt-1">
                                             <p class="d-none" id="data_id_{{ $wrc_id }}" 
                                             data-wrc_id="{{ $wrc_id }}" 
+                                            data-proforma_item="{{ $proforma_item }}" 
                                             data-company="{{ $company }}"  
                                             data-brands_name="{{ $brands_name }}"  
                                             data-lot_number="{{ $lot_number }}"  
@@ -309,6 +311,11 @@ Editing -Ready for Submission
                         <div id="msg_div" style="display: none;">
                             <p class="msg_box" id="msg_box"></p>
                         </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <button id="raise_btn" data-proforma_item="" data-wrc_id=""  onclick="Raise(this)"> RAISE FOR INVOICE </button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -365,6 +372,14 @@ Editing -Ready for Submission
         
         document.getElementById('editor_allocation_ids').value = editor_allocation_ids
         document.getElementById('wrc_id').value = val
+
+        const proforma_item = $("#"+data_id).data("proforma_item")
+        var element = document.getElementById("raise_btn");
+        element.setAttribute("data-proforma_item", proforma_item);
+        element.setAttribute("data-wrc_id", wrc_id);
+        
+        console.log('element', element)
+        console.log('proforma_item', proforma_item)
 
         const wrc_number = $("#"+data_id).data("wrc_number")
         const brand_name = $("#"+data_id).data("brands_name")
@@ -489,6 +504,34 @@ Editing -Ready for Submission
             $("#msg_div").css("display", "none");
             $('#msg_box').html("");
         }, 3000);
+    }
+</script>
+
+<!-- Raise script -->
+<script>
+    async function Raise(obj) {
+        var wrc_id = $(obj).data('wrc_id');
+        var pt = $(obj).data('proforma_item');
+        var ser = '4';
+        var headers = {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        await $.ajax({
+            url: "{{ url('raise-for-inovice')}}",
+            type: "POST",
+            dataType: 'html',
+            data: {
+                wrc_id: wrc_id, 
+                pt:pt,
+                ser:ser,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(htmlData) {
+                console.log('htmlData', htmlData)
+                window.location.reload();
+            }
+        });
+      
     }
 </script>
 @endsection

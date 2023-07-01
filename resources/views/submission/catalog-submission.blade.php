@@ -211,6 +211,7 @@ Catalogue - Submission
                                 $modeofdelivary_is = $modeOfDelivary_arr[$modeOfDelivary];
                                 $kind_of_work = $row['kind_of_work']; 
                                 $market_place = $row['market_place'];
+                                $proforma_item = $row['proforma_item'];
 
 
                                 $alloacte_to_copy_writer = $row['alloacte_to_copy_writer']; 
@@ -242,6 +243,7 @@ Catalogue - Submission
 
                                         <p class="d-none" id="data_id_{{ $wrc_id }}" 
                                         data-wrc_id="{{ $wrc_id }}" 
+                                        data-proforma_item="{{ $proforma_item }}" 
                                         data-batch_no="{{ $batch_no }}" 
                                         data-company="{{ $company }}"  
                                         data-brands_name="{{ $brands_name }}"  
@@ -451,6 +453,11 @@ Catalogue - Submission
                             <p class="msg_box" id="msg_box"></p>
                         </div>
                     </form>
+                    <div class="row">
+                        <div class="col-12">
+                            <button id="raise_btn" data-proforma_item="" data-wrc_id=""  onclick="Raise(this)"> RAISE FOR INVOICE </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -514,6 +521,14 @@ Catalogue - Submission
         document.getElementById('catalog_allocation_ids').value = catalog_allocation_ids
         document.getElementById('wrc_id').value = val
         document.getElementById('batch_no').value = batch_no
+        
+        const proforma_item = $("#"+data_id).data("proforma_item")
+        var element = document.getElementById("raise_btn");
+        element.setAttribute("data-proforma_item", proforma_item);
+        element.setAttribute("data-wrc_id", wrc_id);
+        
+        console.log('element', element)
+        console.log('proforma_item', proforma_item)
 
         const wrc_number = $("#"+data_id).data("wrc_number")
         const modeofdelivary_is = $("#"+data_id).data("modeofdelivary_is")
@@ -540,6 +555,8 @@ Catalogue - Submission
         const copy_links_arr = copy_links.split(',')
         const user_roles_arr = user_roles.split(',')
         const allocated_users_arr = allocated_users_name.split(',')
+
+        
 
         document.getElementById("wrc_number").innerHTML = wrc_number;
         document.getElementById("brand_name").innerHTML = brand_name;
@@ -757,6 +774,44 @@ Catalogue - Submission
             $("#msg_div").css("display", "none");
             $('#msg_box').html("");
         }, 3000);
+    }
+</script>
+
+<!-- Raise script -->
+<script>
+    async function Raise(obj) {
+        var wrc_id = $(obj).data('wrc_id');
+        var pt = $(obj).data('proforma_item');
+        var ser = '3';
+        var headers = {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+        await $.ajax({
+            url: "{{ url('raise-for-inovice')}}",
+            type: "POST",
+            dataType: 'html',
+            data: {
+                wrc_id: wrc_id, 
+                pt:pt,
+                ser:ser,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(htmlData) {
+                console.log('htmlData', htmlData)
+                window.location.reload();
+            }
+        });
+
+        // $.ajax({
+        //     headers: headers,
+        //     url: "/raise-for-inovice",
+        //     method: 'POST',
+        //     dataType: "html",
+        //     data: {wrc_id: wrc_id, pt:pt,ser:ser},
+        //     success: function (htmlData) {
+        //       window.location.reload();
+        //     }
+        // });
     }
 </script>
 @endsection

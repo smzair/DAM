@@ -24,7 +24,7 @@ class CatalogSubmissionController extends Controller
         $batch_no = $request->batch_no;
         $catalog_allocation_ids = $request->catalog_allocation_ids;
         $submission_date = date('Y-m-d');
-        echo $responce = CatalogSubmission::comp_submission($wrc_id, $batch_no , $submission_date, $catalog_allocation_ids);
+        echo $responce = CatalogSubmission::comp_submission($wrc_id,$batch_no,$submission_date,$catalog_allocation_ids);
 
     }
 

@@ -33,6 +33,7 @@ class EditingSubmission extends Model
             'editing_wrcs.wrc_number',
             'editing_wrcs.commercial_id',
             'editing_wrcs.imgQty',
+            'editing_wrcs.proforma_item',
             'editing_wrcs.uploaded_img_qty',
             'editing_wrcs.imgQty as wrc_t_sku_qty',
             'editor_lots.brand_id',
@@ -53,7 +54,7 @@ class EditingSubmission extends Model
             DB::raw('COUNT(editing_allocations.user_role) as cnt_user_role'),
             DB::raw('GROUP_CONCAT(editing_upload_links.final_link) as final_link_list'),
             DB::raw('GROUP_CONCAT(allocated_users.id) as allo_users_id'),
-            DB::raw('GROUP_CONCAT(allocated_users.name) as allocated_users_name'),
+            DB::raw('GROUP_CONCAT(allocated_users.name) as allocated_users_name')
         )->
         havingRaw("editor_allocated_qty > 0 AND editor_allocated_qty = uploaded_img_qty")->
         groupBy(['editing_allocations.wrc_id'])->
@@ -168,7 +169,7 @@ class EditingSubmission extends Model
             'editing_wrcs.imgQty as imgqty',
             'editing_wrcs.lot_id',
             'editing_wrcs.invoice_number',
-            'editing_wrcs.created_at as wrc_created_at',
+            'editing_wrcs.created_at as wrc_created_at'
         )->
         orderBy('editing_submissions.updated_at')->get()->toArray();
         return $Editing_Wrc_list_for_Invoice;

@@ -51,6 +51,7 @@ class CatalogSubmission extends Model
             'catlog_wrc.sku_qty as wrc_t_sku_qty',
             'catlog_wrc.work_brief',
             'catlog_wrc.modeOfDelivary',
+            'catlog_wrc.proforma_item',
             'lots_catalog.brand_id',
             'lots_catalog.lot_number',
             'lots_catalog.serviceType as kind_of_work',
