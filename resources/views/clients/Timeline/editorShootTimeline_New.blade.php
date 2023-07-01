@@ -106,6 +106,20 @@
       }
       
 </style>
+
+{{-- download-all-assets Style --}}
+<style>
+	.last-btn-div .download-all-assets{
+		background: #FFF300 !important;
+		color: #0F0F0F !important;
+		padding: 15px 20px !important;
+	}
+	.last-btn-div .download-all-assets:hover{
+		background: #FFF300 !important;
+		color: #0F0F0F !important;
+		padding: 15px 20px !important;
+	}
+</style>
 <div class="row">
 	<div class="col-12">
 		<a class="btn back-svg-container  back-btn" href="{{ url()->previous() }}" role="button">
@@ -383,18 +397,19 @@
 							</td>
 							{{-- <td class="table-column">-</td> --}}
 							<td class="table-column" style="text-align: center;">
-								<a class="{{$diables_img_download}}" href="{{route('download_Shoot_lot_Edited_wrc' , [ base64_encode($wrc_row['wrc_id']) ] )}}"  >
-									@if ($wrc_row['submission_status'] == 'Done')
+								@if ($wrc_row['submission_status'] == 'Done')
+									<a class="{{$diables_img_download}}" href="{{route('download_Shoot_lot_Edited_wrc' , [ base64_encode($wrc_row['wrc_id']) ] )}}"  >
 										<svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M14 2C7.652 2 2.5 7.152 2.5 13.5C2.5 19.848 7.652 25 14 25C20.348 25 25.5 19.848 25.5 13.5C25.5 7.152 20.348 2 14 2ZM18.0595 14.6845L14.6095 18.1345C14.437 18.307 14.2185 18.3875 14 18.3875C13.7815 18.3875 13.563 18.307 13.3905 18.1345L9.9405 14.6845C9.7801 14.5222 9.69014 14.3032 9.69014 14.075C9.69014 13.8468 9.7801 13.6278 9.9405 13.4655C10.274 13.132 10.826 13.132 11.1595 13.4655L13.1375 15.4435V9.475C13.1375 9.0035 13.5285 8.6125 14 8.6125C14.4715 8.6125 14.8625 9.0035 14.8625 9.475V15.4435L16.8405 13.4655C17.174 13.132 17.726 13.132 18.0595 13.4655C18.393 13.799 18.393 14.351 18.0595 14.6845Z" fill="white"/>
 										</svg>
+									</a>
+
 									@else
-										<svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+										{{-- <svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M14 9.5625V16.3125M14 24.75C20.2134 24.75 25.25 19.7134 25.25 13.5C25.25 7.28663 20.2134 2.25 14 2.25C7.78663 2.25 2.75 7.28663 2.75 13.5C2.75 19.7134 7.78663 24.75 14 24.75Z" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 											<path d="M10.625 14.0625L14 17.4375L17.375 14.0625" stroke="#4D4D4D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-										</svg>
+										</svg> --}}
 									@endif
-								</a>
 							</td>
 						</tr>
 					@endforeach
@@ -408,8 +423,23 @@
 		</table>
 	</div>
 	<div class="col-12 d-flex justify-content-between last-btn-div">
+		<div class="download-invoice">
+			<div class="d-none">
+				<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<g clip-path="url(#clip0_1270_842)">
+					<path d="M9.99984 7.08317V12.0832M9.99984 18.3332C14.6023 18.3332 18.3332 14.6023 18.3332 9.99984C18.3332 5.39734 14.6023 1.6665 9.99984 1.6665C5.39734 1.6665 1.6665 5.39734 1.6665 9.99984C1.6665 14.6023 5.39734 18.3332 9.99984 18.3332Z" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="M7.5 10.4165L10 12.9165L12.5 10.4165" fill="#98A7DA"/>
+					<path d="M7.5 10.4165L10 12.9165L12.5 10.4165" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					</g>
+					<defs>
+					<clipPath id="clip0_1270_842">
+					<rect width="20" height="20" fill="white"/>
+					</clipPath>
+					</defs>
+					</svg>&nbsp; <a href="" class="download-invoice"> Download Invoices</a>
+			</div>
+		</div> 
 		<div class="d-flex last-button-mar">
-
 			<?php 
 				$lot_status_is = $lot_detail[0]['lot_status'];
 				$img_download = "";
@@ -417,24 +447,26 @@
 					$img_download = "diables_img_download";
 				}
 				?>
-			<a href="{{route('download_Shoot_Lot_edited', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn {{$img_download}}">Download images</a>&nbsp;&nbsp;&nbsp;
-			<a href="{{route('download_Shoot_Lot_raw', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn {{$img_download}}">Download raw</a>&nbsp;&nbsp;&nbsp;
+
+				@if ($lot_status_is == 'Submission Done')
+					<a href="{{route('download_Shoot_Lot_edited', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn download-all-assets {{$img_download}}">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<g clip-path="url(#clip0_2311_15276)">
+							<path d="M9.99984 7.08332V12.0833M9.99984 18.3333C14.6023 18.3333 18.3332 14.6025 18.3332 9.99999C18.3332 5.39749 14.6023 1.66666 9.99984 1.66666C5.39734 1.66666 1.6665 5.39749 1.6665 9.99999C1.6665 14.6025 5.39734 18.3333 9.99984 18.3333Z" stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M7.5 10.4167L10 12.9167L12.5 10.4167" stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</g>
+							<defs>
+							<clipPath id="clip0_2311_15276">
+							<rect width="20" height="20" fill="white"/>
+							</clipPath>
+							</defs>
+							</svg>&nbsp;&nbsp;&nbsp;
+						Download all assets
+					</a>
+				@endif
+			{{-- <a href="{{route('download_Shoot_Lot_raw', ['id' => $lot_detail[0]['id']])}}" type="button" class="btn btn-lg last-button download-img-raw-btn {{$img_download}}">Download raw</a>&nbsp;&nbsp;&nbsp; --}}
 		</div>
-	{{--	<div class="download-invoice">
-			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_1270_842)">
-                <path d="M9.99984 7.08317V12.0832M9.99984 18.3332C14.6023 18.3332 18.3332 14.6023 18.3332 9.99984C18.3332 5.39734 14.6023 1.6665 9.99984 1.6665C5.39734 1.6665 1.6665 5.39734 1.6665 9.99984C1.6665 14.6023 5.39734 18.3332 9.99984 18.3332Z" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" fill="#98A7DA"/>
-                <path d="M7.5 10.4165L10 12.9165L12.5 10.4165" stroke="#98A7DA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </g>
-                <defs>
-                <clipPath id="clip0_1270_842">
-                <rect width="20" height="20" fill="white"/>
-                </clipPath>
-                </defs>
-                </svg>
-			&nbsp; <a href="#" class="download-invoice"> Download Invoices</a>
-		</div>  --}}
+		
 	</div>
 </div>
 
