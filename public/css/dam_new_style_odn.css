@@ -38,7 +38,7 @@ body {
 }
 
 a.btn.border.rounded-0.btn-secondary:hover {
-   background: #FFF866;
+   background: #FFF300;
    color: #0F0F0F;
    border: 1px solid #1A1A1A !important;
 }
@@ -52,7 +52,7 @@ a.btn.btn-light.border-0.back-btn:hover {
 }
 
 a.btn.border.rounded-0.view-img:hover {
-    background: #FFF866;
+    background: #FFF300;
     color: #0F0F0F;
     border: 1px solid #1A1A1A!important;
 }
@@ -90,9 +90,6 @@ a.btn.border.rounded-0.view-img:hover {
     font-size: 24px;
 }
 
-.sort-by-button.active{
-    color
-}
 
 .sort-by-button{
     font-weight: 500;
@@ -100,13 +97,18 @@ a.btn.border.rounded-0.view-img:hover {
     line-height: 20px;
     color: #808080;
     border: 1px solid #333333;
+    padding:16px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
 }
 
 .dropdown-menu-show-sortby{
     background: #0F0F0F;
     box-shadow: 4px 16px 40px rgba(255, 255, 255, 0.06);
     border-radius:0px;
-    border:2px solid #333333;
+    border: 1px solid #333333;
+    padding: 1px;
 }
 
 .dropdown-menu-show-sortby-item{
@@ -127,7 +129,7 @@ a.btn.border.rounded-0.view-img:hover {
   }
   
   .download-img-raw-btn:hover{
-      background: #FFF866 !important;
+      background: #FFF300 !important;
       color: #0F0F0F !important;
       border: 1px solid #0F0F0F!important;
   }
@@ -264,13 +266,14 @@ a.btn.border.rounded-0.view-img:hover {
 .status{
     color: #FFFFFF;
     margin-bottom:0px;
-    margin-top:8px;
+    margin-top:4px;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-   color: #0F0F0F;
-   background: #FFF866 !important;
-   box-shadow: 0px 0px 40px rgba(255, 248, 102, 0.2);
+   color: #FFFFFF;
+   background: #1A1A1A !important;
+   border-radius:0px;
+   text-align:left;
 }
 
 
@@ -343,7 +346,11 @@ li.breadcrumb-item, ::after {
 
 
 .nav-pills .nav-item {
-    width: 25%;
+    width: 100%;
+}
+.nav-fill .nav-item .nav-link, .nav-justified .nav-item .nav-link {
+    width: 100%;
+    text-align: left;
 }
 
 button.test.myButton {
@@ -360,7 +367,7 @@ button.test.myButton:hover{
 
 ul#pills-tab {
     width: 100%;
-    padding: 16px 16px 0px 16px;
+    padding: 16px 16px 16px 16px;
 }
 
 .tab-button {
@@ -437,6 +444,7 @@ tbody{
   font-size: 16px;
   color: #808080;
   margin-bottom: 0px;
+  margin-top: 12px;
 }
 
 .totallotF {
@@ -829,10 +837,12 @@ td.table-column {
   left: 0;
   width: 100%;
   background: #0F0F0F;
+  padding: 24px 24px 20px 24px;
 }
 .nav-searchbar{
       width:33%;
 }
+
 
 .sidebar-row-where-content{
     padding:24px;
@@ -1052,12 +1062,12 @@ td.table-column {
 }
 
 button.btn.btn-lg.border.profile-btn:hover{
-    background: #FFF866;
+    background: #FFF300;
     color: #0F0F0F; 
 }
 
 a.btn.btn-lg.border.profile-btn:hover{
-     background: #FFF866;
+     background: #FFF300;
     color: #0F0F0F; 
 }
 
@@ -1075,7 +1085,7 @@ button#picDeleteBTN:hover {
 }
 
 button.btn.border.rounded-0.user-btn:hover {
-    background: #FFF866;
+    background: #FFF300;
     color: #0F0F0F;
 }
 .form-floating input:not(:placeholder-shown)~label, .form-floating textarea:not(:placeholder-shown)~label {

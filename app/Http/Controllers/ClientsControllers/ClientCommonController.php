@@ -1129,6 +1129,7 @@ class ClientCommonController extends Controller
        
         case 'Brandsite':
         case 'Brand-Site':
+        case 'Brand Site':
           $svg_is = '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="20" fill="#1A1A1A"/>
           <path d="M20 32C26.6276 32 32 26.6276 32 20C32 13.3724 26.6276 8 20 8C13.3724 8 8 13.3724 8 20C8 26.6276 13.3724 32 20 32Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1160,10 +1161,10 @@ class ClientCommonController extends Controller
        
         default:
           $svg_is = '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 24C19.9707 24 24 19.9707 24 15C24 10.0293 19.9707 6 15 6C10.0293 6 6 10.0293 6 15C6 19.9707 10.0293 24 15 24Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M11.5042 6.8999H12.3781C10.674 12.1573 10.674 17.8425 12.3781 23.0999H11.5042M17.6219 6.8999C19.326 12.1573 19.326 17.8425 17.6219 23.0999" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M6.9 18.4959V17.622C12.1574 19.3261 17.8426 19.3261 23.1 17.622V18.4959M6.9 12.3782C12.1574 10.6741 17.8426 10.6741 23.1 12.3782" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            <rect x="0.5" y="0.5" width="40" height="40" rx="20" stroke="#4D4D4D" />
+          <rect width="40" height="40" rx="20" fill="#1A1A1A"/>
+          <path d="M20 32C26.6276 32 32 26.6276 32 20C32 13.3724 26.6276 8 20 8C13.3724 8 8 13.3724 8 20C8 26.6276 13.3724 32 20 32Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M15.3387 9.19995H16.504C14.2317 16.2098 14.2317 23.7901 16.504 30.8H15.3387M23.4956 9.19995C25.7679 16.2098 25.7679 23.7901 23.4956 30.8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9.2002 24.6611V23.4959C16.2101 25.7681 23.7903 25.7681 30.8002 23.4959V24.6611M9.2002 16.5042C16.2101 14.232 23.7903 14.232 30.8002 16.5042" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>';
           break;
       }
