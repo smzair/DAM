@@ -237,6 +237,8 @@
 			$get_active_url_data = get_active_url_data();
 			$active_tab = $get_active_url_data['active_tab'];
 			$active_link = $get_active_url_data['active_link'];
+			echo "routeName => ".$routeName = $get_active_url_data['routeName'];
+			// dd($get_active_url_data);
 
     ?>
 
@@ -439,10 +441,14 @@
 							<div id="flush-collapseTwo" class="accordion-collapse collapse {{$active_tab == 2 ? 'show' : ''}}" aria-labelledby="flush-headingTwo"
               data-bs-parent="#accordionFlushExample">
 								<div class="accordion-body">
-									<a href="{{route('your_assets_files')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'your_assets_files' ? 'active' : ''}}"
-										style="width: 100%;">File</a>
-									<a href="{{route('your_assets_Links')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'your_assets_Links' ? 'active' : ''}}"
-										style="width: 100%;">Links</a>
+									<a href="{{route('your_assets_files' , ['service' => 'Shoot'])}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'Shoot_lot' ? 'active' : ''}}"
+										style="width: 100%;">Shoot Lots</a>
+									<a href="{{route('your_assets_files' , ['service' => 'PostProduction'])}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'PostProduction_lots' ? 'active' : ''}}"
+										style="width: 100%;">Post-production Lots</a>
+									<a href="{{route('your_assets_Links' , ['service' => 'Creative'])}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'Creative_lots' ? 'active' : ''}}"
+										style="width: 100%;">Creative Lots</a>
+									<a href="{{route('your_assets_Links' , ['service' => 'Listing'])}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'Listing_lots' ? 'active' : ''}}"
+										style="width: 100%;">Listing Lots</a>
 									<a href="{{route('your_assets_Favorites')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'your_assets_Favorites' ? 'active' : ''}}"
 										style="width: 100%;">Favorites</a>
 								</div>

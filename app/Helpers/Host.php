@@ -1138,11 +1138,11 @@ if (!function_exists('get_active_url_data')) {
     $active_link = "";
     $routeName = Route::currentRouteName();
     $currentUrl = url()->current();
+    $url_arr = explode('/', $currentUrl);
 
 
     if (in_array($routeName, $track_lots_routes)) {
       $active_tab = 1;
-      $url_arr = explode('/', $currentUrl);
       // $url_is = $url_arr[count($url_arr)-1];
       $lot_status_arr = ['active', 'completed'];
       $url_is = '';
@@ -1161,14 +1161,52 @@ if (!function_exists('get_active_url_data')) {
       $active_tab = 2;
       switch ($routeName) {
         case 'your_assets_files':
-          $active_link = "your_assets_files";
+          $url_is = 'Shoot';
+          $lot_status_arr = ['Shoot', 'PostProduction'];
+          // dd($lot_status_arr , $url_arr);
+          foreach ($lot_status_arr as $key => $lot_status_is) {
+            if (in_array($lot_status_is, $url_arr)) {
+              $url_is = $lot_status_is;
+            }
+          }
+
+          if ($url_is == 'Shoot') {
+            $active_link = "Shoot_lot";
+          } else if ($url_is == 'PostProduction') {
+            $active_link = "PostProduction_lots";
+          }
+          // $active_link = "your_assets_files";
           break;
 
+        case 'your_assets_shoot_wrcs':
+        case 'your_assets_shoot_skus':
+        case 'your_assets_shoot_adaptation_skus':
+        case 'your_assets_shoot_edited_images':
+          $active_link = "Shoot_lot";
+          break;
+          
+        case 'your_assets_editing_wrcs':
+        case 'your_assets_files_editing_uploaded_images':
+          $active_link = "PostProduction_lots";
+          break;
+          
         case 'your_assets_Links':
         case 'your_assets_creative_wrcs_links':
         case 'your_assets_cataloging_wrcs_links':
-          $active_link = "your_assets_Links";
-          break;
+          $url_is = 'Shoot';
+          $lot_status_arr = ['Creative', 'Listing'];
+          foreach ($lot_status_arr as $key => $lot_status_is) {
+            if (in_array($lot_status_is, $url_arr)) {
+              $url_is = $lot_status_is;
+            }
+          }
+
+          if ($url_is == 'Creative' || $routeName == 'your_assets_creative_wrcs_links') {
+            $active_link = "Creative_lots";
+          } else if ($url_is == 'Listing' || $routeName == 'your_assets_cataloging_wrcs_links') {
+            $active_link = "Listing_lots";
+          }
+          break;         
         case 'your_assets_Favorites':
           $active_link = "your_assets_Favorites";
           break;
@@ -1194,6 +1232,7 @@ if (!function_exists('get_active_url_data')) {
     $get_active_url_data = array(
       'active_tab' => $active_tab,
       'routeName' => $routeName,
+      'your_assets_routes' => $your_assets_routes,
       'currentUrl' => $currentUrl,
       'active_link' => $active_link
     );
