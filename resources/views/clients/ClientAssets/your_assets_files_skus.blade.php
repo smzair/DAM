@@ -28,32 +28,6 @@
 			</nav>
 		</div>
 		@if (count($wrc_data['adaptation']) > 0 || count($raw_skus) > 0)
-			<div class="col-lg-12 d-flex services-modal" style="margin-top:40px">
-				<ul class="nav nav-pills mb-3 nav-fill" id="pills-tab" role="tablist">
-					{{-- Edited Images --}}
-					@if (count($wrc_data['adaptation']) > 0)
-						<li class="nav-item" role="presentation">
-							<button class="nav-link active btn-lg editedandraw-img-btn" id="pills-home-tab" data-bs-toggle="pill"
-								data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-								aria-selected="true">
-								Edited Images
-							</button>
-						</li>
-					@endif
-
-					{{-- Raw images --}}
-					@if (count($raw_skus) > 0)
-						<li class="nav-item" role="presentation">
-							<button class="nav-link btn-lg editedandraw-img-btn" id="pills-profile-tab" data-bs-toggle="pill"
-								data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-								aria-selected="false">
-								Raw images
-							</button>
-						</li>
-					@endif
-
-				</ul>
-			</div>
 			
 			<div class="row">
 				<div class="tab-content" id="pills-tabContent">
@@ -198,7 +172,7 @@
 						// dd($raw_skus);
 					@endphp
 					@if (count($raw_skus) > 0)
-						<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
+						<div class="tab-pane fade d-none" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
 							tabindex="0">
 							<div class="col-12" style="margin-top: 40px;">
 								<p style="font-weight: 500;font-size: 12px;color: #FFFFFF;margin-bottom:0px;">Total Skus : {{count($raw_skus)}} </p>

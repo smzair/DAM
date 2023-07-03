@@ -683,7 +683,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::Post('/gloableSearchNew', [ClientCommonController::class, 'gloableSearchNew'])->name('gloableSearchNew');
     Route::get('/gloableSearchNew', [ClientCommonController::class, 'gloableSearchNew']);
 
-    Route::get('/your-assets-Files/{sortBy?}', [User_Assets_Controller::class, 'your_assets_files'])->name('your_assets_files');
+    Route::get('/your-assets-Files/{service?}/{sortBy?}', [User_Assets_Controller::class, 'your_assets_files'])->name('your_assets_files');
     Route::get('/your-assets-shoot-wrcs/{id}', [User_Assets_Controller::class, 'your_assets_shoot_wrcs'])->name('your_assets_shoot_wrcs');
     Route::get('/your-assets-editing-wrcs/{id}', [User_Assets_Controller::class, 'your_assets_editing_wrcs'])->name('your_assets_editing_wrcs');
     Route::get('/your-assets-shoot-skus/{id}', [User_Assets_Controller::class, 'your_assets_shoot_skus'])->name('your_assets_shoot_skus');
@@ -699,7 +699,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     Route::post('/verify-otp', [ClientCommonController::class, 'verifyOtp'])->name('verifyOtp'); 
     
     // Your assets Links 
-    Route::get('/your-assets-Links-Lots/{sortBy?}', [User_Assets_links_controller::class, 'index'])->name('your_assets_Links');
+    Route::get('/your-assets-Links-Lots/{service?}/{sortBy?}', [User_Assets_links_controller::class, 'index'])->name('your_assets_Links');
     Route::get('/your-assets-Links-creative/{lot_id}', [User_Assets_links_controller::class, 'your_assets_creative_wrcs_links'])->name('your_assets_creative_wrcs_links');
     Route::get('/your-assets-Links-cataloging/{lot_id}', [User_Assets_links_controller::class, 'your_assets_cataloging_wrcs_links'])->name('your_assets_cataloging_wrcs_links');
     Route::get('/Admin-control-Uploaded-file-list-New', [AdminControlController::class, 'ClientAdminControlUploadedFileList'])->name('ClientAdminControlUploadedFileList');

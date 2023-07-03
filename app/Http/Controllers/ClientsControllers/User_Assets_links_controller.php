@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 class User_Assets_links_controller extends Controller
 {
 
-	public function index($sortBy = 'latest')
+	public function index($service = 'Creative' , $sortBy = 'latest')
 	{
 		$parent_client_id = $user_id = Auth::id();
 		if (Auth::user()->dam_enable != 1) {
@@ -50,93 +50,106 @@ class User_Assets_links_controller extends Controller
       $sortByIs = 'DESC';
     }
 
+		if($service == 'Listing'){
+      $service_is = 'Listing';
+    }else{
+      $service_is = 'Creative';
+    }
+
 		// creative Lots Data.
-		$lots_query = CreatLots::leftjoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->whereIn('creative_lots.brand_id', $brand_arr);
-		$lots_query = $lots_query->select(
-			'creative_wrc.lot_id',
-			DB::raw('CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END AS inward_quantity'),
-			DB::raw('SUM(CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END) AS inward_qty'),
-			DB::raw('GROUP_CONCAT(creative_wrc.id) as wrc_ids'),
-			DB::raw('GROUP_CONCAT(creative_wrc.sku_required) as sku_requireds'),
-			DB::raw('GROUP_CONCAT(CONCAT(" ",`creative_wrc`.`wrc_number`)) as wrc_numbers'),
-			'creative_lots.id',
-			'creative_lots.user_id',
-			'creative_lots.brand_id',
-			'creative_lots.lot_number',
-			'creative_lots.created_at as lot_created_at'
-		)->where('user_id', $parent_client_id);
-		$lots = $lots_query->groupBy('creative_lots.id')->orderBy('creative_lots.created_at', $sortByIs);
-		$lots = $lots_query->get()->toArray();
-
-		$creative_lots = array();
-		foreach ($lots as $key => $row) {
-			$wrc_ids = $row['wrc_ids'];
-			$sku_requireds = $row['sku_requireds'];
-			$wrc_ids = $row['wrc_ids'];
-			$submission_date = "";
-			if($wrc_ids != '' && $wrc_ids != null){
-				$wrc_id_arr = explode(',',$wrc_ids);
-
-				$creative_wrc_batch_query = CreativeWrcBatch::wherein('wrc_id', $wrc_id_arr)->orderbydesc('created_at');
-				$creative_wrc_batch_count = $creative_wrc_batch_query->count();
-				
-				$creative_submissions_query = CreativeSubmission::wherein('wrc_id', $wrc_id_arr)->orderbydesc('created_at');
-				$creative_submissions_count = $creative_submissions_query->count();
-				
-				if($creative_wrc_batch_count == $creative_submissions_count && $creative_wrc_batch_count > 0){
-					if($creative_submissions_count > 0){
-						$creative_submissions = $creative_submissions_query->first()->toArray();
-						$submission_date = $creative_submissions['submission_date'];
+		$creative_lots = [];
+		if($service_is == 'Creative'){
+			$lots_query = CreatLots::leftjoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->whereIn('creative_lots.brand_id', $brand_arr);
+			$lots_query = $lots_query->select(
+				'creative_wrc.lot_id',
+				DB::raw('CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END AS inward_quantity'),
+				DB::raw('SUM(CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END) AS inward_qty'),
+				DB::raw('GROUP_CONCAT(creative_wrc.id) as wrc_ids'),
+				DB::raw('GROUP_CONCAT(creative_wrc.sku_required) as sku_requireds'),
+				DB::raw('GROUP_CONCAT(CONCAT(" ",`creative_wrc`.`wrc_number`)) as wrc_numbers'),
+				'creative_lots.id',
+				'creative_lots.user_id',
+				'creative_lots.brand_id',
+				'creative_lots.lot_number',
+				'creative_lots.created_at as lot_created_at'
+			)->where('user_id', $parent_client_id);
+			$lots = $lots_query->groupBy('creative_lots.id')->orderBy('creative_lots.created_at', $sortByIs);
+			$lots = $lots_query->get()->toArray();
+	
+			$creative_lots = array();
+			foreach ($lots as $key => $row) {
+				$wrc_ids = $row['wrc_ids'];
+				$sku_requireds = $row['sku_requireds'];
+				$wrc_ids = $row['wrc_ids'];
+				$submission_date = "";
+				if($wrc_ids != '' && $wrc_ids != null){
+					$wrc_id_arr = explode(',',$wrc_ids);
+	
+					$creative_wrc_batch_query = CreativeWrcBatch::wherein('wrc_id', $wrc_id_arr)->orderbydesc('created_at');
+					$creative_wrc_batch_count = $creative_wrc_batch_query->count();
+					
+					$creative_submissions_query = CreativeSubmission::wherein('wrc_id', $wrc_id_arr)->orderbydesc('created_at');
+					$creative_submissions_count = $creative_submissions_query->count();
+					
+					if($creative_wrc_batch_count == $creative_submissions_count && $creative_wrc_batch_count > 0){
+						if($creative_submissions_count > 0){
+							$creative_submissions = $creative_submissions_query->first()->toArray();
+							$submission_date = $creative_submissions['submission_date'];
+						}
 					}
 				}
+				$lots[$key]['submission_date'] = $submission_date;
 			}
-			$lots[$key]['submission_date'] = $submission_date;
+	
+			$creative_lots = $lots;
 		}
-
-		$creative_lots = $lots;
 
 		// cataloging Lots Data. 
-		$catalog_lots_query = LotsCatalog::leftjoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id')->whereIn('lots_catalog.brand_id', $brand_arr);
-		$catalog_lots_query = $catalog_lots_query->select(
-			'catlog_wrc.lot_id',
-			DB::raw('SUM(catlog_wrc.sku_qty) AS inward_qty'),
-			DB::raw('GROUP_CONCAT(catlog_wrc.id) as wrc_ids'),
-			DB::raw('GROUP_CONCAT(CONCAT(" ",`catlog_wrc`.`wrc_number`)) as wrc_numbers'),
-			'lots_catalog.id',
-			'lots_catalog.user_id',
-			'lots_catalog.brand_id',
-			'lots_catalog.lot_number',
-			'lots_catalog.created_at as lot_created_at'
-		)->where('user_id', $parent_client_id);
-		$catalog_lots = $catalog_lots_query->groupBy('lots_catalog.id')->orderBy('lots_catalog.created_at', $sortByIs);
-		$catalog_lots = $catalog_lots_query->get()->toArray();
-
-		foreach ($catalog_lots as $key => $row) {
-			$wrc_ids = $row['wrc_ids'];
-			$wrc_ids = $row['wrc_ids'];
-			$submission_date = "";
-			if($wrc_ids != '' && $wrc_ids != null){
-				$wrc_id_arr = explode(',',$wrc_ids);
-
-				$catalog_wrc_batches_query = CatalogWrcBatch::wherein('wrc_id', $wrc_id_arr)->orderbydesc('created_at');
-				$catalog_wrc_batches_count = $catalog_wrc_batches_query->count();
-				
-				$catalog_submissions_query = CatalogSubmission::wherein('wrc_id', $wrc_id_arr)->orderbydesc('created_at');
-				$catalog_submissions_count = $catalog_submissions_query->count();
-				
-				if($catalog_wrc_batches_count == $catalog_submissions_count && $catalog_wrc_batches_count > 0){
-					$submission_data = $catalog_submissions_query->get()->toArray();
-					if($catalog_submissions_count > 0){
-						$catalog_submissions = $catalog_submissions_query->first()->toArray();
-						$submission_date = $catalog_submissions['submission_date'];
+		$catalog_lots_data = [];
+		if($service_is == 'Listing'){
+			$catalog_lots_query = LotsCatalog::leftjoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id')->whereIn('lots_catalog.brand_id', $brand_arr);
+			$catalog_lots_query = $catalog_lots_query->select(
+				'catlog_wrc.lot_id',
+				DB::raw('SUM(catlog_wrc.sku_qty) AS inward_qty'),
+				DB::raw('GROUP_CONCAT(catlog_wrc.id) as wrc_ids'),
+				DB::raw('GROUP_CONCAT(CONCAT(" ",`catlog_wrc`.`wrc_number`)) as wrc_numbers'),
+				'lots_catalog.id',
+				'lots_catalog.user_id',
+				'lots_catalog.brand_id',
+				'lots_catalog.lot_number',
+				'lots_catalog.created_at as lot_created_at'
+			)->where('user_id', $parent_client_id);
+			$catalog_lots = $catalog_lots_query->groupBy('lots_catalog.id')->orderBy('lots_catalog.created_at', $sortByIs);
+			$catalog_lots = $catalog_lots_query->get()->toArray();
+	
+			foreach ($catalog_lots as $key => $row) {
+				$wrc_ids = $row['wrc_ids'];
+				$wrc_ids = $row['wrc_ids'];
+				$submission_date = "";
+				if($wrc_ids != '' && $wrc_ids != null){
+					$wrc_id_arr = explode(',',$wrc_ids);
+	
+					$catalog_wrc_batches_query = CatalogWrcBatch::wherein('wrc_id', $wrc_id_arr)->orderbydesc('created_at');
+					$catalog_wrc_batches_count = $catalog_wrc_batches_query->count();
+					
+					$catalog_submissions_query = CatalogSubmission::wherein('wrc_id', $wrc_id_arr)->orderbydesc('created_at');
+					$catalog_submissions_count = $catalog_submissions_query->count();
+					
+					if($catalog_wrc_batches_count == $catalog_submissions_count && $catalog_wrc_batches_count > 0){
+						$submission_data = $catalog_submissions_query->get()->toArray();
+						if($catalog_submissions_count > 0){
+							$catalog_submissions = $catalog_submissions_query->first()->toArray();
+							$submission_date = $catalog_submissions['submission_date'];
+						}
 					}
 				}
+				$catalog_lots[$key]['submission_date'] = $submission_date;
 			}
-			$catalog_lots[$key]['submission_date'] = $submission_date;
+			$catalog_lots_data = $catalog_lots;
 		}
-		$catalog_lots_data = $catalog_lots;
 		$other_data = array(
-      'sortBy' => $sortBy
+      'sortBy' => $sortBy,
+      'service_is' => $service_is
     );
     return view('clients.ClientAssetsLinks.your-assets-Links-Lots')->with('catalog_lots', $catalog_lots_data)->with('creative_lots', $creative_lots)->with('other_data',$other_data);
 	}
