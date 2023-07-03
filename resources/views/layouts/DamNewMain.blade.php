@@ -23,11 +23,11 @@
 	<link rel="stylesheet" href="{{ asset('css/dam_new_style_odn.css')}}">
 	<style>
 		.accordion-item .accordion-body   .active{
-			color: #FFF866;
+			color: #FFF300;
     	background:#0F0F0F;
 		}
 		.viewport{
-			margin-top: 73px;
+			margin-top: 107px;
 			height: calc(100vh - 73px);
 		}
 		
@@ -246,12 +246,21 @@
 			<div class="row">
 				<nav class="navbar navbar-expand-md border border-dark fixed-top">
 					{{-- logo --}}
-					<a class="navbar-brand my-2 ms-3" href="{{route('home')}}">
-						<svg width="73" height="24" viewBox="0 0 73 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M0 12.0006C0 5.12916 5.29653 0 12.5027 0C19.6426 0 24.9391 5.09545 24.9391 12.0006C24.9391 18.9057 19.6438 24 12.5027 24C5.29653 24 0 18.872 0 12.0006ZM21.5859 12.0006C21.5859 6.80517 17.6981 2.98358 12.5027 2.98358C7.23987 2.98358 3.35203 6.80517 3.35203 12.0006C3.35203 17.196 7.23987 21.0129 12.5027 21.0129C17.6981 21.0129 21.5871 17.196 21.5871 12.0006H21.5859Z" fill="#FFF866"/>
-							<path d="M27.3857 0.268311H37.2779C44.8188 0.268311 49.9468 5.03367 49.9468 12.0004C49.9468 18.9671 44.8153 23.7313 37.2779 23.7313H27.3857V0.268311ZM37.0734 20.8152C42.872 20.8152 46.5925 17.2621 46.5925 12.0004C46.5925 6.73874 42.8732 3.18448 37.0734 3.18448H30.7378V20.8152H37.0734Z" fill="#FFF866"/>
-							<path d="M72.5696 0.268311V23.7313H69.822L55.7432 6.23431V23.7313H52.3877V0.268311H55.1365L69.2176 17.7653V0.268311H72.5696Z" fill="#FFF866"/>
-							</svg>        
+					<a class="navbar-brand" href="{{route('home')}}">
+						<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_2254_3636)">
+                            <path d="M52 0H0V52H52V0Z" fill="#FFF300"/>
+                            <path d="M5.05096 26.0003C5.05096 22.0331 8.10892 19.0718 12.2694 19.0718C16.3916 19.0718 19.4496 22.0136 19.4496 26.0003C19.4496 29.987 16.3923 32.9282 12.2694 32.9282C8.10892 32.9282 5.05096 29.9675 5.05096 26.0003ZM17.5136 26.0003C17.5136 23.0007 15.269 20.7944 12.2694 20.7944C9.23091 20.7944 6.98626 23.0007 6.98626 26.0003C6.98626 28.9999 9.23091 31.2036 12.2694 31.2036C15.269 31.2036 17.5143 28.9999 17.5143 26.0003H17.5136Z" fill="#231F20"/>
+                            <path d="M20.8621 19.2268H26.5734C30.9271 19.2268 33.8878 21.9781 33.8878 26.0003C33.8878 30.0226 30.9251 32.7732 26.5734 32.7732H20.8621V19.2268ZM26.4553 31.0896C29.8031 31.0896 31.9512 29.0382 31.9512 26.0003C31.9512 22.9625 29.8038 20.9105 26.4553 20.9105H22.7974V31.0896H26.4553Z" fill="#231F20"/>
+                            <path d="M46.949 19.2268V32.7732H45.3627L37.2343 22.6713V32.7732H35.297V19.2268H36.884L45.0137 29.3287V19.2268H46.949Z" fill="#231F20"/>
+                            </g>
+                            <defs>
+                            <clipPath id="clip0_2254_3636">
+                            <rect width="52" height="52" fill="white"/>
+                            </clipPath>
+                            </defs>
+                        </svg>
+        
 					</a>
 					{{-- navbarCollapse btn --}}
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
@@ -269,9 +278,9 @@
 					 <form action="{{route('gloableSearchNew')}}" method="post" class="ms-4" style="width:50%;">
 						@csrf
 						<div class="input-group ms-auto  nav-searchbar" style="width:59%;">
-								<input type="text" id="searchBar" class="form-control rounded-0" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" style="background: #1A1A1A;border: 1px solid #333333; color: #FFFFFF;" name="search_query" value="{{$search_query}}">
+								<input type="text" id="searchBar" class="form-control rounded-0 search-input" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" style="background: #1A1A1A;border: 1px solid #333333; color: #FFFFFF;padding:16px;" name="search_query" value="{{$search_query}}">
 								<div class="input-group-append">
-									<button class="btn  border-start-0 rounded-0" type="submit" style="background: #1A1A1A;border: 1px solid #333333;">
+									<button class="btn  border-start-0 rounded-0" type="submit" style="background: #1A1A1A;border: 1px solid #333333;padding:16px;">
 										<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M15.2362 14.6666L13.9028 13.3333M8.23616 13.9999C9.06787 13.9999 9.89143 13.8361 10.6598 13.5178C11.4282 13.1995 12.1264 12.733 12.7145 12.1449C13.3026 11.5568 13.7691 10.8586 14.0874 10.0902C14.4057 9.32185 14.5695 8.49829 14.5695 7.66658C14.5695 6.83488 14.4057 6.01132 14.0874 5.24292C13.7691 4.47453 13.3026 3.77635 12.7145 3.18824C12.1264 2.60014 11.4282 2.13363 10.6598 1.81535C9.89143 1.49707 9.06787 1.33325 8.23616 1.33325C6.55646 1.33325 4.94555 2.00051 3.75782 3.18824C2.57009 4.37597 1.90283 5.98688 1.90283 7.66658C1.90283 9.34629 2.57009 10.9572 3.75782 12.1449C4.94555 13.3327 6.55646 13.9999 8.23616 13.9999Z" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 											</svg>              
@@ -280,7 +289,7 @@
 							</div>
 					 </form> 
 
-						<ul class="navbar-nav ms-auto me-3">
+						<ul class="navbar-nav ms-auto">
 							{{-- notification bell --}}
 							<li class="nav-item mt-1 notification-popover-container" style="padding-right: 56px; margin-top: 12px">
 								
@@ -882,6 +891,26 @@
 		}
 
 	</script> 
+	
+		{{-- Under searchbar search suggestion  --}}
+		<script>
+            function typeSearchSuggestions(searchInputs, suggestions) {
+              var index = 0;
+        
+              function typeSuggestion() {
+                var suggestion = suggestions[index];
+                searchInputs.forEach(function(searchInput) {
+                  searchInput.placeholder = suggestion;
+                });
+                index = (index + 1) % suggestions.length;
+              }
+        
+              setInterval(typeSuggestion, 3000); // Repeat every 3 seconds
+            }
+            var searchInputs = document.querySelectorAll('.search-input');
+            var suggestions = ['Search by "Gender" ', 'Search by "Date"', 'Search by "Months"', 'Search by "Year"', 'Search by "Type of clothing"', 'Search by "Product type"'];
+            typeSearchSuggestions(searchInputs, suggestions);
+  </script>
 
 	@yield('js_scripts')
 </body>
