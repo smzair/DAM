@@ -1172,4 +1172,111 @@ class ClientCommonController extends Controller
     }
     return $adaptation_data_arr;
   }
+
+  // Side bar menu your assets  link show hide data
+  public function your_assets_sidebar(){
+    $parent_client_id = $user_id = Auth::id();
+		if (Auth::user()->dam_enable != 1) {
+			request()->session()->flash('error', 'Dam Not Enable!! connect to admin');
+			return redirect()->route('home');
+		}
+		$roledata = getUsersRole($user_id);
+		$role_name = "";
+		$role_id = "";
+
+		if ($roledata != null) {
+			$role_id = $roledata->role_id;
+			$role_name = $roledata->role_name;
+		}
+		$brand_arr = DB::table('brands_user')->where('user_id', $user_id)->get()->pluck('brand_id')->toArray();
+		if ($role_name == 'Sub Client') {
+			$parent_user_data = DB::table('users')->where('id', $user_id)->first(['parent_client_id', 'id']);
+			$parent_client_id = $parent_user_data->parent_client_id;
+		}
+
+    $sortByIs = 'DESC';
+    $your_assets_sidebar_data = [];
+
+    /** creative Lots Data */
+      $lots_query = CreatLots::leftjoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->whereIn('creative_lots.brand_id', $brand_arr);
+      $lots_query = $lots_query->select(
+        'creative_wrc.lot_id',
+        DB::raw('CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END AS inward_quantity'),
+        DB::raw('SUM(CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END) AS inward_qty'),
+        DB::raw('GROUP_CONCAT(creative_wrc.id) as wrc_ids'),
+        DB::raw('GROUP_CONCAT(creative_wrc.sku_required) as sku_requireds'),
+        DB::raw('GROUP_CONCAT(CONCAT(" ",`creative_wrc`.`wrc_number`)) as wrc_numbers'),
+        'creative_lots.id',
+        'creative_lots.user_id',
+        'creative_lots.brand_id',
+        'creative_lots.lot_number',
+        'creative_lots.created_at as lot_created_at'
+      )->where('user_id', $parent_client_id);
+      $lots_query = $lots_query->groupBy('creative_lots.id');
+      $creative_lots_count = $lots_query->count();
+      
+      $your_assets_sidebar_data['creative_lots_count'] = $creative_lots_count;
+
+      /**  cataloging Lots Data */
+      $catalog_lots_data = [];
+      $catalog_lots_query = LotsCatalog::leftjoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id')->whereIn('lots_catalog.brand_id', $brand_arr);
+      $catalog_lots_query = $catalog_lots_query->select(
+        'catlog_wrc.lot_id',
+        DB::raw('SUM(catlog_wrc.sku_qty) AS inward_qty'),
+        DB::raw('GROUP_CONCAT(catlog_wrc.id) as wrc_ids'),
+        DB::raw('GROUP_CONCAT(CONCAT(" ",`catlog_wrc`.`wrc_number`)) as wrc_numbers'),
+        'lots_catalog.id',
+        'lots_catalog.user_id',
+        'lots_catalog.brand_id',
+        'lots_catalog.lot_number',
+        'lots_catalog.created_at as lot_created_at'
+      )->where('user_id', $parent_client_id);
+      $catalog_lots_query = $catalog_lots_query->groupBy('lots_catalog.id')->orderBy('lots_catalog.created_at', $sortByIs);
+      $catalog_lots_count = $catalog_lots_query->count();
+
+      $your_assets_sidebar_data['catalog_lots_count'] = $catalog_lots_count;
+
+    /** Shoot lots **/
+      $lots_query_cataloging = Lots::leftJoin('wrc', 'wrc.lot_id', '=', 'lots.id')->whereIn('lots.brand_id', $brand_arr)->whereNotNull('wrc.id')->select(
+        'lots.id as lot_id',
+        'lots.lot_id as lot_number',
+        'lots.s_type as s_type',
+        'lots.created_at as lot_created_at',
+        'wrc.id as wrc_id',
+        'wrc.wrc_id as wrc_number',
+        DB::raw("GROUP_CONCAT(wrc.id) as wrc_ids"),
+        DB::raw("GROUP_CONCAT(wrc.wrc_id) as wrc_numbers"),
+        DB::raw("COUNT(wrc.id) as wrc_counts"),
+      )->groupby('lots.id')->orderBy('lots.created_at', $sortByIs);
+      $lots_query_cataloging = $lots_query_cataloging->where('lots.user_id', $parent_client_id);
+      $shoot_lots_count = $lots_query_cataloging->count();
+
+      $your_assets_sidebar_data['shoot_lots_count'] = $shoot_lots_count;
+
+
+    /** Editing lots **/
+      $lots_query_editing = EditorLotModel::leftJoin('editing_wrcs', 'editing_wrcs.lot_id', '=', 'editor_lots.id')
+      ->whereIn('editor_lots.brand_id', $brand_arr)->whereNotNull('editing_wrcs.id')->
+      select(
+        'editor_lots.id as lot_id',
+        'editor_lots.lot_number',
+        'editor_lots.created_at as lot_created_at',
+        'editing_wrcs.id as wrc_id',
+        'editing_wrcs.wrc_number',
+        'editing_wrcs.uploaded_img_file_path',
+        DB::raw("GROUP_CONCAT(editing_wrcs.id) as wrc_ids"),
+        DB::raw("SUM(editing_wrcs.imgQty) as tot_imgqty"),
+        DB::raw("SUM(editing_wrcs.uploaded_img_qty) as tot_uploaded_img_qty"),
+        DB::raw("COUNT(editing_wrcs.id) as wrc_counts"),
+      )->groupby('editor_lots.id');
+    $lots_query_editing = $lots_query_editing->where('editor_lots.user_id', $parent_client_id)->orderBy('editor_lots.created_at', $sortByIs);
+    $editor_lots_count = $lots_query_editing->count();
+
+    $your_assets_sidebar_data['editor_lots_count'] = $editor_lots_count;
+
+
+    /* Sending response */
+    return $your_assets_sidebar_data;
+
+  }
 }
