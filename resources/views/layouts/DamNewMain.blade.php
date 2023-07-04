@@ -237,9 +237,10 @@
 			$get_active_url_data = get_active_url_data();
 			$active_tab = $get_active_url_data['active_tab'];
 			$active_link = $get_active_url_data['active_link'];
-			echo "routeName => ".$routeName = $get_active_url_data['routeName'];
 			// dd($get_active_url_data);
 
+			$ClientCommonController = new \App\Http\Controllers\ClientsControllers\ClientCommonController();
+    	$your_assets_sidebar_data = $ClientCommonController->your_assets_sidebar();
     ?>
 
 		<!-- ODN given code -->
@@ -441,14 +442,32 @@
 							<div id="flush-collapseTwo" class="accordion-collapse collapse {{$active_tab == 2 ? 'show' : ''}}" aria-labelledby="flush-headingTwo"
               data-bs-parent="#accordionFlushExample">
 								<div class="accordion-body">
+
+									{{-- Shoot Lots --}}
+									@if ($your_assets_sidebar_data['shoot_lots_count'] > 0)
 									<a href="{{route('your_assets_files' , ['service' => 'Shoot'])}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'Shoot_lot' ? 'active' : ''}}"
 										style="width: 100%;">Shoot Lots</a>
+									@endif
+
+									{{-- Post-production Lots --}}
+									@if ($your_assets_sidebar_data['editor_lots_count'] > 0)
 									<a href="{{route('your_assets_files' , ['service' => 'PostProduction'])}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'PostProduction_lots' ? 'active' : ''}}"
 										style="width: 100%;">Post-production Lots</a>
+									@endif
+
+									{{-- Creative Lots --}}
+									@if ($your_assets_sidebar_data['creative_lots_count'] > 0)
 									<a href="{{route('your_assets_Links' , ['service' => 'Creative'])}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'Creative_lots' ? 'active' : ''}}"
 										style="width: 100%;">Creative Lots</a>
+									@endif
+
+									{{-- Listing Lots --}}
+									@if ($your_assets_sidebar_data['catalog_lots_count'] > 0)
 									<a href="{{route('your_assets_Links' , ['service' => 'Listing'])}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'Listing_lots' ? 'active' : ''}}"
 										style="width: 100%;">Listing Lots</a>
+									@endif
+
+									{{-- Favorites --}}
 									<a href="{{route('your_assets_Favorites')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'your_assets_Favorites' ? 'active' : ''}}"
 										style="width: 100%;">Favorites</a>
 								</div>
