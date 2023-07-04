@@ -1246,7 +1246,7 @@ class ClientCommonController extends Controller
         'wrc.wrc_id as wrc_number',
         DB::raw("GROUP_CONCAT(wrc.id) as wrc_ids"),
         DB::raw("GROUP_CONCAT(wrc.wrc_id) as wrc_numbers"),
-        DB::raw("COUNT(wrc.id) as wrc_counts"),
+        DB::raw("COUNT(wrc.id) as wrc_counts")
       )->groupby('lots.id')->orderBy('lots.created_at', $sortByIs);
       $lots_query_cataloging = $lots_query_cataloging->where('lots.user_id', $parent_client_id);
       $shoot_lots_count = $lots_query_cataloging->count();
@@ -1267,7 +1267,7 @@ class ClientCommonController extends Controller
         DB::raw("GROUP_CONCAT(editing_wrcs.id) as wrc_ids"),
         DB::raw("SUM(editing_wrcs.imgQty) as tot_imgqty"),
         DB::raw("SUM(editing_wrcs.uploaded_img_qty) as tot_uploaded_img_qty"),
-        DB::raw("COUNT(editing_wrcs.id) as wrc_counts"),
+        DB::raw("COUNT(editing_wrcs.id) as wrc_counts")
       )->groupby('editor_lots.id');
     $lots_query_editing = $lots_query_editing->where('editor_lots.user_id', $parent_client_id)->orderBy('editor_lots.created_at', $sortByIs);
     $editor_lots_count = $lots_query_editing->count();
