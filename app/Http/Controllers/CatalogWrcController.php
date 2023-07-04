@@ -280,11 +280,6 @@ class CatalogWrcController extends Controller
             $tot_sku_qty_is = $saved_rows + $sku_qty_is;
             CatlogWrc::where('id', $wrc_id_is)->update(['sku_qty' => $tot_sku_qty_is]);
             if ($createWrcStatus) {
-                /* send notification start */
-                $data = CatlogWrc::find($createWrc->id);
-                $creation_type = 'CatlogWrc';
-                // $this->send_notification($data, $creation_type);
-                /******  send notification end*******/
                 $user_data = Auth::user();
                 $save_ClientNotification = new ClientNotification();
                 $save_ClientNotification->user_id = $request->user_id;
@@ -293,6 +288,12 @@ class CatalogWrcController extends Controller
                 $save_ClientNotification->discription = "New Wrc Created By ".$user_data->name.". Created WRC is ".$wrcNumber;
                 $save_ClientNotification->created_by = $user_data->id;
                 $status = $save_ClientNotification->save();  
+                
+                /* send notification start */
+                $data = CatlogWrc::find($createWrc->id);
+                $creation_type = 'CatlogWrc';
+                $this->send_notification($data, $creation_type);
+                /******  send notification end*******/
                 DB::commit();
                 request()->session()->flash('success', 'Catlog Wrc Successfully added');
             } else {

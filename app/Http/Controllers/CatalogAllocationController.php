@@ -11,6 +11,7 @@ use App\Models\CatlogWrc;
 use App\Models\NotificationModel\ClientNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
@@ -28,9 +29,6 @@ class CatalogAllocationController extends Controller
         $wrcList = CatlogWrc::getcatalog_allocation_list();
         return view('Allocation.catalog_re_allocation')->with('wrcList', $wrcList);
     }
-
-
-    
 
     // function for allocate wrc to user (save) batch_no
     function save(Request $request){
@@ -68,10 +66,10 @@ class CatalogAllocationController extends Controller
             'catalog_wrc_batches.wrc_id',
             'catalog_wrc_batches.batch_no',
             'catalog_wrc_batches.sku_count',
-            DB::raw('SUM(CASE  	WHEN user_role = 0 THEN allocated_qty else 0 END)  as cataloger_sum'),
-            DB::raw('SUM(CASE  	WHEN user_role = 1 THEN allocated_qty else 0 END)  as cp_sum'),
+            DB::raw('SUM(CASE WHEN user_role = 0 THEN allocated_qty else 0 END)  as cataloger_sum'),
+            DB::raw('SUM(CASE WHEN user_role = 1 THEN allocated_qty else 0 END)  as cp_sum')
         )->get()->first()->toArray();
-        
+
 
         $res['user'] = '0';
         $res['copywriter'] = '0';
@@ -84,6 +82,11 @@ class CatalogAllocationController extends Controller
             $all_cnt = count($CatalogAllocation_list);
             if ($all_cnt > 0) {
                 $res[ 'user'] = '3';
+                $catalog_allocation_user = CatalogAllocation::where([
+                    ['user_id',  $user_id],
+                    ['wrc_id',  $wrc_id],
+                    ['batch_no',  $batch_no],
+                ])->first();
             } else {
                 $catalog_allocation_user = new CatalogAllocation();
                 $catalog_allocation_user->user_id = $user_id;
@@ -152,11 +155,13 @@ class CatalogAllocationController extends Controller
             $cp_sum = $wrc_data_is['cp_sum'] + $copywriter_Qty;
             $sku_count = $wrc_data_is['sku_count'];
 
-            if(($wrc_data_is['alloacte_to_copy_writer'] == 1 && $cataloger_sum == $sku_count && $sku_count == $cp_sum) || ($wrc_data_is['alloacte_to_copy_writer'] == 0 && $cataloger_sum == $sku_count )){
+            if(($wrc_data_is['alloacte_to_copy_writer'] == 1 && $cataloger_sum == $sku_count && $sku_count == $cp_sum && $res['user'] == 1) || ($wrc_data_is['alloacte_to_copy_writer'] == 0 && $cataloger_sum == $sku_count && $res['user'] == 1 )){
+                $batch_is = $wrc_data_is['batch_no'] > 0 ? " Batch No. is ".$wrc_data_is['batch_no'] : "" ;
+
                 $save_ClientNotification_data = array(
                     'user_id' => $wrc_data_is['user_id'],
                     'brand_id' => $wrc_data_is['brand_id'],
-                    'wrc_number' => $wrc_data_is['wrc_number'],
+                    'wrc_number' => $wrc_data_is['wrc_number'].$batch_is,
                     'service' => 'Cataloging',
                     'subject' => 'Planning',
                 );
@@ -175,7 +180,9 @@ class CatalogAllocationController extends Controller
             }
             /******  send notification end*******/ 
         }
+        // echo "user_id => $user_id , Cataloguer_Qty => $Cataloguer_Qty , copywriter_id => $copywriter_id, copywriter_Qty => $copywriter_Qty , wrc_id => $wrc_id";
         echo json_encode($res,true);
+        // echo json_encode(array('data' => $res),true);
     }
 
 
@@ -189,7 +196,7 @@ class CatalogAllocationController extends Controller
         select(
             'wrc_id',
             DB::raw('SUM(CASE  	WHEN user_role = 0 THEN allocated_qty else 0 END)  as cataloger_sum'),
-            DB::raw('SUM(CASE  	WHEN user_role = 1 THEN allocated_qty else 0 END)  as cp_sum'),
+            DB::raw('SUM(CASE  	WHEN user_role = 1 THEN allocated_qty else 0 END)  as cp_sum')
         )->get()->toArray();
 
         $cnt_rec = COUNT($data);
@@ -219,10 +226,10 @@ class CatalogAllocationController extends Controller
     function upload()
     {
         
-        $login_user_id_is = 26; // 26 sahil 29 Prerit 34 Rajesh
+        $login_user_id_is = Auth::id(); // 26 sahil 29 Prerit 34 Rajesh
         $user_role = 'CW';
         // $login_user_id_is = 22; // neetu 7 , ZAIRRQW 8 , 22 SDGB 
-        $login_user_id_is = 7; // neetu 7 , ZAIRRQW 8 , 22 SDGB 
+        //$login_user_id_is = 7; // neetu 7 , ZAIRRQW 8 , 22 SDGB 
         $user_role = 'Cataloguer';
         
         $allocated_wrc_list_by_user = CatalogAllocation::allocated_wrc_list_by_user($login_user_id_is);
@@ -347,7 +354,7 @@ class CatalogAllocationController extends Controller
             $wrc_number = $wrc_data != null ? $wrc_data->wrc_number : "";
             $max_batch_no = CatalogWrcBatch::where('wrc_id', $wrc_id)->max('batch_no');
 
-            $user_id = 9;
+            $user_id = Auth::id();
             // $user_id = Auth::user()->id;
             $logged_in_user_data = DB::table('users')->where('id', $user_id )->first(['name']);
             $uploaded_by_user_name = $logged_in_user_data != null ? $logged_in_user_data->name : " ";

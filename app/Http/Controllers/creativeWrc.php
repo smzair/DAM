@@ -216,15 +216,16 @@ class creativeWrc extends Controller
                 );
                 $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
                 DB::commit();
+                
+                /* send notification start */
+                $creation_type = 'Wrc';
+                $data = CreativeWrcModel::find($createWrc->id);
+                $this->send_notification($data, $creation_type);
+                /******  send notification end*******/    
             }
             else{
                 request()->session()->flash('error','Please try again!!');
             }
-            /* send notification start */
-            $creation_type = 'Wrc';
-            $data = CreativeWrcModel::find($createWrc->id);
-            $this->send_notification($data, $creation_type);
-            /******  send notification end*******/    
 
             return $this->view();
             // return $this->edit($request,$createWrc->id);// update in same page
@@ -353,7 +354,7 @@ class creativeWrc extends Controller
        })
        ->select('creative_wrc.*','creative_lots.user_id','creative_lots.brand_id','creative_lots.lot_number','users.Company as Company_name','brands.name','create_commercial.kind_of_work',DB::raw('MAX(creative_wrc_batch.batch_no) as batch_no'))
        ->get();
-        //    dd($wrcs);
+        // dd($wrcs);
         return view('Wrc.Creative-wrc-view')->with('wrcs',$wrcs);
     }
 
