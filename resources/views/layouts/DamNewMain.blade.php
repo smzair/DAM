@@ -27,7 +27,7 @@
     	background:#0F0F0F;
 		}
 		.viewport{
-			margin-top: 107px;
+			margin-top: 83px;
 			height: calc(100vh - 73px);
 		}
 		
@@ -237,6 +237,7 @@
 			$get_active_url_data = get_active_url_data();
 			$active_tab = $get_active_url_data['active_tab'];
 			$active_link = $get_active_url_data['active_link'];
+			echo "routeName => ".$routeName = $get_active_url_data['routeName'];
 			// dd($get_active_url_data);
 
 			$ClientCommonController = new \App\Http\Controllers\ClientsControllers\ClientCommonController();
@@ -469,7 +470,26 @@
 
 									{{-- Favorites --}}
 									<a href="{{route('your_assets_Favorites')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'your_assets_Favorites' ? 'active' : ''}}"
-										style="width: 100%;">Favorites</a>
+										style="width: 100%;">
+									    <div style="gap:8px; display: flex; align-items: center;">
+									        <span>
+									        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_2422_5940)">
+                                            <path d="M9.15327 2.34001L10.3266 4.68668C10.4866 5.01334 10.9133 5.32668 11.2733 5.38668L13.3999 5.74001C14.7599 5.96668 15.0799 6.95334 14.0999 7.92668L12.4466 9.58001C12.1666 9.86001 12.0133 10.4 12.0999 10.7867L12.5733 12.8333C12.9466 14.4533 12.0866 15.08 10.6533 14.2333L8.65994 13.0533C8.29994 12.84 7.70661 12.84 7.33994 13.0533L5.34661 14.2333C3.91994 15.08 3.05327 14.4467 3.42661 12.8333L3.89994 10.7867C3.98661 10.4 3.83327 9.86001 3.55327 9.58001L1.89994 7.92668C0.926606 6.95334 1.23994 5.96668 2.59994 5.74001L4.72661 5.38668C5.07994 5.32668 5.50661 5.01334 5.66661 4.68668L6.83994 2.34001C7.47994 1.06668 8.51994 1.06668 9.15327 2.34001Z" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </g>
+                                            <defs>
+                                            <clipPath id="clip0_2422_5940">
+                                            <rect width="16" height="16" fill="white"/>
+                                            </clipPath>
+                                            </defs>
+                                        </svg>
+									    </span>
+									    <span>
+									         Favorites
+									    </span>
+									    </div>
+									    
+									</a>
 								</div>
 							</div>
 						</div>
