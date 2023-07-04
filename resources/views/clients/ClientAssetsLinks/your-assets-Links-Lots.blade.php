@@ -36,8 +36,8 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 				Sort &nbsp;&nbsp;&nbsp;&nbsp;
 			</a>
 			<ul class="dropdown-menu dropdown-menu-show-sortby">
-				<li><a class="dropdown-item dropdown-menu-show-sortby-item {{$sortBy == 'latest' ? 'active' : ''}}" href="{{route('your_assets_Links', ['sortBy' => 'latest' ])}}">Latest</a></li>
-				<li><a class="dropdown-item dropdown-menu-show-sortby-item {{($sortBy == 'oldest' || $sortBy == 'old')  ? 'active' : ''}}" href="{{route('your_assets_Links', ['sortBy' => 'oldest' ] )}}">Oldest</a></li>
+				<li><a class="dropdown-item dropdown-menu-show-sortby-item {{$sortBy == 'latest' ? 'active' : ''}}" href="{{route('your_assets_Links', ['service' => $service_is ,'sortBy' => 'latest' ])}}">Latest</a></li>
+				<li><a class="dropdown-item dropdown-menu-show-sortby-item {{($sortBy == 'oldest' || $sortBy == 'old')  ? 'active' : ''}}" href="{{route('your_assets_Links', ['service' => $service_is , 'sortBy' => 'oldest' ] )}}">Oldest</a></li>
 			</ul>
 	</div>
 </div>
