@@ -1073,8 +1073,17 @@ if (!function_exists('creative_and_cataloging_lot_statusArr')) {
 if (!function_exists('shoot_lot_statusArr')) {
   function shoot_lot_statusArr()
   {
-    $shoot_lot_statusArr = ['Inward', 'WRC Generated', 'Shoot started', 'Editing & QC Done', 'Submission Done'];
+    $shoot_lot_statusArr = ['Inward', 'WRC Generated', 'Shoot started', 'Editing & QC Done', 'Invoice Done' , 'Submission Done'];
     return $shoot_lot_statusArr;
+  }
+}
+
+// lot_status_percentage
+if (!function_exists('lot_status_percentage')) {
+  function lot_status_percentage()
+  {
+    $lot_status_percentage = ['16', '33', '50', '67', '84' , '100'];
+    return $lot_status_percentage;
   }
 }
 

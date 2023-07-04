@@ -210,8 +210,24 @@ class ClientDashboardControllerNew extends Controller
         $LotTimelineData = Lots::LotTimeline($val['lot_id']);
         $lot_detail = $LotTimelineData['lot_detail']; 
         $wrc_detail = $LotTimelineData['wrc_detail'];
-        $shoot_lots[$key] = $lot_detail[0];
+        // $shoot_lots[$key] = $lot_detail[0];
+
+        // new changes due to invoicing.
+        $array_push = true;
+        if ($lotStatus == 'completed') {
+          $array_push = false;
+          if($lot_detail[0]['overall_progress'] == 100){
+            $array_push = true;
+          }
+        }
+        if($array_push){
+          $shoot_lots[$key] = $lot_detail[0];
+        }else{
+          unset($shoot_lots[$key]);
+          
+        }
       }
+      // dd($shoot_lots);
       /* response data to get shoot lot information with status end*/
     } else {
       $creative_lots = array();

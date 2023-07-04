@@ -108,7 +108,11 @@ a.btn.border.rounded-0.view-img:hover {
     box-shadow: 4px 16px 40px rgba(255, 255, 255, 0.06);
     border-radius:0px;
     border: 1px solid #333333;
-    padding: 1px;
+    min-width: 110px;
+}
+
+.dropdown-item, .dropdown-menu-show-sortby-item{
+    padding:6px 24px !important;
 }
 
 .dropdown-menu-show-sortby-item{
@@ -360,6 +364,10 @@ button.test.myButton {
     color: #FFFFFF;
 }
 
+button.tracklot-allService-text {
+    padding: 6px 24px;
+}
+
 button.test.myButton:hover{
     background:#1A1A1A;
    color: #FFFFFF;
@@ -367,7 +375,6 @@ button.test.myButton:hover{
 
 ul#pills-tab {
     width: 100%;
-    padding: 16px 16px 16px 16px;
 }
 
 .tab-button {
@@ -407,7 +414,7 @@ ul#pills-tab {
 }
 
 .lotnoF {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 16px !important;
   color: #FFFFFF;
   font-family: 'Poppins';
@@ -498,7 +505,7 @@ tbody{
   font-weight: 500;
   font-size: 14px;
   color: #808080;
-  margin-bottom:4px;
+  margin-bottom:0px;
 }
 
 .inward-qty {
@@ -771,22 +778,27 @@ td.table-column {
 }
 
 .progress-bar-2 {
-  left: 20%;
+  left: 16%;
   background: #FFF866;
 }
 
 .progress-bar-3 {
-  left: 40%;
+  left: 33%;
   background: #FFF866;
 }
 
 .progress-bar-4 {
-  left: 60%;
+  left: 50%;
   background: #FFF866;
 }
 
 .progress-bar-5 {
-  left: 80%;
+  left: 67%;
+  background: #FFF866;
+}
+
+.progress-bar-6 {
+  left: 84%;
   background: #FFF866;
 }
 
@@ -1062,13 +1074,11 @@ td.table-column {
 }
 
 button.btn.btn-lg.border.profile-btn:hover{
-    background: #FFF300;
     color: #0F0F0F; 
 }
 
-a.btn.btn-lg.border.profile-btn:hover{
-     background: #FFF300;
-    color: #0F0F0F; 
+a.btn.btn-lg.border.profile-btn-cancel:hover{
+    color: #FFFFFF; 
 }
 
 button#picDeleteBTN:hover {
@@ -1099,6 +1109,26 @@ button.btn.border.rounded-0.user-btn:hover {
     font-weight: 600;
     font-size: 11px;
     height: 20px;
+}
+
+input#clientPhone:focus {
+    background: #0F0F0F;
+    color: #FFFFFF;
+}
+
+input#clientLastName:focus {
+    background: #0F0F0F;
+    color: #FFFFFF;
+}
+
+input#clientFirstName:focus {
+    background: #0F0F0F;
+    color: #FFFFFF;
+}
+
+input#clientEmail:focus {
+    background: #0F0F0F;
+    color: #FFFFFF;
 }
 
 .verfication-modal-body{
@@ -1217,7 +1247,7 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
   font-size: 16px;
   color: #0F0F0F;
   height: 56px;
-  background: #FFF866;
+  background: #FFF300;
   border: 1px solid #0F0F0F !important;
 }
 
@@ -1334,6 +1364,17 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
   pointer-events: none;
 }
 
+.form-floating>label{
+    background:#0F0F0F !important;
+}
+
+.form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label, .form-floating>.form-select~label {
+    opacity: 1;
+    transform: scale(.85) translateY(-0.5rem) translateX(0.15rem);
+    font-size: 14px;
+    font-weight: 500;
+}
+
 .form-floating input,
 .form-floating textarea {
   padding: 1.5rem 0.5rem 0.5rem;
@@ -1362,14 +1403,45 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
 }
 
 .profile-btn {
-  width: 100%;
-  background: #0F0F0F;
-  font-weight: 500;
-  font-size: 16px;
-  color: #B8B8B8;
-  padding: 16px;
-  border-radius: 0px;
+     color: var(--neutral-900-main, #0F0F0F);
+    font-size: 16px;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+     border-radius: 0px;
+    letter-spacing: 0.15px;
+     padding: 16px 32px;
+     background:#FFF300;
+     border:0px solid black !important;
+     display:flex; 
+     align-items:center; 
+     gap:8px;
 }
+
+.profile-btn-cancel{
+    font-size: 16px;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    padding: 16px 32px;
+    color: var(--shades-0, #FFF);
+     border-radius: 0px;
+    letter-spacing: 0.15px;
+     display:flex; 
+     align-items:center; 
+     gap:8px;
+}
+
+.profile-and-cancel-details{
+    gap:24px;
+}
+
+.user-btn .pic-delete-btn{
+    
+}
+
 
 .verification-div {
   padding: 5px;

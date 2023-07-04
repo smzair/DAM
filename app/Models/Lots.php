@@ -102,16 +102,21 @@ class Lots extends Model {
         $wrc_count = Wrc::where('lot_id',$id)->count();
 
         $shoot_lot_statusArr = shoot_lot_statusArr();
+        $lot_status_percentage = lot_status_percentage();
         $lot_status = $wrc_count > 0 ? $shoot_lot_statusArr[1] : $shoot_lot_statusArr[0];
         
-        $wrc_progress = $wrc_count > 0 ? '20' : '0';
-        $overall_progress = $wrc_count > 0 ? '40' : '20';
+        $wrc_progress = $wrc_count > 0 ? $lot_status_percentage[1] - $lot_status_percentage[0] : '0';
+        $overall_progress = $wrc_count > 0 ? $lot_status_percentage[1] : $lot_status_percentage[0];
+        // $wrc_progress = $wrc_count > 0 ? '20' : '0';
+        // $overall_progress = $wrc_count > 0 ? '40' : '20';
         $lot_detail[0]['inward_quantity'] = 0;
         $lot_detail[0]['lot_status']  = $lot_status;
         $lot_detail[0]['overall_progress']  = $overall_progress;
         $lot_detail[0]['wrc_progress']  = $wrc_progress;
         $lot_detail[0]['wrc_assign']  = "0";
         $lot_detail[0]['wrc_qc']  = "0";
+        $lot_detail[0]['lot_invoiceing']  = "0";
+        $lot_detail[0]['lot_invoice_date']  = null;
         $lot_detail[0]['wrc_submission']  = "0";
         $lot_detail[0]['allocated_created_at']  = null;
         $lot_detail[0]['qc_done_at']  = null;
@@ -146,14 +151,16 @@ class Lots extends Model {
                 'commercial.adaptation_5',
                 'commercial.commercial_value_per_sku',
                 'wrc.id as wrc_id',
+                'wrc.Invoice_no as invoice_no',
                 'wrc.wrc_id as wrc_number',
                 'wrc.created_at as wrc_created_at',
                 DB::raw("DATE_FORMAT(wrc.created_at, '%d-%m-%Y') as wrc_formatted_date"),
             )->get()->toArray();
             $tot_sku_count  = 0;
             $submited_wrc = 0;
+            $invoce_done_wrc = 0;
+            $invoce_parcially_done_wrc = 0;
             $wrc_id_arr = array();
-            // dd($wrc_info , $lot_detail);
             foreach($wrc_info as $key => $val){
                 $sku_info_query = Skus::where('wrc_id', $val['wrc_id']);
 
@@ -165,6 +172,7 @@ class Lots extends Model {
                 $wrc_info[$key]['qc_status'] =  'pending';
                 $wrc_info[$key]['submission_status'] =  'pending';
                 $wrc_info[$key]['submission_date'] =  '';
+                $wrc_info[$key]['invoice_date'] =  '';
                 $wrc_info[$key]['service'] =  'SHOOT';
 
                 $file_path = '';
@@ -208,8 +216,10 @@ class Lots extends Model {
                     if(count($upload_raw_info) > 0){
                         $lot_detail[0]['allocated_created_at'] = $upload_raw_info[0]['created_at'];
                         $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[2];
-                        $lot_detail[0]['overall_progress']  = 60;
-                        $lot_detail[0]['wrc_assign']  = "20";
+                        $lot_detail[0]['overall_progress']  = $lot_status_percentage[2];
+                        $lot_detail[0]['wrc_assign']  = $lot_status_percentage[2] - $lot_status_percentage[1];
+                        // $lot_detail[0]['overall_progress']  = 60;
+                        // $lot_detail[0]['wrc_assign']  = "20";
                         $upload_raw_info_id = array_column($upload_raw_info, 'id');
                     }
 
@@ -221,8 +231,10 @@ class Lots extends Model {
                     
                     if(count($editor_qc_info) > 0){
                         $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[3];
-                        $lot_detail[0]['overall_progress']  = 80;
-                        $lot_detail[0]['wrc_qc']  = "20";
+                        $lot_detail[0]['overall_progress']  = $lot_status_percentage[3];
+                        $lot_detail[0]['wrc_qc']  = $lot_status_percentage[3] - $lot_status_percentage[2];
+                        // $lot_detail[0]['overall_progress']  = 80;
+                        // $lot_detail[0]['wrc_qc']  = "20";
                         $lot_detail[0]['qc_done_at'] = $editor_qc_info[0]['created_at'];
                         
                         $wrc_number_is = $val['wrc_number'];
@@ -243,6 +255,33 @@ class Lots extends Model {
                         
                         $wrc_info[$key]['qc_status'] =  'Done';
                         $wrc_info[$key]['wrc_qc_qty'] =  count($editor_qc_info);
+
+                        $invoice_no = $val['invoice_no'];
+                        $wrc_id = $val['wrc_id'];
+
+                        if($invoice_no != '' && $invoice_no != null ){
+                            $invoce_done_wrc += 1;
+                        }else{
+
+                            $pre_invoice_data = DB::table('pre_invoice')->where('service_id' , '=' , '1')->where('wrc_id' , '=' , $wrc_id)->get()->toArray();
+                            if(count($pre_invoice_data) > 0 ){
+                                if($pre_invoice_data[0]->invoice_group_id > 0){
+                                    $invoce_done_wrc += 1;
+                                }else{
+                                    $invoce_parcially_done_wrc += 1; 
+                                }
+                            }
+                        }
+
+                        if($invoce_done_wrc == count($wrc_info)){
+                            $lot_detail[0]['overall_progress']  = $lot_status_percentage[4];
+                            $lot_detail[0]['lot_invoiceing']  = $lot_status_percentage[4] - $lot_status_percentage[3];
+                        }elseif($invoce_parcially_done_wrc > 0){
+                            $lot_invoiceing  = 7 ;                           
+                            $lot_detail[0]['lot_invoiceing']  = $lot_invoiceing ;
+                            $lot_detail[0]['overall_progress']  = $lot_status_percentage[3] + $lot_invoiceing ;
+                        }
+
                         
                         $lot_submission_query = submissions::where('submission.wrc_id', '=', $val['wrc_id'])->select('id as submission_id', 'submission.submission_date');
                         $lot_submission_count = $lot_submission_query->count();
@@ -250,18 +289,17 @@ class Lots extends Model {
                             array_push($wrc_id_arr , $val['wrc_id']);
                             $submited_wrc += 1;
 
-                            $submission_data = $lot_submission_query->get()->toArray();
-                            
+                            $submission_data = $lot_submission_query->get()->toArray();                            
                             $wrc_info[$key]['submission_status'] =  'Done';
                             $wrc_info[$key]['submission_date'] =  $submission_data[0]['submission_date'];
 
                         }
 
-                        if($submited_wrc == count($wrc_info)){
+                        if($submited_wrc == count($wrc_info) && $invoce_done_wrc == count($wrc_info)){
                             $lot_submission_data= submissions::whereIn('submission.wrc_id', $wrc_id_arr)->select('id as submission_id', 'submission.submission_date')->orderByDesc('submission.submission_date')->get()->toArray();
-                            $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[4];
+                            $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[5];
                             $lot_detail[0]['overall_progress']  = 100;
-                            $lot_detail[0]['wrc_submission']  = "20";
+                            $lot_detail[0]['wrc_submission']  = $lot_status_percentage[5] - $lot_status_percentage[4];
                             $lot_detail[0]['submission_date'] = $lot_submission_data[0]['submission_date'];
 
                         }
@@ -271,6 +309,7 @@ class Lots extends Model {
             }
             $lot_detail[0]['skus_count'] =  $tot_sku_count;
             // dd($wrc_count, $lot_detail , $wrc_info);
+            // dd($shoot_lot_statusArr, $lot_status_percentage, $lot_detail[0] , $wrc_info);
 
             $wrc_id_arr = array_column($wrc_info, 'wrc_id');
             $wrc_number_arr = array_column($wrc_info, 'wrc_number');
