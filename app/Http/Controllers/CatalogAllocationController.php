@@ -228,7 +228,7 @@ class CatalogAllocationController extends Controller
         
         $login_user_id_is = Auth::id(); // 26 sahil 29 Prerit 34 Rajesh
         $user_role = 'CW';
-        // $login_user_id_is = 22; // neetu 7 , ZAIRRQW 8 , 22 SDGB 
+        $login_user_id_is = 386; // neetu 7 , ZAIRRQW 8 , 22 SDGB 
         //$login_user_id_is = 7; // neetu 7 , ZAIRRQW 8 , 22 SDGB 
         $user_role = 'Cataloguer';
         

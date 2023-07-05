@@ -24,6 +24,11 @@ class ClientActivityLog extends Model
     // Function for Get WRC list for allocation 
     public static function saveClient_activity_logs($data_array = [])
     {
+        $user = Auth::user();
+        $causer_id = 0;
+        if($user){
+            $causer_id = $user->id;
+        }
         if(count($data_array) > 0){
             $ClientActivityLog = new ClientActivityLog();
             $ClientActivityLog->log_name = $data_array['log_name'];
@@ -32,7 +37,7 @@ class ClientActivityLog extends Model
             $ClientActivityLog->subject_type = $data_array['subject_type'];
             $ClientActivityLog->subject_id = $data_array['subject_id'];
             $ClientActivityLog->causer_type = 'App\Models\User';
-            $ClientActivityLog->causer_id = Auth::id();
+            $ClientActivityLog->causer_id = $causer_id;
             $ClientActivityLog->properties = json_encode($data_array['properties']);
             $ClientActivityLog->save();
         }

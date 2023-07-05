@@ -173,6 +173,8 @@ class CatalogAllocation extends Model
             DB::raw('GROUP_CONCAT(catalog_allocation.user_id) as ass_cataloger'),
             DB::raw('GROUP_CONCAT(catalog_allocation.user_role) as user_roles'),
         )->
+        selectRaw('(SELECT batch from catalog_wrc_skus WHERE catalog_wrc_skus.batch_no = catalog_allocation.batch_no AND catalog_allocation.wrc_id = catalog_wrc_skus.wrc_id limit 1) as "batch"')->
+
         groupBy('catalog_allocation.wrc_id')->
         groupBy('catalog_allocation.batch_no')->
         orderBy('catalog_allocation.updated_at' , 'DESC')->
