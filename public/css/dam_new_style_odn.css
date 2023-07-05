@@ -12,12 +12,12 @@ body {
 
     .tab.active .tab-text {
       color: #0F0F0F;
-      background: #FFF866;
+      background: #FFF300;
     }
 
     .tab.active .tab-icon {
       fill: #0F0F0F;
-      background: #FFF866;
+      background: #FFF300;
     }
 
 /*svg color change when active End*/
@@ -254,8 +254,8 @@ a.btn.border.rounded-0.view-img:hover {
 }
 
 /*div[role="progressbar"] {*/
-/*   --fg: #FFF866 !important;*/
-/*   color: #FFF866 !important;*/
+/*   --fg: #FFF300 !important;*/
+/*   color: #FFF300 !important;*/
 /*}*/
 
 .lot-date{
@@ -773,33 +773,33 @@ td.table-column {
   position: absolute;
   top: 0;
   bottom: 0;
- background: #FFF866;
+ background: #FFF300;
  border-right: 2px solid #1A1A1A;
 }
 
 .progress-bar-2 {
   left: 16%;
-  background: #FFF866;
+  background: #FFF300;
 }
 
 .progress-bar-3 {
   left: 33%;
-  background: #FFF866;
+  background: #FFF300;
 }
 
 .progress-bar-4 {
   left: 50%;
-  background: #FFF866;
+  background: #FFF300;
 }
 
 .progress-bar-5 {
   left: 67%;
-  background: #FFF866;
+  background: #FFF300;
 }
 
 .progress-bar-6 {
   left: 84%;
-  background: #FFF866;
+  background: #FFF300;
 }
 
 .progress-labels {
@@ -1157,7 +1157,7 @@ input#clientEmail:focus {
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
-    background: #FFF866 !important;
+    background: #FFF300 !important;
     outline: 0;
     border-radius:0px;
     padding:16px;
@@ -1682,7 +1682,7 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
 
 /*div[role="progressbar"] {*/
 /*    --size: 3rem;*/
-/*    --fg: #FFF866;*/
+/*    --fg: #FFF300;*/
 /*    --bg: #333333;*/
 /*    --pgPercentage: var(--value);*/
 /*    animation: growProgressBar 3s 1 forwards;*/
@@ -1694,7 +1694,7 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
 /*    background: radial-gradient(closest-side, #1A1A1A 80%, transparent 0 101%, #0c0c0c 0), conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0);*/
 /*    font-family: Helvetica, Arial, sans-serif;*/
 /*    font-size: calc(var(--size) / 5);*/
-/*    color: #FFF866;*/
+/*    color: #FFF300;*/
 /*}*/
 
 /*div[role="progressbar"]::before {*/

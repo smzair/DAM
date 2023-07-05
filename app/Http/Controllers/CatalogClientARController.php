@@ -23,7 +23,7 @@ class CatalogClientARController extends Controller
         $ar_status = $request->ar_status;
         $wrc_id = $request->wrc_id;
 
-        echo $response = CatalogClientApprovalRejection::wrc_reject_approve_wrc($wrc_id , $ar_status, $rejection_reason);
+        echo $response = CatalogClientApprovalRejection::wrc_reject_approve_wrc($request);
 
     }
 }

@@ -381,7 +381,7 @@ Update CataLog Invoice Number
 </script>
 
 <script>
-   
+   const invoice_not_yet = '{{$invoice_not_yet}}'
 </script>
 
 <script>
