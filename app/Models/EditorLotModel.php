@@ -138,6 +138,8 @@ class EditorLotModel extends Model
         'editing_wrcs.created_at as wrc_created_at',
         DB::raw("DATE_FORMAT(editing_wrcs.created_at, '%d-%m-%Y') as wrc_formatted_date"),
         'editing_wrcs.documentUrl',
+        'editing_wrcs.invoice_number',
+        'editing_wrcs.updated_at',
         'editing_wrcs.imgQty as imgqty',
         'editing_wrcs.uploaded_img_file_path',
         'editing_wrcs.uploaded_img_qty as wrc_order_qty',
@@ -164,25 +166,26 @@ class EditorLotModel extends Model
         'editing_submissions.id as submissions_id',
         'editing_submissions.submission_date',
         'editing_submissions.ar_status',
-        'editing_submissions.action_date',
+        'editing_submissions.action_date'
         );
         $wrc_detail_query = $wrc_detail_query->orderBy('editing_wrcs.id')->orderBy('editing_allocations.id')->orderBy('editing_upload_links.updated_at')->orderBy('editing_submissions.id');
         $wrc_detail_query = $wrc_detail_query->groupBy('editing_wrcs.id');
         $wrc_detail = $wrc_detail_query->get()->toArray();
 
         $Editing_lot_statusArr = Editing_lot_statusArr();
+        $lot_status_percentage = lot_status_percentage();
         $wrc_count = DB::table('editing_wrcs')->where('lot_id',$id)->count();
         
         $lot_status = $wrc_count > 0 ? $Editing_lot_statusArr[1] : $Editing_lot_statusArr[0];
-        $wrc_progress = $wrc_count > 0 ? '20' : '0';
-        $overall_progress = $wrc_count > 0 ? '40' : '20';
+        $wrc_progress = $wrc_count > 0 ? $lot_status_percentage[1] - $lot_status_percentage[0] : '0';
+        $overall_progress = $wrc_count > 0 ? $lot_status_percentage[1] : $lot_status_percentage[0];
 
         $lot_detail[0]['lot_status']  = $lot_status;
         $lot_detail[0]['overall_progress']  = $overall_progress."%";
-        $lot_detail[0]['wrc_progress']  = $wrc_progress."%";
-        $lot_detail[0]['wrc_assign']  = "0%";
-        $lot_detail[0]['wrc_qc']  = "0%";
-        $lot_detail[0]['wrc_submission']  = "0%";
+        $lot_detail[0]['wrc_progress']  = $wrc_progress."";
+        $lot_detail[0]['wrc_assign']  = "0";
+        $lot_detail[0]['wrc_qc']  = "0";
+        $lot_detail[0]['wrc_submission']  = "0";
         $lot_detail[0]['submission_date']  = '';
         $lot_detail[0]['file_path'] =  '';
         $lot_detail[0]['skus_count'] =  '';
@@ -192,6 +195,8 @@ class EditorLotModel extends Model
         $lot_detail[0]['wrc_numbers'] =  '';
         $lot_detail[0]['wrc_created_at']  = '';
         $lot_detail[0]['allocated_created_at']  = '';
+        $lot_detail[0]['lot_invoiceing']  = "0";
+        $lot_detail[0]['lot_invoice_date']  = null;
 
         if(count($wrc_detail) > 0){
             $lot_detail[0]['wrc_numbers'] =  implode(', ',array_column($wrc_detail , 'wrc_number'));
@@ -201,6 +206,9 @@ class EditorLotModel extends Model
         $count_qc = 0;
         $count_submission = 0;
         $lots_file_path = "";
+        $invoce_done_wrc = 0;
+        $invoce_parcially_done_wrc = 0;
+        
 
         foreach($wrc_detail as $key => $wrc_row){
             $uploaded_img_file_path = $wrc_row['uploaded_img_file_path'];
@@ -233,9 +241,10 @@ class EditorLotModel extends Model
             
             $wrc_detail[$key]['qc_status'] = "Pending";
             $wrc_detail[$key]['submission_status'] = "Pending";
+            $wrc_detail[$key]['invoice_date'] =  '';
             if($cata_sum > 0){
-                $lot_detail[0]['wrc_assign']  = "10%";
-                $lot_detail[0]['overall_progress']  = "50%";
+                $lot_detail[0]['wrc_assign']  = 9;
+                $lot_detail[0]['overall_progress']  = $lot_status_percentage[1] + 9;        
                 $lot_detail[0]['lot_status']  = $Editing_lot_statusArr[2];
 
             }
@@ -273,20 +282,53 @@ class EditorLotModel extends Model
                         $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
                     }
                 }
+
+                // code for invoicing
+                if($wrc_detail[$key]['qc_status'] == 'Done'){
+                    $invoice_number = $wrc_row['invoice_number'];
+                    $wrc_detail[$key]['invoice_date'] = $wrc_row['updated_at'];
+                    $lot_detail[0]['lot_invoice_date'] = $wrc_row['updated_at'];
+                    $wrc_id = $wrc_row['wrc_id'];
+                    if($invoice_number != '' && $invoice_number != null ){
+                    $invoce_done_wrc += 1;
+                    }else{
+                        $pre_invoice_data = DB::table('pre_invoice')->where('service_id' , '=' , '4')->where('wrc_id' , '=' , $wrc_id)->get()->toArray();
+                        if(count($pre_invoice_data) > 0 ){
+                            $invoce_parcially_done_wrc += 1; 
+                            if($pre_invoice_data[0]->invoice_group_id > 0){
+                                $invoce_done_wrc += 1;
+                            }
+                        }
+                    }
+                }
             }
         }
         if(count($wrc_detail) == $count_wrc && count($wrc_detail) > 0){
-            $lot_detail[0]['wrc_assign']  = "20%";
-            $lot_detail[0]['overall_progress']  = "60%";
+            // $lot_detail[0]['wrc_assign']  = "20";
+            // $lot_detail[0]['overall_progress']  = "60";
+            $lot_detail[0]['wrc_assign']  = $lot_status_percentage[2] - $lot_status_percentage[1];
+            $lot_detail[0]['overall_progress']  = $lot_status_percentage[2];
             $lot_detail[0]['lot_status']  = $Editing_lot_statusArr[2];
             if(count($wrc_detail) == $count_qc){
-                $lot_detail[0]['wrc_qc']  = "20%";
-                $lot_detail[0]['overall_progress']  = "80%";
-                $lot_detail[0]['lot_status']  = $Editing_lot_statusArr[3];;
-                if(count($wrc_detail) == $count_submission){
+                $lot_detail[0]['overall_progress']  = $lot_status_percentage[3];
+                $lot_detail[0]['wrc_qc']  = $lot_status_percentage[3] - $lot_status_percentage[2];
+                $lot_detail[0]['lot_status']  = $Editing_lot_statusArr[3];
+
+                // Lot invoicing 
+                if ($invoce_done_wrc == $count_wrc) {
+                    $lot_detail[0]['overall_progress']  = $lot_status_percentage[4];
+                    $lot_detail[0]['lot_invoiceing']  = $lot_status_percentage[4] - $lot_status_percentage[3];
                     $lot_detail[0]['lot_status']  = $Editing_lot_statusArr[4];
-                    $lot_detail[0]['wrc_submission']  = "20%";
-                    $lot_detail[0]['overall_progress']  = "100%";
+                }else if($invoce_parcially_done_wrc > 0){
+                    $lot_invoiceing  = 7 ;                           
+                    $lot_detail[0]['lot_invoiceing']  = $lot_invoiceing ;
+                    $lot_detail[0]['overall_progress']  = $lot_status_percentage[3] + $lot_invoiceing ;
+                    $lot_detail[0]['lot_status']  = $Editing_lot_statusArr[4];
+                }
+                if(count($wrc_detail) == $count_submission && $invoce_done_wrc == $count_wrc){
+                    $lot_detail[0]['lot_status']  = $Editing_lot_statusArr[5];
+                    $lot_detail[0]['wrc_submission']  = $lot_status_percentage[5] - $lot_status_percentage[4];
+                    $lot_detail[0]['overall_progress']  = "100";
                 }
             }
         }

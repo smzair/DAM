@@ -1091,7 +1091,7 @@ if (!function_exists('lot_status_percentage')) {
 if (!function_exists('Editing_lot_statusArr')) {
   function Editing_lot_statusArr()
   {
-    $Editing_lot_statusArr = ['Inward', 'WRC Generated', 'Editing started', 'Editing & QC Done', 'Submission Done'];
+    $Editing_lot_statusArr = ['Inward', 'WRC Generated', 'Editing started', 'Editing & QC Done', 'Invoice Done' , 'Submission Done'];
     return $Editing_lot_statusArr;
   }
 }
