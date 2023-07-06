@@ -33,65 +33,65 @@
 	}
 
 	.upper-head-style-for-track-hover {
-  margin-top: -10px;
-  margin-left: -10px;
-  margin-right: -10px;
-  background: #1A1A1A;
-}
-
-.track-lot-table-wrc-no {
-  font-weight: 500;
-  font-size: 16px;
-  color: #FFFFFF;
-  letter-spacing: 0.15px;
-}
-
-.track-lot-table-wrc-date {
-  font-weight: 400;
-  font-size: 14px;
-  color: #808080;
-  line-height: 0.1;
-}
-
-.track-lot-table-inward-qty {
-  font-weight: 500;
-  font-size: 14px;
-  color: #808080;
-}
-
-.track-lot-table-inward-qty-no {
-  font-weight: 700;
-  font-size: 16px;
-  color: #FFFFFF;
-  line-height: 0.1;
-}
-
-.track-lot-table-typeof-service {
-  font-weight: 500;
-  font-size: 14px;
-  color: #808080;
-}
-
-.track-lot-table-marketplace-pri-mode {
-  font-weight: 400;
-  font-size: 16px;
-  color: #FFFFFF;
-  text-align: left;
-}
-
-.track-lot-adaptation-under {
-  font-weight: 400;
-  font-size: 16px;
-  color: #FFFFFF;
-  padding: 8px;
-  background: #333333;
-}
-
-	.track-lot-table-marketplace-pri-mode{
-		word-wrap: break-word;
+		margin-top: -10px;
+		margin-left: -10px;
+		margin-right: -10px;
+		background: #1A1A1A;
 	}
-	
-	
+
+	.track-lot-table-wrc-no {
+		font-weight: 500;
+		font-size: 16px;
+		color: #FFFFFF;
+		letter-spacing: 0.15px;
+	}
+
+	.track-lot-table-wrc-date {
+		font-weight: 400;
+		font-size: 14px;
+		color: #808080;
+		line-height: 0.1;
+	}
+
+	.track-lot-table-inward-qty {
+		font-weight: 500;
+		font-size: 14px;
+		color: #808080;
+	}
+
+	.track-lot-table-inward-qty-no {
+		font-weight: 700;
+		font-size: 16px;
+		color: #FFFFFF;
+		line-height: 0.1;
+	}
+
+	.track-lot-table-typeof-service {
+		font-weight: 500;
+		font-size: 14px;
+		color: #808080;
+	}
+
+	.track-lot-table-marketplace-pri-mode {
+		font-weight: 400;
+		font-size: 16px;
+		color: #FFFFFF;
+		text-align: left;
+	}
+
+	.track-lot-adaptation-under {
+		font-weight: 400;
+		font-size: 16px;
+		color: #FFFFFF;
+		padding: 8px;
+		background: #333333;
+	}
+
+		.track-lot-table-marketplace-pri-mode{
+			word-wrap: break-word;
+		}
+		
+		
 	.back-svg-container {
        display: inline-block;
        position: relative;
@@ -120,6 +120,7 @@
 		padding: 15px 20px !important;
 	}
 </style>
+
 <div class="row">
 	<div class="col-12">
 		<a class="btn back-svg-container  back-btn" href="{{ url()->previous() }}" role="button">
@@ -214,7 +215,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Inwarding</p>
+								Inward</p>
 						</div>
 						<div class="progress-label progress-label-2">
 							<p class="progress-upper-heading">
@@ -224,7 +225,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								WRC Generated
+							   Research & Strategy
 							</p>
 						</div>
 						<div class="progress-label progress-label-3">
@@ -235,7 +236,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Shoot started</p>
+								Work Started</p>
 						</div>
 						<div class="progress-label progress-label-4">
 							<p class="progress-upper-heading">
@@ -245,7 +246,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Editing & QC</p>
+								Quality Check (QC)</p>
 						</div>
 						<div class="progress-label progress-label-5">
 							<p class="progress-upper-heading">

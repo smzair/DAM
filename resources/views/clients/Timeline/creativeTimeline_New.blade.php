@@ -196,8 +196,8 @@
 				$overall_progress_is = str_replace('%', '', $overall_progress_is);
 				$lot_status_percentage = lot_status_percentage();
 				$lot_detail_is = $lot_detail[0];
-				pre($lot_status_percentage);
-				pre($lot_detail_is);
+				// pre($lot_status_percentage);
+				// pre($lot_detail_is);
 				$dispaly_bar_1 = false;
 				$dispaly_bar_2 = false;
 				$dispaly_bar_3 = false;
