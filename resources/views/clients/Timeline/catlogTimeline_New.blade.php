@@ -147,7 +147,7 @@
                     <path d="M9.15538 7.9917H9.16064M9.15538 9.7417H9.16064M6.99705 7.9917H7.00288M6.99705 9.7417H7.00288M4.83813 7.9917H4.84397M4.83813 9.7417H4.84397" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
                  </svg>
 			   
-			    {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
+			    {{$lot_detail[0] != null && $lot_detail[0] != '' ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
 			</p>
 		</div>
 		<div class="lot-inwrd-vertical-parent-div">
@@ -235,7 +235,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								WRC Generated</p>
+								Research & Strategy</p>
 						</div>
 						<div class="progress-label progress-label-3">
 							<p class="progress-upper-heading">
@@ -245,7 +245,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Task Started</p>
+								Work Started</p>
 						</div>
 						<div class="progress-label progress-label-4">
 							<p class="progress-upper-heading">
@@ -255,7 +255,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Uploading & QC</p>
+							Quality Check (QC)</p>
 						</div>
 						{{-- Invoice --}}
 						<div class="progress-label progress-label-5">
@@ -277,7 +277,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Submissions</p>
+								Submission</p>
 						</div>
 					</div>
 
