@@ -1065,7 +1065,7 @@ if (!function_exists('timeBefore')) {
 if (!function_exists('creative_and_cataloging_lot_statusArr')) {
   function creative_and_cataloging_lot_statusArr()
   {
-    $creative_and_cataloging_lot_statusArr = ['Inward', 'WRC Generated', 'Task Started', 'Upload & QC Done', 'Submission Done'];
+    $creative_and_cataloging_lot_statusArr = ['Inward', 'WRC Generated', 'Task Started', 'Upload & QC Done', 'Invoice Done' , 'Submission Done'];
     return $creative_and_cataloging_lot_statusArr;
   }
 }

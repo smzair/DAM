@@ -23,7 +23,7 @@ class CatalogAllocation extends Model
             'catalog_allocation.id',
             'catalog_allocation.wrc_id',
             'catalog_allocation.user_id',
-            'users.name as editor',
+            'users.name as editor'
         )->
         groupBy('catalog_allocation.user_id')->
         get()->toArray();
@@ -113,7 +113,7 @@ class CatalogAllocation extends Model
             // 'catalog_time_hash.rework_count',
             // 'catalog_time_hash.spent_time',
             DB::raw('GROUP_CONCAT(catalog_allocation.user_id) as ass_cataloger'),
-            DB::raw('GROUP_CONCAT(catalog_allocation.user_role) as user_roles'),           
+            DB::raw('GROUP_CONCAT(catalog_allocation.user_role) as user_roles')          
         )->
         groupBy('catalog_allocation.wrc_id')->groupBy('catalog_allocation.batch_no')->
         // orderby('catalog_allocation.wrc_id')->orderby('catalog_allocation.batch_no')->
@@ -171,7 +171,7 @@ class CatalogAllocation extends Model
             'users.Company',
             'brands.name as brand_name',
             DB::raw('GROUP_CONCAT(catalog_allocation.user_id) as ass_cataloger'),
-            DB::raw('GROUP_CONCAT(catalog_allocation.user_role) as user_roles'),
+            DB::raw('GROUP_CONCAT(catalog_allocation.user_role) as user_roles')
         )->
         selectRaw('(SELECT batch from catalog_wrc_skus WHERE catalog_wrc_skus.batch_no = catalog_allocation.batch_no AND catalog_allocation.wrc_id = catalog_wrc_skus.wrc_id limit 1) as "batch"')->
 

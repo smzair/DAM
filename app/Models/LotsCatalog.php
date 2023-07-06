@@ -100,7 +100,7 @@ class LotsCatalog extends Model
         'catalog_submissions.submission_date',
         'catalog_submissions.ar_status',
         'catalog_submissions.invoiceNumber',
-        'catalog_submissions.action_date',
+        'catalog_submissions.action_date'
       )->where('catlog_wrc.id', '<>' ,null)->orderBy('catlog_wrc.id')->orderBy('catalog_allocation.id')->orderBy('catalog_time_hash.updated_at')->orderBy('catalog_submissions.id');
     $wrc_detail_query = $wrc_detail_query->groupBy('catlog_wrc.id');
     $wrc_detail = $wrc_detail_query->get()->toArray();
@@ -227,7 +227,7 @@ class LotsCatalog extends Model
           if($invoice_number != '' && $invoice_number != null ){
             $invoce_done_wrc += 1;
           }else{
-            $CatalogWrcBatch_data = CatalogWrcBatch::where('wrc_id', $wrc_id)->where('invoiceNumber','<>' ,'')->orderBy('updated_at', 'DESC')->limit(1)->get()->toArray();
+            $CatalogWrcBatch_data = CatalogWrcBatch::where('wrc_id', $wrc_id)->whereNotNull('invoiceNumber')->where('invoiceNumber','<>' ,'')->orderBy('updated_at', 'DESC')->limit(1)->get()->toArray();
 
             if(count($CatalogWrcBatch_data) > 0){
               $invoce_done_wrc += 1;
@@ -264,6 +264,7 @@ class LotsCatalog extends Model
         if ($invoce_done_wrc == $count_wrc) {
           $lot_detail[0]['overall_progress']  = $lot_status_percentage[4];
           $lot_detail[0]['lot_invoiceing']  = $lot_status_percentage[4] - $lot_status_percentage[3];
+          $lot_detail[0]['lot_status']  = $creative_and_cataloging_lot_statusArr[4];
         }else if($invoce_parcially_done_wrc > 0){
           $lot_invoiceing  = 7 ;                           
           $lot_detail[0]['lot_invoiceing']  = $lot_invoiceing ;
@@ -275,7 +276,7 @@ class LotsCatalog extends Model
           // $lot_detail[0]['overall_progress']  = "100%";
           $lot_detail[0]['overall_progress']  = 100;
           $lot_detail[0]['wrc_submission']  = $lot_status_percentage[5] - $lot_status_percentage[4];
-          $lot_detail[0]['lot_status']  = $creative_and_cataloging_lot_statusArr[4];
+          $lot_detail[0]['lot_status']  = $creative_and_cataloging_lot_statusArr[5];
         }
       }
     }

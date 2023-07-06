@@ -58,65 +58,65 @@
 	}
 
 	.upper-head-style-for-track-hover {
-  margin-top: -10px;
-  margin-left: -10px;
-  margin-right: -10px;
-  background: #1A1A1A;
-}
+		margin-top: -10px;
+		margin-left: -10px;
+		margin-right: -10px;
+		background: #1A1A1A;
+	}
 
-.track-lot-table-wrc-no {
-  font-weight: 500;
-  font-size: 14px;
-  color: #B8B8B8;
-  letter-spacing: 0.15px;
-}
+	.track-lot-table-wrc-no {
+		font-weight: 500;
+		font-size: 14px;
+		color: #B8B8B8;
+		letter-spacing: 0.15px;
+	}
 
-.track-lot-table-wrc-date {
-  font-weight: 400;
-  font-size: 14px;
-  color: #808080;
-  line-height: 0.1;
-}
+	.track-lot-table-wrc-date {
+		font-weight: 400;
+		font-size: 14px;
+		color: #808080;
+		line-height: 0.1;
+	}
 
-.No-links-available{
-    font-weight: 400;
-    font-size: 16px;
-    color: #4D4D4D;
-}
+	.No-links-available{
+			font-weight: 400;
+			font-size: 16px;
+			color: #4D4D4D;
+	}
 
-.track-lot-table-inward-qty {
-  font-weight: 500;
-  font-size: 14px;
-  color: #808080;
-}
+	.track-lot-table-inward-qty {
+		font-weight: 500;
+		font-size: 14px;
+		color: #808080;
+	}
 
-.track-lot-table-inward-qty-no {
-  font-weight: 700;
-  font-size: 16px;
-  color: #FFFFFF;
-  line-height: 0.1;
-}
+	.track-lot-table-inward-qty-no {
+		font-weight: 700;
+		font-size: 16px;
+		color: #FFFFFF;
+		line-height: 0.1;
+	}
 
-.track-lot-table-typeof-service {
-  font-weight: 500;
-  font-size: 14px;
-  color: #808080;
-}
+	.track-lot-table-typeof-service {
+		font-weight: 500;
+		font-size: 14px;
+		color: #808080;
+	}
 
-.track-lot-table-marketplace-pri-mode {
-  font-weight: 400;
-  font-size: 16px;
-  color: #FFFFFF;
-  text-align: left;
-}
+	.track-lot-table-marketplace-pri-mode {
+		font-weight: 400;
+		font-size: 16px;
+		color: #FFFFFF;
+		text-align: left;
+	}
 
-.track-lot-adaptation-under {
-  font-weight: 400;
-  font-size: 16px;
-  color: #FFFFFF;
-  padding: 8px;
-  background: #333333;
-}
+	.track-lot-adaptation-under {
+		font-weight: 400;
+		font-size: 16px;
+		color: #FFFFFF;
+		padding: 8px;
+		background: #333333;
+	}
 
 	.track-lot-table-marketplace-pri-mode{
 		word-wrap: break-word;
@@ -159,7 +159,7 @@
                     <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M9.15538 7.9917H9.16064M9.15538 9.7417H9.16064M6.99705 7.9917H7.00288M6.99705 9.7417H7.00288M4.83813 7.9917H4.84397M4.83813 9.7417H4.84397" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
                  </svg>
-			     {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
+			     {{$lot_detail[0] != null && $lot_detail[0] != '' ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
 			</p>
 		</div>
 		<div class="lot-inwrd-vertical-parent-div">
@@ -190,31 +190,42 @@
     </div>
     
 	<div class="col-12">
+		<div style="background: #B8B8B8">
+			@php
+				$overall_progress_is = $lot_detail[0]['overall_progress'];
+				$overall_progress_is = str_replace('%', '', $overall_progress_is);
+				$lot_status_percentage = lot_status_percentage();
+				$lot_detail_is = $lot_detail[0];
+				pre($lot_status_percentage);
+				pre($lot_detail_is);
+				$dispaly_bar_1 = false;
+				$dispaly_bar_2 = false;
+				$dispaly_bar_3 = false;
+				$dispaly_bar_4 = false;
+				$dispaly_bar_5 = false;
+				$dispaly_bar_6 = false;
+					// dd($lot_status_percentage , $lot_detail[0]['overall_progress'] , $lot_status_percentage[5]);
+				if($overall_progress_is <= $lot_status_percentage[0]){
+					$dispaly_bar_1 = true;
+				}else if($overall_progress_is > $lot_status_percentage[0] && $overall_progress_is <= $lot_status_percentage[1]){
+					$dispaly_bar_2 = true;
+				}else if($overall_progress_is > $lot_status_percentage[1] && $overall_progress_is <= $lot_status_percentage[2]){
+					$dispaly_bar_3 = true;
+				}else if($overall_progress_is > $lot_status_percentage[2] && $overall_progress_is <= $lot_status_percentage[3]){
+					$dispaly_bar_4 = true;						
+				}else if($overall_progress_is > $lot_status_percentage[3] && $overall_progress_is <= $lot_status_percentage[4]){
+					$dispaly_bar_5 = true;
+				}
+			@endphp
+		</div>
 		<div class="row progress-row">
 			<div class="col-lg-1 progress-column-status-percen">
 				<p class="progress-status-head">Status:</p>
-				<p class="progress-status-percentage">{{$lot_detail[0] != null ? $lot_detail[0]['overall_progress'] : "20%"}}</p>
+				<p class="progress-status-percentage">{{$lot_detail[0] != null ? $overall_progress_is."%" : "20%"}}</p>
 			</div>
 			<div class="col-lg-11 progress-columnn">
 				<div class="progress-box">
-					@php
-						$overall_progress_is = $lot_detail[0]['overall_progress'];
-						$overall_progress_is = str_replace('%', '', $overall_progress_is);
-						$dispaly_bar_1 = false;
-						$dispaly_bar_2 = false;
-						$dispaly_bar_3 = false;
-						$dispaly_bar_4 = false;
-						$dispaly_bar_5 = false;
-						if($overall_progress_is <= 20){
-							$dispaly_bar_1 = true;
-						}else if($overall_progress_is > 20 && $overall_progress_is <= 40){
-							$dispaly_bar_2 = true;
-						}else if($overall_progress_is > 40 && $overall_progress_is <= 60){
-							$dispaly_bar_3 = true;
-						}else if($overall_progress_is > 60 && $overall_progress_is <= 80){
-							$dispaly_bar_4 = true;
-						}
-					@endphp
+					{{-- progress Bar labels --}}
 					<div class="progress-labels">
 						<div class="progress-label progress-label-1">
 							<p class="progress-upper-heading">
@@ -226,6 +237,7 @@
 								@endif
 								Inward</p>
 						</div>
+
 						<div class="progress-label progress-label-2">
 							<p class="progress-upper-heading">
 								@if ($dispaly_bar_2)
@@ -234,8 +246,9 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								WRC Generated</p>
+							Research & Strategy</p>
 						</div>
+
 						<div class="progress-label progress-label-3">
 							<p class="progress-upper-heading">
 								@if ($dispaly_bar_3)
@@ -244,8 +257,9 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Task Started</p>
+								Work Started</p>
 						</div>
+
 						<div class="progress-label progress-label-4">
 							<p class="progress-upper-heading">
 								@if ($dispaly_bar_4)
@@ -254,8 +268,9 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-							    QC & Uploading</p>
+							    Quality Check (QC)</p>
 						</div>
+						{{-- Invoice --}}
 						<div class="progress-label progress-label-5">
 							<p class="progress-upper-heading">
 								@if ($dispaly_bar_5)
@@ -264,36 +279,62 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Submissions</p>
+								Invoice</p>
+						</div>
+
+						<div class="progress-label progress-label-6">
+							<p class="progress-upper-heading">
+								@if ($dispaly_bar_5)
+								<svg class="task-status-svg" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="10" cy="10" r="10" fill="#59ABB2" fill-opacity="0.1"/>
+									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
+								</svg>&nbsp;
+								@endif
+								Submission</p>
 						</div>
 					</div>
+
+					{{-- progress Bar --}}
 					<div class="progress">
-						<div class="progress-bar progress-bar-1" role="progressbar_new" style="width: 20%;" aria-valuenow="20"
+						<div class="progress-bar progress-bar-1" role="progressbar_new" style="width: 16%;" aria-valuenow="16"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-2" role="progressbar_new" style="width: {{$lot_detail[0] != null ? $lot_detail[0]['wrc_progress'] : '0%'}};" aria-valuenow="40"
+						<div class="progress-bar progress-bar-2" role="progressbar_new" style="width: {{$lot_detail[0] != null && $overall_progress_is > $lot_status_percentage[0] ? $lot_detail[0]['wrc_progress'].'%' : '0%'}};" aria-valuenow="33"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-3" role="progressbar_new" style="width: {{$lot_detail[0] != null ? $lot_detail[0]['wrc_assign'] : '0%'}};" aria-valuenow="60"
+						<div class="progress-bar progress-bar-3" role="progressbar_new" style="width: {{$lot_detail[0] != null && $overall_progress_is > $lot_status_percentage[1] ? $lot_detail[0]['wrc_assign'].'%' : '0%'}};" aria-valuenow="50"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-4" role="progressbar_new" style="width: {{$lot_detail[0] != null ? $lot_detail[0]['wrc_qc'] : '0%'}};" aria-valuenow="80"
+						<div class="progress-bar progress-bar-4" role="progressbar_new" style="width: {{$lot_detail[0] != null && $overall_progress_is > $lot_status_percentage[2] ? $lot_detail[0]['wrc_qc'].'%' : '0%'}};" aria-valuenow="67"
 							aria-valuemin="0" aria-valuemax="100"></div>
-						<div class="progress-bar progress-bar-5" role="progressbar_new" style="width: {{$lot_detail[0] != null ? $lot_detail[0]['wrc_submission'] : '0%'}};" aria-valuenow="100"
+						<div class="progress-bar progress-bar-5" role="progressbar_new" style="width: {{$lot_detail[0] != null && $overall_progress_is > $lot_status_percentage[3] ? $lot_detail[0]['lot_invoiceing'].'%' : '0%'}};" aria-valuenow="84"
+							aria-valuemin="0" aria-valuemax="100"></div>
+						<div class="progress-bar progress-bar-6" role="progressbar_new" style="width: {{$lot_detail[0] != null && $overall_progress_is > $lot_status_percentage[4] ? $lot_detail[0]['wrc_submission'].'%' : '0%'}};" aria-valuenow="100"
 							aria-valuemin="0" aria-valuemax="100"></div>
 					</div>
+
+					{{-- progress Bar Dates --}}
+					@php
+						$overall_progress = $lot_detail[0]['overall_progress'];
+						$overall_progress = intval(str_replace('%', '', $overall_progress));
+					@endphp	
 					<div class="progress-labels">
-						<div class="progress-label progress-label-1">
+						<div class="progress-label progress-label-1" style="width: {{$lot_status_percentage[0]}}%">
 							<p class="progress-bottom-heading">{{isset($lot_detail[0]['created_at']) && $lot_detail[0]['created_at'] != null  ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}</p>
 						</div>
-						<div class="progress-label progress-label-2">
-							<p class="progress-bottom-heading">{{isset($lot_detail[0]['wrc_created_at']) && $lot_detail[0]['wrc_created_at'] != null && $lot_detail[0]['overall_progress'] > '20%' ? dateFormet_dmy($lot_detail[0]['wrc_created_at']) : "-"}}</p>
+						<div class="progress-label progress-label-2" style="width: {{$lot_status_percentage[1] - $lot_status_percentage[0]}}%">
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['wrc_created_at']) && $lot_detail[0]['wrc_created_at'] != null && $overall_progress > $lot_status_percentage[0] ? dateFormet_dmy($lot_detail[0]['wrc_created_at']) : "-"}}</p>
 						</div>
-						<div class="progress-label progress-label-3">
-							<p class="progress-bottom-heading">{{isset($lot_detail[0]['allocated_created_at']) && $lot_detail[0]['allocated_created_at'] != null  && $lot_detail[0]['overall_progress'] > '40%' ? dateFormet_dmy($lot_detail[0]['allocated_created_at']) : "-"}}</p>
+						<div class="progress-label progress-label-3" style="width: {{$lot_status_percentage[2] - $lot_status_percentage[1]}}%">
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['allocated_created_at']) && $lot_detail[0]['allocated_created_at'] != null  && $overall_progress > $lot_status_percentage[1] ? dateFormet_dmy($lot_detail[0]['allocated_created_at']) : "-"}}</p>
 						</div>
-						<div class="progress-label progress-label-4">
-							<p class="progress-bottom-heading">{{isset($lot_detail[0]['qc_done_at']) && $lot_detail[0]['qc_done_at'] != null  && $lot_detail[0]['overall_progress'] > '60%' ? dateFormet_dmy($lot_detail[0]['qc_done_at']) : "-"}}</p>
+						<div class="progress-label progress-label-4"  style="width: {{$lot_status_percentage[3] - $lot_status_percentage[2]}}%">
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['qc_done_at']) && $lot_detail[0]['qc_done_at'] != null  && $overall_progress > $lot_status_percentage[2] ? dateFormet_dmy($lot_detail[0]['qc_done_at']) : "-"}}</p>
 						</div>
-						<div class="progress-label progress-label-5">
-							<p class="progress-bottom-heading">{{isset($lot_detail[0]['submission_date']) && $lot_detail[0]['submission_date'] != null  && $lot_detail[0]['overall_progress'] == '100%' ? dateFormet_dmy($lot_detail[0]['submission_date']) : "-"}}</p>
+						{{-- invoice date --}}
+						<div class="progress-label progress-label-5"  style="width: {{$lot_status_percentage[4] - $lot_status_percentage[3]}}%">
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['lot_invoice_date']) && $lot_detail[0]['lot_invoice_date'] != null  && $overall_progress > $lot_status_percentage[3] ? dateFormet_dmy($lot_detail[0]['lot_invoice_date']) : "-"}}</p>
+						</div>
+
+						<div class="progress-label progress-label-6" style="width: {{$lot_status_percentage[5] - $lot_status_percentage[4]}}%">
+							<p class="progress-bottom-heading">{{isset($lot_detail[0]['submission_date']) && $lot_detail[0]['submission_date'] != null  && $overall_progress == $lot_status_percentage[5] ? dateFormet_dmy($lot_detail[0]['submission_date']) : "-"}}</p>
 						</div>
 					</div>
 				</div>
