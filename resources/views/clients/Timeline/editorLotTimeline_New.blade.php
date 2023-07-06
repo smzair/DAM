@@ -217,7 +217,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								WRC Generated</p>
+								Research & Strategy</p>
 						</div>
 						<div class="progress-label progress-label-3">
 							<p class="progress-upper-heading">
@@ -227,7 +227,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Editing started</p>
+								Work Started</p>
 						</div>
 						<div class="progress-label progress-label-4">
 							<p class="progress-upper-heading">
@@ -247,7 +247,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Submissions</p>
+								Submission</p>
 						</div>
 					</div>
 					<div class="progress">
