@@ -73,11 +73,11 @@
 					<img src="{{ asset($img_src)}}" alt="Zoomed Image" class="zoomed-image">
 				</div>
 				<div class="navigation-buttons left">
-				<button class="previous-button">&#8249;</button>
+					<button class="previous-button" style="display:none">&#8249;</button>
 				</div>
 		
 				<div class="navigation-buttons right">
-						<button class="next-button">&#8250;</button>
+					<button class="next-button" style="display:none">&#8250;</button>
 				</div>
                 
 				<div class="card-body total-sku-img-body d-flex justify-content-between" style="position: relative">
