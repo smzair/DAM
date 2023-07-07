@@ -19,6 +19,7 @@
 			display: flex;
 			justify-content: space-between;
 			padding: 16px;
+			align-items:center;
 		}
 
 		.adap-wrc {
@@ -106,7 +107,15 @@
 
 	.adap-wrc {
 		color: #FFFFFF;
+		display:flex !important;
+		align-items:center;
+		gap:16px
 	}
+	
+		a {
+			color: #0d6efd;
+			text-decoration: none;
+    }
 
 	.adap-wrc,
 	.adap-wrc-dots {
@@ -138,7 +147,7 @@
 
 	.WRC-no-file {
 		font-weight: 400;
-		font-size: 14px;
+		font-size: 12px;
 		letter-spacing: 0.25px;
 		color: #FFFFFF;
 	}
@@ -267,9 +276,6 @@ if($service_is == 'Shoot'){
 		</div>
 	</div>
 
-	<div class="row">
-		
-	</div>
 
 	{{-- WRCs details --}}
 	<div class="row" id="folderContainer" style="margin-top: 12px; position:relative">
@@ -299,7 +305,6 @@ if($service_is == 'Shoot'){
 												fill="white" />
 										</svg>
 									</span>
-									&nbsp;
 									<span class="WRC-no-file" id="lot_number{{$row['wrc_id'].$key}}">{{$row['wrc_number']}}</span>
 								</span>
 							</a>
@@ -614,50 +619,48 @@ if($service_is == 'Shoot'){
 	function download_mul_zip(){
 		var selectedFolders = document.querySelectorAll('#folderContainer .selected .adap-div .myPopover .Download');
 		console.log('selectedFolders', selectedFolders)
-		const element = selectedFolders[0]
-		const element1 = selectedFolders[1]
-		var hrefValue = element.getAttribute('href');
+		selectedFolders.forEach((element) => {
+			var hrefValue = element.getAttribute('href');
 			var wrc_id = element.getAttribute('data-wrc_id');
-			fetch(`http://127.0.0.1:8000/Shoot-lot-Edited-wrc-Images/MjcyOA==`)
-			// var wrc_number = element.getAttribute('data-wrc_number');
-			// console.log('element', element)
-			// console.log({wrc_number , wrc_id})
-			// console.log('********************************************')
+			var wrc_number = element.getAttribute('data-wrc_number');
+			console.log('element', element)
+			console.log({wrc_number , wrc_id})
+			console.log('********************************************')
 
-      // if (element) {
-			// 	element.click();
-      // } else {
-      //   console.log('Element not found.');
-      // }
-      // if (element1) {
-			// 	setTimeout(() => {
-			// 	element1.click();
-			// 	}, 10000);
-      // } else {
-      //   console.log('Element not found.');
-      // }
-		// selectedFolders.forEach((element) => {
-		// 	var hrefValue = element.getAttribute('href');
-		// 	var wrc_id = element.getAttribute('data-wrc_id');
-		// 	var wrc_number = element.getAttribute('data-wrc_number');
-		// 	console.log('element', element)
-		// 	console.log({wrc_number , wrc_id})
-		// 	console.log('********************************************')
+      if (element) {
+				element.click();
+      } else {
+        console.log('Element not found.');
+      }
+    });
+	}
 
-    //   if (element) {
-		// 		setTimeout(() => {
-		// 		element.click();
-		// 		}, 10000);
-    //   } else {
-    //     console.log('Element not found.');
-    //   }
-    // });
+	function download_multipal_link(){
+		let download_file_elements = []
+		let folderNames = selectedFolders.map(async (folder , index) => {
+			let selectedfolder_id = folder.classList[0];
+			var selectedFolder = document.querySelector('.'+selectedfolder_id);
+			var popoverFirstChild = selectedFolder.querySelector('.myPopover .Download');
+
+			var element = selectedFolder.querySelector('.adap-div .myPopover .Download');
+			download_file_elements.push(element);
+		})
+		console.log('download_file_elements ', download_file_elements )
+		download_file_elements.forEach((element) => {
+			console.log('element', element)
+      if (element) {
+				setTimeout(() => {
+					element.click();
+				}, 1000);
+      } else {
+        console.log('Element not found.');
+      }
+    });
 	}
 
 	function download_multipal_link_back(){
 		
 		const folderNames = selectedFolders.map(async (folder , index) => {
-			console.log('selectedFolders', selectedFolders)
 			let selectedfolder_id = folder.classList[0];
 			var selectedFolder = document.querySelector('.'+selectedfolder_id);
 			var popoverFirstChild = selectedFolder.querySelector('.myPopover .Download');
@@ -745,9 +748,7 @@ if($service_is == 'Shoot'){
 	}
 
 	function getClosestFolder(element) {
-		console.log(`element.classList.contains('folder')`, element.classList.contains('folder'))
 		while (element && !element.classList.contains('folder')) {
-			console.log({element})
 			element = element.parentElement;
 		}
 		return element;

@@ -27,7 +27,7 @@
     	background:#0F0F0F;
 		}
 		.viewport{
-			margin-top: 83px;
+			margin-top: 87px;
 			height: calc(100vh - 73px);
 		}
 		
@@ -62,6 +62,7 @@
     .notification-popover-container {
       position: relative;
       display: inline-block;
+      cursor:pointer;
     }
 
     /* Styles for the popover content */
@@ -171,7 +172,7 @@
     }
     
     .task-status-svg circle {
-      fill: #59ABB2;
+      fill: #50AB64;
       stroke: none;
       transition: fill 0.3s;
       transform-origin: center;
@@ -295,7 +296,7 @@
 
 						<ul class="navbar-nav ms-auto">
 							{{-- notification bell --}}
-							<li class="nav-item mt-1 notification-popover-container" style="padding-right: 56px; margin-top: 12px">
+							<li class="nav-item mt-1 notification-popover-container" style="padding-right: 48px; margin-top: 12px">
 								
 									@if ($new_notification)
 										<svg  id="popover-trigger" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -306,7 +307,7 @@
 										</svg>
 											
 									@else
-										<svg id="popover-trigger" width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<svg id="popover-trigger" width="42" height="42" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<circle cx="18.5696" cy="18" r="18" fill="#1A1A1A"/>
 											<path d="M18.5695 13.3667V16.1417M18.5862 9.66675C15.5195 9.66675 13.0362 12.1501 13.0362 15.2167V16.9667C13.0362 17.5334 12.8028 18.3834 12.5112 18.8667L11.4528 20.6334C10.8028 21.7251 11.2528 22.9417 12.4528 23.3417C16.4372 24.6667 20.7434 24.6667 24.7278 23.3417C24.9907 23.254 25.2306 23.1084 25.4296 22.9155C25.6287 22.7227 25.7819 22.4876 25.8779 22.2276C25.9739 21.9676 26.0102 21.6894 25.9843 21.4134C25.9583 21.1375 25.8707 20.8709 25.7278 20.6334L24.6695 18.8667C24.3778 18.3834 24.1445 17.5251 24.1445 16.9667V15.2167C24.1362 12.1667 21.6362 9.66675 18.5862 9.66675Z" stroke="#D1D1D1" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
 											<path d="M21.3447 24.25C21.3447 25.775 20.0947 27.025 18.5697 27.025C17.8113 27.025 17.1113 26.7083 16.6113 26.2083C16.1113 25.7083 15.7947 25.0083 15.7947 24.25" fill="#D1D1D1"/>
@@ -585,6 +586,10 @@
 				<!-- Sidebar End -->
 
 				<div class="col-sm-10 border border-dark main-container-resp offset-lg-2">
+
+					<div class="added removed d-none">
+						adhfsdlkh dfdshj
+					</div>
           @yield('main_content')
 				</div>
 			</div>

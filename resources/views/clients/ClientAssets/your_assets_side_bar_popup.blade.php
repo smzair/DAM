@@ -89,10 +89,10 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-12">
-							<p class="side-text">TAGS</p>
-							<P class="side-text2">Black Tees, Ajio code</P>
-						</div>
+						<!--<div class="col-12">-->
+						<!--	<p class="side-text">TAGS</p>-->
+						<!--	<P class="side-text2">Black Tees, Ajio code</P>-->
+						<!--</div>-->
 
 						<!--<div class="col-12 d-grid gap-2 ps-4 pe-4">-->
 						<!--	<button class="btn border rounded-0  heading-details" type="button">-->
