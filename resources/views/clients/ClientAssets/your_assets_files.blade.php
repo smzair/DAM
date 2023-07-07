@@ -105,7 +105,7 @@ $service_is = 'Shoot';
 										</div>
 										<div class="col-12 d-flex justify-content-between">
 											<div>
-													<p class="your-asset-lotno-underbox">Brand Name</p>
+													<p class="your-asset-lotno-underbox">{{$row['brand_name']}}</p>
 													<p class="file-lot-date-para">
 														Lot date:
 													<span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}}</span>
@@ -255,7 +255,7 @@ $service_is = 'Shoot';
 										</div>
 										<div class="col-12 d-flex d-flex justify-content-between">
 										    <div>
-										        <p class="your-asset-lotno-underbox">Brand Name</p>
+										        <p class="your-asset-lotno-underbox">{{$row['brand_name']}}</p>
 												<p class="file-lot-date-para">
 												  Lot date:
 												  <span class="your-asset-lot-date"> {{dateFormet_dmy($row['lot_created_at'])}} </span>

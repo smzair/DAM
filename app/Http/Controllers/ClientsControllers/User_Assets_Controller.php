@@ -59,6 +59,7 @@ class User_Assets_Controller extends Controller
     $shoot_lots_data = array();
     if($service_is == 'Shoot'){
       $lots_query_cataloging = Lots::leftJoin('wrc', 'wrc.lot_id', '=', 'lots.id')->whereIn('lots.brand_id', $brand_arr)->whereNotNull('wrc.id')->
+      leftjoin('brands' , 'brands.id' , 'lots.brand_id')->
         select(
           'lots.id as lot_id',
           'lots.lot_id as lot_number',
@@ -69,6 +70,8 @@ class User_Assets_Controller extends Controller
           DB::raw("GROUP_CONCAT(wrc.id) as wrc_ids"),
           DB::raw("GROUP_CONCAT(wrc.wrc_id) as wrc_numbers"),
           DB::raw("COUNT(wrc.id) as wrc_counts"),
+          'brands.name as brand_name',
+          'brands.short_name as brand_short_name'
         )->groupby('lots.id')->orderBy('lots.created_at', $sortByIs);
       $shoot_lots = $lots_query_cataloging->where('lots.user_id', $parent_client_id);
       $shoot_lots = $lots_query_cataloging->get()->toArray();
@@ -114,6 +117,7 @@ class User_Assets_Controller extends Controller
   
           array_push($shoot_lots_data, array(
             'lot_id' => $row['lot_id'],
+            'brand_name' => $row['brand_name'],
             'lot_number' => $row['lot_number'],
             'lot_created_at' => $row['lot_created_at'],
             'inward_qty' => $skus_count,
@@ -138,6 +142,7 @@ class User_Assets_Controller extends Controller
     if($service_is == 'PostProduction'){
       $lots_query_cataloging = EditorLotModel::leftJoin('editing_wrcs', 'editing_wrcs.lot_id', '=', 'editor_lots.id')
         ->whereIn('editor_lots.brand_id', $brand_arr)->whereNotNull('editing_wrcs.id')->
+        leftjoin('brands' , 'brands.id' , 'editor_lots.brand_id')->
         select(
           'editor_lots.id as lot_id',
           'editor_lots.lot_number',
@@ -149,6 +154,8 @@ class User_Assets_Controller extends Controller
           DB::raw("SUM(editing_wrcs.imgQty) as tot_imgqty"),
           DB::raw("SUM(editing_wrcs.uploaded_img_qty) as tot_uploaded_img_qty"),
           DB::raw("COUNT(editing_wrcs.id) as wrc_counts"),
+          'brands.name as brand_name',
+          'brands.short_name as brand_short_name'
         )->groupby('editor_lots.id');
   
       $editor_lots = $lots_query_cataloging->where('editor_lots.user_id', $parent_client_id)->orderBy('editor_lots.created_at', $sortByIs);
@@ -182,6 +189,7 @@ class User_Assets_Controller extends Controller
   
           array_push($editor_lots_data, array(
             'lot_id' => $row['lot_id'],
+            'brand_name' => $row['brand_name'],
             'lot_number' => $row['lot_number'],
             'lot_created_at' => $row['lot_created_at'],
             'inward_qty' => $row['tot_uploaded_img_qty'],

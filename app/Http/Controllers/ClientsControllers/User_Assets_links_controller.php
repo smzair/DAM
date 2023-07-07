@@ -59,7 +59,8 @@ class User_Assets_links_controller extends Controller
 		// creative Lots Data.
 		$creative_lots = [];
 		if($service_is == 'Creative'){
-			$lots_query = CreatLots::leftjoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->whereIn('creative_lots.brand_id', $brand_arr);
+			$lots_query = CreatLots::leftjoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->whereIn('creative_lots.brand_id', $brand_arr)->
+			leftjoin('brands' , 'brands.id' , 'creative_lots.brand_id');
 			$lots_query = $lots_query->select(
 				'creative_wrc.lot_id',
 				DB::raw('CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END AS inward_quantity'),
@@ -71,6 +72,8 @@ class User_Assets_links_controller extends Controller
 				'creative_lots.user_id',
 				'creative_lots.brand_id',
 				'creative_lots.lot_number',
+				'brands.name as brand_name',
+				'brands.short_name as brand_short_name',
 				'creative_lots.created_at as lot_created_at'
 			)->where('user_id', $parent_client_id);
 			$lots = $lots_query->groupBy('creative_lots.id')->orderBy('creative_lots.created_at', $sortByIs);
@@ -107,7 +110,8 @@ class User_Assets_links_controller extends Controller
 		// cataloging Lots Data. 
 		$catalog_lots_data = [];
 		if($service_is == 'Listing'){
-			$catalog_lots_query = LotsCatalog::leftjoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id')->whereIn('lots_catalog.brand_id', $brand_arr);
+			$catalog_lots_query = LotsCatalog::leftjoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id')->whereIn('lots_catalog.brand_id', $brand_arr)->leftjoin('brands' , 'brands.id' , 'lots_catalog.brand_id')
+			;
 			$catalog_lots_query = $catalog_lots_query->select(
 				'catlog_wrc.lot_id',
 				DB::raw('SUM(catlog_wrc.sku_qty) AS inward_qty'),
@@ -117,6 +121,8 @@ class User_Assets_links_controller extends Controller
 				'lots_catalog.user_id',
 				'lots_catalog.brand_id',
 				'lots_catalog.lot_number',
+				'brands.name as brand_name',
+				'brands.short_name as brand_short_name',
 				'lots_catalog.created_at as lot_created_at'
 			)->where('user_id', $parent_client_id);
 			$catalog_lots = $catalog_lots_query->groupBy('lots_catalog.id')->orderBy('lots_catalog.created_at', $sortByIs);
