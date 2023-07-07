@@ -115,7 +115,7 @@
 						</div>
 
 						<div class="col-12 d-grid gap-2 my-2">
-							<button class="btn border rounded-0 side-text2" type="button">
+							<button id="share_btn" data-id="" class="btn border rounded-0 side-text2" type="button">
 								<svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<rect x="0.5" width="14" height="14" fill="#9F9F9F" />
 									<line x1="2.44437" y1="1.23727" x2="13.1353" y2="11.9282" stroke="#D1D1D1" />
