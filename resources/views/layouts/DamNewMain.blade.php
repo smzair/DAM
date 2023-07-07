@@ -599,6 +599,29 @@
 	@yield('js_links')
 	<!-- Common Js -->
 	<script src="{{ asset('ClientsDist\js\common_js_new.js') }}"></script>
+
+	{{-- view details copy link --}}
+
+	<script>
+			var button = document.getElementById("share_btn");
+			button.addEventListener("click", function() {
+				var linkId = button.getAttribute("data-id");
+				var link = document.getElementById(linkId);
+				console.log({linkId , link})
+
+				if (link) {
+					link.click();
+				}
+			});
+		// function copy_link_new(){
+		// 	const linkId = button.getAttribute("data-id");
+		// 	const link = document.getElementById(linkId);
+		// 	if (link) {
+		// 		// link.click();
+		// 	}
+
+		// }
+	</script>
 	{{-- Svg script --}}
 		<script>
 			function swapSVG(event) {
@@ -711,6 +734,7 @@
 	{{-- Setting data and time in side bar --}}
 	<script>
 		const set_date_time = (key , service = 'other') => {
+			document.getElementById("share_btn").setAttribute("data-id", key);
 			const lot_number = $("#lot_number"+key).html()
 			const lot_date = $("#lot_date"+key).html()
 			const lot_time = $("#lot_time"+key).html()
