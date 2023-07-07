@@ -26,25 +26,56 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 	}
 ?>
 
+<style>
+    .dropdown-toggle::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: none;
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+}
+
+	.dropdown-item.active, .dropdown-item:active {
+                color: #FFFFFF;
+                text-decoration: none;
+                background-color: #1A1A1A;
+        }
+        
+        .dropdown-item:hover {
+                color:#fffc;
+                background:#1A1A1A !important;
+        }
+</style>
+
 <div class="row">
 	<div class=" col-12 d-flex justify-content-between">
 		<h4 class="headingF">
 			{{$service_is == 'Creative' ? 'Creative Lots' : 'Listing Lots' }}
 		</h4>
-		<div class="dropdown mt-2">
-			<a class="btn rounded-0 sort-by-button  dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-				Sort &nbsp;&nbsp;&nbsp;&nbsp;
-			</a>
-			<ul class="dropdown-menu dropdown-menu-show-sortby">
+		<div class="dropdown">
+             <a class="btn rounded-0 sort-by-button  dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+               <span>Sort</span>
+               <span>
+                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 7H21M6 12H18M10 17H14" stroke="#808080" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+
+               </span>
+             </a>
+
+            <ul class="dropdown-menu dropdown-menu-show-sortby">
 				<li><a class="dropdown-item dropdown-menu-show-sortby-item {{$sortBy == 'latest' ? 'active' : ''}}" href="{{route('your_assets_Links', ['service' => $service_is ,'sortBy' => 'latest' ])}}">Latest</a></li>
 				<li><a class="dropdown-item dropdown-menu-show-sortby-item {{($sortBy == 'oldest' || $sortBy == 'old')  ? 'active' : ''}}" href="{{route('your_assets_Links', ['service' => $service_is , 'sortBy' => 'oldest' ] )}}">Oldest</a></li>
 			</ul>
-	</div>
+         </div>
 </div>
 
 @if (count($creative_lots) > 0 || count($catalog_lots) > 0 )
 
-	<div class="row" style="margin-top: 20px;">
+	<div style="margin-top: 40px;">
 		<div class="" id="pills-tabContent">
 			{{-- creative Lots --}}
 			@if (count($creative_lots) > 0)
@@ -70,10 +101,10 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 										
 										<div class="col-12 d-flex d-flex justify-content-between">
 										    <div>
-												<p class="lot-no-heading">Lot no</p>
-												<span class="your-asset-lotno-underbox" id="lot_number{{$row['id'].$key}}">{{$row['lot_number']}}</span>
+											    <p class="your-asset-lotno-underbox">{{$row['brand_name']}}</p>
 												<p class="file-lot-date-para">
-												    <span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}} </span>
+												    Lot date:
+												    <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}} </span>
 												</p>
 												 <div class="myPopover" style="display: none;">
 													<a href="javascript:void(0)" onclick="toggleSidebar(); set_links_date_time('{{$row['id'].$key}}') ">
@@ -128,13 +159,13 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 														</svg>&nbsp;
 														Add to favorites
 													</a>
-												 <a href="javascript:void(0)">
-														<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-															<path d="M3.47507 12.7498L7.25007 16.5248C7.99675 17.2693 9.00816 17.6873 10.0626 17.6873C11.117 17.6873 12.1284 17.2693 12.8751 16.5248L16.5334 12.8664C17.2779 12.1198 17.696 11.1084 17.696 10.0539C17.696 8.99952 17.2779 7.98812 16.5334 7.24144L12.7501 3.47477C12.3589 3.08252 11.8898 2.77675 11.373 2.57722C10.8562 2.37769 10.3033 2.28884 9.75007 2.31644L5.58341 2.51644C3.91674 2.59144 2.59174 3.91644 2.50841 5.57477L2.30841 9.74144C2.25841 10.8664 2.68341 11.9581 3.47507 12.7498Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-															<path d="M7.91659 9.99967C8.46912 9.99967 8.99902 9.78018 9.38972 9.38948C9.78043 8.99878 9.99992 8.46888 9.99992 7.91634C9.99992 7.36381 9.78043 6.8339 9.38972 6.4432C8.99902 6.0525 8.46912 5.83301 7.91659 5.83301C7.36405 5.83301 6.83415 6.0525 6.44345 6.4432C6.05275 6.8339 5.83325 7.36381 5.83325 7.91634C5.83325 8.46888 6.05275 8.99878 6.44345 9.38948C6.83415 9.78018 7.36405 9.99967 7.91659 9.99967Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-														</svg> &nbsp;
-														Add Tag
-													</a>
+												 <!--<a href="javascript:void(0)">-->
+													<!--	<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+													<!--		<path d="M3.47507 12.7498L7.25007 16.5248C7.99675 17.2693 9.00816 17.6873 10.0626 17.6873C11.117 17.6873 12.1284 17.2693 12.8751 16.5248L16.5334 12.8664C17.2779 12.1198 17.696 11.1084 17.696 10.0539C17.696 8.99952 17.2779 7.98812 16.5334 7.24144L12.7501 3.47477C12.3589 3.08252 11.8898 2.77675 11.373 2.57722C10.8562 2.37769 10.3033 2.28884 9.75007 2.31644L5.58341 2.51644C3.91674 2.59144 2.59174 3.91644 2.50841 5.57477L2.30841 9.74144C2.25841 10.8664 2.68341 11.9581 3.47507 12.7498Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+													<!--		<path d="M7.91659 9.99967C8.46912 9.99967 8.99902 9.78018 9.38972 9.38948C9.78043 8.99878 9.99992 8.46888 9.99992 7.91634C9.99992 7.36381 9.78043 6.8339 9.38972 6.4432C8.99902 6.0525 8.46912 5.83301 7.91659 5.83301C7.36405 5.83301 6.83415 6.0525 6.44345 6.4432C6.05275 6.8339 5.83325 7.36381 5.83325 7.91634C5.83325 8.46888 6.05275 8.99878 6.44345 9.38948C6.83415 9.78018 7.36405 9.99967 7.91659 9.99967Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>-->
+													<!--	</svg> &nbsp;-->
+													<!--	Add Tag-->
+													<!--</a>-->
 												</div>
 											</div>
 											<div type="button" class="btn border-0 rounded-circle myButton">
@@ -142,7 +173,11 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 													</i>
 											</div>
 										</div>
-										<div class="col-12 d-flex justify-content-between">
+										<div>
+										    <p class="lot-no-heading">Lot no.</p>
+										    <p class="inward-qty-num" id="lot_number{{$row['id'].$key}}">{{$row['lot_number']}}</p>
+										</div>
+										<div class="col-10 d-flex justify-content-between">
 											<div>
 												<p class="inward-qty">Inward Quantity : </p>
 												<p class="inward-qty-num">
@@ -192,10 +227,10 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 										
 										<div class="col-12 d-flex d-flex justify-content-between">
 											     <div>
-											    	<p class="lot-no-heading">Lot no</p>
-											    	<span class="your-asset-lotno-underbox" id="lot_number{{$row['brand_id'].$key}}">{{$row['lot_number']}}</span>
+											        <p class="your-asset-lotno-underbox">{{$row['brand_name']}}</p>
 											    	<p class="file-lot-date-para">
-											    	   <span class="your-asset-lot-date-underbox">Date :</span> <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}}</span> 
+											    	  Lot date:
+											    	 <span class="your-asset-lot-date">{{dateFormet_dmy($row['lot_created_at'])}}</span> 
 											    	</p>
 											    	
 												 	<div class="myPopover" style="display: none;">
@@ -249,13 +284,13 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 														</svg>&nbsp;
 														Add to favorites
 													</a>
-												 <a href="javascript:void(0)">
-														<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-															<path d="M3.47507 12.7498L7.25007 16.5248C7.99675 17.2693 9.00816 17.6873 10.0626 17.6873C11.117 17.6873 12.1284 17.2693 12.8751 16.5248L16.5334 12.8664C17.2779 12.1198 17.696 11.1084 17.696 10.0539C17.696 8.99952 17.2779 7.98812 16.5334 7.24144L12.7501 3.47477C12.3589 3.08252 11.8898 2.77675 11.373 2.57722C10.8562 2.37769 10.3033 2.28884 9.75007 2.31644L5.58341 2.51644C3.91674 2.59144 2.59174 3.91644 2.50841 5.57477L2.30841 9.74144C2.25841 10.8664 2.68341 11.9581 3.47507 12.7498Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-															<path d="M7.91659 9.99967C8.46912 9.99967 8.99902 9.78018 9.38972 9.38948C9.78043 8.99878 9.99992 8.46888 9.99992 7.91634C9.99992 7.36381 9.78043 6.8339 9.38972 6.4432C8.99902 6.0525 8.46912 5.83301 7.91659 5.83301C7.36405 5.83301 6.83415 6.0525 6.44345 6.4432C6.05275 6.8339 5.83325 7.36381 5.83325 7.91634C5.83325 8.46888 6.05275 8.99878 6.44345 9.38948C6.83415 9.78018 7.36405 9.99967 7.91659 9.99967Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-														</svg> &nbsp;
-														Add Tag
-													</a>
+												 <!--<a href="javascript:void(0)">-->
+													<!--	<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+													<!--		<path d="M3.47507 12.7498L7.25007 16.5248C7.99675 17.2693 9.00816 17.6873 10.0626 17.6873C11.117 17.6873 12.1284 17.2693 12.8751 16.5248L16.5334 12.8664C17.2779 12.1198 17.696 11.1084 17.696 10.0539C17.696 8.99952 17.2779 7.98812 16.5334 7.24144L12.7501 3.47477C12.3589 3.08252 11.8898 2.77675 11.373 2.57722C10.8562 2.37769 10.3033 2.28884 9.75007 2.31644L5.58341 2.51644C3.91674 2.59144 2.59174 3.91644 2.50841 5.57477L2.30841 9.74144C2.25841 10.8664 2.68341 11.9581 3.47507 12.7498Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
+													<!--		<path d="M7.91659 9.99967C8.46912 9.99967 8.99902 9.78018 9.38972 9.38948C9.78043 8.99878 9.99992 8.46888 9.99992 7.91634C9.99992 7.36381 9.78043 6.8339 9.38972 6.4432C8.99902 6.0525 8.46912 5.83301 7.91659 5.83301C7.36405 5.83301 6.83415 6.0525 6.44345 6.4432C6.05275 6.8339 5.83325 7.36381 5.83325 7.91634C5.83325 8.46888 6.05275 8.99878 6.44345 9.38948C6.83415 9.78018 7.36405 9.99967 7.91659 9.99967Z" stroke="white" stroke-width="1.5" stroke-linecap="round"/>-->
+													<!--	</svg> &nbsp;-->
+													<!--	Add Tag-->
+													<!--</a>-->
 												</div>
 										    	</div>
 												<div type="button" class="btn border-0 rounded-circle myButton">
@@ -263,7 +298,11 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 													</i>
 												</div>
 										</div>
-										<div class="col-12 d-flex justify-content-between">
+										<div>
+										    <p class="lot-no-heading">Lot no.</p>
+										    <p class="inward-qty-num" id="lot_number{{$row['brand_id'].$key}}">{{$row['lot_number']}}</p>
+										</div>
+										<div class="col-10 d-flex justify-content-between">
 											<div>
 												<p class="inward-qty">Inward Quantity : </p>
 												<p class="inward-qty-num">

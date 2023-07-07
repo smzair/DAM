@@ -155,6 +155,7 @@ class Lots extends Model {
                 'wrc.wrc_id as wrc_number',
                 'wrc.created_at as wrc_created_at',
                 DB::raw("DATE_FORMAT(wrc.created_at, '%d-%m-%Y') as wrc_formatted_date"),
+                'wrc.updated_at as wrc_updated_at'
             )->get()->toArray();
             $tot_sku_count  = 0;
             $submited_wrc = 0;
@@ -174,6 +175,7 @@ class Lots extends Model {
                 $wrc_info[$key]['submission_date'] =  '';
                 $wrc_info[$key]['invoice_date'] =  '';
                 $wrc_info[$key]['service'] =  'SHOOT';
+                $wrc_info[$key]['wrc_current_status'] =  1;
 
                 $file_path = '';
 
@@ -207,6 +209,7 @@ class Lots extends Model {
                 $lot_detail[0]['wrc_created_at'] = $val['wrc_created_at'];
 
                 if($sku_count > 0){
+
                     $sku_info_data = $sku_info_query->get()->toarray();
                     $sku_info = array_column($sku_info_data , 'id');
                     $skus_sku_code_arr = array_column($sku_info_data , 'sku_code' , 'id' );
@@ -214,6 +217,8 @@ class Lots extends Model {
                     $upload_raw_info = uploadraw::whereIn('sku_id', $sku_info)->get()->toArray();
                     $upload_raw_info_id = [];
                     if(count($upload_raw_info) > 0){
+                        $wrc_info[$key]['wrc_current_status'] =  2;
+
                         $lot_detail[0]['allocated_created_at'] = $upload_raw_info[0]['created_at'];
                         $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[2];
                         $lot_detail[0]['overall_progress']  = $lot_status_percentage[2];
@@ -230,6 +235,7 @@ class Lots extends Model {
                     
                     
                     if(count($editor_qc_info) > 0){
+                        $wrc_info[$key]['wrc_current_status'] =  3;
                         $lot_detail[0]['lot_status']  = $shoot_lot_statusArr[3];
                         $lot_detail[0]['overall_progress']  = $lot_status_percentage[3];
                         $lot_detail[0]['wrc_qc']  = $lot_status_percentage[3] - $lot_status_percentage[2];
@@ -259,14 +265,20 @@ class Lots extends Model {
                         $invoice_no = $val['invoice_no'];
                         $wrc_id = $val['wrc_id'];
 
-                        if($invoice_no != '' && $invoice_no != null ){
+                        if($invoice_no != '' && $invoice_no != null){
                             $invoce_done_wrc += 1;
+                            $lot_detail[0]['lot_invoice_date']  = $val['wrc_updated_at'];
+                            $wrc_info[$key]['wrc_current_status'] =  4;
                         }else{
-
+                            
                             $pre_invoice_data = DB::table('pre_invoice')->where('service_id' , '=' , '1')->where('wrc_id' , '=' , $wrc_id)->get()->toArray();
                             if(count($pre_invoice_data) > 0 ){
+                                // dd($pre_invoice_data);
+
                                 if($pre_invoice_data[0]->invoice_group_id > 0){
                                     $invoce_done_wrc += 1;
+                                    $wrc_info[$key]['wrc_current_status'] =  4;
+                                    $lot_detail[0]['lot_invoice_date']  = $pre_invoice_data[0]->created_at;
                                 }else{
                                     $invoce_parcially_done_wrc += 1; 
                                 }
@@ -286,6 +298,7 @@ class Lots extends Model {
                         $lot_submission_query = submissions::where('submission.wrc_id', '=', $val['wrc_id'])->select('id as submission_id', 'submission.submission_date');
                         $lot_submission_count = $lot_submission_query->count();
                         if($lot_submission_count > 0){
+                            $wrc_info[$key]['wrc_current_status'] =  5;
                             array_push($wrc_id_arr , $val['wrc_id']);
                             $submited_wrc += 1;
 
@@ -308,7 +321,7 @@ class Lots extends Model {
                 $wrc_info[$key]['file_path'] =  $file_path;
             }
             $lot_detail[0]['skus_count'] =  $tot_sku_count;
-            // dd($wrc_count, $lot_detail , $wrc_info);
+            // dd($shoot_lot_statusArr , $wrc_info);
             // dd($shoot_lot_statusArr, $lot_status_percentage, $lot_detail[0] , $wrc_info);
 
             $wrc_id_arr = array_column($wrc_info, 'wrc_id');

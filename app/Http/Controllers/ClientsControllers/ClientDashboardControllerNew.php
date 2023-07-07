@@ -79,11 +79,11 @@ class ClientDashboardControllerNew extends Controller
         $lot_detail = $LotTimelineData['lot_detail']; 
         $creative_lots[$key] = $lot_detail[0];
         if($lotStatus == 'active'){
-          if ($creative_lots[$key]['lot_status'] == $creative_and_cataloging_lot_statusArr[4]) {
+          if ($creative_lots[$key]['lot_status'] == $creative_and_cataloging_lot_statusArr[5]) {
             unset($creative_lots[$key]);
           }
         }elseif($lotStatus == 'completed'){
-          if ($creative_lots[$key]['lot_status'] != $creative_and_cataloging_lot_statusArr[4]) {
+          if ($creative_lots[$key]['lot_status'] != $creative_and_cataloging_lot_statusArr[5]) {
             unset($creative_lots[$key]);
           }
         }        
@@ -106,11 +106,11 @@ class ClientDashboardControllerNew extends Controller
         $lot_detail = $LotTimelineData['lot_detail']; 
         $lots_catalog[$key] = $lot_detail[0];
         if($lotStatus == 'active'){
-          if ($lots_catalog[$key]['lot_status'] == $creative_and_cataloging_lot_statusArr[4]) {
+          if ($lots_catalog[$key]['lot_status'] == $creative_and_cataloging_lot_statusArr[5]) {
             unset($lots_catalog[$key]);
           }
         }elseif($lotStatus == 'completed'){
-          if ($lots_catalog[$key]['lot_status'] != $creative_and_cataloging_lot_statusArr[4]) {
+          if ($lots_catalog[$key]['lot_status'] != $creative_and_cataloging_lot_statusArr[5]) {
             unset($lots_catalog[$key]);
           }
         }
@@ -139,11 +139,11 @@ class ClientDashboardControllerNew extends Controller
         $lot_detail = $LotTimelineData['lot_detail']; 
         $editor_lots[$key] = $lot_detail[0];
         if($lotStatus == 'active'){
-          if ($editor_lots[$key]['lot_status'] == $Editing_lot_statusArr[4]) {
+          if ($editor_lots[$key]['lot_status'] == $Editing_lot_statusArr[5]) {
             unset($editor_lots[$key]);
           }
         }elseif($lotStatus == 'completed'){
-          if ($editor_lots[$key]['lot_status'] != $Editing_lot_statusArr[4]) {
+          if ($editor_lots[$key]['lot_status'] != $Editing_lot_statusArr[5]) {
             unset($editor_lots[$key]);
           }
         }        
