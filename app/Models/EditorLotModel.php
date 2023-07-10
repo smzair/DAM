@@ -121,7 +121,7 @@ class EditorLotModel extends Model
             'editor_lots.lot_number', 'editor_lots.created_at', 'users.Company as company_name',
         'users.c_short as company_c_short',
         'brands.name as brand_name',
-        'brands.short_name as brand_short_name', DB::raw('sum(editing_wrcs.uploaded_img_qty) as inward_quantity',))->get()->toArray();
+        'brands.short_name as brand_short_name', DB::raw('sum(editing_wrcs.uploaded_img_qty) as inward_quantity'))->get()->toArray();
         
         $lot_info_with_wrc_query = EditorLotModel::where('editing_wrcs.lot_id', $id)->leftJoin('editing_wrcs', 'editing_wrcs.lot_id', 'editor_lots.id')->
         leftjoin('editors_commercials' ,'editors_commercials.id' , 'editing_wrcs.commercial_id' )->

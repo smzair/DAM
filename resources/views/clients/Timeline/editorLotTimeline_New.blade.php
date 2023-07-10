@@ -14,7 +14,7 @@
 		z-index: 1;
 		width: 620px !important;
 		/* Set the width of the popover */
-		/*top: 455px;*/
+    	top: auto !important;
   /*      left: 405px;*/
 	}
 
@@ -30,6 +30,7 @@
 		position: relative;
 		display: inline-block;
     	text-decoration: underline !important;
+    	margin-bottom:0px;
 	}
 
 	.upper-head-style-for-track-hover {
@@ -111,6 +112,7 @@
 		background: #FFF300 !important;
 		color: #0F0F0F !important;
 		padding: 15px 20px !important;
+		border: 1px solid #0F0F0F !important;
 	}
 	.last-btn-div .download-all-assets:hover{
 		background: #FFF300 !important;
@@ -138,10 +140,7 @@
 		<div>
 			<p class="brand-name-under-track-table">{{$lot_detail[0]['brand_name']}}</p>
 			<p class="lot-date-sty">
-			    <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9.15538 7.9917H9.16064M9.15538 9.7417H9.16064M6.99705 7.9917H7.00288M6.99705 9.7417H7.00288M4.83813 7.9917H4.84397M4.83813 9.7417H4.84397" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
-                 </svg>
+			      <span>Lot date:</span>
 			     {{$lot_detail[0] != null ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
 			</p>
 		</div>
@@ -158,7 +157,7 @@
                    </div>
                    <span class="border border-1 border-dark border-for-track-lot-start"></span>
                    <div>
-                    <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">Vertical type</p>
+                    <p style="font-weight: 500;font-size: 14px;color: #9F9F9F;margin-bottom: 0px;">Lot type</p>
 	                <h2 class="lot-no-sty">Post-production Lots</h2>
                    </div>
                </div>
@@ -249,7 +248,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-								Quality Check (QC)</p>
+								Quality Check</p>
 						</div>
 						<div class="progress-label progress-label-5">
 							<p class="progress-upper-heading">
