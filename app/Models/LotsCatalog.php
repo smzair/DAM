@@ -177,18 +177,22 @@ class LotsCatalog extends Model
       $wrc_detail[$key]['submission_status'] = "Pending";
       $wrc_detail[$key]['submission_status'] = "Pending";
       $wrc_detail[$key]['invoice_date'] =  '';
+      $wrc_detail[$key]['service'] =  'CATALOG';
+      $wrc_detail[$key]['wrc_current_status'] =  1;
 
 
       if ($copy_sum > 0 || $cata_sum > 0) {
         $lot_detail[0]['wrc_assign']  = 9;
         $lot_detail[0]['overall_progress']  = $lot_status_percentage[1] + 9;        
         $lot_detail[0]['lot_status']  = $creative_and_cataloging_lot_statusArr[2];
+        $wrc_detail[$key]['wrc_current_status'] =  2;
 
         // $lot_detail[0]['overall_progress']  = $lot_status_percentage[2];
         // $lot_detail[0]['wrc_assign']  = $lot_status_percentage[2] - $lot_status_percentage[1];
       }
 
       if (($alloacte_to_copy_writer == 1 && $sku_count == $copy_sum && $sku_count == $cata_sum) || ($alloacte_to_copy_writer == 0 && $sku_count == $cata_sum)) {
+        $wrc_detail[$key]['wrc_current_status'] =  2;
         $count_wrc++;
         if ($wrc_row['submissions_id'] > 0) {
           $wrc_detail[$key]['qc_status'] = "Done";
@@ -197,6 +201,7 @@ class LotsCatalog extends Model
           $count_submission++;
           $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
           $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
+          $wrc_detail[$key]['wrc_current_status'] =  5;
         } else {
           $allocation_ids = $wrc_row['allocation_ids'];
           $allocation_id_arr = explode(",", $allocation_ids);
@@ -211,6 +216,8 @@ class LotsCatalog extends Model
             $wrc_detail[$key]['qc_status'] = "Done";
             $count_qc++;
             $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+            $wrc_detail[$key]['wrc_current_status'] =  3;
+
           } else if ($task_status_sum == (3 * $tot_allocation_ids) && $tot_task_status == $tot_allocation_ids) {
             $wrc_detail[$key]['qc_status'] = "Done";
             $wrc_detail[$key]['submission_status'] = "Done";
@@ -218,6 +225,8 @@ class LotsCatalog extends Model
             $count_submission++;
             $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
             $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
+            $wrc_detail[$key]['wrc_current_status'] =  5;
+
           }
         }
         // code for invoicing
@@ -226,6 +235,7 @@ class LotsCatalog extends Model
           $wrc_id = $wrc_row['wrc_id'];
           if($invoice_number != '' && $invoice_number != null ){
             $invoce_done_wrc += 1;
+            $wrc_detail[$key]['wrc_current_status'] =  4;
           }else{
             $CatalogWrcBatch_data = CatalogWrcBatch::where('wrc_id', $wrc_id)->whereNotNull('invoiceNumber')->where('invoiceNumber','<>' ,'')->orderBy('updated_at', 'DESC')->limit(1)->get()->toArray();
 
@@ -234,15 +244,23 @@ class LotsCatalog extends Model
               $wrc_detail[$key]['invoice_number'] =  $CatalogWrcBatch_data[0]['invoiceNumber'];
               $wrc_detail[$key]['invoice_date'] =  $CatalogWrcBatch_data[0]['updated_at'];
               $lot_detail[0]['lot_invoice_date']  = $CatalogWrcBatch_data[0]['updated_at'];
+              $wrc_detail[$key]['wrc_current_status'] =  4;
+
             }else{
               $pre_invoice_data = DB::table('pre_invoice')->where('service_id' , '=' , '3')->where('wrc_id' , '=' , $wrc_id)->get()->toArray();
               if(count($pre_invoice_data) > 0 ){
                 $invoce_parcially_done_wrc += 1; 
                 if($pre_invoice_data[0]->invoice_group_id > 0){
                   $invoce_done_wrc += 1;
+                  $lot_detail[0]['lot_invoice_date']  = $pre_invoice_data[0]->updated_at;
+                  $wrc_detail[$key]['wrc_current_status'] =  4;
                 }
               }
             }
+          }
+          
+          if($wrc_detail[$key]['submission_status'] == "Done" && $wrc_detail[$key]['wrc_current_status'] ==  4){
+            $wrc_detail[$key]['wrc_current_status'] =  5;
           }
         }
       }
@@ -280,6 +298,7 @@ class LotsCatalog extends Model
         }
       }
     }
+    // dd($lot_detail, $wrc_detail);
     // insert into user activity log
     $data_array = array(
       'log_name' => 'Lot Timeline Details',
