@@ -456,6 +456,7 @@ if($service_is == 'Shoot'){
 			<div id="popoverfolderselect" class="popoverpopoverfolderselect">
 				<div class="popover-content">
 					<div class="popover-item-container">
+						{{-- Download --}}
 						<div class="popover-item">
 							<span>
 								<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -464,9 +465,11 @@ if($service_is == 'Shoot'){
 										stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
 								</svg>
 							</span>
-							<span class="popover-item-text" >Download</span>
-							{{-- <span class="popover-item-text" onclick="download_multipal_link_back()">Download</span> --}}
+							{{-- <span class="popover-item-text" >Download</span> --}}
+							<span class="popover-item-text" onclick="download_mul_zip()">Download</span>
 						</div>
+
+						{{-- View details --}}
 						<div class="popover-item">
 							<span>
 								<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -487,6 +490,7 @@ if($service_is == 'Shoot'){
 							</span>
 							<span class="popover-item-text">View details</span>
 						</div>
+
 						{{-- add_to_multipal_fav --}}
 						<div class="popover-item">
 							<span>
@@ -506,7 +510,9 @@ if($service_is == 'Shoot'){
 							</span>
 							<span class="popover-item-text" onclick="add_to_multipal_fav()">Add to favorites</span>
 						</div>
-						<div class="popover-item">
+
+						{{-- Share --}}
+						<div class="popover-item d-none">
 							<span>
 								<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<rect width="40" height="40" rx="20" fill="#1A1A1A" />
@@ -517,6 +523,7 @@ if($service_is == 'Shoot'){
 							</span>
 							<span class="popover-item-text">Share</span>
 						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -587,118 +594,6 @@ if($service_is == 'Shoot'){
 		}
 	}
 
-	// Function for adding multipal files to favorites
-	async function add_to_multipal_fav(){
-		var selectedFolders = document.querySelectorAll('#folderContainer .selected .adap-div .myPopover .add_to_favorites_calss');
-
-		let data_obj_array = [];
-		selectedFolders.forEach((element) => {
-			var data_obj = element.getAttribute('data-data_obj');
-			data_obj_array.push(data_obj);
-    });
-
-		if(data_obj_array.length > 0){
-			await $.ajax({
-				url: "{{ url('your-assets-Multipal-Favorites')}}",
-				type: "POST",
-				dataType: 'json',
-				data: {
-					data : data_obj_array,
-					_token: '{{ csrf_token() }}'
-				},
-				success: function(res) {
-					alert(res.massage)
-				}
-			});
-		}
-
-		console.log('data_obj_array', data_obj_array)
-	}
-
-	// Download Multipal zip files
-	function download_mul_zip(){
-		var selectedFolders = document.querySelectorAll('#folderContainer .selected .adap-div .myPopover .Download');
-		console.log('selectedFolders', selectedFolders)
-		selectedFolders.forEach((element) => {
-			var hrefValue = element.getAttribute('href');
-			var wrc_id = element.getAttribute('data-wrc_id');
-			var wrc_number = element.getAttribute('data-wrc_number');
-			console.log('element', element)
-			console.log({wrc_number , wrc_id})
-			console.log('********************************************')
-
-      if (element) {
-				element.click();
-      } else {
-        console.log('Element not found.');
-      }
-    });
-	}
-
-	function download_multipal_link(){
-		let download_file_elements = []
-		let folderNames = selectedFolders.map(async (folder , index) => {
-			let selectedfolder_id = folder.classList[0];
-			var selectedFolder = document.querySelector('.'+selectedfolder_id);
-			var popoverFirstChild = selectedFolder.querySelector('.myPopover .Download');
-
-			var element = selectedFolder.querySelector('.adap-div .myPopover .Download');
-			download_file_elements.push(element);
-		})
-		console.log('download_file_elements ', download_file_elements )
-		download_file_elements.forEach((element) => {
-			console.log('element', element)
-      if (element) {
-				setTimeout(() => {
-					element.click();
-				}, 1000);
-      } else {
-        console.log('Element not found.');
-      }
-    });
-	}
-
-	function download_multipal_link_back(){
-		
-		const folderNames = selectedFolders.map(async (folder , index) => {
-			let selectedfolder_id = folder.classList[0];
-			var selectedFolder = document.querySelector('.'+selectedfolder_id);
-			var popoverFirstChild = selectedFolder.querySelector('.myPopover .Download');
-			var element = selectedFolder.querySelector('.adap-div .myPopover .Download');
-
-			var hrefValue = popoverFirstChild.getAttribute('href');
-			var wrc_id = popoverFirstChild.getAttribute('data-wrc_id');
-			var wrc_number = popoverFirstChild.getAttribute('data-wrc_number');
-			console.log({index, wrc_id, hrefValue});
-			await $.ajax({
-				url: hrefValue,
-				type: "GET",
-				xhrFields: {
-					responseType: 'blob'
-				},
-				success: function(blob) {
-					// Create a temporary URL for the downloaded file
-					var url = URL.createObjectURL(blob);
-					
-					// Create a link element
-					var link = document.createElement('a');
-					link.href = url;
-					console.log('wrc_number', wrc_number)
-					link.download = wrc_number + '.zip';
-
-					// Programmatically click the link to trigger the download
-					link.click();
-
-					// Clean up the temporary URL
-					URL.revokeObjectURL(url);
-			},
-				error: function(xhr, status, error) {
-					console.error('Error:', error);
-				}
-			});
-		})
-	}
-
 	function handleKeyDown(event) {
 		if (event.key === 'Control' || event.key === 'Meta') {
 			isCtrlPressed = true;
@@ -754,6 +649,76 @@ if($service_is == 'Shoot'){
 		return element;
 	}
 
+</script>
+
+{{--  Function for adding multipal files to favorites --}}
+<script>
+		async function add_to_multipal_fav(){
+		var selectedFolders = document.querySelectorAll('#folderContainer .selected .adap-div .myPopover .add_to_favorites_calss');
+
+		let data_obj_array = [];
+		selectedFolders.forEach((element) => {
+			var data_obj = element.getAttribute('data-data_obj');
+			data_obj_array.push(data_obj);
+    });
+
+		if(data_obj_array.length > 0){
+			await $.ajax({
+				url: "{{ url('your-assets-Multipal-Favorites')}}",
+				type: "POST",
+				dataType: 'json',
+				data: {
+					data : data_obj_array,
+					_token: '{{ csrf_token() }}'
+				},
+				success: function(res) {
+					alert(res.massage)
+				}
+			});
+		}
+	}
+
+</script>
+
+{{--  Download Multipal zip files --}}
+<script>
+	function download_mul_zip(){
+		const folderNames = selectedFolders.map(async (folder , index) => {
+			let selectedfolder_id = folder.classList[0];
+			var selectedFolder = document.querySelector('.'+selectedfolder_id);
+			var popoverFirstChild = selectedFolder.querySelector('.myPopover .Download');
+			var element = selectedFolder.querySelector('.adap-div .myPopover .Download');
+
+			var hrefValue = popoverFirstChild.getAttribute('href');
+			var wrc_id = popoverFirstChild.getAttribute('data-wrc_id');
+			var wrc_number = popoverFirstChild.getAttribute('data-wrc_number');
+			// console.log({index, wrc_id, hrefValue});
+			await $.ajax({
+				url: hrefValue,
+				type: "GET",
+				xhrFields: {
+					responseType: 'blob'
+				},
+				success: function(blob) {
+					// Create a temporary URL for the downloaded file
+					console.log('blob', blob)
+					if(blob != 'error'){
+						var url = URL.createObjectURL(blob);
+
+						var link = document.createElement('a');
+						link.href = url;
+						link.download = wrc_number + '.zip';
+						// Programmatically click the link to trigger the download
+						link.click();
+						URL.revokeObjectURL(url);
+					}
+			},
+				error: function(xhr, status, error) {
+					console.error('Error:', error);
+				}
+			});
+		})
+	}
 </script>
 
 
