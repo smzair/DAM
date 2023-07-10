@@ -162,6 +162,8 @@ class CreatLots extends Model
       $wrc_detail[$key]['qc_status'] = "Pending";
       $wrc_detail[$key]['submission_status'] = "Pending";
       $wrc_detail[$key]['invoice_date'] =  '';
+      $wrc_detail[$key]['wrc_current_status'] =  1;
+      $wrc_detail[$key]['service'] =  'CREATIVE';
 
       if ($cp_sum > 0 || $gd_sum > 0) {
         // $lot_detail[0]['wrc_assign']  = "10";
@@ -170,10 +172,12 @@ class CreatLots extends Model
         $lot_detail[0]['wrc_assign']  = 9;
         $lot_detail[0]['overall_progress']  = $lot_status_percentage[1] + 9;        
         $lot_detail[0]['lot_status']  = $creative_and_cataloging_lot_statusArr[2];
+        $wrc_detail[$key]['wrc_current_status'] =  2;
       }
 
       if (($alloacte_to_copy_writer == 1 && $sku_count == $cp_sum && $sku_count == $gd_sum) || ($alloacte_to_copy_writer == 0 && $sku_count == $gd_sum)) {
         $count_wrc++;
+        $wrc_detail[$key]['wrc_current_status'] =  2;
         if ($wrc_row['submissions_id'] > 0 && $wrc_row['status'] == 1) {
           $wrc_detail[$key]['qc_status'] = "Done";
           $wrc_detail[$key]['submission_status'] = "Done";
@@ -181,6 +185,7 @@ class CreatLots extends Model
           $count_submission++;
           $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
           $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
+          $wrc_detail[$key]['wrc_current_status'] =  5;
         } else {
           $allocation_ids = $wrc_row['allocation_ids'];
           $allocation_id_arr = explode(",", $allocation_ids);
@@ -195,6 +200,7 @@ class CreatLots extends Model
             $wrc_detail[$key]['qc_status'] = "Done";
             $count_qc++;
             $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+            $wrc_detail[$key]['wrc_current_status'] =  3;
           }
         
         }
@@ -205,6 +211,7 @@ class CreatLots extends Model
           $wrc_id = $wrc_row['wrc_id'];
           if($invoice_number != '' && $invoice_number != null ){
             $invoce_done_wrc += 1;
+            $wrc_detail[$key]['wrc_current_status'] =  4;
           }else{
             $CreativeWrcBatch_data = CreativeWrcBatch::where('wrc_id', $wrc_id)->whereNotNull('invoice_no')->where('invoice_no','<>' ,'')->orderBy('updated_at', 'DESC')->limit(1)->get()->toArray();
   
@@ -213,15 +220,22 @@ class CreatLots extends Model
               $wrc_detail[$key]['invoice_number'] =  $CreativeWrcBatch_data[0]['invoice_no'];
               $wrc_detail[$key]['invoice_date'] =  $CreativeWrcBatch_data[0]['updated_at'];
               $lot_detail[0]['lot_invoice_date']  = $CreativeWrcBatch_data[0]['updated_at'];
+              $wrc_detail[$key]['wrc_current_status'] =  4;
             }else{
               $pre_invoice_data = DB::table('pre_invoice')->where('service_id' , '=' , '2')->where('wrc_id' , '=' , $wrc_id)->get()->toArray();
               if(count($pre_invoice_data) > 0 ){
                 $invoce_parcially_done_wrc += 1; 
                 if($pre_invoice_data[0]->invoice_group_id > 0){
                   $invoce_done_wrc += 1;
+                  $lot_detail[0]['lot_invoice_date']  = $pre_invoice_data[0]->updated_at;
+                  $wrc_detail[$key]['wrc_current_status'] =  4;
                 }
               }
             }
+          }
+
+          if($wrc_detail[$key]['submission_status'] == "Done" && $wrc_detail[$key]['wrc_current_status'] ==  4){
+            $wrc_detail[$key]['wrc_current_status'] =  5;
           }
         }
       }
