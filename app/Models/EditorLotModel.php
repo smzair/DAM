@@ -242,15 +242,19 @@ class EditorLotModel extends Model
             $wrc_detail[$key]['qc_status'] = "Pending";
             $wrc_detail[$key]['submission_status'] = "Pending";
             $wrc_detail[$key]['invoice_date'] =  '';
+            $wrc_detail[$key]['wrc_current_status'] =  1;
+            $wrc_detail[$key]['service'] =  'EDITING';
             if($cata_sum > 0){
                 $lot_detail[0]['wrc_assign']  = 9;
                 $lot_detail[0]['overall_progress']  = $lot_status_percentage[1] + 9;        
                 $lot_detail[0]['lot_status']  = $Editing_lot_statusArr[2];
+                $wrc_detail[$key]['wrc_current_status'] =  2;
 
             }
         
             if(($sku_count == $cata_sum) && $sku_count > 0 ){
                 $count_wrc++;
+                $wrc_detail[$key]['wrc_current_status'] =  2;
                 if($wrc_row['submissions_id'] > 0){
                     $wrc_detail[$key]['qc_status'] = "Done";
                     $wrc_detail[$key]['submission_status'] = "Done";
@@ -258,6 +262,8 @@ class EditorLotModel extends Model
                     $count_submission++;
                     $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
                     $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
+                    $wrc_detail[$key]['wrc_current_status'] =  5;
+
                 }else{
                     $allocation_ids = $wrc_row['allocation_ids'];
                     $allocation_id_arr = explode(",",$allocation_ids);                                
@@ -272,6 +278,7 @@ class EditorLotModel extends Model
                         $wrc_detail[$key]['qc_status'] = "Done";
                         $count_qc++;
                         $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
+                        $wrc_detail[$key]['wrc_current_status'] =  3;
 
                     }else if($task_status_sum == (3*$tot_allocation_ids) && $tot_task_status == $tot_allocation_ids){
                         $wrc_detail[$key]['qc_status'] = "Done";
@@ -280,6 +287,7 @@ class EditorLotModel extends Model
                         $count_submission++;
                         $lot_detail[0]['qc_done_at']  = $wrc_row['qc_done_at'];
                         $lot_detail[0]['submission_date']  = $wrc_row['submission_date'];
+                        $wrc_detail[$key]['wrc_current_status'] =  5;
                     }
                 }
 
@@ -290,15 +298,22 @@ class EditorLotModel extends Model
                     $lot_detail[0]['lot_invoice_date'] = $wrc_row['updated_at'];
                     $wrc_id = $wrc_row['wrc_id'];
                     if($invoice_number != '' && $invoice_number != null ){
-                    $invoce_done_wrc += 1;
+                        $invoce_done_wrc += 1;
+                        $wrc_detail[$key]['wrc_current_status'] =  4;
+                    
                     }else{
                         $pre_invoice_data = DB::table('pre_invoice')->where('service_id' , '=' , '4')->where('wrc_id' , '=' , $wrc_id)->get()->toArray();
                         if(count($pre_invoice_data) > 0 ){
                             $invoce_parcially_done_wrc += 1; 
                             if($pre_invoice_data[0]->invoice_group_id > 0){
                                 $invoce_done_wrc += 1;
+                                $lot_detail[0]['lot_invoice_date']  = $pre_invoice_data[0]->updated_at;
+                                $wrc_detail[$key]['wrc_current_status'] =  4;
                             }
                         }
+                    }
+                    if($wrc_detail[$key]['submission_status'] == "Done" && $wrc_detail[$key]['wrc_current_status'] ==  4){
+                        $wrc_detail[$key]['wrc_current_status'] =  5;
                     }
                 }
             }
