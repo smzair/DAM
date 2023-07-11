@@ -672,7 +672,21 @@ if($service_is == 'Shoot'){
 					_token: '{{ csrf_token() }}'
 				},
 				success: function(res) {
-					alert(res.massage)
+					console.log('res => ', res )
+					if(res?.status){
+						$('.Multipal-fav-and-notfav-Text').text(res.massage);
+						$('.Multipal-fav-div').removeClass('d-none');
+						setTimeout(() => {
+							$('.Multipal-fav-div').addClass('d-none');
+						}, 2000);
+					}else{
+						$('.error-text').text(res.massage);
+						$('.added-notfav-div').removeClass('d-none');
+						setTimeout(() => {
+							$('.added-notfav-div').addClass('d-none');
+							$('.error-text').text('Removed from favourites');
+						}, 2000);
+					}
 				}
 			});
 		}
@@ -734,7 +748,22 @@ if($service_is == 'Shoot'){
 					_token: '{{ csrf_token() }}'
 				},
 				success: function(res) {
-					alert(res.massage)
+					console.log('res => ', res )
+					if(res?.status){
+						$('.added-fav-div').removeClass('d-none');
+						setTimeout(() => {
+							$('.added-fav-div').addClass('d-none');
+						}, 2000);
+					}else{
+						$('.error-text').text('Somthing Went Wrong');
+						$('.added-notfav-div').removeClass('d-none');
+						setTimeout(() => {
+							$('.added-notfav-div').addClass('d-none');
+							$('.error-text').text('Remove from favourites');
+						}, 2000);
+					}
+					console.log('res', res)
+					// alert(res.massage)
 				}
 			});
 		}

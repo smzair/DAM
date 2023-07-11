@@ -60,12 +60,25 @@
 										$zipFileSize = formatBytes($zipFileSize);
 									}
 								@endphp
-								<div class="col-sm-6 col-md-4 col-lg-3 mt-2">
+								<div class="col-sm-6 col-md-4 col-lg-3 mt-2 SKU-BOX-STYLE">
 									<div class="card brand-img-m border-0 rounded-0">
-										<img class="card-img-top brand-img" src="{{ asset($img_src)}}" alt="Image">
-										<div class="card-body d-flex justify-content-between" style="position: relative">
+										<img class="card-img-top brand-img zoomable-image" src="{{ asset($img_src)}}" alt="Image">
+
+										<div class="zoomed-container">
+											<img src="{{ asset($img_src)}}" alt="Zoomed Image" class="zoomed-image">
+										</div>
+										<div class="navigation-buttons left">
+											<button class="previous-button" style="display:none">&#8249;</button>
+										</div>
+								
+										<div class="navigation-buttons right">
+											<button class="next-button" style="display:none">&#8250;</button>
+										</div>
+
+										{{-- Old Code --}}
+										<div class="card-body d-flex total-sku-img-body justify-content-between" style="position: relative">
 											<p class="brand-img-name" id="lot_number{{$row['upladed_img_id'].$key}}">{{$row['filename']}}</p>
-											<i class="bi bi-three-dots-vertical myButton" style="cursor: pointer;"></i>
+											<i class="bi bi-three-dots-vertical myButton" style="cursor: pointer;color:#808080;font-size:20px;"></i>
 											
 											<div class="myPopover" style="display: none; top 20%;">
 												{{-- Download --}}
@@ -343,8 +356,22 @@
 					_token: '{{ csrf_token() }}'
 				},
 				success: function(res) {
-					alert(res.massage)
 					console.log('res => ', res )
+					if(res?.status){
+						$('.added-fav-div').removeClass('d-none');
+						setTimeout(() => {
+							$('.added-fav-div').addClass('d-none');
+						}, 2000);
+					}else{
+						$('.error-text').text('Somthing Went Wrong');
+						$('.added-notfav-div').removeClass('d-none');
+						setTimeout(() => {
+							$('.added-notfav-div').addClass('d-none');
+							$('.error-text').text('Remove from favourites');
+						}, 2000);
+					}
+					console.log('res', res)
+					// alert(res.massage)
 				}
 			});
 		}

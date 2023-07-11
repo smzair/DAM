@@ -179,7 +179,7 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 										</div>
 										<div class="col-10 d-flex justify-content-between">
 											<div>
-												<p class="inward-qty">Inward Quantity : </p>
+												<p class="inward-qty">Inward quantity</p>
 												<p class="inward-qty-num">
 													{{$row['inward_qty'] != '' ? $row['inward_qty'] : 0}}
 												</p>
@@ -304,7 +304,7 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 										</div>
 										<div class="col-10 d-flex justify-content-between">
 											<div>
-												<p class="inward-qty">Inward Quantity : </p>
+												<p class="inward-qty">Inward quantity</p>
 												<p class="inward-qty-num">
 													{{$row['inward_qty'] != '' ? $row['inward_qty'] : 0}}
 												</p>
@@ -395,10 +395,10 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 						</div>
 					</div>
 
-					<div class="col-12">
-						<p class="side-text">TAGS</p>
-						<P class="side-text2">Black Tees, Ajio code</P>
-					</div>
+					<!--<div class="col-12">-->
+					<!--	<p class="side-text">TAGS</p>-->
+					<!--	<P class="side-text2">Black Tees, Ajio code</P>-->
+					<!--</div>-->
 
 					<!--<div class="col-12 d-grid gap-2">-->
 					<!--	<button class="btn border rounded-0  heading-details" type="button">-->
@@ -416,18 +416,25 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 					<!--	</button>-->
 					<!--</div>-->
 					
-					<div class="col-12" style="margin-top: 24px;">
+					<div class="col-12 d-none" style="margin-top: 24px;">
 						<p class="heading-details">Share</p>
 					</div>
 
-					<div class="col-12 d-grid gap-2 my-2">
-						<button class="btn border rounded-0 side-text2" type="button">
-							<svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<rect x="0.5" width="14" height="14" fill="#9F9F9F" />
-								<line x1="2.44437" y1="1.23727" x2="13.1353" y2="11.9282" stroke="#D1D1D1" />
-								<line x1="1.73727" y1="11.9287" x2="12.4282" y2="1.23776" stroke="#D1D1D1" />
+					<div class="col-12 d-grid gap-2 my-2 d-none">
+						<button class="btn rounded-0  copy-link-sidebar" type="button">
+							Copy link
+							<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<rect width="30" height="30" rx="15" fill="#98A7DA"/>
+								<g clip-path="url(#clip0_2553_6451)">
+								<path d="M18 15.675V18.825C18 21.45 16.95 22.5 14.325 22.5H11.175C8.55 22.5 7.5 21.45 7.5 18.825V15.675C7.5 13.05 8.55 12 11.175 12H14.325C16.95 12 18 13.05 18 15.675Z" stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								<path d="M22.5 11.175V14.325C22.5 16.95 21.45 18 18.825 18H18V15.675C18 13.05 16.95 12 14.325 12H12V11.175C12 8.55 13.05 7.5 15.675 7.5H18.825C21.45 7.5 22.5 8.55 22.5 11.175Z" stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+								</g>
+								<defs>
+								<clipPath id="clip0_2553_6451">
+								<rect width="18" height="18" fill="white" transform="translate(6 6)"/>
+								</clipPath>
+								</defs>
 							</svg>
-							Create link
 						</button>
 					</div>
 				</div>
@@ -470,9 +477,23 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 					_token: '{{ csrf_token() }}'
 				},
 				success: function(res) {
-					alert(res.massage)
-					console.log('res => ', res )
+				console.log('res => ', res )
+				if(res?.status){
+					$('.added-fav-div').removeClass('d-none');
+					setTimeout(() => {
+						$('.added-fav-div').addClass('d-none');
+					}, 2000);
+				}else{
+					$('.error-text').text('Somthing Went Wrong');
+					$('.added-notfav-div').removeClass('d-none');
+					setTimeout(() => {
+						$('.added-notfav-div').addClass('d-none');
+						$('.error-text').text('Remove from favourites');
+					}, 2000);
 				}
+				console.log('res', res)
+				// alert(res.massage)
+			}
 			});
 		}
 	</script>
