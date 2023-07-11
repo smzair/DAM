@@ -48,6 +48,78 @@
         }
 	</style>
 
+	<style>
+		.url-copied{
+			background: #0F0F0F;
+			border: 1px solid var(--neutral-700, #333);
+			box-shadow: 6px 24px 40px 0px rgba(255, 255, 255, 0.06);
+			width: 338px;
+		}
+		.url-copied-text{
+			color: #FFF;
+			/* DAM/Title/Medium */
+			font-family: Poppins;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: 24px;
+			letter-spacing: 0.15px;
+			margin-top: 0px;
+			margin-bottom: 0px;
+		}
+		.url-copied-link{
+			display: flex;
+			align-items: center;
+			gap: 16px;
+			padding: 16px 12px;
+			background: rgba(152, 167, 218, 0.10);
+			margin-top: 8px;
+		}
+		.url-copied-link-text{
+			color: var(--success-300, #98A7DA);
+			font-family: Poppins;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 24px;
+			letter-spacing: 0.5px;
+			margin-top: 0px;
+			margin-bottom: 0px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.url-copied-element{
+				padding: 24px;
+		}
+
+		/* favourites section */
+		.added-fav-div , .Multipal-fav-div{
+				background: var(--tertiary-700-main, #50AB64);
+				width:173px;
+		}
+		.added-fav-and-notfav-Text{
+			color: var(--shades-0, #FFF);
+			/* DAM/Label/Large */
+			font-family: Poppins;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: 20px;
+			letter-spacing: 0.1px;
+			padding:16px;
+			text-align: center;
+			position: relative;
+			top: auto;
+			margin: 0px;
+		}
+
+		.added-notfav-div{
+			width:173px;
+			background: var(--error-500, #F26B6B);
+		}
+	</style>
+
 	@yield('other_css')
 	<style>
 		.btn-primary , .btn-success , .btn-secondary{
@@ -238,7 +310,7 @@
 			$get_active_url_data = get_active_url_data();
 			$active_tab = $get_active_url_data['active_tab'];
 			$active_link = $get_active_url_data['active_link'];
-			echo "routeName => ".$routeName = $get_active_url_data['routeName'];
+			$routeName = $get_active_url_data['routeName'];
 			// dd($get_active_url_data);
 
 			$ClientCommonController = new \App\Http\Controllers\ClientsControllers\ClientCommonController();
@@ -586,9 +658,45 @@
 				<!-- Sidebar End -->
 
 				<div class="col-sm-10 border border-dark main-container-resp offset-lg-2">
+					<div class="row" >
+						<div class="col-12" style="display: inline-flex; position: fixed; z-index: 9999;">
+							{{-- url-copied --}}
+							<div class="url-copied d-none">
+								<div class="url-copied-element">
+									 <p class="url-copied-text">URL copied!</p>
+									 <div class="url-copied-link">
+											<p class="url-copied-link-text" style="pointer-events: none">https://www.youtube.com</p>											
+												<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<rect width="30" height="30" rx="15" fill="#98A7DA"/>
+														<g clip-path="url(#clip0_2553_6415)">
+														<path d="M18 15.675V18.825C18 21.45 16.95 22.5 14.325 22.5H11.175C8.55 22.5 7.5 21.45 7.5 18.825V15.675C7.5 13.05 8.55 12 11.175 12H14.325C16.95 12 18 13.05 18 15.675Z" stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+														<path d="M22.5 11.175V14.325C22.5 16.95 21.45 18 18.825 18H18V15.675C18 13.05 16.95 12 14.325 12H12V11.175C12 8.55 13.05 7.5 15.675 7.5H18.825C21.45 7.5 22.5 8.55 22.5 11.175Z" stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+														</g>
+														<defs>
+														<clipPath id="clip0_2553_6415">
+														<rect width="18" height="18" fill="white" transform="translate(6 6)"/>
+														</clipPath>
+														</defs>
+												</svg>                    
+										 
+									 </div>
+								</div>
+							</div>
+							<!-- fav div -->
+							<div class="added-fav-div d-none">
+								<p class="added-fav-and-notfav-Text">Added to favourites</p>
+							</div>
 
-					<div class="added removed d-none">
-						adhfsdlkh dfdshj
+							<!-- Multipal div -->
+							<div class="Multipal-fav-div d-none">
+								<p class="Multipal-fav-and-notfav-Text"></p>
+							</div>
+		
+							<!--  Removefav div -->
+							<div class="added-notfav-div d-none">
+								<p class="added-fav-and-notfav-Text error-text">Removed from favourites</p>
+							</div>
+						</div>
 					</div>
           @yield('main_content')
 				</div>
@@ -725,7 +833,13 @@
 				console.log(res)
 			}
 		});
-		alert("Download Url copied to clipboard!");
+		$('.url-copied-link-text').text(url_is);
+		$('.url-copied').removeClass('d-none');
+
+		setTimeout(() => {
+			$('.url-copied').addClass('d-none');
+		}, 2000);
+		// alert("Download Url copied to clipboard!");
   }
 </script>
 {{-- right sidebar toggle script --}}

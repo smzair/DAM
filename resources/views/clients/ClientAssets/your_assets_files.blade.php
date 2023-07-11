@@ -205,7 +205,7 @@ $service_is = 'Shoot';
 										</div>
 										<div class="col-10 d-flex justify-content-between">
 											<div>
-												<p class="inward-qty">Inward Quantity</p>
+												<p class="inward-qty">Inward quantity</p>
 												<p class="inward-qty-num">
 													{{$row['inward_qty']}}
 												</p>
@@ -311,7 +311,7 @@ $service_is = 'Shoot';
 										</div>
 										<div class="col-10 d-flex justify-content-between">
 											<div>
-												<p class="inward-qty">Inward Quantity : </p>
+												<p class="inward-qty">Inward quantity</p>
 												<p class="inward-qty-num">
 													{{$row['inward_qty']}}
 												</p>
@@ -357,8 +357,22 @@ $service_is = 'Shoot';
 				_token: '{{ csrf_token() }}'
 			},
 			success: function(res) {
-				alert(res.massage)
 				console.log('res => ', res )
+				if(res?.status){
+					$('.added-fav-div').removeClass('d-none');
+					setTimeout(() => {
+						$('.added-fav-div').addClass('d-none');
+					}, 2000);
+				}else{
+					$('.error-text').text('Somthing Went Wrong');
+					$('.added-notfav-div').removeClass('d-none');
+					setTimeout(() => {
+						$('.added-notfav-div').addClass('d-none');
+						$('.error-text').text('Remove from favourites');
+					}, 2000);
+				}
+				console.log('res', res)
+				// alert(res.massage)
 			}
 		});
 	}
