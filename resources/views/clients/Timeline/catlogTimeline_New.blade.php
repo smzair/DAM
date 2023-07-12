@@ -41,6 +41,7 @@
 		position: relative;
 		display: inline-block;
      	text-decoration: underline !important;	
+     	margin-bottom:0px;
 	}
 
 	.upper-head-style-for-track-hover {
@@ -142,11 +143,7 @@
 		<div>
 			<p class="brand-name-under-track-table">{{$lot_detail[0]['brand_name']}}</p>
 			<p class="lot-date-sty">
-			    <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9.15538 7.9917H9.16064M9.15538 9.7417H9.16064M6.99705 7.9917H7.00288M6.99705 9.7417H7.00288M4.83813 7.9917H4.84397M4.83813 9.7417H4.84397" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
-                 </svg>
-			   
+			    <span>Lot date:</span>
 			    {{$lot_detail[0] != null && $lot_detail[0] != '' ? dateFormet_dmy($lot_detail[0]['created_at']) : "-"}}
 			</p>
 		</div>
@@ -255,7 +252,7 @@
 									<circle class="scale-animation" cx="10" cy="10" r="7" fill="#59ABB2"/>
 								</svg>&nbsp;
 								@endif
-							Quality Check (QC)</p>
+							Quality Check</p>
 						</div>
 						{{-- Invoice --}}
 						<div class="progress-label progress-label-5">
@@ -339,7 +336,7 @@
 					<th scope="col" class="table-heading-sty">WRC No.</th>
 					<th scope="col" class="table-heading-sty">Date</th>
 					<th scope="col" class="table-heading-sty">Quantity</th>
-					<th scope="col" class="table-heading-sty">Uploading & QC</th>
+					<th scope="col" class="table-heading-sty">Uploaded</th>
 					<th scope="col" class="table-heading-sty">Status</th>
 					<th scope="col" class="table-heading-sty">Delivery</th>
 					<th scope="col" class="table-heading-sty">Invoice</th>
@@ -468,7 +465,7 @@
 								<?php 
 									if($wrc_row['submission_status'] == 'Done'){
 										$diables_img_download = "";
-										echo "<br>".date('d/m/Y', strtotime($wrc_row['submission_date']));
+										echo "<br> <p class='submission_date'>".date('d/m/Y', strtotime($wrc_row['submission_date']))."</p>";
 									}
 								?>
 							</td>
@@ -480,9 +477,13 @@
 											<path d="M12 2.5C6.49 2.5 2 6.99 2 12.5C2 18.01 6.49 22.5 12 22.5C17.51 22.5 22 18.01 22 12.5C22 6.99 17.51 2.5 12 2.5ZM16.78 10.2L11.11 15.87C10.9694 16.0105 10.7788 16.0893 10.58 16.0893C10.3812 16.0893 10.1906 16.0105 10.05 15.87L7.22 13.04C7.08052 12.8989 7.0023 12.7084 7.0023 12.51C7.0023 12.3116 7.08052 12.1211 7.22 11.98C7.51 11.69 7.99 11.69 8.28 11.98L10.58 14.28L15.72 9.14C16.01 8.85 16.49 8.85 16.78 9.14C17.07 9.43 17.07 9.9 16.78 10.2Z" fill="#50AB64"/>
 										</svg>
 									@else
-										<svg width="92" height="24" viewBox="0 0 92 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										{{-- <svg width="92" height="24" viewBox="0 0 92 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M39.2237 6.832H40.6797V18H39.2237L33.3677 9.12V18H31.9117V6.832H33.3677L39.2237 15.696V6.832ZM43.2777 20.72L47.6457 2.928H49.1017L44.7177 20.72H43.2777ZM59.2591 18L58.3631 15.52H53.4991L52.6031 18H51.0671L55.0991 6.912H56.7791L60.7951 18H59.2591ZM57.9471 14.336L55.9311 8.704L53.9151 14.336H57.9471Z" fill="#808080"/>
-										</svg>
+										</svg> --}}
+
+										<svg width="30" height="19" viewBox="0 0 30 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M8.22369 4.832H9.67969V16H8.22369L2.36769 7.12V16H0.911688V4.832H2.36769L8.22369 13.696V4.832ZM12.2777 18.72L16.6457 0.927999H18.1017L13.7177 18.72H12.2777ZM28.2591 16L27.3631 13.52H22.4991L21.6031 16H20.0671L24.0991 4.912H25.7791L29.7951 16H28.2591ZM26.9471 12.336L24.9311 6.704L22.9151 12.336H26.9471Z" fill="#808080"/>
+									</svg>
 									@endif
 								</p>
 							</td>
