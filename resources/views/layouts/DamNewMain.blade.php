@@ -27,8 +27,8 @@
     	background:#0F0F0F;
 		}
 		.viewport{
-			margin-top: 87px;
-			height: calc(100vh - 73px);
+			margin-top: 111px;
+			height: calc(100vh - 111px);
 		}
 		
 		.initial-svg {
@@ -45,6 +45,17 @@
         
         #searchBar.inactive::placeholder {
             color: #808080; /* Inactive placeholder color */
+        }
+        
+        /* submission_date done css */
+        .submission_date{
+            color: #808080;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px;
+            letter-spacing: 0.4px;
+            margin:0px;
         }
 	</style>
 
@@ -96,7 +107,7 @@
 		/* favourites section */
 		.added-fav-div , .Multipal-fav-div{
 				background: var(--tertiary-700-main, #50AB64);
-				width:173px;
+				/*width:173px;*/
 		}
 		.added-fav-and-notfav-Text{
 			color: var(--shades-0, #FFF);
@@ -115,7 +126,7 @@
 		}
 
 		.added-notfav-div{
-			width:173px;
+			/*width:173px;*/
 			background: var(--error-500, #F26B6B);
 		}
 	</style>
@@ -540,6 +551,8 @@
 									<a href="{{route('your_assets_Links' , ['service' => 'Listing'])}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'Listing_lots' ? 'active' : ''}}"
 										style="width: 100%;">Listing Lots</a>
 									@endif
+									
+									<hr style="background:#333333;margin-top:16px;margin-bottom:16px;height: 2px;">
 
 									{{-- Favorites --}}
 									<a href="{{route('your_assets_Favorites')}}" role="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'your_assets_Favorites' ? 'active' : ''}}"
