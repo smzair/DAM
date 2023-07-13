@@ -60,7 +60,7 @@
 	</style>
 
 	<style>
-		.url-copied , .url-copied-new{
+		.url-copied{
 			background: #0F0F0F;
 			border: 1px solid var(--neutral-700, #333);
 			box-shadow: 6px 24px 40px 0px rgba(255, 255, 255, 0.06);
@@ -296,14 +296,6 @@
 			stroke: #FFD700;
 		}
 	</style>
-
-	{{-- Copy url propover  --}}
-	<style>
-		.urlpopover {
-      display: none;
-      position: absolute;
-    }
-	</style>
 </head>
 
 <body>
@@ -468,7 +460,7 @@
 									if(!file_exists($profile_avtar_path) && $profile_avtar != ''){
 											$profile_avtar_src = $profile_avtar_path;
 									}else{
-											$profile_avtar_src = asset("assets-images\Desktop-Assets\your profile\blank-avtar.jpg");
+											$profile_avtar_src = "assets-images\Desktop-Assets\your profile\blank-avtar.jpg";
 									}
 								@endphp
 								<img width="46" height="46" style="border: 1px solid;border-radius: 50%;overflow: hidden;"  src="{{$profile_avtar_src}}" alt="">
@@ -720,36 +712,6 @@
 						</div>
 					</div>
           @yield('main_content')
-
-					{{-- common share url popover --}}
-					<div class="urlpopover">
-						<div class="url-copied-new">
-							<div class="url-copied-element">
-								<p class="url-copied-text">URL copied!</p>
-								<div class="url-copied-link">
-									<p class="url-copied-link-text" id='target_url'>https://www.youtube.com</p>
-									<span id="share_btn_new" style="cursor: pointer; ">
-										<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<rect width="30" height="30" rx="15" fill="#98A7DA" />
-											<g clip-path="url(#clip0_2553_6415)">
-												<path
-													d="M18 15.675V18.825C18 21.45 16.95 22.5 14.325 22.5H11.175C8.55 22.5 7.5 21.45 7.5 18.825V15.675C7.5 13.05 8.55 12 11.175 12H14.325C16.95 12 18 13.05 18 15.675Z"
-													stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-												<path
-													d="M22.5 11.175V14.325C22.5 16.95 21.45 18 18.825 18H18V15.675C18 13.05 16.95 12 14.325 12H12V11.175C12 8.55 13.05 7.5 15.675 7.5H18.825C21.45 7.5 22.5 8.55 22.5 11.175Z"
-													stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-											</g>
-											<defs>
-												<clipPath id="clip0_2553_6415">
-													<rect width="18" height="18" fill="white" transform="translate(6 6)" />
-												</clipPath>
-											</defs>
-										</svg>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -763,63 +725,6 @@
 	@yield('js_links')
 	<!-- Common Js -->
 	<script src="{{ asset('ClientsDist\js\common_js_new.js') }}"></script>
-
-
-	{{-- New share and copy url propover script --}}
-
-	<script>
-    const popoverTriggers = document.querySelectorAll('.share_popover_trigger');
-    const urlpopover = document.querySelector('.urlpopover');
-
-    const hidePopover_new = function () {
-      urlpopover.style.display = 'none';
-    };
-
-    popoverTriggers.forEach(function (trigger) {
-      trigger.addEventListener('click', function (e) {
-        e.preventDefault();
-				const target_id = e.target.getAttribute('data-id');
-				const target_url = e.target.getAttribute('data-url');
-
-				document.getElementById("share_btn_new").setAttribute("data-id", target_id);
-
-        const rect = trigger.getBoundingClientRect();
-        const triggerHeight = rect.height;
-        const triggerTop = rect.top + window.pageYOffset;
-        const triggerLeft = rect.left + window.pageXOffset;
-        urlpopover.style.top = triggerTop + triggerHeight + 'px';
-        urlpopover.style.left = triggerLeft + 'px';
-        urlpopover.style.display = 'block';
-      });
-    });
-
-    document.addEventListener('click', function (e) {
-      const targetElement = e.target;
-
-      if (!urlpopover.contains(targetElement) && !targetElement.classList.contains('share_popover_trigger')) {
-        hidePopover_new();
-      }
-    });
-
-    urlpopover.addEventListener('click', function (e) {
-      e.stopPropagation();
-    });
-
-  </script>
-
-	{{-- Adding click event for Share  --}}
-	<script>
-		var button = document.getElementById("share_btn_new");
-		button.addEventListener("click", function() {
-			console.log('button', button)
-			var linkId = document.getElementById("share_btn_new").getAttribute("data-id");
-			var link = document.getElementById(linkId);
-			console.log({linkId , link})
-			if (link) {
-				link.click();
-			}
-		});
-	</script>
 
 	{{-- view details copy link --}}
 
@@ -862,7 +767,29 @@
 					replacementSVG.style.display = "block";
 				}
 			}
-		</script>	
+		</script>
+
+	{{-- myPopover script --}}
+	<!--<script>-->
+	<!--	var buttons = document.getElementsByClassName("myButton");-->
+	<!--	var popovers = document.getElementsByClassName("myPopover");-->
+
+	<!--	for (var i = 0; i < buttons.length; i++) {-->
+	<!--		buttons[i].addEventListener("click", createToggleHandler(i));-->
+	<!--	}-->
+
+	<!--	function createToggleHandler(index) {-->
+	<!--		return function() {-->
+	<!--			var popover = popovers[index];-->
+	<!--			if (popover.style.display === "none") {-->
+	<!--				popover.style.display = "block";-->
+	<!--			} else {-->
+	<!--				popover.style.display = "none";-->
+	<!--			}-->
+	<!--		};-->
+	<!--	}-->
+	<!--</script>-->
+	
 	<script>
     var buttons = document.getElementsByClassName("myButton");
     var popovers = document.getElementsByClassName("myPopover");
@@ -1140,7 +1067,7 @@
             currentIndex = (currentIndex + 1) % zoomableImages.length;
             zoomedImg.src = zoomableImages[currentIndex].src;
         }
-</script>
+    </script>
  
 
 	{{-- set notification to seen  --}}
