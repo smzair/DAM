@@ -303,6 +303,17 @@
       display: none;
       position: absolute;
     }
+
+		.url-copied-linkforviewdetails {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 12px;
+            background: rgba(152, 167, 218, 0.10);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+		}
 	</style>
 </head>
 
@@ -682,7 +693,7 @@
 					<div class="row" >
 						<div class="col-12" style="display: inline-flex; position: fixed; z-index: 9999;">
 							{{-- url-copied --}}
-							<div class="url-copied d-none">
+							<div class="url-copied d-none" >
 								<div class="url-copied-element">
 									 <p class="url-copied-text">URL copied!</p>
 									 <div class="url-copied-link">
@@ -780,6 +791,12 @@
         e.preventDefault();
 				const target_id = e.target.getAttribute('data-id');
 				const target_url = e.target.getAttribute('data-url');
+				console.log({
+					target_id,target_url
+				})
+				navigator.clipboard.writeText(target_url);
+				$("#target_url").html(target_url)
+
 
 				document.getElementById("share_btn_new").setAttribute("data-id", target_id);
 
@@ -939,7 +956,6 @@
 	{{-- Setting data and time in side bar --}}
 	<script>
 		const set_date_time = (key , service = 'other') => {
-			document.getElementById("share_btn").setAttribute("data-id", key);
 			const lot_number = $("#lot_number"+key).html()
 			const lot_date = $("#lot_date"+key).html()
 			const lot_time = $("#lot_time"+key).html()
@@ -960,6 +976,10 @@
 			}else{
 				$("#shoot_files_details").addClass('d-none')
 			}
+			const target_url = $("#url_"+key).html()
+			document.getElementById("share_btn").setAttribute("data-id", key);
+			$("#target_copy_url").html(target_url)
+			navigator.clipboard.writeText(target_url);
 		}
 	</script>
 

@@ -113,16 +113,51 @@
 						<div class="col-12" style="margin-top: 24px;">
 							<p class="heading-details">Share</p>
 						</div>
+						
+						
 
-						<div class="col-12 d-grid gap-2 my-2">
-							<button id="share_btn" data-id="" class="btn border rounded-0 side-text2" type="button">
-								<svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect x="0.5" width="14" height="14" fill="#9F9F9F" />
-									<line x1="2.44437" y1="1.23727" x2="13.1353" y2="11.9282" stroke="#D1D1D1" />
-									<line x1="1.73727" y1="11.9287" x2="12.4282" y2="1.23776" stroke="#D1D1D1" />
-								</svg>
-								Create link
-							</button>
+						<div class="col-12">
+
+
+							<div class="url-copied-linkforviewdetails"  >
+								<p class="url-copied-link-text"  id="target_copy_url"> </p>
+								<span id="share_btn" data-id="" style="cursor: pointer" > 
+									<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect width="30" height="30" rx="15" fill="#98A7DA" />
+										<g clip-path="url(#clip0_2553_6415)">
+												<path
+														d="M18 15.675V18.825C18 21.45 16.95 22.5 14.325 22.5H11.175C8.55 22.5 7.5 21.45 7.5 18.825V15.675C7.5 13.05 8.55 12 11.175 12H14.325C16.95 12 18 13.05 18 15.675Z"
+														stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+												<path
+														d="M22.5 11.175V14.325C22.5 16.95 21.45 18 18.825 18H18V15.675C18 13.05 16.95 12 14.325 12H12V11.175C12 8.55 13.05 7.5 15.675 7.5H18.825C21.45 7.5 22.5 8.55 22.5 11.175Z"
+														stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+										</g>
+										<defs>
+												<clipPath id="clip0_2553_6415">
+														<rect width="18" height="18" fill="white" transform="translate(6 6)" />
+												</clipPath>
+										</defs>
+									</svg>
+								</span>
+							</div>
+
+							{{-- <button id="share_btn" data-id="" class="btn rounded-0 copy-link-sidebar" type="button">
+								<span id="target_copy_url">
+									Copy link
+								</span>
+									<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect width="30" height="30" rx="15" fill="#98A7DA"/>
+										<g clip-path="url(#clip0_2553_6451)">
+										<path d="M18 15.675V18.825C18 21.45 16.95 22.5 14.325 22.5H11.175C8.55 22.5 7.5 21.45 7.5 18.825V15.675C7.5 13.05 8.55 12 11.175 12H14.325C16.95 12 18 13.05 18 15.675Z" stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+										<path d="M22.5 11.175V14.325C22.5 16.95 21.45 18 18.825 18H18V15.675C18 13.05 16.95 12 14.325 12H12V11.175C12 8.55 13.05 7.5 15.675 7.5H18.825C21.45 7.5 22.5 8.55 22.5 11.175Z" stroke="#0F0F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+										</g>
+										<defs>
+										<clipPath id="clip0_2553_6451">
+										<rect width="18" height="18" fill="white" transform="translate(6 6)"/>
+										</clipPath>
+										</defs>
+									</svg>
+							</button> --}}
 						</div>
 					</div>
 				</div>
