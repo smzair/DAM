@@ -314,7 +314,85 @@
             overflow: hidden;
             text-overflow: ellipsis;
 		}
+
+		#share_btn.active{
+			/* border: 1px solid var(--primary-700-main, #FFF300); */
+			border-radius: 45%;
+			background: var(--neutral-800, #1A1A1A);
+			box-shadow: 0px 0px 72px 20px rgba(255, 248, 102, 0.15);
+		}
 	</style>
+
+{{-- /* multiple folder selection style strat  */ --}}
+<style>
+	#folder-container {
+		overflow: hidden;
+	}
+
+	.folder {
+		position: relative;
+		cursor: pointer;
+	}
+
+	.folder.selected {
+		border: 1px solid var(--primary-700-main, #FFF300);
+		background: var(--neutral-800, #1A1A1A);
+		box-shadow: 0px 0px 72px 0px rgba(255, 248, 102, 0.15);
+	}
+
+	.folder-content {
+		margin-top: 10px;
+		padding-left: 20px;
+		overflow: hidden;
+	}
+
+	#selectedFoldersCount {
+		position: absolute;
+		top: 58px;
+		display: none;
+		color: black;
+	}
+
+	#selectedFoldersCountText {
+		color: #FFFFFF;
+		font-size: 12px;
+		font-weight: 500;
+		line-height: 16px;
+		letter-spacing: 0.5px;
+	}
+
+	#popoverfolderselect {
+		position: absolute;
+		top: 10px;
+		display: none;
+		width: auto;
+	}
+
+
+	.popover-item-container {
+		display: flex;
+		gap: 24px;
+	}
+
+	.popover-item {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.popover-item-text {
+		color: var(--shades-0, #FFF);
+		cursor: pointer;
+		font-size: 16px;
+		font-family: Poppins;
+		letter-spacing: 0.5px;
+	}
+	.popover-item-container .disable {
+		pointer-events: none;
+		opacity: .4;
+	}
+</style>
+
 </head>
 
 <body>
@@ -693,7 +771,7 @@
 					<div class="row" >
 						<div class="col-12" style="display: inline-flex; position: fixed; z-index: 9999;">
 							{{-- url-copied --}}
-							<div class="url-copied d-none" >
+							<div class="url-copied d-none" style="display: none" >
 								<div class="url-copied-element">
 									 <p class="url-copied-text">URL copied!</p>
 									 <div class="url-copied-link">
@@ -800,13 +878,24 @@
 
 				document.getElementById("share_btn_new").setAttribute("data-id", target_id);
 
-        const rect = trigger.getBoundingClientRect();
-        const triggerHeight = rect.height;
-        const triggerTop = rect.top + window.pageYOffset;
-        const triggerLeft = rect.left + window.pageXOffset;
-        urlpopover.style.top = triggerTop + triggerHeight + 'px';
-        urlpopover.style.left = triggerLeft + 'px';
-        urlpopover.style.display = 'block';
+        // const rect = trigger.getBoundingClientRect();
+        // const triggerHeight = rect.height;
+        // const triggerTop = rect.top + window.pageYOffset;
+        // const triggerLeft = rect.left + window.pageXOffset;
+        // urlpopover.style.top = triggerTop + triggerHeight + 'px';
+        // urlpopover.style.left = triggerLeft + 'px';
+        // urlpopover.style.display = 'block'
+				;
+				const rect = trigger.getBoundingClientRect();
+				const triggerHeight = rect.height;
+				const triggerTop = rect.top + window.pageYOffset;
+				const triggerLeft = rect.left + window.pageXOffset;
+				const popoverHeight = urlpopover.offsetHeight;
+				const topPosition = triggerTop - popoverHeight;
+				const leftPosition = triggerLeft;
+				urlpopover.style.top = topPosition + 'px';
+				urlpopover.style.left = leftPosition + 'px';
+				urlpopover.style.display = 'block';
       });
     });
 
@@ -849,6 +938,10 @@
 
 				if (link) {
 					link.click();
+					$("#share_btn").addClass('active')
+					setTimeout(() => {
+						$("#share_btn").removeClass('active')
+					}, 2000);
 				}
 			});
 		// function copy_link_new(){

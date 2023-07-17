@@ -171,72 +171,6 @@
 	.owl-dots {
 		height: 0px !important;
 	}
-
-	/* multiple folder selection style strat  */
-
-
-	#folder-container {
-		overflow: hidden;
-	}
-
-	.folder {
-		position: relative;
-		cursor: pointer;
-	}
-
-	.folder.selected {
-		border: 1px solid var(--primary-700-main, #FFF300);
-		background: var(--neutral-800, #1A1A1A);
-		box-shadow: 0px 0px 72px 0px rgba(255, 248, 102, 0.15);
-	}
-
-	.folder-content {
-		margin-top: 10px;
-		padding-left: 20px;
-		overflow: hidden;
-	}
-
-	#selectedFoldersCount {
-		position: absolute;
-		top: 58px;
-		display: none;
-		color: black;
-	}
-
-	#selectedFoldersCountText {
-		color: #FFFFFF;
-		font-size: 12px;
-		font-weight: 500;
-		line-height: 16px;
-		letter-spacing: 0.5px;
-	}
-
-	#popoverfolderselect {
-		position: absolute;
-		top: 10px;
-		display: none;
-		width: auto;
-	}
-
-
-	.popover-item-container {
-		display: flex;
-		gap: 24px;
-	}
-
-	.popover-item {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-	}
-
-	.popover-item-text {
-		color: var(--shades-0, #FFF);
-		cursor: pointer;
-		font-size: 16px;
-		font-family: Poppins;
-		letter-spacing: 0.5px;
-	}
 </style>
 @endsection
 
@@ -250,9 +184,11 @@
 	$service_is; // get from controller and based on service_is route will be deside on wrc click 
 	// dd($wrc_data , $service_is);
 if($service_is == 'Shoot'){
+	$route_service = 'Shoot';
 	$route_is = 'your_assets_shoot_skus';
 	$download_route_is = 'download_Shoot_lot_Edited_wrc';
 }else{
+	$route_service = 'PostProduction';
 	$route_is = 'your_assets_files_editing_uploaded_images';
 	$download_route_is = 'download_Editing_lot_Edited_wrc';
 }
@@ -266,7 +202,7 @@ if($service_is == 'Shoot'){
 				style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);"
 				aria-label="breadcrumb">
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item">{{$wrc_data[0]['lot_number']}}</li>
+					<li class="breadcrumb-item"><a href="{{route('your_assets_files' , ['service' => $route_service])}}" class="breadcrumb-deco">{{$wrc_data[0]['lot_number']}}</a></li>
 					<li class="breadcrumb-item active breadcrumb-deco" aria-current="page">WRCs</li>
 				</ol>
 			</nav>
@@ -328,7 +264,7 @@ if($service_is == 'Shoot'){
 								Download
 							</a>
 
-							<a class="Download d-none" data-wrc_number="{{$row['wrc_number']}}" data-wrc_id="{{base64_encode($row['wrc_id'])}}" data-download_route_is="{{$download_route_is}}" href="{{route($download_route_is , [ base64_encode($row['wrc_id']) , 'multipal'] )}}">
+							<a class="Download d-none" data-file_name="{{$row['wrc_number']}}" data-wrc_number="{{$row['wrc_number']}}" data-wrc_id="{{base64_encode($row['wrc_id'])}}" data-download_route_is="{{$download_route_is}}" href="{{route($download_route_is , [ base64_encode($row['wrc_id'])] )}}">
 								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<path d="M15.0583 12.0253L9.99998 17.0837L4.94165 12.0253M9.99998 2.91699V16.942" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
 								</svg>&nbsp;
@@ -336,7 +272,7 @@ if($service_is == 'Shoot'){
 							</a>
 							
 							@if ($service_is == 'Shoot')
-								<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
+								<a class="view_details" href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$key}}); lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
 									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<g clip-path="url(#clip0_1069_2515)">
 											<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -351,7 +287,7 @@ if($service_is == 'Shoot'){
 									View Details
 								</a>
 							@else
-								<a href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$key}}); editing_lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
+								<a class="view_details" href="javascript:void(0)" onclick="toggleSidebar(); set_date_time({{$row['wrc_id'].$key}}); editing_lots_details('{{ $wrc_id_is  }}' , 'wrc' , 'Edited') ">
 									<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<g clip-path="url(#clip0_1069_2515)">
 										<path d="M9.99992 13.333L9.99992 9.16634M9.99992 1.66634C5.41658 1.66634 1.66658 5.41634 1.66658 9.99968C1.66659 14.583 5.41659 18.333 9.99992 18.333C14.5833 18.333 18.3333 14.583 18.3333 9.99967C18.3333 5.41634 14.5833 1.66634 9.99992 1.66634Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -459,6 +395,7 @@ if($service_is == 'Shoot'){
 			</div>
 		@endforeach
 
+		{{-- Multi selected menu --}}
 		<div class="col-12 col-lg-12 col-md-12 col-sm-12" style="position: relative">
 			{{-- popoverpopoverfolderselect --}}
 			<div id="popoverfolderselect" class="popoverpopoverfolderselect">
@@ -478,7 +415,7 @@ if($service_is == 'Shoot'){
 						</div>
 
 						{{-- View details --}}
-						<div class="popover-item">
+						<div class="popover-item" id="multi_view_details">
 							<span>
 								<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<rect width="40" height="40" rx="20" fill="#1A1A1A" />
@@ -571,178 +508,7 @@ if($service_is == 'Shoot'){
 
 @section('js_scripts')
 
-<script>
-	const folderContainer = document.getElementById('folderContainer');
-	const folders = Array.from(folderContainer.getElementsByClassName('folder'));
-	const selectedFoldersCount = document.getElementById('selectedFoldersCount');
-	const popover = document.getElementById('popover');
-
-	let selectedFolders = [];
-	let isCtrlPressed = false;
-
-	folderContainer.addEventListener('click', handleFolderSelection);
-	document.addEventListener('keydown', handleKeyDown);
-	document.addEventListener('keyup', handleKeyUp);
-
-	function handleFolderSelection(event) {
-		if (isCtrlPressed) {
-			const folder = getClosestFolder(event.target);
-			const isSelected = folder.classList.toggle('selected');
-			if (isSelected) {
-				selectedFolders.push(folder);
-			} else {
-				selectedFolders11 = selectedFolders.filter((f, index) => {
-					console.log(index, ' f :>> ', f);
-					console.log('folder :>> ', folder);
-				});
-				selectedFolders = selectedFolders.filter(f => f !== folder);
-			}
-			updateSelectedFoldersCount();
-			updatePopover();
-		}
-	}
-
-	function handleKeyDown(event) {
-		if (event.key === 'Control' || event.key === 'Meta') {
-			isCtrlPressed = true;
-		}
-	}
-
-	function handleKeyUp(event) {
-		if (event.key === 'Control' || event.key === 'Meta') {
-			isCtrlPressed = false;
-		}
-	}
-
-	function updateSelectedFoldersCount() {
-		if (selectedFolders.length > 0) {
-			const count = selectedFolders.length;
-			const selectedFoldersCountText = document.getElementById('selectedFoldersCountText');
-			selectedFoldersCountText.textContent = `${count} ${count > 1 ? '' : ''} selected`;
-			selectedFoldersCount.style.display = 'block';
-		} else {
-			selectedFoldersCount.style.display = 'none';
-		}
-	}
-
-	function updatePopover() {
-		if (selectedFolders.length > 0) {
-			const folderNames = selectedFolders.map(folder => folder.textContent).join(', ');
-			const downloadLink = createDownloadLink();
-			// popover.innerHTML = `${folderNames}<br>${downloadLink}`;
-			popoverfolderselect.style.display = 'block';
-		} else {
-			popoverfolderselect.style.display = 'none';
-		}
-	}
-
-	function createDownloadLink() {
-		const link = document.createElement('a');
-		link.textContent = 'Download';
-		link.href = '#'; // Replace with the actual download link
-		link.addEventListener('click', handleDownloadClick);
-		return link.outerHTML;
-	}
-
-	function handleDownloadClick(event) {
-		// Handle the download action here
-		event.preventDefault();
-		console.log('Download link clicked');
-	}
-
-	function getClosestFolder(element) {
-		while (element && !element.classList.contains('folder')) {
-			element = element.parentElement;
-		}
-		return element;
-	}
-
-</script>
-
-{{--  Function for adding multipal files to favorites --}}
-<script>
-		async function add_to_multipal_fav(){
-		var selectedFolders = document.querySelectorAll('#folderContainer .selected .adap-div .myPopover .add_to_favorites_calss');
-
-		let data_obj_array = [];
-		selectedFolders.forEach((element) => {
-			var data_obj = element.getAttribute('data-data_obj');
-			data_obj_array.push(data_obj);
-    });
-
-		if(data_obj_array.length > 0){
-			await $.ajax({
-				url: "{{ url('your-assets-Multipal-Favorites')}}",
-				type: "POST",
-				dataType: 'json',
-				data: {
-					data : data_obj_array,
-					_token: '{{ csrf_token() }}'
-				},
-				success: function(res) {
-					console.log('res => ', res )
-					if(res?.status){
-						$('.Multipal-fav-and-notfav-Text').text(res.massage);
-						$('.Multipal-fav-div').removeClass('d-none');
-						setTimeout(() => {
-							$('.Multipal-fav-div').addClass('d-none');
-						}, 2000);
-					}else{
-						$('.error-text').text(res.massage);
-						$('.added-notfav-div').removeClass('d-none');
-						setTimeout(() => {
-							$('.added-notfav-div').addClass('d-none');
-							$('.error-text').text('Removed from favourites');
-						}, 2000);
-					}
-				}
-			});
-		}
-	}
-
-</script>
-
-{{--  Download Multipal zip files --}}
-<script>
-	function download_mul_zip(){
-		const folderNames = selectedFolders.map(async (folder , index) => {
-			let selectedfolder_id = folder.classList[0];
-			var selectedFolder = document.querySelector('.'+selectedfolder_id);
-			var popoverFirstChild = selectedFolder.querySelector('.myPopover .Download');
-			var element = selectedFolder.querySelector('.adap-div .myPopover .Download');
-
-			var hrefValue = popoverFirstChild.getAttribute('href');
-			var wrc_id = popoverFirstChild.getAttribute('data-wrc_id');
-			var wrc_number = popoverFirstChild.getAttribute('data-wrc_number');
-			// console.log({index, wrc_id, hrefValue});
-			await $.ajax({
-				url: hrefValue,
-				type: "GET",
-				xhrFields: {
-					responseType: 'blob'
-				},
-				success: function(blob) {
-					// Create a temporary URL for the downloaded file
-					console.log('blob', blob)
-					if(blob != 'error'){
-						var url = URL.createObjectURL(blob);
-
-						var link = document.createElement('a');
-						link.href = url;
-						link.download = wrc_number + '.zip';
-						// Programmatically click the link to trigger the download
-						link.click();
-						URL.revokeObjectURL(url);
-					}
-			},
-				error: function(xhr, status, error) {
-					console.error('Error:', error);
-				}
-			});
-		})
-	}
-</script>
-
+@include('clients.ClientAssets.multipal_select_js')
 
 {{-- add_to_favorites --}}
 	<script>
