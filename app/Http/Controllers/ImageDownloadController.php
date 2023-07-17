@@ -73,7 +73,7 @@ class ImageDownloadController extends Controller
   }
 
   //Shoot lot Raw Image zip Download
-  public function download_Shoot_Lot_raw($lot_id)
+  public function download_Shoot_Lot_raw($lot_id ,$is_multipal = '')
   {
     $lot_id = $lot_id; // lot id
     $lot_data = Lots::where('id', $lot_id)->first(['lot_id', 'created_at']);
@@ -106,13 +106,23 @@ class ImageDownloadController extends Controller
         ClientActivityLog::saveClient_activity_logs($data_array);
         return response()->download($fileName)->deleteFileAfterSend(true);
       } else {
+        if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
+      }
+    }else{
+      if($is_multipal == ''){
         return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+      }else{
+        return "error";
       }
     }
   }
 
   //Shoot lot Raw Image zip Download
-  public function download_Shoot_Lot_edited($lot_id)
+  public function download_Shoot_Lot_edited($lot_id ,$is_multipal = '')
   {
     $lot_id = $lot_id;
     $lot_data = Lots::where('id', $lot_id)->first(['lot_id', 'created_at']);
@@ -145,7 +155,17 @@ class ImageDownloadController extends Controller
         ClientActivityLog::saveClient_activity_logs($data_array);
         return response()->download($fileName)->deleteFileAfterSend(true);
       } else {
+        if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
+      }
+    }else{
+      if($is_multipal == ''){
         return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+      }else{
+        return "error";
       }
     }
   }
@@ -211,7 +231,7 @@ class ImageDownloadController extends Controller
   }
 
   //Shoot lot Edited Image zip Download based on wrc id and adaptation
-  public function download_Shoot_lot_Edited_adaptation ($wrc_id , $adaptation , $sku_id = '')
+  public function download_Shoot_lot_Edited_adaptation ($wrc_id , $adaptation , $sku_id = '',$is_multipal = '')
   {
     $wrc_id = base64_decode($wrc_id); 
     $adaptation = base64_decode($adaptation);
@@ -256,18 +276,31 @@ class ImageDownloadController extends Controller
           ClientActivityLog::saveClient_activity_logs($data_array);
           return response()->download($fileName)->deleteFileAfterSend(true);
         } else {
-          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+          if($is_multipal == ''){
+            return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+          }else{
+            return "error";
+          }
         }
       }else{
-        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        
+        if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
       }
     }else{
-      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, Invailid Wrc id');
+      if($is_multipal == ''){
+        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, Invailid Wrc id');
+      }else{
+        return "error";
+      }
     }
   }
 
   //Shoot lot Edited Image zip Download based on wrc id and sku code
-  public function download_Shoot_lot_raw_sku ($wrc_id , $sku_id = '')
+  public function download_Shoot_lot_raw_sku ($wrc_id , $sku_id = '',$is_multipal = '')
   {
     $wrc_id = base64_decode($wrc_id); 
     $lot_data_arr = Lots::leftJoin('wrc','wrc.lot_id', '=' , 'lots.id')->whereNotNull('lots.id')->
@@ -308,18 +341,26 @@ class ImageDownloadController extends Controller
           ClientActivityLog::saveClient_activity_logs($data_array);
           return response()->download($fileName)->deleteFileAfterSend(true);
         } else {
-          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+          if($is_multipal == ''){
+            return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+          }else{
+            return "error";
+          }
         }
       }else{
-        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        if($is_multipal == ''){
+            return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+          }else{
+            return "error";
+          }
       }
     }else{
-      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, Invailid Wrc id');
+      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, Invailid sku id');
     }
   }
 
   //Editing lot Raw Image zip Download
-  public function download_Editing_Lot_raw($lot_id)
+  public function download_Editing_Lot_raw($lot_id ,$is_multipal = '')
   {
     $lot_id = base64_decode($lot_id); // lot id
     // $lot_id = 11; // lot id
@@ -364,18 +405,30 @@ class ImageDownloadController extends Controller
           ClientActivityLog::saveClient_activity_logs($data_array);
           return response()->download($fileName)->deleteFileAfterSend(true);
         } else {
+          if($is_multipal == ''){
           return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
         }
       }else {
-        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
       }
     }else {
-      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+      if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
     }
     
   }
   //Editing lot Raw Image zip Download
-  public function download_Editing_Lot_edited($lot_id)
+  public function download_Editing_Lot_edited($lot_id ,$is_multipal = '')
   {
     $lot_id = base64_decode($lot_id); // lot id
     $lot_data = EditingWrc::where('lot_id', '=' , $lot_id)->whereNotNull('uploaded_img_file_path')->
@@ -417,19 +470,31 @@ class ImageDownloadController extends Controller
           ClientActivityLog::saveClient_activity_logs($data_array);
           return response()->download($fileName)->deleteFileAfterSend(true);
         } else {
+          if($is_multipal == ''){
           return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
         }
       }else {
-        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
       }
     }else {
-      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+      if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
     }
     
   }
 
   //Editing lot Edited Image zip Download based on wrc id
-  public function download_Editing_lot_Edited_wrc($wrc_id)
+  public function download_Editing_lot_Edited_wrc($wrc_id ,$is_multipal = '')
   {
 
     $wrc_id = base64_decode($wrc_id); // lot id
@@ -471,13 +536,25 @@ class ImageDownloadController extends Controller
           ClientActivityLog::saveClient_activity_logs($data_array);
           return response()->download($fileName)->deleteFileAfterSend(true);
         } else {
+          if($is_multipal == ''){
           return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
         }
       }else {
-        return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
       }
     }else {
-      return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+      if($is_multipal == ''){
+          return view('clients.ClientUserManagement.File_not_exist')->with('massage', 'Sorry, File does not exist in our server or may have been deleted!');
+        }else{
+          return "error";
+        }
     }
     
   }
