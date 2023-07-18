@@ -161,7 +161,8 @@ class FavoriteAsset extends Model
   public static function shoot_lots($lot_id)
   {
 
-    $lots_query_cataloging = Lots::leftJoin('wrc', 'wrc.lot_id', '=', 'lots.id')->where('lots.id', '=', $lot_id)->whereNotNull('wrc.id')->select(
+    $lots_query_cataloging = Lots::leftJoin('wrc', 'wrc.lot_id', '=', 'lots.id')->where('lots.id', '=', $lot_id)->whereNotNull('wrc.id')->
+    leftjoin('brands' , 'brands.id' , 'lots.brand_id')->select(
       'lots.id as lot_id',
       'lots.lot_id as lot_number',
       'lots.s_type as s_type',
@@ -171,6 +172,8 @@ class FavoriteAsset extends Model
       DB::raw("GROUP_CONCAT(wrc.id) as wrc_ids"),
       DB::raw("GROUP_CONCAT(wrc.wrc_id) as wrc_numbers"),
       DB::raw("COUNT(wrc.id) as wrc_counts"),
+      'brands.name as brand_name',
+      'brands.short_name as brand_short_name'
     )->groupby('lots.id');
     $shoot_lots = $lots_query_cataloging->get()->toArray();
 
@@ -216,6 +219,7 @@ class FavoriteAsset extends Model
 
         array_push($shoot_lots_data, array(
           'lot_id' => $row['lot_id'],
+          'brand_name' => $row['brand_name'],
           'lot_number' => $row['lot_number'],
           'lot_created_at' => $row['lot_created_at'],
           'inward_qty' => $skus_count,
