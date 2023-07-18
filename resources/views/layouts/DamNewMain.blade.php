@@ -300,8 +300,9 @@
 	{{-- Copy url propover  --}}
 	<style>
 		.urlpopover {
-      display: none;
-      position: absolute;
+			display: none;
+			position: absolute;
+			z-index: 1
     }
 
 		.url-copied-linkforviewdetails {
@@ -887,15 +888,16 @@
         // urlpopover.style.display = 'block'
 				;
 				const rect = trigger.getBoundingClientRect();
-				const triggerHeight = rect.height;
-				const triggerTop = rect.top + window.pageYOffset;
-				const triggerLeft = rect.left + window.pageXOffset;
-				const popoverHeight = urlpopover.offsetHeight;
-				const topPosition = triggerTop - popoverHeight;
-				const leftPosition = triggerLeft;
-				urlpopover.style.top = topPosition + 'px';
-				urlpopover.style.left = leftPosition + 'px';
-				urlpopover.style.display = 'block';
+					const triggerHeight = rect.height;
+					const triggerTop = rect.top + window.pageYOffset;
+					const triggerLeft = rect.left + window.pageXOffset;
+					const popoverHeight = urlpopover.offsetHeight;
+					const offset = 70; // Adjust this value to increase or decrease the offset
+					const topPosition = triggerTop - popoverHeight - offset;
+					const leftPosition = triggerLeft;
+					urlpopover.style.top = topPosition + 'px';
+					urlpopover.style.left = leftPosition + 'px';
+					urlpopover.style.display = 'block';
       });
     });
 
@@ -1058,21 +1060,26 @@
 
 			const image_src = $("#image_src"+key).html()
 			$("#image_src").attr("src", image_src);
+			$("#wrc_numbers").html('')
+			$("#wrc_numbers").html($("#wrc_numbers"+key).html())
 
 			if(service == 'shoot'){
 				$("#s_type").html($("#s_type"+key).html())
 				$("#skus_count").html($("#skus_count"+key).html())
 				$("#raw_images").html($("#raw_images"+key).html())
 				$("#edited_images").html($("#edited_images"+key).html())
-				$("#wrc_numbers").html($("#wrc_numbers"+key).html())
 				$("#shoot_files_details").removeClass('d-none')
 			}else{
 				$("#shoot_files_details").addClass('d-none')
 			}
+			
 			const target_url = $("#url_"+key).html()
 			document.getElementById("share_btn").setAttribute("data-id", key);
 			$("#target_copy_url").html(target_url)
 			navigator.clipboard.writeText(target_url);
+			$(".assets_share").removeClass('d-none')
+			console.log('target_url', target_url)
+			console.log('service', service)
 		}
 	</script>
 

@@ -119,7 +119,9 @@ class User_Assets_Favorites_controller extends Controller
     $other_data = array(
       'sortBy' => $sortBy
     );
-    return view('clients.ClientAssetsLinks.your-assets-Favorites')->with('images_array', $images_array)->with('data_array', $data_array)->with('other_data',$other_data);
+    return view('clients.ClientFavoritesAssets.your-assets-Favorites')->with('images_array', $images_array)->with('data_array', $data_array)->with('other_data',$other_data);
+    
+    // return view('clients.ClientAssetsLinks.your-assets-Favorites')->with('images_array', $images_array)->with('data_array', $data_array)->with('other_data',$other_data);
   }
 
   // Function for save files as as favorites
