@@ -155,7 +155,7 @@
 	@include('clients.ClientFavoritesAssets.your-assets-Favorites-skus')
 	
 	<!-- WRCs Section -->
-	@include('clients.ClientFavoritesAssets.your-assets-Favorites-wrcs-1')
+	@include('clients.ClientFavoritesAssets.your-assets-Favorites-wrcs')
 	
 	<!-- Lots Section -->
 	@include('clients.ClientFavoritesAssets.your-assets-Favorites-lots')
