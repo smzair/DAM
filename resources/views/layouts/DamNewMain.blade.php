@@ -107,7 +107,9 @@
 		/* favourites section */
 		.added-fav-div , .Multipal-fav-div{
 				background: var(--tertiary-700-main, #50AB64);
-				/*width:173px;*/
+				position: fixed;
+				left: 50%;
+				transform: translate(-50%, -50%);
 		}
 		.added-fav-and-notfav-Text{
 			color: var(--shades-0, #FFF);
@@ -124,10 +126,28 @@
 			top: auto;
 			margin: 0px;
 		}
+		
+		.Multipal-fav-and-notfav-Text{
+		    color: var(--shades-0, #FFF);
+			/* DAM/Label/Large */
+			font-family: Poppins;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: 20px;
+			letter-spacing: 0.1px;
+			padding:16px;
+			text-align: center;
+			position: relative;
+			top: auto;
+			margin: 0px;
+		}
 
 		.added-notfav-div{
-			/*width:173px;*/
 			background: var(--error-500, #F26B6B);
+			position: fixed;
+			left: 50%;
+			transform: translate(-50%, -50%);
 		}
 	</style>
 
@@ -336,9 +356,9 @@
 	}
 
 	.folder.selected {
-		border: 1px solid var(--primary-700-main, #FFF300);
+		border: 1px solid var(--tertiary-700-main, #50AB64);
+        box-shadow: 4px 16px 60px 0px rgba(255, 255, 255, 0.10);
 		background: var(--neutral-800, #1A1A1A);
-		box-shadow: 0px 0px 72px 0px rgba(255, 248, 102, 0.15);
 	}
 
 	.folder-content {
@@ -349,9 +369,12 @@
 
 	#selectedFoldersCount {
 		position: absolute;
-		top: 58px;
+		top: 94px;
 		display: none;
 		color: black;
+		background:#0F0F0F;
+		height: 33px;
+		width: 227px;
 	}
 
 	#selectedFoldersCountText {
@@ -366,7 +389,10 @@
 		position: absolute;
 		top: 10px;
 		display: none;
-		width: auto;
+		width: 84%;
+		background:#0F0F0F;
+		padding: 4px;
+        left: 10px;
 	}
 
 
@@ -1068,11 +1094,11 @@
 				$("#skus_count").html($("#skus_count"+key).html())
 				$("#raw_images").html($("#raw_images"+key).html())
 				$("#edited_images").html($("#edited_images"+key).html())
+				$("#wrc_numbers").html($("#wrc_numbers"+key).html())
 				$("#shoot_files_details").removeClass('d-none')
 			}else{
 				$("#shoot_files_details").addClass('d-none')
 			}
-			
 			const target_url = $("#url_"+key).html()
 			document.getElementById("share_btn").setAttribute("data-id", key);
 			$("#target_copy_url").html(target_url)
