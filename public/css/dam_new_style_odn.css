@@ -25,6 +25,7 @@ body {
 
 .main-container-resp{
     padding:24px;
+    position:relative;
 }
 
 .accordion-flush .accordion-item {
@@ -370,6 +371,9 @@ li.breadcrumb-item, ::after {
   padding: 12px 24px;
 }
 
+.box-your-asset{
+      padding: 12px 12px 12px 12px;
+}
 
 .nav-pills .nav-item {
     width: 100%;
@@ -462,7 +466,7 @@ tbody{
 }
 
 .headingF {
-  font-weight: 500;
+  font-weight:500;
   font-size: 28px;
   color: #FFFFFF;
   margin-bottom:0px;
@@ -1129,9 +1133,16 @@ background: #FFF300;
 /* Admin Panel */
 
 .create-user-btn {
-  font-weight: 500;
-  font-size: 16px;
-  color: #9F9F9F;
+    color: var(--neutral-900-main, #0F0F0F);
+    /* DAM/Title/Medium */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 150% */
+    letter-spacing: 0.15px;
+    padding:16px 32px;
+   background: var(--primary-700-main, #FFF300);
 }
 
 button.btn.btn-lg.border.profile-btn:hover{
@@ -1152,7 +1163,11 @@ button#picDeleteBTN:hover {
     color: #FFFFFF;
     font-weight: 400;
     font-size: 16px;
-    border:1px solid #9F9F9F !important;
+    border:1px solid #333333 !important;
+}
+
+.form-floating>.form-control:focus, .form-floating>.form-control:not(:placeholder-shown) {
+    padding: 16px;
 }
 
 button.btn.border.rounded-0.user-btn:hover {
@@ -1366,15 +1381,47 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
   color: #9F9F9F;
 }
 
-.table-desc {
-  font-weight: 500;
-  font-size: 12px;
-  color: #9F9F9F;
-  background: #EBEBEB;
-  padding: 5px;
+.table-desc-password-manageuser {
+   color: var(--primary-700-main, #FFF300);
+    /* DAM/Label/Medium */
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 133.333% */
+    letter-spacing: 0.5px;
+    padding: 8px;
+    background: rgba(255, 243, 0, 0.10);
+    margin-bottom:0px;
 }
 
+.table-desc-onboarding-manageuser {
+    color: var(--tertiary-700-main, #50AB64);
+    /* DAM/Label/Medium */
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 133.333% */
+    letter-spacing: 0.5px;
+    padding: 8px;
+    background: rgba(80, 171, 100, 0.10);
+    margin-bottom:0px;
+}
 
+.Assign-role-for-manage-user{
+     color: var(--neutral-400, #808080);
+    /* DAM/Body/Large */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+    letter-spacing: 0.5px;
+    border: 1px solid #333333;
+    border-radius:0px;
+    padding:12px;
+}
 
 .log-out-button {
   font-weight: 500;
@@ -1444,8 +1491,8 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
 
 .form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label, .form-floating>.form-select~label {
     opacity: 1;
-    transform: scale(.85) translateY(-0.5rem) translateX(0.15rem);
-    font-size: 14px;
+    transform: scale(1) translateY(-0.5rem) translateX(0.15rem);
+    font-size: 12px;
     font-weight: 500;
 }
 
@@ -1510,6 +1557,7 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
 
 .profile-and-cancel-details{
     gap:24px;
+    margin-top:40px;
 }
 
 .user-btn .pic-delete-btn{
@@ -1518,9 +1566,8 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
 
 
 .verification-div {
-  padding: 5px;
   margin-left: 0px;
-  margin-top:24px;
+  margin-top:40px;
 }
 
 .under-verification-div-tag{
@@ -1528,13 +1575,38 @@ input.form-control.form-control-lg.rounded-0.mb-4.user-form:focus {
     font-size: 14px;
     line-height: 20px;
     color: #808080;
+    margin-bottom:0px;
 }
 
 .under-verification-div-tag-head{
     font-weight: 400;
     font-size: 16px;
     color: #FFFFFF;
+    margin-bottom:0px;
+    margin-top: 4px;
 }
+
+.verified-text{
+    color: var(--tertiary-700-main, #50AB64);
+    /* DAM/Title/Medium */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 150% */
+    letter-spacing: 0.15px;
+}
+.verified-text-change-btn{
+    color: var(--shades-0, #FFF);
+    /* DAM/Title/Medium */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 150% */
+    letter-spacing: 0.15px;
+}
+
 
 @media only screen and (min-width: 992px) and (max-width: 1325px) {
   .siderbar-button {

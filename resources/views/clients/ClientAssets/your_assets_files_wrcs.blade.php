@@ -214,7 +214,7 @@ if($service_is == 'Shoot'){
 
 
 	{{-- WRCs details --}}
-	<div class="row" id="folderContainer" style="margin-top: 12px; position:relative">
+	<div class="row" id="folderContainer" style="margin-top: 12px;">
 		
 		@foreach ($wrc_data as $key => $row)
 			@php
@@ -396,7 +396,7 @@ if($service_is == 'Shoot'){
 		@endforeach
 
 		{{-- Multi selected menu --}}
-		<div class="col-12 col-lg-12 col-md-12 col-sm-12" style="position: relative">
+		<div class="col-12 col-lg-12 col-md-12 col-sm-12">
 			{{-- popoverpopoverfolderselect --}}
 			<div id="popoverfolderselect" class="popoverpopoverfolderselect">
 				<div class="popover-content">
