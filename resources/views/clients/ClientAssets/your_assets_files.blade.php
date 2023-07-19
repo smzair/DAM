@@ -79,8 +79,6 @@ $service_is = 'Shoot';
 		<div class="tab-content" id="pills-tabContent">
 			{{-- shoot lots --}}
 			@if (count($shoot_lots) > 0)
-				<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
-					tabindex="0">
 					<div class="row box-container-responsive" id="folderContainer">
 						<div class="col-12">
 							<p class="totallotF">Total Lots: {{count($shoot_lots)}}</p>
@@ -95,7 +93,7 @@ $service_is = 'Shoot';
 									$shoot_image_src1 = $file_path;
 								}
 							@endphp
-							<div class="col-lg-4 col-md-6 box border-0" style="background: #0F0F0F; position: relative;">
+							<div class="col-lg-4 col-md-6 box-your-asset border-0" style="background: #0F0F0F; position: relative;">
 								<div class="selectedfolder{{$key+1}} folder">
 									<div class="under-content-div">
 										<div class="col-12">
@@ -232,7 +230,7 @@ $service_is = 'Shoot';
 							</div>
 						@endforeach				
 					</div>
-				</div>
+			
 			@endif
 
 			{{-- Post-production Lots --}}
@@ -349,7 +347,7 @@ $service_is = 'Shoot';
 		</div>
 
 		{{-- Multi selected menu --}}
-		<div class="col-12 col-lg-12 col-md-12 col-sm-12" style="position: relative">
+		<div class="col-12 col-lg-12 col-md-12 col-sm-12">
 			{{-- popoverpopoverfolderselect --}}
 			<div id="popoverfolderselect" class="popoverpopoverfolderselect">
 				<div class="popover-content">
