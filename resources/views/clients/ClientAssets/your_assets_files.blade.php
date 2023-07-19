@@ -256,7 +256,7 @@ $service_is = 'Shoot';
 									<div class="under-content-div">
 										<div class="col-12">
 											<a href="{{route('your_assets_editing_wrcs' , [$row['lot_id']])}}">
-												<img  style="width: 100%; min-height: 393px;"  src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid">
+												<img src="{{ asset($shoot_image_src1)}}" alt="" class="img-fluid yourasse-file-img">
 											</a>
 										</div>
 										<div class="col-12 d-flex d-flex justify-content-between">
