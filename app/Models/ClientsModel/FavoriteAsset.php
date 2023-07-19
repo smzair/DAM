@@ -536,7 +536,7 @@ class FavoriteAsset extends Model
         'editing_wrcs.lot_id',
         'editing_wrcs.uploaded_img_file_path',
         'editing_wrcs.created_at as wrc_created_at',
-        'editor_lots.lot_number',
+        'editor_lots.lot_number'
       )->get()->toArray();  
       
       foreach ($wrc_data as $key => $row) {
