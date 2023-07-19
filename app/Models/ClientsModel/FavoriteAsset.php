@@ -242,7 +242,7 @@ class FavoriteAsset extends Model
   // Editing Lots Data
   public static function editing_lots($lot_id)
   {
-    $lots_query_cataloging = EditorLotModel::leftJoin('editing_wrcs', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->where('editor_lots.id', '=', $lot_id)->whereNotNull('editing_wrcs.id')->select(
+    $lots_query_cataloging = EditorLotModel::leftJoin('editing_wrcs', 'editing_wrcs.lot_id', '=', 'editor_lots.id')->where('editor_lots.id', '=', $lot_id)->whereNotNull('editing_wrcs.id')->leftjoin('brands' , 'brands.id' , 'editor_lots.brand_id')->select(
         'editor_lots.id as lot_id',
         'editor_lots.lot_number',
         'editor_lots.created_at as lot_created_at',
@@ -254,6 +254,8 @@ class FavoriteAsset extends Model
         DB::raw("SUM(editing_wrcs.imgQty) as tot_imgqty"),
         DB::raw("SUM(editing_wrcs.uploaded_img_qty) as tot_uploaded_img_qty"),
         DB::raw("COUNT(editing_wrcs.id) as wrc_counts"),
+        'brands.name as brand_name',
+        'brands.short_name as brand_short_name'
       )->groupby('editor_lots.id');
 
     $editor_lots = $lots_query_cataloging->get()->toArray();
@@ -286,6 +288,7 @@ class FavoriteAsset extends Model
         }
         array_push($editor_lots_data, array(
           'lot_id' => $row['lot_id'],
+          'brand_name' => $row['brand_name'],
           'lot_number' => $row['lot_number'],
           'wrc_numbers' => $row['wrc_numbers'],
           'lot_created_at' => $row['lot_created_at'],
@@ -303,7 +306,7 @@ class FavoriteAsset extends Model
   // Caytaloging Lots Data
   public static function cataloging_lots($lot_id)
   {
-		$catalog_lots_query = LotsCatalog::leftjoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id')->where('lots_catalog.id', '=',$lot_id);
+		$catalog_lots_query = LotsCatalog::leftjoin('catlog_wrc', 'catlog_wrc.lot_id', 'lots_catalog.id')->leftjoin('brands' , 'brands.id' , 'lots_catalog.brand_id')->where('lots_catalog.id', '=',$lot_id);
 		$catalog_lots_query = $catalog_lots_query->select(
 			'catlog_wrc.lot_id',
 			DB::raw('SUM(catlog_wrc.sku_qty) AS inward_qty'),
@@ -313,7 +316,9 @@ class FavoriteAsset extends Model
 			'lots_catalog.user_id',
 			'lots_catalog.brand_id',
 			'lots_catalog.lot_number',
-			'lots_catalog.created_at as lot_created_at'
+			'lots_catalog.created_at as lot_created_at',
+      'brands.name as brand_name',
+      'brands.short_name as brand_short_name'
 		);
 		$catalog_lots = $catalog_lots_query->groupBy('lots_catalog.id');
 		$catalog_lots = $catalog_lots_query->get()->toArray();
@@ -348,7 +353,7 @@ class FavoriteAsset extends Model
   // Caytaloging Lots Data
   public static function creative_lots($lot_id)
   {
-		$lots_query = CreatLots::leftjoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->where('creative_lots.id', '=',$lot_id);
+		$lots_query = CreatLots::leftjoin('creative_wrc', 'creative_wrc.lot_id', 'creative_lots.id')->leftjoin('brands' , 'brands.id' , 'creative_lots.brand_id')->where('creative_lots.id', '=',$lot_id);
 		$lots_query = $lots_query->select(
 			'creative_wrc.lot_id',
 			DB::raw('CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END AS inward_quantity'),
@@ -360,7 +365,9 @@ class FavoriteAsset extends Model
 			'creative_lots.user_id',
 			'creative_lots.brand_id',
 			'creative_lots.lot_number',
-			'creative_lots.created_at as lot_created_at'
+			'creative_lots.created_at as lot_created_at',
+      'brands.name as brand_name',
+      'brands.short_name as brand_short_name'
 		);
 		$lots = $lots_query->groupBy('creative_lots.id');
 		$lots = $lots_query->get()->toArray();
