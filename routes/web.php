@@ -710,6 +710,7 @@ Route::middleware(['auth', 'role:Client,Sub Client'])->group(function () {
     
     Route::get('/Notifications', [ClientNotificationController::class, 'Notifications'])->name('Notifications'); 
     Route::POST('/set_notifiction_to_seen', [ClientNotificationController::class, 'set_notifiction_to_seen'])->name('set_notifiction_to_seen');
+    Route::POST('/remove_notifiction', [ClientNotificationController::class, 'remove_notifiction'])->name('remove_notifiction');
     
     // Add to your-assets-Multipal-Favorites 
     Route::POST('/your-assets-Multipal-Favorites', [User_Assets_Favorites_controller::class, 'Multi_save']);

@@ -23,8 +23,8 @@
 		font-style: normal;
 		font-weight: 600;
 		font-size: 28px;
-		/* color: #FFFFFF; */
-		color: #0F0F0F;
+		color: #FFFFFF;
+		/* color: #0F0F0F; */
 		margin-top: 40px;
 		margin-bottom: 0px;
 	}
@@ -83,7 +83,7 @@
 	.popovernotification {
 		position: absolute;
 		top: auto;
-		right: 37px;
+		right: 50px;
 		background-color: #0F0F0F;
 		padding: 10px;
 		display: none;
@@ -125,7 +125,7 @@
 	$printedOlder = false;
 	$total_notification = count($ClientNotification);
 	$ids = json_encode(array_column($ClientNotification, 'id'),true);
-	// dd($ids , $ClientNotification);
+	// dd($ClientNotification);
 @endphp
 	
 	<div class="row">
@@ -143,7 +143,7 @@
 					Notification
 				</h4>
 				<p class="underheadingF">
-					You have {{$total_notification}} new notifiations
+					You have <span id="notify-count" >{{$total_notification}}</span> new notifiations
 				</p>
 			</div>
 			<p class="p-2 markk-all-read-para" style="cursor: pointer;" onclick="set_notifiction_to_seen({{$ids}})">Mark all read</p>
@@ -175,9 +175,10 @@
 				echo '<p class="notification-today-yester-older" style="margin-bottom:24px;">Older</p>';
 				$printedOlder = true;
 			}
+			$is_manual_notification = $row['is_manual_notification'];
 		?>
 
-		<div class="row">
+		<div class="row notification_row notificationId{{$row['id']}}">
 			<div class="all-notification-details">
 				<div class="col-12 d-flex justify-content-between">
 					<div>
@@ -188,17 +189,19 @@
 							{{$day_ago}}
 						</p>
 					</div>
-					<a href="#" class="notification-three-dots" role="button" id="popover-trigger-notification">
+					<a href="javascript:;" class="notification-three-dots {{$is_manual_notification == 'No' ? '' : 'd-none'}}" role="button" id="popover-trigger-notification">
 						<i class="bi bi-three-dots-vertical" style="font-size:20px">
 						</i>
 					</a>
-
+					
 					<!-- Delete Popover -->
 					<div class="popovernotification" id="popover-content-notification">
+						<input type="hidden" class="notificationId" name="notificationId" value="{{$row['id']}}" >
 						<span>
-							<a href="#" role="button" class="notifi-remove-button">Remove</a>
+							<a href="javascript:;" role="button" class="notifi-remove-button">Remove 
+								<i class="bi bi-trash" style="color: red;"></i>
+							</a>
 						</span>
-						<i class="bi bi-trash" style="color: red;"></i>
 					</div>
 				</div>
 				<hr>
@@ -365,33 +368,63 @@
 
 {{-- js scripts --}}
 @section('js_scripts')
-	{{-- Removing files from favorites --}}
-	<script>
-		// async function remove_favorites(id){
-		// 	console.log('id', id)
-		// 	await $.ajax({
-		// 		url: "{{ url('Remove-your-assets-Favorites') }}",
-		// 		type: "POST",
-		// 		dataType: 'json',
-		// 		data: {
-		// 			id: id,
-		// 			_token: '{{ csrf_token() }}'
-		// 		},
-		// 		success: function(res) {
-		// 			if(res?.status){
-		// 				id = res.id;
-		// 				alert('File removed from Favorites List')
-		// 				$('#div_'+id).css({
-		// 					"pointer-events": "none",
-		// 					"opacity": 0.2
-		// 				});
-		// 				// $('#div_'+id).remove();
-		// 				// window.location.reload();
-		// 			}else{
-		// 				alert('somthing went Wrong!!')
-		// 			}
-		// 		}
-		// 	});
-		// }
-	</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var triggers = document.getElementsByClassName("notification-three-dots");
+		var popovers = document.getElementsByClassName("popovernotification");
+
+		for (var i = 0; i < triggers.length; i++) {
+			triggers[i].addEventListener("click", function (e) {
+				e.stopPropagation();
+				var popovernotification = this.nextElementSibling;
+				popovernotification.classList.toggle("show-popover");
+			});
+		}
+
+		document.addEventListener("click", function () {
+			for (var i = 0; i < popovers.length; i++) {
+				// popovers[i].classList.remove("show-popover");
+			}
+		});
+	});
+
+</script>
+
+{{-- Remove Notification --}}
+<script>
+	$(document).ready(function() {
+    $('.notifi-remove-button').click(function() {
+			let notificationId = $(this).closest('.popovernotification').find('.notificationId').val();
+			let n_count = +$('#notify-count').text();
+			
+			const csrfToken = '{{ csrf_token() }}'
+			$.ajax({
+				url: "remove_notifiction",
+				type: "POST",
+				dataType: 'json',
+				data: {
+					notificationId: notificationId,
+				},
+				headers: {
+					'X-CSRF-Token': csrfToken
+				},
+				success: function(res) {
+					if(res.status){
+						notificationId_id = 'notificationId'+notificationId
+						$('.'+notificationId_id).addClass('d-none');
+						$('.'+notificationId_id).remove();
+						$('#notify-count').text(n_count-1)
+					}
+				},
+				error: function (xhr, status, error) {
+          console.error(xhr.responseText);
+        }
+			});
+
+    });
+	});
+</script>
+	
 @endsection
