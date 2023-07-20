@@ -163,6 +163,34 @@ class ClientNotificationController extends Controller
         $update_status = ClientNotification::update_is_seen($id);
         echo $update_status;
     }
+
+    // Remove client notification from DAM
+
+    public function remove_notifiction(Request $request){
+
+        $id = $request->notificationId;
+        $status = false;
+        try {
+            DB::beginTransaction();
+            $response = ClientNotification::where('id', $id)->delete();
+            if($response > 0){
+                $status = true;
+                DB::commit();
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $response = $th;
+            //throw $th;
+        }
+        echo json_encode(array(
+            'status' => $status,
+            'response' => $response
+        ));
+       
+    }
+    
+
+
     
 
 }
