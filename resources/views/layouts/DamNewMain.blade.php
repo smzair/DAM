@@ -321,8 +321,9 @@
 	<style>
 		.urlpopover {
 			display: none;
-			position: absolute;
-			z-index: 1
+            position: absolute;
+            top: auto;
+            left: 0;
     }
 
 		.url-copied-linkforviewdetails {
@@ -574,7 +575,7 @@
 							</li>
 							{{-- user name --}}
 							<li class="nav-item">
-								<a class="nav-link" href="#" style="color: #D1D1D1;font-weight: 500;font-size: 14px;margin-top: 5px">{{ ucwords($user_data->name) }}</a>
+								<a class="nav-link" href="{{route('ClientProfile')}}" style="color: #D1D1D1;font-weight: 500;font-size: 14px;margin-top: 5px">{{ ucwords($user_data->name) .' '. ucwords($user_data->last_name) }}</a>
 							</li>
 							{{-- user profile image --}}
 							<li class="nav-item">
@@ -725,7 +726,7 @@
 							<div id="flush-collapseThree" class="accordion-collapse collapse {{$active_tab == 3 ? 'show' : ''}}" aria-labelledby="flush-headingThree"
               data-bs-parent="#accordionFlushExample">
 								<div class="accordion-body">
-									<a href="{{route('Client_Users_list')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'manage_user' ? 'active' : ''}}"
+									<a class="d-none" href="{{route('Client_Users_list')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'manage_user' ? 'active' : ''}}"
 										style="width: 100%;">Manage user</a>
 
 									<a href="{{route('ClientProfile')}}" type="button" class="btn border-0 rounded-0 btn-secondary btn-lg under-button {{$active_link == 'ClientProfile' ? 'active' : ''}}"
@@ -738,7 +739,7 @@
 						</div>
 
 						{{-- 4rd tab --}}
-						<div class="accordion-item">
+						<div class="accordion-item d-none">
 							<h2 class="accordion-header" id="flush-heading-four">
 								<button class="mySvg clickable svg-container border border-dark border-top-0 border-start-0 border-end-0 accordion-button siderbar-button {{$active_tab == 4 ? '' : 'collapsed'}}" type="button" data-bs-toggle="collapse"
 									data-bs-target="#flush-collapse-four" aria-expanded="{{$active_tab == 4 ? "true" : "flase"}}" aria-controls="flush-collapse-four" onclick="swapSVG(event)">

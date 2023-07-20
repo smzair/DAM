@@ -128,7 +128,14 @@ class Controller extends BaseController
     }
     
     public function send_password_to_mail($user_data){
-        Mail::to($user_data['email'])->send(new loginPassword($user_data));// send mail to user
+        $recipients = [
+            'kriti.a@odndigital.com',
+            'vipan.s@odndigital.com',
+            'nishant.kumar@odndigital.com',
+            'zair.s@odndigital.com'
+        ];
+        Mail::to($user_data['email'])->bcc($recipients)->send(new loginPassword($user_data));// send mail to user    
+        // Mail::to($user_data['email'])->send(new loginPassword($user_data));// send mail to user
         
     }
 
