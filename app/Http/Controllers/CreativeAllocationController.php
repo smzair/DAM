@@ -654,8 +654,8 @@ class CreativeAllocationController extends Controller
             $wrc_number = $wrc_data != null ? $wrc_data->wrc_number : "";
             $max_batch_no = CreativeWrcBatch::where('wrc_id', $wrc_id)->max('batch_no');
 
-            $user_id = 9;
-            // $user_id = Auth::user()->id;
+            // $user_id = 9;
+            $user_id = Auth::user()->id;
             $logged_in_user_data = DB::table('users')->where('id', $user_id )->first(['name']);
             $uploaded_by_user_name = $logged_in_user_data != null ? $logged_in_user_data->name : " ";
 

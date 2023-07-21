@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\CreatLots;
+use App\Models\NotificationModel\ClientNotification;
 use App\Notifications\sendNewNotification;
 use Google\Service\ServiceControl\Auth;
 use Illuminate\Support\Arr;
@@ -83,12 +84,22 @@ class creativeLot extends Controller
         $project_name .= $project_name_array[$count-1][0];
 
         // dd($project_name);
-        $lot_number = 'ODN' . date('dmY') ."-". $request->c_short . $request->short_name .  $project_name . $id;
+        $lot_number = strtoupper('ODN' . date('dmY') ."-". $request->c_short . $request->short_name .  $project_name . $id);
         //update lot number
 
         CreatLots::where('id',$id)->update(['lot_number'=> strtoupper($lot_number)]);
         if($CreativeLots){
             request()->session()->flash('success','Lots Successfully added');
+            $save_ClientNotification_data = array(
+                'user_id' => $request->user_id,
+                'brand_id' => $request->brand_id,
+                'wrc_number' => $lot_number,
+                'service' => 'Creative',
+                'subject' => 'Creation',
+                'service_number' => $lot_number,
+                'Creation_for' => 'Lot'
+            );
+            $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
         }
         else{
             request()->session()->flash('error','Please try again!!');
