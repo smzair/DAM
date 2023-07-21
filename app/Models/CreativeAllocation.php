@@ -5,8 +5,8 @@ namespace App\Models;
 use Google\Service\Directory\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Auth;
 class CreativeAllocation extends Model
 {
     use HasFactory;
@@ -58,8 +58,8 @@ class CreativeAllocation extends Model
 	//GetCreativeAllocation for view user detail
 	public static function GetCreativeAllocationForUpload(){
 		// $id = Auth::user()->id;
+		
 		// $login_user_id = 51;//login user id CW
-
 		$login_user_id = Auth::id();//login user id GD
 		// $login_user_id = 365;//login user id CW
 		$gd_role_data = DB::table('roles')->where('name','=','GD')->first(['id']);
@@ -171,6 +171,4 @@ class CreativeAllocation extends Model
 		// dd($finalRespone);
 		return $finalRespone;
 	}
-
-	
 }
