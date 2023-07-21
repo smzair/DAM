@@ -31,64 +31,6 @@ class CreativeAllocationController extends Controller
         return view('Allocation.creative_reallocation')->with('allocationList',$allocationList);
     }
 
-    // get allocated gd
-    public function getAllocatedGd(Request $request)
-    {
-        $wrc_id = $request->wrc_id;
-
-        $user_ids = DB::table('creative_allocation')
-        ->where('wrc_id', $wrc_id)
-        ->pluck('user_id')
-        ->toArray();
-
-        // Graphic Designer  list
-        $graphic_designer_users_data = DB::table('users')
-        ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
-        ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
-        ->whereIn('users.id', $user_ids)
-        ->where([ ['roles.name','=', 'GD']])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);   
-
-
-        $copy_writer_users_data = DB::table('users')
-        ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
-        ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
-        ->whereIn('users.id', $user_ids)
-        ->where([ ['roles.name','=', 'CW']])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);
-        $gd_user_id_data = [];
-        $cw_user_id_data = [];
-
-        foreach($graphic_designer_users_data as $key => $val){
-            array_push($gd_user_id_data,$val->id);
-        }
-
-        foreach($copy_writer_users_data as $ckey => $cval){
-            array_push($cw_user_id_data,$cval->id);
-        }
-        $response =  [
-            "graphic_designer_users_data" => $graphic_designer_users_data,
-            "copy_writer_users_data"      => $copy_writer_users_data
-         ];
-         return $response;
-    }
-
-    // get cw and gd user allocated qyt 
-    public function getAllocatedGdCwQty(Request $request){
-
-        $wrc_id = $request->wrc_id;
-        $selected_user_id = $request->selectedUserId;
-
-        $allocated_qty = DB::table('creative_allocation')
-        ->where('wrc_id', $wrc_id)
-        ->where('user_id', $selected_user_id)
-        ->sum('allocated_qty');
-
-        $response =  [
-            "allocated_qty" => $allocated_qty
-         ];
-         return $response;
-
-    }
-
     // assign wrc to user
     public function store(Request $request){
         // dd($request);
@@ -278,91 +220,6 @@ class CreativeAllocationController extends Controller
         
         $allocationList = CreativeWrcModel::getDataForCreativeAllocation() ;
         return view('Allocation.creative_allocation')->with('allocationList',$allocationList);
-    }
-
-    
-    // assign wrc to user
-    public function storeReAllocationData(Request $request){
-    //    dd($request->all());
-        DB::beginTransaction();
-        $requestedData = $request->all();
-        $msgCheck = false;
-
-        $allocatedGraphicDesignerName = $request->allocatedGraphicDesignerName;
-        $allocatedCopywriterName = $request->allocatedCopywriterName;
-
-        $newDesignerName = $request->designerName[0];
-        $newCopywriterName = $request->copywriterName[0];
-
-        $wrc_id = $request->wrc_id;
-        $batch_no = $request->batch_no;
-
-        // dd($newDesignerName, $allocatedGraphicDesignerName, $allocatedCopywriterName, $newCopywriterName);
-
-        if($allocatedGraphicDesignerName ==  $newDesignerName && $allocatedGraphicDesignerName != "0"){
-            return redirect()->back()->with('error', 'You can not reallocate qty to same user');
-        }
-
-        if($allocatedCopywriterName ==  $newCopywriterName && $allocatedCopywriterName != "0"){
-            return redirect()->back()->with('error', 'You can not reallocate qty to same user');
-        }
-
-        $new_allocated_qty_gd = $request->GraphicDesignerQty[0];
-        $old_allocated_qty_gd = $request->allocatedGraphicDesignerQty;
-        $new_allocated_qty_cw = $request->copyWriterQty[0];
-        $old_allocated_qty_cw = $request->allocatedCopyWriterQty;
-
-        $difference_gd =  $old_allocated_qty_gd -  $new_allocated_qty_gd ;
-        $difference_cw =  $old_allocated_qty_cw -  $new_allocated_qty_cw ;
-        
-        if($allocatedGraphicDesignerName != "0" &&  $new_allocated_qty_gd  > 0){
-
-            $CreativeAllocation                = new CreativeAllocation();
-            $CreativeAllocation->wrc_id        = $request->wrc_id;
-            $CreativeAllocation->batch_no        = $request->batch_no;
-            $CreativeAllocation->user_id       = $newDesignerName ;
-            $CreativeAllocation->allocated_qty = $new_allocated_qty_gd;
-            $CreativeAllocation->save();
-
-            if($difference_gd == 0){
-                CreativeAllocation::where(['wrc_id'=>$wrc_id,'batch_no'=>$batch_no,'user_id'=>$allocatedGraphicDesignerName])->delete();
-            }else{
-                //update
-                CreativeAllocation::where(['wrc_id'=>$wrc_id,'batch_no'=>$batch_no,'user_id'=>$allocatedGraphicDesignerName])->update(['allocated_qty' => $difference_gd]);
-            }
-
-            $msgCheck = true;
-        }
-
-        if($allocatedCopywriterName != "0" &&  $new_allocated_qty_cw  > 0){
-
-            $CreativeAllocation                = new CreativeAllocation();
-            $CreativeAllocation->wrc_id        = $request->wrc_id;
-            $CreativeAllocation->batch_no        = $request->batch_no;
-            $CreativeAllocation->user_id       = $newCopywriterName ;
-            $CreativeAllocation->allocated_qty = $new_allocated_qty_cw;
-            $CreativeAllocation->save();
-
-            if($difference_cw == 0){
-                //delete
-                CreativeAllocation::where(['wrc_id'=>$wrc_id,'batch_no'=>$batch_no,'user_id'=>$allocatedCopywriterName])->delete();
-            }else{
-                //update
-                CreativeAllocation::where(['wrc_id'=>$wrc_id,'batch_no'=>$batch_no,'user_id'=>$allocatedCopywriterName])->update(['allocated_qty' => $difference_cw]);
-            }
-
-            $msgCheck = true;
-        }
-      
-        if($msgCheck){
-            DB::commit();
-            return redirect()->back()->with('success', 'Wrc Re Allocated Successfully');
-        }
-        else{
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Please try again!');
-        }
-        
     }
 
     // creative allocation get 
@@ -683,6 +540,148 @@ class CreativeAllocationController extends Controller
         echo $sku_list;
 
         // dd($sku_list);
+        
+    }
+    
+     // get allocated gd
+    public function getAllocatedGd(Request $request)
+    {
+        $wrc_id = $request->wrc_id;
+
+        $user_ids = DB::table('creative_allocation')
+        ->where('wrc_id', $wrc_id)
+        ->pluck('user_id')
+        ->toArray();
+
+        // Graphic Designer  list
+        $graphic_designer_users_data = DB::table('users')
+        ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
+        ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
+        ->whereIn('users.id', $user_ids)
+        ->where([ ['roles.name','=', 'GD']])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);   
+
+
+        $copy_writer_users_data = DB::table('users')
+        ->leftJoin('model_has_roles', 'model_has_roles.model_id', 'users.id')
+        ->leftJoin('roles', 'roles.id', 'model_has_roles.role_id')
+        ->whereIn('users.id', $user_ids)
+        ->where([ ['roles.name','=', 'CW']])->get(['users.id', 'users.client_id', 'users.name', 'users.Company', 'users.c_short']);
+        $gd_user_id_data = [];
+        $cw_user_id_data = [];
+
+        foreach($graphic_designer_users_data as $key => $val){
+            array_push($gd_user_id_data,$val->id);
+        }
+
+        foreach($copy_writer_users_data as $ckey => $cval){
+            array_push($cw_user_id_data,$cval->id);
+        }
+        $response =  [
+            "graphic_designer_users_data" => $graphic_designer_users_data,
+            "copy_writer_users_data"      => $copy_writer_users_data
+         ];
+         return $response;
+    }
+
+    // get cw and gd user allocated qyt 
+    public function getAllocatedGdCwQty(Request $request){
+
+        $wrc_id = $request->wrc_id;
+        $selected_user_id = $request->selectedUserId;
+
+        $allocated_qty = DB::table('creative_allocation')
+        ->where('wrc_id', $wrc_id)
+        ->where('user_id', $selected_user_id)
+        ->sum('allocated_qty');
+
+        $response =  [
+            "allocated_qty" => $allocated_qty
+         ];
+         return $response;
+
+    }
+    
+     // assign wrc to user
+    public function storeReAllocationData(Request $request){
+       
+        DB::beginTransaction();
+        $requestedData = $request->all();
+        $msgCheck = false;
+
+        $allocatedGraphicDesignerName = $request->allocatedGraphicDesignerName;
+        $allocatedCopywriterName = $request->allocatedCopywriterName;
+
+        $newDesignerName = $request->designerName[0];
+        $newCopywriterName = $request->copywriterName[0];
+
+        $wrc_id = $request->wrc_id;
+        $batch_no = $request->batch_no;
+
+        // dd($newDesignerName, $allocatedGraphicDesignerName, $allocatedCopywriterName, $newCopywriterName);
+
+        if($allocatedGraphicDesignerName ==  $newDesignerName && $allocatedGraphicDesignerName != "0"){
+            return redirect()->back()->with('error', 'You can not reallocate qty to same user');
+        }
+
+        if($allocatedCopywriterName ==  $newCopywriterName && $allocatedCopywriterName != "0"){
+            return redirect()->back()->with('error', 'You can not reallocate qty to same user');
+        }
+
+        $new_allocated_qty_gd = $request->GraphicDesignerQty[0];
+        $old_allocated_qty_gd = $request->allocatedGraphicDesignerQty;
+        $new_allocated_qty_cw = $request->copyWriterQty[0];
+        $old_allocated_qty_cw = $request->allocatedCopyWriterQty;
+
+        $difference_gd =  $old_allocated_qty_gd -  $new_allocated_qty_gd ;
+        $difference_cw =  $old_allocated_qty_cw -  $new_allocated_qty_cw ;
+        
+        if($allocatedGraphicDesignerName != "0" &&  $new_allocated_qty_gd  > 0){
+
+            $CreativeAllocation                = new CreativeAllocation();
+            $CreativeAllocation->wrc_id        = $request->wrc_id;
+            $CreativeAllocation->batch_no        = $request->batch_no;
+            $CreativeAllocation->user_id       = $newDesignerName ;
+            $CreativeAllocation->allocated_qty = $new_allocated_qty_gd;
+            $CreativeAllocation->save();
+
+            if($difference_gd == 0){
+                CreativeAllocation::where(['wrc_id'=>$wrc_id,'batch_no'=>$batch_no,'user_id'=>$allocatedGraphicDesignerName])->delete();
+            }else{
+                //update
+                CreativeAllocation::where(['wrc_id'=>$wrc_id,'batch_no'=>$batch_no,'user_id'=>$allocatedGraphicDesignerName])->update(['allocated_qty' => $difference_gd]);
+            }
+
+            $msgCheck = true;
+        }
+
+        if($allocatedCopywriterName != "0" &&  $new_allocated_qty_cw  > 0){
+
+            $CreativeAllocation                = new CreativeAllocation();
+            $CreativeAllocation->wrc_id        = $request->wrc_id;
+            $CreativeAllocation->batch_no        = $request->batch_no;
+            $CreativeAllocation->user_id       = $newCopywriterName ;
+            $CreativeAllocation->allocated_qty = $new_allocated_qty_cw;
+            $CreativeAllocation->save();
+
+            if($difference_cw == 0){
+                //delete
+                CreativeAllocation::where(['wrc_id'=>$wrc_id,'batch_no'=>$batch_no,'user_id'=>$allocatedCopywriterName])->delete();
+            }else{
+                //update
+                CreativeAllocation::where(['wrc_id'=>$wrc_id,'batch_no'=>$batch_no,'user_id'=>$allocatedCopywriterName])->update(['allocated_qty' => $difference_cw]);
+            }
+
+            $msgCheck = true;
+        }
+      
+        if($msgCheck){
+            DB::commit();
+            return redirect()->back()->with('success', 'Wrc Re Allocated Successfully');
+        }
+        else{
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Please try again!');
+        }
         
     }
 }
