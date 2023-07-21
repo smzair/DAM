@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CatalogCommercial;
 use App\Models\LotsCatalog;
+use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use stdClass;
@@ -38,6 +39,7 @@ class CatalogLotsController extends Controller
         $reqReceviedDate = dateFormet_ymd($request->reqReceviedDate);
         $imgReceviedDate = $request->imgReceviedDate != '' ? dateFormet_ymd($request->imgReceviedDate) : "";
 
+        DB::beginTransaction();
         $data = new LotsCatalog();
 
         $data->user_id = $user_id;
@@ -62,7 +64,18 @@ class CatalogLotsController extends Controller
                 'imgReceviedDate' => ''
             ];
             request()->session()->flash('success', 'Lots Catalog Successfully added');
-             /* send notification start */
+            $save_ClientNotification_data = array(
+                'user_id' => $user_id,
+                'brand_id' => $brand_id,
+                'wrc_number' => $lot_number,
+                'service' => 'Cataloging',
+                'subject' => 'Creation',
+                'service_number' => $lot_number,
+                'Creation_for' => 'Lot'
+            );
+            $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+
+            /* send notification start */
                 $brand_data = DB::table('brands')->where('id', $request->brand_id)->first(['name']);
                 $brand_name =  $brand_data != null ?  $brand_data->name : "";
                 $creation_type = 'CatlogLot';
@@ -82,7 +95,8 @@ class CatalogLotsController extends Controller
                 'imgReceviedDate' => $imgReceviedDate
             ];
             request()->session()->flash('false', 'Somthing went Wrong try agian!!');
-        }      
+        }  
+        DB::commit();    
         return view('Lots.Catalog_lots_create')->with('lotInfo' , $lotInfo);
 
     }
