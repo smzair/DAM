@@ -78,14 +78,24 @@ class ClientNotification extends Model
                 $discription = "Editing Wrc Submission Done By ".$user_data->name.". Submited WRC is ".$wrc_number;    
             }
         }elseif($subject == 'Creation'){
+            $Creation_for  = isset($save_ClientNotification_data['Creation_for']) ? $save_ClientNotification_data['Creation_for'] : 'Wrc';
+            $service_number  = isset($save_ClientNotification_data['service_number']) ? $save_ClientNotification_data['service_number'] : $wrc_number;
+            
             $subject_is = "New Wrc Created!!";
-            if($service == 'Editing'){           
-                $discription = "New Wrc Created By ".$user_data->name.". Created Editing WRC is ".$wrc_number;
-            }elseif($service == 'Creative'){
-                $discription = "New Wrc Created By ".$user_data->name.". Created Creative WRC is ".$wrc_number;
-            }elseif($service == 'Shoot'){
-                $discription = "New Wrc Created By ".$user_data->name.". Created Shoot WRC is ".$wrc_number;
+            if($Creation_for == 'Lot'){
+                $subject_is = "New Lot Created!!";
             }
+
+            if($service == 'Editing'){           
+                $discription = "New ".$Creation_for." Created By ".$user_data->name.". Created Editing ".$Creation_for." is ".$service_number;
+            }elseif($service == 'Creative'){
+                $discription = "New ".$Creation_for." Created By ".$user_data->name.". Created Creative ".$Creation_for." is ".$service_number;
+            }elseif($service == 'Shoot'){
+                $discription = "New ".$Creation_for." Created By ".$user_data->name.". Created Shoot ".$Creation_for." is ".$service_number;
+            }elseif($service == 'Cataloging'){
+                $discription = "New ".$Creation_for." Created By ".$user_data->name.". Created Cataloging ".$Creation_for." is ".$service_number;
+            }
+            // dd($Creation_for , $subject_is , $discription ,$save_ClientNotification_data );
         }else if($subject == 'Raw Upload'){
             $subject_is = "Editing Raw Images Upload!!";
             if($service == 'Editing'){           
