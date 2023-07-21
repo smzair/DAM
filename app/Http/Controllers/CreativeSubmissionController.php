@@ -85,7 +85,7 @@ class CreativeSubmissionController extends Controller
                         'brand_id' => $CreativeWrc_gd_data['brand_id'],
                         'wrc_number' => $CreativeWrc_gd_data['wrc_number'],
                         'service' => 'Creative',
-                        'subject' => 'Planning',
+                        'subject' => 'Submission',
                     );
                     // dd($save_ClientNotification_data);
                     ClientNotification::save_ClientNotification($save_ClientNotification_data);

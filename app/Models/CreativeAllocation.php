@@ -61,6 +61,7 @@ class CreativeAllocation extends Model
 		// $login_user_id = 51;//login user id CW
 
 		$login_user_id = Auth::id();//login user id GD
+		// $login_user_id = 365;//login user id CW
 		$gd_role_data = DB::table('roles')->where('name','=','GD')->first(['id']);
         $cw_role_data = DB::table('roles')->where('name','=','CW')->first(['id']);
         $gd_id = $gd_role_data != null ? $gd_role_data->id : 0;
