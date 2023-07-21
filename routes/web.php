@@ -753,3 +753,8 @@ Route::get('/editordownloaddatabasedonwrc/{id}', [EditingClientFileManagerContro
 Route::get('/downloadadaptationdata/{id}', [EditingClientFileManagerController::class, 'downloadAdaptationdata'])->name('downloadAdaptationData');//download adaption data based 
 Route::get('/editordownloaddatabasedonsku/{id}', [EditingClientFileManagerController::class, 'editorDownloadDataBasedOnSku'])->name('editorDownloadDataBasedOnSku');//download sku data based 
 
+/****get allocated gd and cw user data ****/
+Route::get('/get_allocated_gd/', [CreativeAllocationController::class, 'getAllocatedGd']);//get allocated gd and cw data
+/****get allocated gd and cw user qty data ****/
+Route::get('/get_allocated_gd_cw_qty/', [CreativeAllocationController::class, 'getAllocatedGdCwQty']);//get allocated gd and cw data
+Route::post('/Creative-Reallocation-create', [CreativeAllocationController::class, 'storeReAllocationData'])->name('CREATIVE_RE_ALLOCATION_STORE');// store creative allocation
