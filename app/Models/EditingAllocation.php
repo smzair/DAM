@@ -50,7 +50,7 @@ class EditingAllocation extends Model
             'editors_commercials.type_of_service',
             DB::raw('GROUP_CONCAT(editing_allocations.user_id) as ass_users'),
             DB::raw('SUM(CASE WHEN user_role = 0 THEN allocated_qty else 0 END)  as editors_sum'),
-            DB::raw('GROUP_CONCAT(assign_users.name) as ass_users'),
+            DB::raw('GROUP_CONCAT(assign_users.name) as ass_users')
         )->
         havingRaw("editors_sum $having_con 0 AND editors_sum <> uploaded_img_qty")->
         // having('editors_sum', $having_con, 0)->
@@ -150,7 +150,7 @@ class EditingAllocation extends Model
                 'editing_allocations.id',
                 'editing_allocations.wrc_id',
                 'editing_allocations.user_id',
-                'users.name as editor',
+                'users.name as editor'
             )->groupBy('editing_allocations.user_id')->get()->toArray();
 
         return $editing_allocated_Editors_list;
@@ -197,7 +197,7 @@ class EditingAllocation extends Model
             'editing_allocations.allocated_qty',
             DB::raw('GROUP_CONCAT(editing_allocations.user_id) as ass_cataloger'),
             DB::raw('GROUP_CONCAT(editing_allocations.id) as allocations_ids'),
-            DB::raw('GROUP_CONCAT(editing_allocations.user_role) as user_roles'),
+            DB::raw('GROUP_CONCAT(editing_allocations.user_role) as user_roles')
         )->groupBy('editing_allocations.wrc_id')->
         get()->toArray();
         return $allocated_wrc_list_by_user;
@@ -231,7 +231,7 @@ class EditingAllocation extends Model
             'users.Company',
             'brands.name as brand_name',
             DB::raw('GROUP_CONCAT(editing_allocations.user_id) as ass_cataloger'),
-            DB::raw('GROUP_CONCAT(editing_allocations.user_role) as user_roles'),
+            DB::raw('GROUP_CONCAT(editing_allocations.user_role) as user_roles')
         )->groupBy('editing_allocations.wrc_id')->orderBy('editing_allocations.updated_at', 'DESC')->get()->toArray();
         return $editing_allocation_list;
     }

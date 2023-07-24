@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EditingAllocation as ModelsCatalogAllocation;
 use App\Models\EditingAllocation;
 use App\Models\EditingWrc;
 use Illuminate\Http\Request;
@@ -31,10 +30,10 @@ class EditingAllocationController extends Controller
         // dd($request->all());
         $wrc_id = $request->wrc_id;
         $batch_no = $request->batch_no;
-        $data = ModelsCatalogAllocation::where('wrc_id', $wrc_id)->where('batch_no', $batch_no)->select(
+        $data = EditingAllocation::where('wrc_id', $wrc_id)->where('batch_no', $batch_no)->select(
                 'wrc_id',
                 DB::raw('SUM(CASE  	WHEN user_role = 0 THEN allocated_qty else 0 END)  as cataloger_sum'),
-                DB::raw('SUM(CASE  	WHEN user_role = 1 THEN allocated_qty else 0 END)  as cp_sum'),
+                DB::raw('SUM(CASE  	WHEN user_role = 1 THEN allocated_qty else 0 END)  as cp_sum')
             )->get()->toArray();
 
         $cnt_rec = COUNT($data);
@@ -80,7 +79,4 @@ class EditingAllocationController extends Controller
 
         return view('Allocation.editing_allocation_detail')->with('editing_allocation_List_by_lot_numbers', $editing_allocation_List_by_lot_numbers)->with('editing_allocated_Editors_list', $editing_allocated_Editors_list);
     }
-    
-
-    
 }
