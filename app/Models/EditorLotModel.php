@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +65,16 @@ class EditorLotModel extends Model
 
         EditorLotModel::where('id', $id)->update(['lot_number' => strtoupper($lot_number)]);
         if ($EditorLots) {
+            $save_ClientNotification_data = array(
+                'user_id' => $EditorLots['user_id'],
+                'brand_id' => $EditorLots['brand_id'],
+                'wrc_number' => $lot_number,
+                'service_number' => $lot_number,
+                'service' => 'Editing',
+                'subject' => 'Creation',
+                'Creation_for' => 'Lot'
+            );
+            ClientNotification::save_ClientNotification($save_ClientNotification_data);
             request()->session()->flash('success', 'Lots Created Successfully');
         } else {
             request()->session()->flash('error', 'Please try again!!');

@@ -84,7 +84,7 @@ class ImageUploadController extends Controller
                             'service' => 'Editing',
                             'subject' => 'Raw Upload',
                         );
-                        $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+                        // $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
                     }
                 }
             } else {

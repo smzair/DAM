@@ -80,6 +80,7 @@ Editing Allocation
                                 <th>Type of Service</th>
                                 <th>WRC Created At</th>
                                 <th>Tentative Image Count</th>
+                                <th>Uploaded Tentative Image Count</th>
                                 <th>Allocated Qty</th>
                                 <th>Pending Qty</th>
                                 {{-- 
@@ -103,8 +104,9 @@ Editing Allocation
                                     <td data-value="type_of_service">{{ $row['type_of_service'] }}</td>
                                     <td data-value="wrc_cr_at">{{ dateFormet_dmy($row['created_at']) }}</td>
                                     <td data-value="imgQty">{{ $row['imgQty'] }}</td>
+                                    <td data-value="uploaded_img_qty">{{ $row['uploaded_img_qty'] }}</td>
                                     <td id="editors_sum{{ $key }}" data-value="editors_sum">{{ $row['editors_sum'] }}</td>
-                                    <td id="editors_pending{{ $key }}" data-value="editors_pending">{{ $row['imgQty'] - $row['editors_sum'] }}</td>
+                                    <td id="editors_pending{{ $key }}" data-value="editors_pending">{{ $row['uploaded_img_qty'] - $row['editors_sum'] }}</td>
                                     <td>
                                         <button class="btn btn-warning" id="allocateBTnC" data-toggle="modal"  data-target="#allocateWRCPopupCAt" onclick="setvalue({{ $key }})"> Allocate </button>
                                     </td>
@@ -157,6 +159,12 @@ Editing Allocation
                         </div>
                         {{-- Editor Allocated SKU --}}
                         <div class="row ">
+                            <div class="col-sm-4 col-6">
+                                <div class="col-ac-details">
+                                    <h6>Uploaded Image Count</h6>
+                                    <p id="uploaded_img_qty"></p>
+                                </div>
+                            </div>
                             <div class="col-sm-4 col-12">
                                 <div class="col-ac-details">
                                     <h6>Editor Allocated SKU</h6>
@@ -315,6 +323,7 @@ Editing Allocation
         
         const wrc_id_is = document.querySelector("#wrc_id"+val).value
         const imgQty = data.imgQty
+        const uploaded_img_qty = data.uploaded_img_qty
         const work_initiate_date_is = document.querySelector("#work_initiate_date"+val).value
         const work_committed_date_is = document.querySelector("#work_committed_date"+val).value
         console.log({work_initiate_date_is, work_committed_date_is , wrc_id_is, data})
@@ -325,6 +334,7 @@ Editing Allocation
         document.querySelector("#wrc_id").value =  wrc_id_is
         document.querySelector("#wrcNo").innerHTML = data.wrc_number
         document.querySelector("#imgQty").innerHTML = imgQty
+        document.querySelector("#uploaded_img_qty").innerHTML = uploaded_img_qty
         document.querySelector("#lot_number").value = data.lot_number
         document.querySelector("#editor_allocated_qty").innerHTML = data.editors_sum
         document.querySelector("#Editor_pending_sku").innerHTML = data.editors_pending
