@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ class EditingAllocation extends Model
             $having_con = ">";
         }
         $wrcList = EditingWrc::
+        where('editing_wrcs.uploaded_img_qty', '>=', DB::raw('editing_wrcs.imgQty'))->
         leftJoin('editing_allocations', 'editing_allocations.wrc_id', 'editing_wrcs.id')->
         leftJoin('editor_lots', 'editor_lots.id', 'editing_wrcs.lot_id')->
         leftJoin('editors_commercials', 'editors_commercials.id', 'editing_wrcs.commercial_id')->
@@ -35,6 +37,7 @@ class EditingAllocation extends Model
             'editing_wrcs.wrc_number',
             'editing_wrcs.commercial_id',
             'editing_wrcs.imgQty',
+            'editing_wrcs.uploaded_img_qty',
             'editing_wrcs.documentType',
             'editing_wrcs.documentUrl',
             'editing_wrcs.work_initiate_date',
@@ -49,7 +52,7 @@ class EditingAllocation extends Model
             DB::raw('SUM(CASE WHEN user_role = 0 THEN allocated_qty else 0 END)  as editors_sum'),
             DB::raw('GROUP_CONCAT(assign_users.name) as ass_users'),
         )->
-        havingRaw("editors_sum $having_con 0 AND editors_sum <> imgQty")->
+        havingRaw("editors_sum $having_con 0 AND editors_sum <> uploaded_img_qty")->
         // having('editors_sum', $having_con, 0)->
         groupBy('editing_wrcs.id')->
         get()->toArray();
@@ -101,6 +104,40 @@ class EditingAllocation extends Model
         if ($allocation_type == 1 || $updateData->work_initiate_date == null || $updateData->work_initiate_date == '0000-00-00') {
             $updateData->work_committed_date = $work_committed_date_is != null ? $work_committed_date_is : $updateData->work_committed_date;
         }
+        
+        if($res['user'] == '1'){
+            $wrcList = EditingWrc::where('editing_allocations.wrc_id', $wrc_id)->
+            leftJoin('editing_allocations', 'editing_allocations.wrc_id', 'editing_wrcs.id')->
+            leftJoin('editor_lots', 'editor_lots.id', 'editing_wrcs.lot_id')->
+            select(
+                'editing_wrcs.id',
+                'editing_wrcs.lot_id',
+                'editing_wrcs.wrc_number',
+                'editing_wrcs.commercial_id',
+                'editing_wrcs.uploaded_img_qty',
+                'editor_lots.lot_number',
+                'editor_lots.user_id',
+                'editor_lots.brand_id',
+                DB::raw('GROUP_CONCAT(editing_allocations.user_id) as ass_users'),
+                DB::raw('SUM(CASE WHEN user_role = 0 THEN allocated_qty else 0 END)  as editors_sum')
+            )->
+            groupBy('editing_wrcs.id')->get()->toArray();
+            if(count($wrcList) > 0 ){
+                $wrc_data_is =$wrcList[0];               
+                if($wrc_data_is['editors_sum'] == $wrc_data_is['uploaded_img_qty']){
+                    $save_ClientNotification_data = array(
+                        'user_id' => $wrc_data_is['user_id'],
+                        'brand_id' => $wrc_data_is['brand_id'],
+                        'wrc_number' => $wrc_data_is['wrc_number'],
+                        'service_number' => $wrc_data_is['wrc_number'],
+                        'service' => 'Editing',
+                        'subject' => 'Planning'
+                    );
+                    $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+                }
+            }
+        }
+        // DB::rollback();
         $update_status = $updateData->update();
         $res['update_status'] = $update_status;
         return $res;
