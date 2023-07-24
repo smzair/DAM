@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use Mail;
 use App\Models\Brands;
 use App\Models\Lots;
 use App\Models\LotsStatus;
 use App\Models\Skus;
 use App\Mail\lotInfo;
+use App\Models\NotificationModel\ClientNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class lotsController extends Controller
 {
@@ -78,7 +79,7 @@ class lotsController extends Controller
   {
 
     $id = 91;
-    pr($skus, 1);
+    // pr($skus, 1);
   }
 
   public function edit($id)
@@ -92,6 +93,7 @@ class lotsController extends Controller
   {
 
     $id = $request->id;
+    $request_id = $request->id;
     $auth = Auth::id();
     $user = DB::table('users')->where('id', '=', $auth)->first();
     if ($id == 0) {
@@ -109,6 +111,7 @@ class lotsController extends Controller
     $data->save();
 
     $id = $data->id;
+    $saved_lot_id = $data->id;
     $lotId = strtoupper('ODN' . date('dmY') . "-" . $request->c_short . $request->short_name .$request->s_type . $id);
     $dataObj =  Lots::findOrFail($id);
     $dataObj->id = $id;
@@ -139,6 +142,19 @@ class lotsController extends Controller
       Mail::to($users)->send(new lotInfo($data));
     }
 
+    if(!($request_id > 0)){
+      $saved_lot__details =  Lots::find($saved_lot_id);
+      $save_ClientNotification_data = array(
+        'user_id' => $saved_lot__details->user_id,
+        'brand_id' => $saved_lot__details->brand_id,
+        'wrc_number' => $saved_lot__details->lot_id,
+        'service_number' => $saved_lot__details->lot_id,
+        'service' => 'Shoot',
+        'subject' => 'Creation',
+        'Creation_for' => 'Lot'
+      );
+      $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+    }
     return redirect('createlots/' . $id)->with('success', " Welcome The New Lot Generated is  " . $lotId);
   }
 }
