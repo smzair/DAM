@@ -16,7 +16,7 @@ class EditingUploadLinkController extends Controller
     // show Editing allocation upload blade
     function upload()
     {
-        $login_user_id_is = 95;
+        // $login_user_id_is = 95;
         $login_user_id_is = Auth::id();
         $user_role = 'Editor';
         $allocationList = EditingAllocation::get_Editing_Allocation_List($login_user_id_is);

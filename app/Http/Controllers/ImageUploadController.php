@@ -73,7 +73,6 @@ class ImageUploadController extends Controller
                     // $EditingRawImgUpload->save();
                     $uploded_count++;
                     
-                    // dd($uploaded_img_qty + $uploded_count == $imgQty, $uploaded_img_qty , $uploded_count, $imgQty ,$EditingWrc);
                     
                     if($uploaded_img_qty + $uploded_count == $imgQty){
 
