@@ -108,19 +108,26 @@
 	$file_manager_permissions = json_decode($user->file_manager_permissions,true);
 	$roledata = getUsersRole($user->id);
 	$user_role = $roledata != null ? $roledata->role_name : '-';
-	// dd($catalog_lots, $creative_lots);
+	// dd($lot_links);
 
 @endphp
 
 @if (count($lot_links) > 0)
 	<div class="row">
 		<div class="col-12">
-			<a class="btn btn-light border-0 back-btn" href="{{ route('your_assets_Links') }}" role="button"><svg width="22" height="14"
-					viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M6.69628 1.5L1 7L6.69628 12.5M21 7H1.15953" stroke="#9F9F9F" stroke-width="1.5"
-						stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+			<a class="btn btn-light border-0 back-btn" href="{{ route('your_assets_Links') }}" role="button">
+				<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect width="44" height="44" rx="22" fill="#1A1A1A"/>
+					<g clip-path="url(#clip0_1827_12903)">
+					<path d="M18.0583 27.1167L13 22.0584L18.0583 17M32.0833 22.0584L13.1416 22.0584" stroke="#808080" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+					</g>
+					<defs>
+					<clipPath id="clip0_1827_12903">
+					<rect width="20" height="20" fill="white" transform="translate(12 12)"/>
+					</clipPath>
+					</defs>
 				</svg>
-				&nbsp; back</a>
+			</a>
 		</div>
 
 		<div class="col-12 mt-4 table-responsive" style="min-height: 80vh">
@@ -130,7 +137,7 @@
 						<th scope="col" class="table-heading-sty">Project name</th>
 						<th scope="col" class="table-heading-sty">Type of work</th>
 						<th scope="col" class="table-heading-sty">Quantity</th>
-						<th scope="col" class="table-heading-sty">Submissions</th>
+						<th scope="col" class="table-heading-sty">Submission Date</th>
 						<th scope="col" class="table-heading-sty">File links</th>
 						<th scope="col" class="table-heading-sty">WRC No.</th>
 					</tr>
@@ -141,6 +148,8 @@
 						@php
 								$project_name = $row['project_name'];
 								$inward_qty = $row['inward_qty'];
+								$alloacte_to_copy_writer = $row['alloacte_to_copy_writer'];
+								$submission_date = $row['submission_date'] != '' ? dateFormat($row['submission_date']) : '';
 								$type_of_service = $row['type_of_service'];
 								$wrc_numbers = $row['wrc_numbers'];
 								$per_qty_value = $row['per_qty_value'];
@@ -153,8 +162,8 @@
 							<td class="table-column">{{$project_name}}</td>
 							<td class="table-column">{{$type_of_service}}</td>
 							<td class="table-column">{{$inward_qty}}</td>
-							<td class="table-column">{{$submition_qty}}</td>
-							{{-- <td class="table-column">{{$wrc_numbers}}</td> --}}
+							{{-- <td class="table-column">{{$submition_qty}}</td> --}}
+							<td class="table-column">{{$submission_date}}</td>
 							<td class="table-column" style="position: relative">
 								<button class=" test myButton" style="border: 1px solid white;padding: 8px;">
 									File Links
@@ -172,7 +181,7 @@
 											<p>Links Not uplodaed</p>	
 										@endif
 									</div>
-									<div class="mt-2" style="line-height: 0.7;">
+									<div class="mt-2 {{$alloacte_to_copy_writer == 0 ? 'd-none' : ''}}" style="line-height: 0.7;">
 										<p>Copy links</p>
 										@if ($upload_links_count > 0)
 											@foreach ($upload_links as $links)
@@ -232,71 +241,6 @@
 						</tr>
 					@endforeach
 					
-					{{-- <tr>
-						<td class="table-column">The quick brown fox jumps over the lazy d...</td>
-						<td class="table-column">Static post</td>
-						<td class="table-column">126</td>
-						<td class="table-column">126</td>
-						<td class="table-column">
-							<button class=" test myButton" style="border: 1px solid white;padding: 8px;">
-								File Links
-								<div class="myPopover">
-									<div class="mt-3" style="line-height: 0.7;">
-										<p>Creative links</p>
-										<a href="#">View link</a>
-									</div>
-									<div class="mt-5" style="line-height: 0.7;">
-										<p>Copy links</p>
-										<a href="#">View link</a>
-									</div>
-								</div>
-							</button>
-						</td>
-						<td class="wrc-no-sty">
-							<p class="text" onmouseover="showPopover(this)" onmouseout="hidePopover(this)">DEMO1TWSR9-B</p>
-							<!-- <a href="#" class="btn test myButton" role="button"></a> -->
-							<div class="hoverpopoverforlinks" id="myPopover">
-								<div class="popover-text">
-									<div class="upper-head-style-for-track-hover">
-										<div class="upper-heading-wrc-details-table pt-4">
-											<div class="col-12 d-flex justify-content-between ps-4 pe-4">
-												<div>
-													<p class="track-lot-table-wrc-no">DEMO1TWSR9-B</p>
-													<p class="track-lot-table-wrc-date text-start">23/01/2023</p>
-												</div>
-												<div>
-													<p class="track-lot-table-inward-qty">Inward Quantity</p>
-													<p class="track-lot-table-inward-qty-no text-start">130</p>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="lower-wrc-details-table mt-4">
-										<div class="col-12 ps-3 mt-4">
-											<p class="track-lot-table-typeof-service text-start">
-												Project name
-											</p>
-										</div>
-										<div class="col-12 d-flex ps-3 text-start">
-											<p class="track-lot-table-marketplace-pri-mode text-start">
-												The quick brown fox jumps over the lazy
-											</p>
-										</div>
-										<div class="col-12 d-flex justify-content-between ps-3 pe-3 mt-4">
-											<div>
-												<p class="track-lot-table-typeof-service text-start">Type of service</p>
-												<p class="track-lot-table-marketplace-pri-mode text-start">Static post</p>
-											</div>
-											<div>
-												<p class="track-lot-table-typeof-service text-start">Commercial (Per unit)</p>
-												<p class="track-lot-table-marketplace-pri-mode text-start">₹800</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</td>
-					</tr> --}}
 				</tbody>
 			</table>
 		</div>

@@ -188,6 +188,7 @@ class User_Assets_links_controller extends Controller
 		whereIn('creative_lots.brand_id', $brand_arr)->where('creative_wrc.lot_id','=',$lot_id);
 		$lots_query = $lots_query->select(
 			'creative_wrc.lot_id',
+			'creative_wrc.alloacte_to_copy_writer',
 			'creative_wrc.sku_required',
 			'creative_wrc.created_at as wrc_created_at', 
 			DB::raw('CASE WHEN creative_wrc.sku_required = 1 THEN creative_wrc.sku_count ELSE creative_wrc.order_qty END AS inward_quantity'),
@@ -241,6 +242,8 @@ class User_Assets_links_controller extends Controller
 						$creative_submissions_batch_no = $creative_submissions_query->pluck('batch_no')->toArray();
 						$creative_wrc_batch_query = CreativeWrcBatch::wherein('wrc_id', $wrc_id_arr)->wherein('batch_no', $creative_submissions_batch_no)->orderbydesc('created_at');
 
+						$submission_date_arr = $creative_submissions_query->pluck('submission_date')->toArray();
+						$submission_date = $submission_date_arr[0];
 						$creative_wrc_batch_count = $creative_wrc_batch_query->count();
 
 						$creative_wrc_batch_data = $creative_wrc_batch_query->get()->toArray();
@@ -293,6 +296,7 @@ class User_Assets_links_controller extends Controller
 		whereIn('lots_catalog.brand_id', $brand_arr)->where('lots_catalog.user_id', $parent_client_id)->where('catlog_wrc.lot_id' , $lot_id);
 		$catalog_lots_query = $catalog_lots_query->select(
 			'catlog_wrc.lot_id',
+			'catlog_wrc.alloacte_to_copy_writer',
 			DB::raw('SUM(catlog_wrc.sku_qty) AS inward_qty'),
 			DB::raw('GROUP_CONCAT(catlog_wrc.id) as wrc_ids'),
 			DB::raw('GROUP_CONCAT(CONCAT(" ",`catlog_wrc`.`wrc_number`)) as wrc_numbers'),
@@ -306,10 +310,10 @@ class User_Assets_links_controller extends Controller
 			'lots_catalog.serviceType',
 			'lots_catalog.created_at as lot_created_at'
 		);
-		$catalog_lots = $catalog_lots_query->groupBy('catlog_wrc.id');
-		$catalog_lots = $catalog_lots_query->get()->toArray();
+		$catalog_lots_query = $catalog_lots_query->groupBy('catlog_wrc.id');
+		$catalog_wrc_data = $catalog_lots_query->get()->toArray();
 
-		foreach ($catalog_lots as $key => $row) {
+		foreach ($catalog_wrc_data as $key => $row) {
 			$wrc_ids = $row['wrc_ids'];
 			$wrc_ids = $row['wrc_ids'];
 			$submission_date = "";
@@ -324,6 +328,9 @@ class User_Assets_links_controller extends Controller
 				$catalog_submissions_count = $catalog_submissions_query->count();
 				if($catalog_submissions_count > 0){
 					$submissions_batch_no = $catalog_submissions_query->pluck('batch_no')->toArray();
+					$submission_date_arr = $catalog_submissions_query->pluck('submission_date')->toArray();
+					$submission_date = $submission_date_arr[0];
+					// dd($submission_date , $catalog_submissions_query->get());
 					$submition_qty = CatalogWrcBatch::wherein('wrc_id', $wrc_id_arr)->wherein('batch_no', $submissions_batch_no)->orderbydesc('created_at')->sum('sku_count');
 				}
 
@@ -353,13 +360,13 @@ class User_Assets_links_controller extends Controller
 				}
 
 			}
-			$catalog_lots[$key]['submission_date'] = $submission_date;
-			$catalog_lots[$key]['submition_qty'] = $submition_qty;
-			$catalog_lots[$key]['catalog_upload_links'] = $catalog_upload_links;
-			$catalog_lots[$key]['copy_upload_links'] = $copy_upload_links;
+			$catalog_wrc_data[$key]['submission_date'] = $submission_date;
+			$catalog_wrc_data[$key]['submition_qty'] = $submition_qty;
+			$catalog_wrc_data[$key]['catalog_upload_links'] = $catalog_upload_links;
+			$catalog_wrc_data[$key]['copy_upload_links'] = $copy_upload_links;
 		}
-		// dd($catalog_lots);
-    return view('clients.ClientAssetsLinks.your-assets-Links-cataloging')->with('lot_links', $catalog_lots);
+		// dd($catalog_wrc_data);
+    return view('clients.ClientAssetsLinks.your-assets-Links-cataloging')->with('lot_links', $catalog_wrc_data);
 		
 	}
 }
