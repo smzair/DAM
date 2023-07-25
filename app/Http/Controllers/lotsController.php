@@ -1,138 +1,160 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Brands;
 use App\Models\Lots;
 use App\Models\LotsStatus;
-use App\Models\WrcStatus;
 use App\Models\Skus;
+use App\Mail\lotInfo;
+use App\Models\NotificationModel\ClientNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use stdClass;
+use Illuminate\Support\Facades\Mail;
 
 class lotsController extends Controller
-{ 
- public function getarray(){ 
- return genderList();
- }
-
- public function createlots(Request $request, $id = 0){
-  $brands = Brands::latest()->get();
-  $lotInfo = '';
-  if($id != 0){
-    $lotInfo = Lots::getlotInfo(['lot_id' => $id, 'single' => true]);
-    $companyListHtml =  $this->companyListHtml($lotInfo->brand_id, $lotInfo->user_id);
-    $lotServicesListHtml = $this->lotServicesListHtml($lotInfo->s_type);
-    $skus = Skus::where('lot_id' ,'=' ,$id)->get();
-    $sku = count($skus);
-  }else{
-    $companyListHtml = $this->companyListHtml(0, 0);
-    $lotServicesListHtml = $this->lotServicesListHtml(0);
-    $skus=0;
-    $sku = 0;
-  }
-  
-  $sr=1 ;
-  return view('Lots.create',compact('id', 'brands', 'lotInfo', 'companyListHtml', 'lotServicesListHtml','sku','skus','sr'));
-}
-
-private function companyListHtml($brandId, $selectedUserId){
-  $users = User::getUserInfo(['brand_id' => $brandId]);
-  return view('Lots.company-list-html',compact('users', 'selectedUserId'));
-}
-
-private function lotServicesListHtml($selectedService){
-  $serviceList = getLotServiceList();
-  return view('Lots.lot-service',compact('serviceList', 'selectedService'));
-}
-
-public function getusers(Request $request){
-  $brandId = $request->brand_id;
-  $companyListHtml =  $this->companyListHtml($brandId, '');
-  return $companyListHtml;
-  
-}
-
-public function getServices(Request $request){
-  $serviceListHtml =  $this->lotServicesListHtml(0);
-  return $serviceListHtml;
-  
-}
-
-public function view(){
-
- $lots= Lots::getlotInfo($filter = []);
- 
- 
- return view('Lots.Index',compact('lots'));
- 
-}
-
-
-public function getskus(Request $request){
-
-$id= 91;
-
-pr($skus,1);
-}
-
-public function edit($id){
-
-  $lotsdata = Lots::find($id);
-  $brand = Brands::latest()->get();
-  return view('Lots.update',['lotsdata'=>$lotsdata],['brand'=>$brand]);
-}
-
-public function store(Request $request){
-  $id = $request->id;
-  if($id == 0){
-    $data = new Lots();
-  }else{
-    $data = Lots::find(['id' => $id])->first();
+{
+  public function getarray()
+  {
+    return genderList();
   }
 
-  $data->user_id=$request->user_id;
-  $data->s_type=$request->s_type;
-  $data->brand_id=$request->brand_id;
-  $data->location=$request->Location; 
-  $data->verticleType=$request->verticalType;  
-  $data->clientBucket=$request->clientBucket;  
-  $data->shoothandoverDate=$request->shoothandoverDate;  
-  $data->save();
+  public function createlots(Request $request, $id = 0)
+  {
+    $brands = Brands::latest()->get();
+    $lotInfo = '';
+    if ($id != 0) {
+      $lotInfo = Lots::getlotInfo(['lot_id' => $id, 'single' => true]);
+      $companyListHtml =  $this->companyListHtml($lotInfo->brand_id, $lotInfo->user_id);
+      $lotServicesListHtml = $this->lotServicesListHtml($lotInfo->s_type);
+      $skus = Skus::where('lot_id', '=', $id)->get();
+      $sku = count($skus);
+    } else {
+      $companyListHtml = $this->companyListHtml(0, 0);
+      $lotServicesListHtml = $this->lotServicesListHtml(0);
+      $skus = 0;
+      $sku = 0;
+    }
 
-  $id = $data->id;
-  $lotId = 'ODN' . date('dmY') ."-". $request->c_short . $request->short_name .
-  $request->s_type . $id;
-  $dataObj =  Lots::findOrFail($id);
-  $dataObj->id = $id;
-  $dataObj->lot_id = $lotId;
+    $sr = 1;
+    return view('Lots.create', compact('id', 'brands', 'lotInfo', 'companyListHtml', 'lotServicesListHtml', 'sku', 'skus', 'sr'));
+  }
+
+  private function companyListHtml($brandId, $selectedUserId)
+  {
+    $users = User::getUserInfo(['brand_id' => $brandId]);
+    return view('Lots.company-list-html', compact('users', 'selectedUserId'));
+  }
+
+  private function lotServicesListHtml($selectedService)
+  {
+    $serviceList = getLotServiceList();
+    return view('Lots.lot-service', compact('serviceList', 'selectedService'));
+  }
+
+  public function getusers(Request $request)
+  {
+    $brandId = $request->brand_id;
+    $companyListHtml =  $this->companyListHtml($brandId, '');
+    return $companyListHtml;
+  }
+
+  public function getServices(Request $request)
+  {
+    $serviceListHtml =  $this->lotServicesListHtml(0);
+    return $serviceListHtml;
+  }
+
+  public function view()
+  {
+
+    $lots = Lots::getlotInfo($filter = []);
+    return view('Lots.Index', compact('lots'));
+  }
 
 
-  $dataObj->save();
+  public function getskus(Request $request)
+  {
 
-  $Lotstatus = new LotsStatus();
-  $Lotstatus->lot_id = $id;
-  $Lotstatus->status='Inwarding';
-  $Lotstatus->save();
+    $id = 91;
+    // pr($skus, 1);
+  }
 
-  /* send notification start */
-  $brand_data = DB::table('brands')->where('id', $request->brand_id)->first(['name']);
-  $brand_name =  $brand_data != null ?  $brand_data->name : "";
-  $creation_type = 'LotShoot';
+  public function edit($id)
+  {
+    $lotsdata = Lots::find($id);
+    $brand = Brands::latest()->get();
+    return view('Lots.update', ['lotsdata' => $lotsdata], ['brand' => $brand]);
+  }
 
-  $data = new stdClass();
-  $data->lot_number = strtoupper($lotId);
-  $data->brand_name = $brand_name;
-  $this->send_notification($data, $creation_type);
-/******  send notification end*******/
+  public function store(Request $request)
+  {
 
-  return redirect('createlots/' . $id)->with('success'," Welcome The New Lot Generated is  " .$lotId );
+    $id = $request->id;
+    $request_id = $request->id;
+    $auth = Auth::id();
+    $user = DB::table('users')->where('id', '=', $auth)->first();
+    if ($id == 0) {
+      $data = new Lots();
+    } else {
+      $data = Lots::find(['id' => $id])->first();
+    }
+    $data->user_id = $request->user_id;
+    $data->s_type = $request->s_type;
+    $data->brand_id = $request->brand_id;
+    $data->location = $request->Location;
+    $data->verticleType = $request->verticalType;
+    $data->clientBucket = $request->clientBucket;
+    $data->shoothandoverDate = $request->shoothandoverDate;
+    $data->save();
 
+    $id = $data->id;
+    $saved_lot_id = $data->id;
+    $lotId = strtoupper('ODN' . date('dmY') . "-" . $request->c_short . $request->short_name .$request->s_type . $id);
+    $dataObj =  Lots::findOrFail($id);
+    $dataObj->id = $id;
+    $dataObj->lot_id = $lotId;
+
+    $userInfo = DB::table('users')->where('id', '=', $data->user_id)->first();
+    if ($userInfo->payment_term == "50 % Advance & Remaining Before Bulk Submission" || $userInfo->payment_term == "50% Advance Remaining After 15 days of Invoice") {
+      $dataObj->commercial_status = '0';
+    } else {
+      $dataObj->commercial_status = '1';
+    }
+    $dataObj->save();
+    $Lotstatus = new LotsStatus();
+    $Lotstatus->lot_id = $id;
+    $Lotstatus->status = 'Inwarding';
+    $Lotstatus->save();
+
+    if ($userInfo->payment_term == "50 % Advance & Remaining Before Bulk Submission" || $userInfo->payment_term == "50% Advance Remaining After 15 days of Invoice") {
+      $lotDetail = Lots::getlotInfo(['lot_id' => $id, 'single' => true]);
+      $data = [
+        'lotId' => $lotDetail->lot_id,
+        'am' => $lotDetail->am_email,
+        'brand' => $lotDetail->name,
+        'company' => $lotDetail->Company,
+      ];
+      $users = ['neetu.b@odndigital.com', 'Zair.s@odndigital.com', $lotDetail->am_email, $user->email];
+
+      Mail::to($users)->send(new lotInfo($data));
+    }
+
+    if(!($request_id > 0)){
+      $saved_lot__details =  Lots::find($saved_lot_id);
+      $save_ClientNotification_data = array(
+        'user_id' => $saved_lot__details->user_id,
+        'brand_id' => $saved_lot__details->brand_id,
+        'wrc_number' => $saved_lot__details->lot_id,
+        'service_number' => $saved_lot__details->lot_id,
+        'service' => 'Shoot',
+        'subject' => 'Creation',
+        'Creation_for' => 'Lot'
+      );
+      $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+    }
+    return redirect('createlots/' . $id)->with('success', " Welcome The New Lot Generated is  " . $lotId);
+  }
 }
-
-
-}
-
-
-
