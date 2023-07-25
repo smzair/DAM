@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Lots;
 use App\Models\Wrc;
-use App\Models\DB;
 use App\Models\Commercials;
 use App\Models\LotsStatus;
 use App\Models\WrcStatus;   
@@ -12,6 +11,7 @@ use App\Models\Skus;
 use App\Models\skusStatus;
 use App\Mail\wrcNotify;
 use App\Models\NotificationModel\ClientNotification;
+use Illuminate\Support\Facades\DB;
 use Mail;
 
 class wrcController extends Controller {
@@ -38,7 +38,7 @@ class wrcController extends Controller {
         $user_id = $request->user_id;
         $brand_id = $request->brand_id;
 
-        $lots = Lots::getlotinfo(['user_id' => $user_id, 'brand_id' => $brand_id,'inwarding_status' => '1']);
+        $lots = DB::table('lots')->where('user_id' ,'=', $user_id)->where( 'brand_id','=', $brand_id)->where('inwarding_status' ,'=', '1')->where('commercial_status','=', '1')->get();
 
         $lotsHtml = '<option value = "">Please Select</option>';
 
@@ -46,7 +46,7 @@ class wrcController extends Controller {
             $lotsHtml .= '<option value="' . $lot->id . '" >' . $lot->lot_id . '</option>';
         }
 
-        $coms = Commercials::where(['user_id' => $user_id, 'brand_id' => $brand_id])->orderby('product_category')->get();
+        $coms = Commercials::where(['user_id' => $user_id, 'brand_id' => $brand_id,'disabled'=> '0'])->orderby('product_category')->get();
 
         $comsHtml = '<option value = "">Please Select</option>';
 
@@ -159,11 +159,11 @@ class wrcController extends Controller {
       $collection[$id]['wrc'] = $wrc;
       $collection[$id]['sku_count']= count(Skus::where('wrc_id','=',$id)->where('status','=',1)->get());
       $collection[$id]['total_com'] = $collection[$id]['sku_count']*$wrc->com;
-  }
-
-  $collections = json_decode(json_encode($collection), true);
-  return view('Wrc.invoiceno', compact('collections'));
-}
+      }
+    
+      $collections = json_decode(json_encode($collection), true);
+      return view('Wrc.invoiceno', compact('collections'));
+    }
 
 
 public function uSku(Request $request){
@@ -290,9 +290,9 @@ public function saveWrc(Request $request) {
         }
     }
     /* send notification start */
-    $creation_type = 'WrcShoot';
-    $data = Wrc::find($data->id);
-    $this->send_notification($data, $creation_type);
+    // $creation_type = 'WrcShoot';
+    // $data = Wrc::find($data->id);
+    // $this->send_notification($data, $creation_type);
     /******  send notification end*******/  
     $request->session()->put('message', 'Wrc Created Successfully');
 
