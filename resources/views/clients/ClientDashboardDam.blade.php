@@ -52,9 +52,9 @@
 		}
 		
 		.dropdown-item.active, .dropdown-item:active {
-                color: #0F0F0F;
+                color: #FFFFFF;
                 text-decoration: none;
-                background-color: #FFF300;
+                background-color: #1A1A1A;
         }
         
         .dropdown-item:hover {
@@ -118,6 +118,9 @@
     content: none !important;
   }
   
+/*  .dropdown-menu , .tracklot-allServices-dropdown-Box.show {*/
+/*    padding: 0px;*/
+/*}*/
 
 	</style>
 @endsection
@@ -158,21 +161,21 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 			Track Lots - {{$lot_status_val}}
 	       </h4> 
 	       <p class="underheadingF">
-			  Currently, you are seeing {{$lot_status_val}} <span id="lot_is"></span> lots.
+			  You are seeing - {{$lot_status_val}} <span id="lot_is"></span> lots.
 		   </p>
 	    </div>
 		
 		<div class="tracklot-allServices-and-sort d-flex">
 		     <div class="dropdown">
                 <button class="btn dropdown-toggle tracklot-dropdown-tab-allService" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span>All</span>
+                    <span class="button-text">All</span>
                     <span>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M4.62875 8.87122L11.1488 15.3912C11.9187 16.1612 13.1787 16.1612 13.9487 15.3912L20.4688 8.87122" stroke="#808080" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </span>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-dark tracklot-allServices-dropdown-Box">
+                <ul class=" dropdown-menu dropdown-menu-dark tracklot-allServices-dropdown-Box">
                   <ul class="nav nav-pills nav-fill tabs" id="pills-tab" role="tablist" >
                     {{-----lot status Shoot start---}}
                     @if (count($shoot_lots) > 0 &&  ($user_role == 'Client' || $your_assets_permissions['shoot']))
@@ -184,7 +187,7 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
                           $active_tab_number = $tab_number;
                         }
                       @endphp
-                      <li class="nav-item" role="presentation" onclick="active_lot('{{$active_lot_is}}'), activateTab({{$tab_number++}})">
+                      <li class="nav-item services-text-dropdown-item" role="presentation" onclick="active_lot('{{$active_lot_is}}'), activateTab({{$tab_number++}})">
                         <button class="nav-link  tab-text tracklot-allService-text" id="pills-home-tab" data-bs-toggle="pill"
                           data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >
                            Shoot Lots
@@ -202,7 +205,7 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
                           $active_tab_number = $tab_number;
                         }
                       @endphp
-                      <li class="nav-item tab" role="presentation" onclick="active_lot('{{$active_lot_is}}'), activateTab({{$tab_number++}})">
+                      <li class="nav-item tab services-text-dropdown-item" role="presentation" onclick="active_lot('{{$active_lot_is}}'), activateTab({{$tab_number++}})">
                         <button class="nav-link  tab-text tracklot-allService-text" id="pills-contact-tab" data-bs-toggle="pill"
                           data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact"
                           aria-selected="false">
@@ -221,7 +224,7 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
                           $active_tab_number = $tab_number;
                         }
                       @endphp
-                      <li class="nav-item " role="presentation" onclick="active_lot('{{$active_lot_is}}'), activateTab({{$tab_number++}})">
+                      <li class="nav-item services-text-dropdown-item" role="presentation" onclick="active_lot('{{$active_lot_is}}'), activateTab({{$tab_number++}})">
                         <button class="nav-link  tab-text tracklot-allService-text" id="pills-editing-tab" data-bs-toggle="pill"
                           data-bs-target="#pills-editing" type="button" role="tab" aria-controls="pills-editing"
                           aria-selected="false">
@@ -241,7 +244,7 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
                         }
                       @endphp
               
-                      <li class="nav-item tab" role="presentation" onclick="active_lot('{{$active_lot_is}}'), activateTab({{$tab_number++}})">
+                      <li class="nav-item tab services-text-dropdown-item" role="presentation" onclick="active_lot('{{$active_lot_is}}'), activateTab({{$tab_number++}})">
                         <button class="nav-link tab-text tracklot-allService-text" id="pills-profile-tab" data-bs-toggle="pill"
                           data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
                           aria-selected="false">
@@ -295,16 +298,12 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 						<div class="under-content-div">
 						    <div class="col-12">
 						      <p class="lotnoF">{{$val['brand_name']}}</p>
-						      <p class="lot-date" style="font-weight: 500;font-size: 14px;">
-								   <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M9.15545 7.9917H9.1607M9.15545 9.7417H9.1607M6.99711 7.9917H7.00295M6.99711 9.7417H7.00295M4.8382 7.9917H4.84403M4.8382 9.7417H4.84403" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-								 {{ date('d-m-Y' , strtotime($val['created_at']))}}
+						      <p class="lot-no-heading" style="font-weight: 400;font-size: 14px; margin-top:4px">
+								 Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
 							</p>
 						    </div>
 						    <div class="col-12">
-						        <p class="lot-no-heading">Vertical Type</p>
+						        <p class="lot-no-heading">Lot type</p>
 						        <p class="status" style="font-size: 16px;">
 									 Shoot Lot
 								</p>
@@ -368,17 +367,12 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 							<div class="under-content-div">
 							  <div class="col-12">
 						          <p class="lotnoF">{{$val['brand_name']}}</p>
-						          	<p class="lot-date" style="font-weight: 500;font-size: 14px;">
-										<svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                         <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                         <path d="M9.15545 7.9917H9.1607M9.15545 9.7417H9.1607M6.99711 7.9917H7.00295M6.99711 9.7417H7.00295M4.8382 7.9917H4.84403M4.8382 9.7417H4.84403" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-										
-										 {{ date('d-m-Y' , strtotime($val['created_at']))}}
-									</p>
+						          	<p class="lot-no-heading" style="font-weight: 400;font-size: 14px; margin-top:4px">
+								        Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
+						        	</p>
 						      </div>
 						        <div class="col-12">
-						           <p class="lot-no-heading" >Vertical Type</p>
+						           <p class="lot-no-heading" >Lot type</p>
 						            <p class="status" style="font-size: 16px;">
 										 Marketing Creative Lots
 									</p>
@@ -441,17 +435,12 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 						<div class="under-content-div">
 						    <div class="col-12">
 						          <p class="lotnoF">{{$val['brand_name']}}</p>
-						          <p class="lot-date" style="font-weight: 500;font-size: 14px;">
-								   <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                         <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                         <path d="M9.15545 7.9917H9.1607M9.15545 9.7417H9.1607M6.99711 7.9917H7.00295M6.99711 9.7417H7.00295M4.8382 7.9917H4.84403M4.8382 9.7417H4.84403" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
-                                   </svg>
-								   
-								   {{ date('d-m-Y' , strtotime($val['created_at']))}}
-								</p>
+						          <p class="lot-no-heading" style="font-weight: 400;font-size: 14px; margin-top:4px">
+								     Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
+							     </p>
 						    </div>
 						    <div class="col-12">
-						        <p class="lot-no-heading">Vertical Type</p>
+						        <p class="lot-no-heading">Lot type</p>
 						        <p class="status" style="font-size: 16px;">
 									 Listing Lot
 								</p>
@@ -513,17 +502,12 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 						<div class="under-content-div">
 						    <div class="col-12">
 						          <p class="lotnoF">{{$val['brand_name']}}</p>
-						          <p class="lot-date" style="font-weight: 500;font-size: 14px;">
-									  <svg width="14" height="20" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                         <path d="M4.66667 1.16675V2.91675M9.33333 1.16675V2.91675M2.04167 5.30258H11.9583M12.25 4.95841V9.91675C12.25 11.6667 11.375 12.8334 9.33333 12.8334H4.66667C2.625 12.8334 1.75 11.6667 1.75 9.91675V4.95841C1.75 3.20841 2.625 2.04175 4.66667 2.04175H9.33333C11.375 2.04175 12.25 3.20841 12.25 4.95841Z" stroke="#808080" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                         <path d="M9.15545 7.9917H9.1607M9.15545 9.7417H9.1607M6.99711 7.9917H7.00295M6.99711 9.7417H7.00295M4.8382 7.9917H4.84403M4.8382 9.7417H4.84403" stroke="#808080" stroke-linecap="round" stroke-linejoin="round"/>
-                                      </svg>
-									
-									 {{ date('d-m-Y' , strtotime($val['created_at']))}}
-								</p>
+						          <p class="lot-no-heading" style="font-weight: 400;font-size: 14px; margin-top:4px">
+								     Lot date: {{ date('d-m-Y' , strtotime($val['created_at']))}}
+							     </p>
 						    </div>
 						    <div class="col-12">
-						        <p class="lot-no-heading">Vertical type</p>
+						        <p class="lot-no-heading">Lot type</p>
 						        <p class="status" style="font-size: 16px;">
 									Post-production Lots
 								</p>
@@ -622,15 +606,32 @@ $lot_status_is = $sortBy = $lot_status_val = "" ;
 <!--All Services Drodown active script-->
 
 	<script>
-      const dropdownItems = document.querySelectorAll('.dropdown-menu .nav-link');
-      const dropdownHeading = document.querySelector('.dropdown button');
+    //   const dropdownItems = document.querySelectorAll('.dropdown-menu .nav-link');
+    //   const dropdownHeading = document.querySelector('.dropdown button');
     
-      dropdownItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-          e.preventDefault();
-          const itemName = e.target.textContent;
-          dropdownHeading.textContent = itemName;
+    //   dropdownItems.forEach(item => {
+    //     item.addEventListener('click', (e) => {
+    //       e.preventDefault();
+    //       const itemName = e.target.textContent;
+    //       dropdownHeading.textContent = itemName;
+    //     });
+    //   });
+    
+    
+     const dropdownItems = document.querySelectorAll(".services-text-dropdown-item");
+        const buttonText = document.querySelector(".button-text");
+
+        dropdownItems.forEach((item) => {
+        item.addEventListener("click", function (event) {
+            event.preventDefault();
+            const selectedItemText = item.textContent;     
+            buttonText.textContent = selectedItemText;
+            buttonText.style.color = "#FFFFFF";
+            dropdownItems.forEach((item) => {
+            item.classList.remove("selected");
+            });
+            item.classList.add("selected");
         });
-      });
+        });
   </script>
 @endsection
