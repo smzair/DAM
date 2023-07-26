@@ -68,7 +68,9 @@ class ClientNotification extends Model
             }else if($service == 'Editing'){ 
                 $discription = "Editing Wrc Planning Done By ".$user_data->name.". Allocated WRC is ".$wrc_number;    
             }else if($service == 'Shoot'){ 
-                $discription = "Shoot Wrc Planning Done By ".$user_data->name.". Allocated WRC is ".$wrc_number;    
+                $subject_is = "Shoot Wrc Planning";
+                
+                $discription = $save_ClientNotification_data['sku_count']." SKU has been planned for Shoot. planned WRC is ".$wrc_number;    
             }
         }elseif($subject == 'Submission'){
             $subject_is = "Wrc Submission Done!!";

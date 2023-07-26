@@ -10,6 +10,8 @@ use App\Models\Dayplan;
 use App\Models\PlanDate;
 use App\Models\equipments;
 use App\Models\equipments_plan;
+use App\Models\NotificationModel\ClientNotification;
+
 class adminController extends Controller
 {
 	public function index(){
@@ -64,13 +66,13 @@ class adminController extends Controller
 
     }
 
- public function delete($id){
+ 	public function delete($id){
 
      $brand=Dayplan::findOrfail($id);
      $brand->delete();
      return redirect()->route('admin.bay')->with('success','Day Deleted');
 
-    }
+	}
 
 	public function table() {
 		$shootPlanList = planDate::getplanInfo([]);
@@ -123,12 +125,12 @@ class adminController extends Controller
 
 
 	public function savDay(Request $request){
-	    $id = $request->id;
-if(!empty($id)){
-  $data =  Dayplan::find($id);
-        }else{
-     $data = new Dayplan();
-}
+		$id = $request->id;
+		if (!empty($id)) {
+			$data =  Dayplan::find($id);
+		} else {
+			$data = new Dayplan();
+		}
         $data->date = $request->date;
         $data->studio = $request->studio;
         $data->photographer = $request->photographer;
@@ -152,20 +154,20 @@ if(!empty($id)){
         $id = $data->id;
         $plan_id = $request->dayplan;
 
-        if($request->dayplan != null){
-        $plan_id = $request->dayplan;
-        foreach($plan_id as $plan){
-        $obj = new equipments_plan();
-        $obj->plan_id = $plan;
-        $obj->equipment_id = $id;
-        $obj->save();
-        }
-}
+			if ($request->dayplan != null) {
+				$plan_id = $request->dayplan;
+				foreach ($plan_id as $plan) {
+					$obj = new equipments_plan();
+					$obj->plan_id = $plan;
+					$obj->equipment_id = $id;
+					$obj->save();
+				}
+			}
 
   
 
-  return redirect('/bay')->with('success', " Welcome the new plan for " . $date . " has been added successfully");
-}
+		return redirect('/bay')->with('success', " Welcome the new plan for " . $date . " has been added successfully");
+	}
 
 
 	public function getSku(Request $request){
@@ -197,6 +199,32 @@ if(!empty($id)){
 			$data->save();
 			
 		}
+
+		$Skus_data = Skus::whereIn('sku.id', $selectedSkus)->leftJoin('wrc', 'sku.wrc_id' , 'wrc.id')->
+		select(
+			'sku.user_id',
+			'sku.brand_id',
+			'sku.lot_id',
+			'sku.wrc_id',
+			'sku.sku_code',
+			'wrc.wrc_id as wrc_number'
+		)->get()->toArray();
+
+		if(count($Skus_data) > 0){
+			$wrc_sku_data = $Skus_data['0'];			
+			$save_ClientNotification_data = array(
+				'user_id' => $wrc_sku_data['user_id'],
+				'brand_id' => $wrc_sku_data['brand_id'],
+				'wrc_number' => $wrc_sku_data['wrc_number'],
+				'service' => 'Shoot',
+				'subject' => 'Planning',
+				'sku_count' => count($selectedSkus)
+			);
+			$save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+		}
+
+		// dd($selectedSkus , $Skus_data , implode(',',$selectedSkus));
+
 		echo "success";
 		exit();
 	
@@ -236,7 +264,7 @@ if(!empty($id)){
         }
 
         return view('admin.plansheet',compact('wrc_id','skusIds','skusCodes','nullIds'));
-    }
+	}
 
     
 }
