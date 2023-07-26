@@ -8,8 +8,8 @@ use App\Models\Wrc;
 use App\Models\Skus;
 use App\Models\Dayplan;
 use App\Models\PlanDate;
-use App\Models\equipments;
-use App\Models\equipments_plan;
+use  App\Models\equipments;
+use  App\Models\equipments_plan;
 class adminController extends Controller
 {
 	public function index(){
@@ -125,10 +125,11 @@ class adminController extends Controller
 	public function savDay(Request $request){
 	    $id = $request->id;
 if(!empty($id)){
-  $data =  Dayplan::find($id);
-        }else{
-     $data = new Dayplan();
+ $brand = Dayplan::findOrfail($id);
+        $brand->delete();
+}else{
 }
+        $data = new Dayplan();
         $data->date = $request->date;
         $data->studio = $request->studio;
         $data->photographer = $request->photographer;
@@ -161,11 +162,13 @@ if(!empty($id)){
         $obj->save();
         }
 }
-
-  
-
-  return redirect('/bay')->with('success', " Welcome the new plan for " . $date . " has been added successfully");
+	if(!empty($id)){
+ return redirect('/bay')->with('success', " Your editing in existing plan for " . $date . " has been added successfully");
+}else{
+    return redirect('/bay')->with('success', " Welcome the new plan for " . $date . " has been added successfully");
 }
+        
+    }
 
 
 	public function getSku(Request $request){
@@ -176,6 +179,7 @@ if(!empty($id)){
 
 
 	public function planShoot(Request $request){
+		
 		$wrcs = $request->wrcs;
 		$skusId = $request->skus_id;
 		$skusCode = $request->skus_code;
@@ -183,6 +187,7 @@ if(!empty($id)){
 	}
 
 	public function planSave(Request $request){
+		// dd($request);
 		$selectedSkus = $request->selected_skus;
 		$dayPlan = $request->dayplan;
 		foreach ($selectedSkus as $skuId) {
@@ -195,14 +200,19 @@ if(!empty($id)){
 			$data->sku_id=$skuId;
 			$data->dayplan_id=$dayPlan;
 			$data->save();
-			
+
+			 /* send notification start */
+			 $creation_type = 'ShootPlanInfo';
+			 $this->send_notification($data, $creation_type);
+			 /******  send notification end*******/ 
 		}
+
 		echo "success";
 		exit();
 	
 	}
 	public function skuPlanUplaod(Request $req) {
-
+		// dd($req);
         $handle = fopen($_FILES['plansheet']['tmp_name'], "r");
         $header = true;
         $skuObj = [];
@@ -222,14 +232,19 @@ if(!empty($id)){
             $skusIds = $skusCodes = [];
             foreach($skuObj[$skuObj['wrc_number']]  as $skus){
                 $sku = Skus::getskuInfo(['wrc_id'=>$wrcId,'sku_code'=>$skus])->first();
-                if($sku->id == null){
-                    $nullIds[]=$skus;
-                    
-                }
-                else{
-                $skusIds[] = $sku->id;
-                $skusCodes[]  = $sku->sku_code; 
-            }
+				if(isset($sku->id)){
+					if($sku->id == null){
+						$nullIds[]=$skus;
+						
+					}
+					else{
+						$skusIds[] = $sku->id;
+						$skusCodes[]  = $sku->sku_code;
+					}
+
+				}
+               
+                 
                 
             }
            
