@@ -254,6 +254,7 @@ class ClientDashboardControllerNew extends Controller
       'sortBy' => $sortBy
     );
     return view('clients.ClientDashboardDam', compact('creative_lots', 'shoot_lots', 'lots_catalog', 'editor_lots'))->with('other_data',$other_data);
+    // return view('clients.Timeline.ClientDashboardDam', compact('creative_lots', 'shoot_lots', 'lots_catalog', 'editor_lots'))->with('other_data',$other_data);
     
   }
 
