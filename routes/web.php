@@ -78,7 +78,7 @@ Route::get('/test', 'guest@Test');
 Route::get('/Master-Sheet', 'ReportController@MasterSheet')->name('mastersheet');
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/home1', [App\Http\Controllers\ClientsControllers\ClientDashboardController::class, 'index1'])->name('home1');
+    Route::get('/ClientDashboard', [App\Http\Controllers\ClientsControllers\ClientDashboardControllerNew::class, 'index'])->name('ClientDashboard');
     Route::resource('user', 'UserController');
     Route::resource('permission', 'PermissionsController');
     Route::resource('role', 'RolesController');
