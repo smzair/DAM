@@ -34,7 +34,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $users = User::get()->count();
         $lots = Lots::get()->count();
@@ -47,11 +47,34 @@ class HomeController extends Controller
             return view('clients.home',compact('user'));
         }
         $user_role = $user->roles->pluck('name');
+
         if($user->roles->pluck( 'name' )->contains( 'Client' ) || $user->roles->pluck( 'name' )->contains( 'Sub Client' )){
             // return ClientDashboardController::index();
+            $roledata = getUsersRole($user->id);
+            
+            $user_ip = $request->ip();
+            $data_array = array(
+                'log_name' => $roledata->role_name.' Login', 
+                'description' => $roledata->role_name.' logged in at '.date('d-m-Y h:i A').' with ip is '.$user_ip,
+                'event' => 'Log in', 
+                'subject_type' => 'App\Models\Users', 
+                'subject_id' => '0', 
+                'properties' => ['ip_address' => $user_ip
+                ,'user_id' => $user->id
+                ,'name' => $user->name
+                ,'last_name' => $user->last_name
+                ,'email' => $user->email
+                ,'client_id' => $user->client_id
+                ]
+            );
+
+            // dd($user ,$data_array);
+            \App\Models\ClientActivityLog::saveClient_activity_logs($data_array);
+
             dispatch(new SearchDataCollection($user))->onQueue('search_data_collection_queue');
             return ClientDashboardControllerNew::index();
         }
+
         if ($role->name ==  'Performance') {
             $catalog = CatalogWrcMasterSheet::CatalogWrcMasterList();
             $arr = [];

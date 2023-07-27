@@ -459,7 +459,7 @@
 			<div class="row">
 				<nav class="navbar navbar-expand-md border border-dark fixed-top">
 					{{-- logo --}}
-					<a class="navbar-brand" href="{{route('home')}}">
+					<a class="navbar-brand" href="{{route('ClientDashboard')}}">
 						<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_2254_3636)">
                             <path d="M52 0H0V52H52V0Z" fill="#FFF300"/>

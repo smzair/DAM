@@ -21,7 +21,7 @@ Clients Acitivity Logs
                             <div class="col-lg-7 col-md-6 col-sm-12">
                                 <h3 class="card-title text-black text-bold">
                                     <span class="d-inline-block align-middle">
-                                        Clients List
+                                        Clients Acitivity Logs
                                     </span>
                                     <span class="mr-2 ml-1 d-inline-block" style="position: relative; top: 1px;">|</span>
                                 </h3>
