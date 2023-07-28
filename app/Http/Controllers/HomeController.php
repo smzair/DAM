@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientsControllers\ClientDashboardController;
 use App\Http\Controllers\ClientsControllers\ClientDashboardControllerNew;
 use App\Jobs\SearchDataCollection;
 use App\Models\CatalogWrcMasterSheet;
+use App\Models\ClientActivityLog;
 use App\Models\CreativeSubmission;
 
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class HomeController extends Controller
             $user_ip = $request->ip();
             $data_array = array(
                 'log_name' => $roledata->role_name.' Login', 
-                'description' => $roledata->role_name.' logged in at '.date('d-m-Y h:i A').' with ip is '.$user_ip,
+                'description' => $user->name.' logged in at '.date('d-m-Y h:i A').' with ip is '.$user_ip,
                 'event' => 'Log in', 
                 'subject_type' => 'App\Models\Users', 
                 'subject_id' => '0', 
@@ -69,7 +70,7 @@ class HomeController extends Controller
             );
 
             // dd($user ,$data_array);
-            \App\Models\ClientActivityLog::saveClient_activity_logs($data_array);
+            ClientActivityLog::saveClient_activity_logs($data_array);
 
             dispatch(new SearchDataCollection($user))->onQueue('search_data_collection_queue');
             return ClientDashboardControllerNew::index();
