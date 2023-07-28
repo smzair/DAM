@@ -139,7 +139,7 @@ class wrcController extends Controller {
    public function ClientinvoiceSave(Request $request) {
 
        $id = $request->wrc;
-       $invoiceNo = strtoupper($request->invoiceInput);
+       $invoiceNo = $request->invoiceInput;
        $wrc = Wrc::findOrFail($id);
        $wrc->Invoice_no = $invoiceNo;
        $status = $wrc->save();

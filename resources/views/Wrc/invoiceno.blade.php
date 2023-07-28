@@ -202,6 +202,18 @@ Update WRC Invoice Number                                    </span>
 
 
 <script type="text/javascript">
+   $(document).ready(function() {
+    $('.data-table').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+        ]
+    } );
+} );
+
 
 $(document).on('click', '.cpy-clipboardtable', function () {
     var Lot = $(this).parents('.wrc-tt').find('#lotNum').text();
