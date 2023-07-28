@@ -160,13 +160,14 @@ Update WRC Invoice Number                                    </span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="" class="invoice-num-form" id="invoiceNumForm">
+        <form action="{{url('invoiceno-entry')}}" method="POST" class="invoice-num-form" id="invoiceNumForm">
             @csrf
           <div class="row invoice_entry">
             
             </div>
             <div class="col-12">
-                <button type="submit" onclick="updateInvoice()" class="btn btn-warning" id="invoiceSubmit">Submit</button>
+                <button type="submit" class="btn btn-warning" id="invoiceSubmit">Submit</button>
+                {{-- <button type="submit" onclick="updateInvoice()" class="btn btn-warning" id="invoiceSubmit">Submit</button> --}}
             </div>
           </div>
         </form>
@@ -254,6 +255,7 @@ $(document).on('click', '.cpy-clipboardtable', function () {
             dataType: 'text',
             data: $('#invoiceNumForm').serialize(),
             success: function(response) {
+                console.log('response', response)
               }
         });
     }

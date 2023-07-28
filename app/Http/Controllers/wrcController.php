@@ -139,28 +139,40 @@ class wrcController extends Controller {
    public function ClientinvoiceSave(Request $request) {
 
        $id = $request->wrc;
-       $invoiceNo = $request->invoiceInput;
+       $invoiceNo = strtoupper($request->invoiceInput);
        $wrc = Wrc::findOrFail($id);
        $wrc->Invoice_no = $invoiceNo;
-       $wrc->save();
+       $status = $wrc->save();
 
+        $save_ClientNotification_data = array(
+            'user_id' => $wrc->user_id,
+            'brand_id' => $wrc->brand_id,
+            'wrc_number' => $wrc->wrc_id,
+            'service' => 'Shoot',
+            'subject' => 'Invoice',
+            'service_number' => $invoiceNo,
+            'Creation_for' => 'Invoice'
+        );
+        $save_status = ClientNotification::save_ClientNotification($save_ClientNotification_data);
+        // dd($save_ClientNotification_data , $wrc);
 
        $request->session()->put('message', 'Wrc Invoice Number Registered Successfully');
+       return redirect()->back();
 
    }
 
    public function invoiceNo() {
-
-    $wrcs = Wrc::getwrcInfo($filter = []);
-    $collection=[];
-
-    foreach($wrcs as $wrc){
-      $id=$wrc->id;
-      $collection[$id]['wrc'] = $wrc;
-      $collection[$id]['sku_count']= count(Skus::where('wrc_id','=',$id)->where('status','=',1)->get());
-      $collection[$id]['total_com'] = $collection[$id]['sku_count']*$wrc->com;
-      }
     
+        $wrcs = Wrc::getwrcInfo($filter = []);
+        $collection=[];
+
+        foreach($wrcs as $wrc){
+        $id=$wrc->id;
+        $collection[$id]['wrc'] = $wrc;
+        $collection[$id]['sku_count']= count(Skus::where('wrc_id','=',$id)->where('status','=',1)->get());
+        $collection[$id]['total_com'] = $collection[$id]['sku_count']*$wrc->com;
+        }
+        
       $collections = json_decode(json_encode($collection), true);
       return view('Wrc.invoiceno', compact('collections'));
     }
