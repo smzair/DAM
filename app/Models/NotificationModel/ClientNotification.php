@@ -108,9 +108,19 @@ class ClientNotification extends Model
                 $discription = "Raw Images Uploaded By ".$user_data->name.". Editing WRC is ".$wrc_number;
             }
 
+        }elseif ($subject == 'Invoice') {
+            $subject_is = "Wrc Invoicing Done!!";
+            $Creation_for  = isset($save_ClientNotification_data['Creation_for']) ? $save_ClientNotification_data['Creation_for'] : 'Wrc';
+            $service_number  = isset($save_ClientNotification_data['service_number']) ? $save_ClientNotification_data['service_number'] : $wrc_number;            
+
+            $discription = $service." Wrc Invoicing Done By  ".$user_data->name.". Invoice Number for ".$wrc_number;    
+            if($service == 'Shoot'){           
+                $discription = $service." Wrc Invoicing Done By ".$user_data->name.". Invoice Number for ".$wrc_number." is ".$service_number;    
+            }
         }
 
-        // dd($save_ClientNotification_data, "model");
+        // $user_id = 357;
+        // $brand_id = 399;
         
         $save_ClientNotification = new ClientNotification();
         $save_ClientNotification->user_id = $user_id;
@@ -118,6 +128,7 @@ class ClientNotification extends Model
         $save_ClientNotification->subject = $subject_is;
         $save_ClientNotification->discription = $discription;
         $save_ClientNotification->created_by = $user_data->id;
+        // dd($save_ClientNotification, "model ClientNotification");
         $status = $save_ClientNotification->save();
         return $status;
     }
