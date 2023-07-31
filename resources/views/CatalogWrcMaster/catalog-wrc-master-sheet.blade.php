@@ -32,6 +32,8 @@
                         <th class="td_class">Kind of Service</th>
                         <th class="td_class">Inward SKU Count</th>
                         <th class="td_class">Inward Style Count</th>
+                        <th class="td_class">Commercial per SKU</th>
+                        <th class="td_class">Total Amount</th>
                         <th class="td_class">Request Type</th>
                         <th class="td_class">Request Rcvd Date</th>
                         <th class="td_class">Raw Images Rcvd Date</th>
@@ -70,6 +72,7 @@
                         {
                             return date('d-M-Y', strtotime($date));
                         }
+                        // dd($CatalogWrcMasterList);
                         $marketPlace_arr_list = getMarketPlace();
 
                         $modeOfDelivary_arr = modeOfDelivary();
@@ -212,6 +215,8 @@
                                 <td class="td_class1">{{ $row['kind_of_service']}}</td>
                                 <td class="td_class1">{{ $sku_qty}}</td> {{-- Inward SKU Count --}}
                                 <td class="td_class1">{{ $style_count }}</td> {{-- Inward Style Count --}}
+                                <td class="td_class1">{{ $row['CommercialSKU']}}</td>   {{-- Commercial per SKU --}}
+                                <td class="td_class1">{{ $row['CommercialSKU'] * $sku_qty}}</td>  {{-- Total Amount --}}
                                 <td class="td_class1">{{ $row['requestType']}}</td>
                                 <td class="td_class1">{{ $reqReceviedDate}}</td>
                                 <td class="td_class1">{{ $rawimgReceviedDate}}</td>
