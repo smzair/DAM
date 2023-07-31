@@ -30,7 +30,7 @@
     	background:#0F0F0F;
 		}
 		.viewport{
-			margin-top: 111px;
+			margin-top: 107px;
 			height: calc(100vh - 111px);
 		}
 		
@@ -327,6 +327,7 @@
             position: absolute;
             top: auto;
             left: 0;
+            z-index: 1;
     }
 
 		.url-copied-linkforviewdetails {
@@ -958,10 +959,10 @@
 									<img src="{{asset('IMG/Frame_261.png')}}" alt="">
 							</button>
 							<p>
-								<a class="active-link-track-mob">Active</a>
+								<a class="active-link-track-mob" href="{{route('TrackLots', ['lotStatus' => 'active'])}}" >Active</a>
 							</p>
 							<p>
-								<a class="completed-link-track-mob">Completed</a>
+								<a class="completed-link-track-mob" href="{{route('TrackLots', ['lotStatus' => 'completed'])}}" >Completed</a>
 							</p>
 					</div>
 			</div>
@@ -995,8 +996,8 @@
 										 <img src="{{$profile_avtar_src}}" alt="" class="rounded-circle profile-pic-mobile">
 									</div>
 									<div class="profile-name">
-										{{ ucwords($user_data->name) .' '. ucwords($user_data->last_name) }}
-										{{-- <a href="{{route('ClientProfile')}}" > {{ ucwords($user_data->name) .' '. ucwords($user_data->last_name) }}</a> --}}
+										{{-- {{ ucwords($user_data->name) .' '. ucwords($user_data->last_name) }} --}}
+										<a style="color: #fff;text-decoration:none" href="{{route('ClientProfile')}}" > {{ ucwords($user_data->name) .' '. ucwords($user_data->last_name) }}</a>
 									</div>
 							</div>
 	
