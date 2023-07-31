@@ -423,6 +423,24 @@
 		pointer-events: none;
 		opacity: .4;
 	}
+
+	.mobile-bottom-nav-content-div .active{
+		background: #FFF300;
+    border-radius: 0;
+    box-shadow: none;
+	}
+
+	.mobile-bottom-nav-content-div .active .mobile-bottom-nav-content-heading{
+		color: #0F0F0F;
+	}
+
+	.popup-content .active a{
+		color: #fff300;
+	}
+	a{
+		text-decoration: none;
+		text-decoration-color: transparent;
+	}
 </style>
 
 </head>
@@ -893,7 +911,8 @@
 				<!-- Bottom Navbar Start -->
 				<div class="mobile-bottom-nav p-0 d-lg-none d-xl-none d-lg-none d-xs-block d-sm-block d-md-none">
 					<div class="mobile-bottom-nav-content-div">
-							<button class="mobile-bottom-nav-content btn" onclick="openPopup('popupOverlay1')">
+						{{-- Track Lots --}}
+							<button class="mobile-bottom-nav-content btn {{$active_tab == '1' ? 'active' : ''}}" onclick="openPopup('popupOverlay1')">
 									<div class="icon-container">
 											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<path
@@ -906,7 +925,9 @@
 									</div>
 									<div class="mobile-bottom-nav-content-heading">Track Lots</div>
 							</button>
-							<button class="mobile-bottom-nav-content btn">
+
+							{{-- Your Assets --}}
+							<button class="mobile-bottom-nav-content btn {{$active_tab == '2' ? 'active' : ''}}">
 									<div class="icon-container">
 											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<path
@@ -916,7 +937,9 @@
 									</div>
 									<div class="mobile-bottom-nav-content-heading">Your Assets</div>
 							</button>
-							<button class="mobile-bottom-nav-content btn">
+
+							{{-- Admin Panel --}}
+							<button class="mobile-bottom-nav-content btn {{$active_tab == '3' ? 'active' : ''}}">
 									<div class="icon-container">
 											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<path
@@ -932,7 +955,9 @@
 									</div>
 									<div class="mobile-bottom-nav-content-heading">Admin Panel</div>
 							</button>
-							<button class="mobile-bottom-nav-content btn">
+
+							{{-- Admin Control --}}
+							<button class="mobile-bottom-nav-content btn {{$active_tab == '4' ? 'active' : ''}}">
 									<div class="icon-container">
 											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<path
@@ -958,10 +983,10 @@
 							<button class="close-btn" onclick="closePopup('popupOverlay1')">
 									<img src="{{asset('IMG/Frame_261.png')}}" alt="">
 							</button>
-							<p>
+							<p class="{{$active_link == 'active_lot' ? 'active' : ''}}">
 								<a class="active-link-track-mob" href="{{route('TrackLots', ['lotStatus' => 'active'])}}" >Active</a>
 							</p>
-							<p>
+							<p class="{{$active_link == 'completed_lot' ? 'active' : ''}}">
 								<a class="completed-link-track-mob" href="{{route('TrackLots', ['lotStatus' => 'completed'])}}" >Completed</a>
 							</p>
 					</div>
