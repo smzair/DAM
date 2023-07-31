@@ -69,6 +69,7 @@ class CatalogWrcMasterSheet extends Model
             'users.Company',
             'users.am_email',
             'brands.name as brand_name',
+            'cc_catalog.CommercialSKU',
             'cc_catalog.market_place',
             'cc_catalog.type_of_service as kind_of_service',
             DB::raw('SUM(CASE WHEN user_role = 0 THEN allocated_qty else 0 END)  as cataloger_sum'),
