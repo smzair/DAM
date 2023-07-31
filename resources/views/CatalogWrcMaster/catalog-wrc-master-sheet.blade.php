@@ -144,7 +144,11 @@
 
                             $wrc_id = $row['wrc_id'];
                             $batch_no = $row['batch_no'];
-                            $batch_no_is = $batch_no > 0 ? $batch_no :'None';
+                            if($row['batch_no'] > 0){
+                                $batch_no_is = ($row['batch'] != '' && $row['batch'] != null) ? $row['batch'] : $row['batch_no'];
+                            }else{
+                                $batch_no_is =  'None';
+                            }
 
                             $sku_wrc_id_arr = array_intersect($wrc_skus_wrc_id_arr,array($wrc_id));
 
