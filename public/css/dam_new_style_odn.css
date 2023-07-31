@@ -90,7 +90,9 @@ a.btn.border.rounded-0.view-img:hover {
 .btn.border-0.rounded-circle.myButton {
     padding: 0px;
     font-size: 24px;
+    position:relative;
 }
+
 
 
 .sort-by-button{
